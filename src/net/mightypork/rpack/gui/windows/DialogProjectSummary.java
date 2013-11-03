@@ -1,0 +1,114 @@
+package net.mightypork.rpack.gui.windows;
+
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.swing.*;
+
+import net.mightypork.rpack.App;
+import net.mightypork.rpack.gui.Icons;
+import net.mightypork.rpack.hierarchy.processors.GetProjectSummaryProcessor;
+import net.mightypork.rpack.hierarchy.tree.AssetTreeNode;
+import net.mightypork.rpack.library.Sources;
+
+import org.jdesktop.swingx.JXTable;
+
+
+public class DialogProjectSummary extends RpwDialog {
+
+	private JButton btnClose;
+
+
+	public DialogProjectSummary() {
+
+		super(App.getFrame(), "Project summary");
+		setResizable(true);
+
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+
+		// Create Scrolling Text Area in Swing
+		final String[] columns = { "Asset key", "Source" };
+
+
+		GetProjectSummaryProcessor proc = new GetProjectSummaryProcessor();
+		AssetTreeNode root = App.getTreeDisplay().treeModel.getRoot();
+
+		root.processThisAndChildren(proc);
+
+		Map<String, String> summary = proc.getSummary();
+
+		List<Object[]> rows = new ArrayList<Object[]>();
+
+		for (Entry<String, String> e : summary.entrySet()) {
+			rows.add(new Object[] { e.getKey(), Sources.processForDisplay(e.getValue()) });
+		}
+
+		final Object[][] data = new Object[rows.size()][2];
+
+		rows.toArray(data);
+
+		JXTable table = new JXTable(data, columns);
+		table.setEditable(false);
+
+		table.setColumnSelectionAllowed(false);
+		table.setFillsViewportHeight(true);
+
+		table.getColumnModel().getColumn(0).setPreferredWidth(600);
+		table.getColumnModel().getColumn(1).setPreferredWidth(200);
+
+		table.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+		table.setRowHeight(22);
+
+
+		JScrollPane sp = new JScrollPane(table);
+		sp.setPreferredSize(new Dimension(800, 600));
+
+		//@formatter:off
+		sp.setBorder(
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createEmptyBorder(10, 10, 10, 10),
+						BorderFactory.createEtchedBorder()
+				)
+		);
+		//@formatter:on
+
+		sp.setWheelScrollingEnabled(true);
+		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		btnClose = new JButton("Close", Icons.MENU_EXIT);
+		btnClose.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		buttonPane.add(btnClose);
+
+		getContentPane().add(sp);
+		getContentPane().add(buttonPane);
+
+		prepareForDisplay();
+	}
+
+
+	@Override
+	public void onClose() {
+
+		// nothing
+	}
+
+
+	@Override
+	protected void addActions() {
+
+		btnClose.addActionListener(closeListener);
+	}
+
+}

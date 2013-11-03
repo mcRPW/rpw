@@ -1,0 +1,69 @@
+/*
+ EXPLANATION OF THE "MCMETA" FORMAT
+
+ All "mcmeta" files use JSON format.
+ Any syntax errors will cause checkered texture.
+
+
+ "animation" can be used only for blocks and items.
+
+ -> "frametime" - number of ticks per frame (20 ticks = 1s)
+               - when omitted, default timing is used.
+
+ -> "frames"    - list of frames to loop
+               - when omitted, default frameset is used
+               - use frame numbers (zero based), or frame settings
+               - in the example below, frame Nr. 10 lasts 2 seconds
+
+
+ "texture" can be used only for textures (eg. shadow and overlays)
+
+ -> "blur"      - render with blur
+
+ -> "clamp"     - disable repeating when rendered
+
+*/
+
+/* EXAMPLE ANIMATION */
+
+{
+	"animation": {
+		"frametime": 2,
+
+		"frames": [
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7,
+			8,
+			9,
+
+			{
+				"index": 10,
+				"time": 40
+			},
+
+			11,
+			12,
+			13,
+			14,
+			15
+		]
+
+	}
+}
+
+
+/* EXAMPLE TEXTURE */
+
+{
+	"texture": {
+		"blur": true,
+		"clamp": false
+	}
+}
+
