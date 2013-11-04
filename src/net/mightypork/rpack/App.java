@@ -66,6 +66,8 @@ public class App {
 		}
 
 		Log.init();
+		
+		Log.i("ResourcePack Workbench v." + Const.VERSION+" (#"+Const.VERSION_SERIAL+")");
 
 		Log.f1("Init started...");
 		OsUtils.initDirs();
@@ -75,6 +77,8 @@ public class App {
 		Icons.init();
 		Tasks.taskCreateModConfigFiles();
 		Sources.init();
+		
+		Tasks.checkUpdate();
 
 		Log.f2("Building main window");
 

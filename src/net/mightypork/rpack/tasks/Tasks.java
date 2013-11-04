@@ -802,4 +802,17 @@ public class Tasks {
 		JDialog dialog = new DialogManageMcPacks();
 		dialog.setVisible(true);
 	}
+
+
+	public static void taskOpenProjectFolder() {
+
+		DesktopApi.open(Projects.getActive().getProjectDirectory());
+		
+	}
+
+
+	public static void checkUpdate() {
+
+		TaskCheckUpdate.run();
+	}
 }

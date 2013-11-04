@@ -72,6 +72,8 @@ public class MenuMain {
 
 	private JMenu menuRecentProjects;
 
+	private JMenuItem itemProjectOpenFolder;
+
 
 	public MenuMain() {
 
@@ -144,6 +146,10 @@ public class MenuMain {
 			item = itemProjectSummary = new JMenuItem("Project summary", KeyEvent.VK_J);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_INFO);
+			menu.add(item);
+			
+			item = itemProjectOpenFolder = new JMenuItem("Open project folder", KeyEvent.VK_I);
+			item.setIcon(Icons.MENU_OPEN);
 			menu.add(item);
 			
 			item = itemProjectSetup = new JMenuItem("Project properties", KeyEvent.VK_P);
@@ -625,6 +631,15 @@ public class MenuMain {
 			}
 		});
 
+		itemProjectOpenFolder.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Tasks.taskOpenProjectFolder();
+			}
+		});
+		
 	}
 
 
@@ -640,6 +655,7 @@ public class MenuMain {
 		itemProjectSummary.setEnabled(open);
 		itemProjectClose.setEnabled(open);
 		menuTree.setEnabled(open);
+		itemProjectOpenFolder.setEnabled(open);
 
 		itemLibraryManageModFilters.setEnabled(Config.FANCY_GROUPS);
 		itemLibraryManageModGroups.setEnabled(Config.FANCY_GROUPS);
