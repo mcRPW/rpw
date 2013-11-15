@@ -60,7 +60,17 @@ public class App {
 	public void init() {
 
 		if (!lockInstance()) {
-			Alerts.error(null, "Couldn't lock workdir", "The application is already running.\n" + "\n" + "No more than one instance can run at a time.");
+			
+			//@formatter:off
+			Alerts.error(
+					null,
+					"Couldn't lock workdir",
+					"The application is already running.\n" +
+					"\n" +
+					"No more than one instance can run at a time."
+			);
+			//@formatter:on
+			
 			System.exit(1);
 		}
 
