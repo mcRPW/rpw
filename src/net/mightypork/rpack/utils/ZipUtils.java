@@ -67,7 +67,7 @@ public class ZipUtils {
 				files.add(entryPath);
 			}
 		}
-		
+
 		zip.close();
 
 		return files;
@@ -90,7 +90,7 @@ public class ZipUtils {
 				files.add(entry.getName());
 			}
 		}
-		
+
 		zip.close();
 
 		return files;

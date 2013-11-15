@@ -134,7 +134,7 @@ public class DialogEditText extends RpwDialog {
 			int colorCode = Integer.parseInt(colorText, 16);
 
 			popup.add(item = new JMenuItem(code.replace("\u00A7", "\u00A7 ") + " - " + labelText));
-			
+
 			item.setForeground(new Color(colorCode));
 			item.setActionCommand(code);
 			item.addActionListener(insertFormattingCodeListener);
@@ -173,7 +173,7 @@ public class DialogEditText extends RpwDialog {
 		SyntaxScheme ss = ta.getSyntaxScheme();
 		ss = (SyntaxScheme) ss.clone();
 		ss.restoreDefaults(font);
-		
+
 		for (int i = 0; i < ss.getStyleCount(); i++) {
 			if (ss.getStyle(i) != null) {
 				ss.getStyle(i).font = font;
@@ -182,10 +182,10 @@ public class DialogEditText extends RpwDialog {
 				ss.getStyle(i).underline = false;
 			}
 		}
-		
+
 		Style s;
 
-		
+
 		s = ss.getStyle(TokenTypes.ERROR_CHAR);
 		s.foreground = Color.RED;
 		s.underline = true;
@@ -201,26 +201,24 @@ public class DialogEditText extends RpwDialog {
 		s = ss.getStyle(TokenTypes.ERROR_IDENTIFIER);
 		s.foreground = Color.RED;
 		s.underline = true;
-		
+
 
 		s = ss.getStyle(TokenTypes.WHITESPACE);
 		s.foreground = null;
 		s.background = null;
-		
 
-		
+
 		s = ss.getStyle(TokenTypes.LITERAL_STRING_DOUBLE_QUOTE);
 		s.foreground = new Color(0xbf030c);
 
 		s = ss.getStyle(TokenTypes.OPERATOR);
 		s.foreground = new Color(0x006e28);
-		
+
 		s = ss.getStyle(TokenTypes.RESERVED_WORD);
 		s.foreground = new Color(0x0057ae);
 		s.font = font.deriveFont(Font.BOLD);
 
-		
-		
+
 		Color commentColor = new Color(0x646464);
 
 		ss.getStyle(TokenTypes.COMMENT_EOL).foreground = commentColor;

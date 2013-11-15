@@ -83,22 +83,22 @@ public class Tasks {
 
 			@Override
 			public void run() {
-				
-				try {			
+
+				try {
 					EventQueue.invokeLater(new Runnable() {
-		
+
 						@Override
 						public void run() {
-							
+
 							// -- task begin --
-							
+
 							App.inst.window = new WindowMain();
-		
+
 							Flags.PROJECT_CHANGED = !Config.CLOSED_WITH_PROJECT_OPEN;
 							Tasks.taskOnProjectChanged();
-		
+
 							Tasks.stopTask(task);
-							
+
 							// -- task end --
 						}
 					});
@@ -107,7 +107,7 @@ public class Tasks {
 				}
 			}
 		}).start();
-		
+
 		return task;
 	}
 
@@ -457,8 +457,8 @@ public class Tasks {
 
 		Log.f3("Rebuilding tree.");
 
-		if(App.getTreeDisplay()!= null) App.getTreeDisplay().updateRoot();
-		if(App.getSidePanel() != null) App.getSidePanel().updatePreview(null);
+		if (App.getTreeDisplay() != null) App.getTreeDisplay().updateRoot();
+		if (App.getSidePanel() != null) App.getSidePanel().updatePreview(null);
 	}
 
 
@@ -807,7 +807,7 @@ public class Tasks {
 	public static void taskOpenProjectFolder() {
 
 		DesktopApi.open(Projects.getActive().getProjectDirectory());
-		
+
 	}
 
 

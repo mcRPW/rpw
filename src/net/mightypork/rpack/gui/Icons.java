@@ -201,8 +201,8 @@ public class Icons {
 					r = new Region(Positions.TOP_LEFT, new AbsoluteSize(orig.getWidth(), orig.getWidth()));
 				}
 
-				ThumbnailParameter p = new ThumbnailParameter(size, r, true, ThumbnailParameter.ORIGINAL_FORMAT,
-						ThumbnailParameter.DEFAULT_FORMAT_TYPE, 0, ThumbnailParameter.DEFAULT_IMAGE_TYPE, null, new MyResizer(), true, false);
+				ThumbnailParameter p = new ThumbnailParameter(size, r, true, ThumbnailParameter.ORIGINAL_FORMAT, ThumbnailParameter.DEFAULT_FORMAT_TYPE, 0, ThumbnailParameter.DEFAULT_IMAGE_TYPE,
+						null, new MyResizer(), true, false);
 
 				ThumbnailTask<BufferedImage, BufferedImage> task = new SourceSinkThumbnailTask<BufferedImage, BufferedImage>(p, src, out);
 

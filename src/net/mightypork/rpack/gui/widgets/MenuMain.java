@@ -54,6 +54,7 @@ public class MenuMain {
 	private JCheckBoxMenuItem itemOptionsFontFiles;
 	private JCheckBoxMenuItem itemOptionsPreviewHover;
 	private JCheckBoxMenuItem itemOptionsHiddenFiles;
+	private JCheckBoxMenuItem itemOptionsWarningOrphanedNodes;
 	private JMenuItem itemOptionsSettings;
 
 	private JMenuItem itemHelpGuide;
@@ -219,7 +220,7 @@ public class MenuMain {
 			
 			menu.addSeparator();		
 			
-			item = itemLibraryRefreshVanilla = new JMenuItem("Re-extract Vanilla pack", KeyEvent.VK_R);
+			item = itemLibraryRefreshVanilla = new JMenuItem("Re-extract Minecraft assets", KeyEvent.VK_R);
 			item.setIcon(Icons.MENU_RELOAD2);
 			menu.add(item);
 			
@@ -243,6 +244,12 @@ public class MenuMain {
 			ckitem.setMnemonic(KeyEvent.VK_S);
 			ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
 			ckitem.setSelected(Config.FANCY_GROUPS);
+			menu.add(ckitem);
+			
+			ckitem = itemOptionsWarningOrphanedNodes = new JCheckBoxMenuItem("Warn about orphaned files");
+			ckitem.setMnemonic(KeyEvent.VK_O);
+			ckitem.setToolTipText("Show warning when Fancy Tree prevents some files from being displayed.");
+			ckitem.setSelected(Config.WARNING_ORPHANED_NODES);
 			menu.add(ckitem);
 			
 			
@@ -560,6 +567,21 @@ public class MenuMain {
 			}
 		});
 
+		itemOptionsWarningOrphanedNodes.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				boolean newOpt = itemOptionsWarningOrphanedNodes.isSelected();
+
+				if (Config.WARNING_ORPHANED_NODES != newOpt) {
+					Config.WARNING_ORPHANED_NODES = newOpt;
+					Config.save();
+				}
+
+			}
+		});
+
 		itemOptionsPreviewHover.addActionListener(new ActionListener() {
 
 			@Override
@@ -639,7 +661,7 @@ public class MenuMain {
 				Tasks.taskOpenProjectFolder();
 			}
 		});
-		
+
 	}
 
 

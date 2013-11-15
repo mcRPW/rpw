@@ -114,7 +114,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 		privateCopiesBase.mkdirs();
 		extraIncludesBase.mkdirs();
-		
+
 		File asmc = new File(extraIncludesBase, "assets/minecraft");
 		asmc.mkdirs();
 	}
@@ -192,8 +192,8 @@ public class Project extends Source implements NodeSourceProvider {
 
 		return privateCopiesBase;
 	}
-	
-	
+
+
 	public File getExtrasDirectory() {
 
 		return extraIncludesBase;

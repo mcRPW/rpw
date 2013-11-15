@@ -76,7 +76,7 @@ public class TaskExportProject {
 		InputStream in = null;
 
 		File f;
-		
+
 		// Add includes
 
 		if (Config.LOG_EXPORT) {
@@ -108,7 +108,7 @@ public class TaskExportProject {
 		} catch (Throwable t) {
 			Log.e("Error when including extras.", t);
 		}
-		
+
 
 		if (Config.LOG_EXPORT) {
 			Log.f2("Adding project files");

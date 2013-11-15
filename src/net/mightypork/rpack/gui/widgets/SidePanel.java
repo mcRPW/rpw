@@ -396,10 +396,10 @@ public class SidePanel {
 		Project p = Projects.getActive();
 
 		if (p != null) {
-			
-			String name = p.getProjectName();			
+
+			String name = p.getProjectName();
 			int length_name = (panel.getWidth() - 75) / 11;
-			name = Utils.cropStringAtEnd(name, length_name);			
+			name = Utils.cropStringAtEnd(name, length_name);
 			projectName.setText(name);
 
 			String path = p.getProjectDirectory().getPath();

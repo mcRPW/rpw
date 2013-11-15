@@ -509,8 +509,7 @@ public class PropertyManager {
 					return false;
 				}
 				String string2 = string.toLowerCase();
-				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled")
-						|| string2.equals("enable");
+				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled") || string2.equals("enable");
 			}
 
 			return true;

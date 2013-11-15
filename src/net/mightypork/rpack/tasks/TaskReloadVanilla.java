@@ -19,7 +19,12 @@ import net.mightypork.rpack.gui.windows.Alerts;
 import net.mightypork.rpack.hierarchy.AssetEntry;
 import net.mightypork.rpack.hierarchy.EAsset;
 import net.mightypork.rpack.library.Sources;
-import net.mightypork.rpack.utils.*;
+import net.mightypork.rpack.utils.FileUtils;
+import net.mightypork.rpack.utils.Log;
+import net.mightypork.rpack.utils.OsUtils;
+import net.mightypork.rpack.utils.SimpleConfig;
+import net.mightypork.rpack.utils.Utils;
+import net.mightypork.rpack.utils.filters.FileSuffixFilter;
 import net.mightypork.rpack.utils.filters.StringFilter;
 
 
@@ -35,62 +40,17 @@ public class TaskReloadVanilla {
 		FileUtils.delete(outDir, true);
 		outDir.mkdirs();
 
-
-		Map<String, AssetEntry> assets = new LinkedHashMap<String, AssetEntry>();
-
-
 		// EXTRACT FROM .minecraft/versions/[latest]
 
 		File zipFile = new File(OsUtils.getMcDir("versions/" + version), version + ".jar");
-		Log.f3("Extracting: " + zipFile);
 
-		try {
+		Map<String, AssetEntry> assets = FileUtils.loadAssetsFromZip(zipFile, outDir);
 
-			StringFilter filter = new StringFilter() {
-
-				@Override
-				public boolean accept(String path) {
-
-					boolean ok = false;
-
-					String[] parts = FileUtils.removeExtension(path);
-					String ext = parts[1];
-					EAsset type = EAsset.forExtension(ext);
-
-					ok |= path.startsWith("assets");
-					ok &= (type != null || ext.equals("mcmeta"));
-
-					return ok;
-				}
-			};
-
-			List<String> list = ZipUtils.extractZip(zipFile, outDir, filter);
-
-			for (String s : list) {
-				if (s.startsWith("assets")) {
-					s = FileUtils.escapeFilename(s);
-					String[] parts = FileUtils.removeExtension(s);
-					String key = parts[0].replace('\\', '.');
-					key = key.replace('/', '.');
-					String ext = parts[1];
-					EAsset type = EAsset.forExtension(ext);
-
-					if (type == null) {
-						if (Config.LOG_VANILLA_RELOAD) Log.f3("# excluding: " + s);
-						continue;
-					}
-
-					assets.put(key, new AssetEntry(key, type));
-				}
-			}
-
-		} catch (Exception e) {
-			Log.e(e);
-
+		if (assets == null) {
+			Log.e("Vanilla pack extraction failed, aborting.");
 			Alerts.loading(false);
-			return; // success = false
+			return;
 		}
-
 
 		// COPY FROM .minecraft/assets (sounds & lang)
 		File source = OsUtils.getMcDir("assets");
@@ -133,7 +93,7 @@ public class TaskReloadVanilla {
 				EAsset type = EAsset.forExtension(ext);
 
 				if (type == null) {
-					if (Config.LOG_VANILLA_RELOAD) Log.f3("# excluding: " + path);
+					if (Config.LOG_ZIP_EXTRACTING) Log.f3("# excluding: " + path);
 					continue;
 				}
 
@@ -148,6 +108,57 @@ public class TaskReloadVanilla {
 		}
 
 
+		// Do the /mods folder
+
+		List<File> list = FileUtils.listDirectory(OsUtils.getMcDir("mods"));
+
+		List<File> modFiles = new ArrayList<File>();
+
+		FileSuffixFilter fsf = new FileSuffixFilter("jar", "zip");
+
+		for (File f : list) {
+			if (f.exists() && fsf.accept(f)) {
+				System.out.println("Passed:" + f);
+				modFiles.add(f);
+			}
+		}
+
+		boolean modsLoaded = false;
+
+		if (modFiles.size() > 0) {
+
+			String modList = "";
+			for (File f : modFiles) {
+				modList += " * " + f.getName() + "\n";
+			}
+			modList = modList.trim();
+
+			//@formatter:off
+			boolean yeah = Alerts.askYesNo(
+					App.getFrame(),
+					"Mods found",
+					"RPW detected some mod files in your\n" + 
+					".minecraft/mods directory:\n" + 
+					"\n" + 
+					modList +
+					"\n" + 
+					"Do you want to load them too?"
+			);
+			//@formatter:on
+
+			if (yeah) {
+				int added = 0;
+				for (File f : modFiles) {
+					int oldLen = assets.size();
+					FileUtils.loadAssetsFromZip(f, outDir, assets);
+					added += assets.size() - oldLen;
+				}
+				modsLoaded = added > 0;
+			}
+
+		}
+
+
 		assets = Utils.sortByKeys(assets);
 
 		Sources.vanilla.setAssets(assets);
@@ -158,7 +169,7 @@ public class TaskReloadVanilla {
 		Map<String, String> saveMap = new LinkedHashMap<String, String>();
 
 		for (AssetEntry e : assets.values()) {
-			if (Config.LOG_VANILLA_RELOAD) Log.f3("+ " + e);
+			if (Config.LOG_ZIP_EXTRACTING) Log.f3("+ " + e);
 			saveMap.put(e.getKey(), e.getType().toString());
 		}
 
@@ -176,9 +187,34 @@ public class TaskReloadVanilla {
 		Log.f2("Reloading Vanilla assets - done.");
 		Flags.VANILLA_STRUCTURE_LOAD_OK = true;
 		Alerts.loading(false);
+
+		if (Config.FANCY_GROUPS && modsLoaded) {
+			//@formatter:off
+			boolean yeah = Alerts.askYesNo(
+					App.getFrame(),
+					"Mods installed",
+					"It is recommended to disable Fancy Tree display\n" + 
+					"when mods are installed. You can toggle it in\n" + 
+					"the Options menu.\n" + 
+					"\n" +
+					"Disable Fancy Tree now?"
+			);
+			//@formatter:on
+
+			if (yeah) {
+				Config.FANCY_GROUPS = false;
+				Config.save();
+			}
+		}
 	}
 
 
+	/**
+	 * Ask user for the level to use
+	 * 
+	 * @param isInitial is this the first startup?
+	 * @return MC version selected
+	 */
 	public static String getUserChoice(boolean isInitial) {
 
 		//@formatter:off
@@ -192,8 +228,8 @@ public class TaskReloadVanilla {
 		String user = 
 				"Vanilla ResourcePack will be re-extracted.\n" +
 				"\n" +
-				"Assets of any mods installed at this point\n" +
-				"will be included in the asset tree.\n" +
+				"Assets installed in the game jar and the\n" +
+				"assets folder will be included.\n" +
 				"\n" +
 				"Please, select a Minecraft version to use:";
 		//@formatter:on

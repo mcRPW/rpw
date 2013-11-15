@@ -42,7 +42,6 @@ public class TaskLoadVanillaStructure {
 
 			for (Entry<String, String> e : saveMap.entrySet()) {
 
-
 				AssetEntry ae = new AssetEntry(e.getKey(), EAsset.valueOf(e.getValue()));
 
 				assets.put(e.getKey(), ae);

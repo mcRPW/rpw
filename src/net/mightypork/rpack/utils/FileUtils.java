@@ -3,8 +3,13 @@ package net.mightypork.rpack.utils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import net.mightypork.rpack.Config;
+import net.mightypork.rpack.hierarchy.AssetEntry;
+import net.mightypork.rpack.hierarchy.EAsset;
 import net.mightypork.rpack.utils.filters.StringFilter;
 
 
@@ -67,8 +72,7 @@ public class FileUtils {
 			copyFile(source, target);
 		}
 	}
-	
-	
+
 
 	/**
 	 * List directory recursively
@@ -105,9 +109,8 @@ public class FileUtils {
 	 * @throws IOException on error
 	 */
 	public static void copyFile(File source, File target) throws IOException {
-		
-		
-		
+
+
 		InputStream in = new FileInputStream(source);
 		OutputStream out = new FileOutputStream(target);
 
@@ -366,6 +369,12 @@ public class FileUtils {
 	}
 
 
+	/**
+	 * Replace special characters with place holders in a filename.
+	 * 
+	 * @param filestring filename string
+	 * @return escaped
+	 */
 	public static String escapeFileString(String filestring) {
 
 		filestring = filestring.replace("{", "?");
@@ -380,6 +389,12 @@ public class FileUtils {
 	}
 
 
+	/**
+	 * Unescape filename string obtained by escapeFileString().
+	 * 
+	 * @param filestring escaped string
+	 * @return clean string
+	 */
 	public static String unescapeFileString(String filestring) {
 
 		filestring = filestring.replace("{LCB}", "{");
@@ -391,6 +406,12 @@ public class FileUtils {
 	}
 
 
+	/**
+	 * Escape filename, keeping the same extension
+	 * 
+	 * @param filename filename
+	 * @return escaped
+	 */
 	public static String escapeFilename(String filename) {
 
 		String[] parts = removeExtension(filename);
@@ -399,10 +420,93 @@ public class FileUtils {
 	}
 
 
+	/**
+	 * Unescape filename, keeping the same extension
+	 * 
+	 * @param filename escaped filename
+	 * @return unesaped
+	 */
 	public static String unescapeFilename(String filename) {
 
 		String[] parts = removeExtension(filename);
 
 		return unescapeFileString(parts[0]) + "." + parts[1];
+	}
+
+
+	/**
+	 * Load assets from a zip file to the output directory
+	 * 
+	 * @param zipFile input zip (must contain an "assets" folder)
+	 * @param outDir output dir for the files
+	 * @return map of entries found
+	 */
+	public static Map<String, AssetEntry> loadAssetsFromZip(File zipFile, File outDir) {
+
+		return loadAssetsFromZip(zipFile, outDir, null);
+	}
+
+
+	/**
+	 * Load assets from a zip file to the output directory
+	 * 
+	 * @param zipFile input zip (must contain an "assets" folder)
+	 * @param outDir output dir for the files
+	 * @param assets the map which to use for string assets; NULL to make a new
+	 *            map.
+	 * @return map of entries found
+	 */
+	public static Map<String, AssetEntry> loadAssetsFromZip(File zipFile, File outDir, Map<String, AssetEntry> assets) {
+
+		Log.f3("Extracting: " + zipFile);
+		if (assets == null) assets = new LinkedHashMap<String, AssetEntry>();
+
+		try {
+
+			StringFilter filter = new StringFilter() {
+
+				@Override
+				public boolean accept(String path) {
+
+					boolean ok = false;
+
+					String[] parts = FileUtils.removeExtension(path);
+					String ext = parts[1];
+					EAsset type = EAsset.forExtension(ext);
+
+					ok |= path.startsWith("assets");
+					ok &= (type != null || ext.equals("mcmeta"));
+
+					return ok;
+				}
+			};
+
+			List<String> list = ZipUtils.extractZip(zipFile, outDir, filter);
+
+			for (String s : list) {
+				if (s.startsWith("assets")) {
+					s = FileUtils.escapeFilename(s);
+					String[] parts = FileUtils.removeExtension(s);
+					String key = parts[0].replace('\\', '.');
+					key = key.replace('/', '.');
+					String ext = parts[1];
+					EAsset type = EAsset.forExtension(ext);
+
+					if (type == null) {
+						if (Config.LOG_ZIP_EXTRACTING) Log.f3("# excluding: " + s);
+						continue;
+					}
+
+					assets.put(key, new AssetEntry(key, type));
+				}
+			}
+
+			return assets;
+
+		} catch (Exception e) {
+			Log.e(e);
+
+			return null; // success = false
+		}
 	}
 }

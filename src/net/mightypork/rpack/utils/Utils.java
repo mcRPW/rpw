@@ -137,11 +137,12 @@ public class Utils {
 		}
 		return orig;
 	}
-	
+
+
 	public static String cropStringAtEnd(String orig, int length) {
 
 		if (orig.length() > length) {
-			orig = orig.substring(0, Math.min(orig.length(), length) -1) + "\u2026";
+			orig = orig.substring(0, Math.min(orig.length(), length) - 1) + "\u2026";
 		}
 		return orig;
 	}

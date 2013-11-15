@@ -24,12 +24,12 @@ public class ZipBuilder {
 
 	public void addStream(String path, InputStream in) throws IOException {
 
-		path = preparePath(path);		
-		if(included.contains(path)) return; // ignore
+		path = preparePath(path);
+		if (included.contains(path)) return; // ignore
 		included.add(path);
-		
+
 		//System.out.println("Adding path: " + path);
-		
+
 		out.putNextEntry(new ZipEntry(path));
 
 		FileUtils.copyStreamNoCloseOut(in, out);
@@ -38,12 +38,12 @@ public class ZipBuilder {
 
 	public void addString(String path, String text) throws IOException {
 
-		path = preparePath(path);		
-		if(included.contains(path)) return; // ignore
+		path = preparePath(path);
+		if (included.contains(path)) return; // ignore
 		included.add(path);
-		
+
 		//System.out.println("Adding path: " + path);
-		
+
 		out.putNextEntry(new ZipEntry(path));
 
 		InputStream in = FileUtils.stringToStream(text);
@@ -53,23 +53,25 @@ public class ZipBuilder {
 
 	public void addResource(String path, String resPath) throws IOException {
 
-		path = preparePath(path);		
-		if(included.contains(path)) return; // ignore
+		path = preparePath(path);
+		if (included.contains(path)) return; // ignore
 		included.add(path);
-		
+
 		//System.out.println("Adding path: " + path);
-		
+
 		out.putNextEntry(new ZipEntry(path));
 
 		InputStream in = FileUtils.getResource(resPath);
 		FileUtils.copyStreamNoCloseOut(in, out);
 	}
-	
+
+
 	private String preparePath(String path) {
+
 		path = path.replace("\\", "/");
-		
-		if(path.charAt(0) == '/') path = path.substring(1);
-		
+
+		if (path.charAt(0) == '/') path = path.substring(1);
+
 		return path;
 	}
 

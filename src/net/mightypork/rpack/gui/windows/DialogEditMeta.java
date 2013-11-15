@@ -221,12 +221,12 @@ public class DialogEditMeta extends RpwDialog {
 		s.foreground = Color.RED;
 		s.underline = true;
 
-		
+
 		s = ss.getStyle(TokenTypes.WHITESPACE);
 		s.foreground = null;
 		s.background = null;
 
-		
+
 		s = ss.getStyle(TokenTypes.LITERAL_STRING_DOUBLE_QUOTE);
 		s.foreground = new Color(0x0000FF);
 
@@ -240,11 +240,11 @@ public class DialogEditMeta extends RpwDialog {
 		s = ss.getStyle(TokenTypes.OPERATOR);
 		s.foreground = Color.black;
 		s.font = font.deriveFont(Font.BOLD);
-		
+
 		s = ss.getStyle(TokenTypes.LITERAL_BOOLEAN);
 		s.foreground = new Color(0x006e28);
 		s.font = font.deriveFont(Font.BOLD);
-		
+
 
 		Color commentColor = new Color(0x646464);
 

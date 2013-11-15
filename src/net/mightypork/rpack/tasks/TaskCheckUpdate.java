@@ -3,13 +3,14 @@ package net.mightypork.rpack.tasks;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 import net.mightypork.rpack.App;
 import net.mightypork.rpack.Const;
-import net.mightypork.rpack.utils.*;
+import net.mightypork.rpack.utils.DesktopApi;
+import net.mightypork.rpack.utils.Log;
 
 
 public class TaskCheckUpdate {
@@ -25,7 +26,7 @@ public class TaskCheckUpdate {
 
 				Scanner sc = null;
 				try {
-					
+
 					URL u = new URL(Const.UPDATE_URL);
 
 					sc = new Scanner(u.openStream(), "UTF-8");
@@ -47,20 +48,18 @@ public class TaskCheckUpdate {
 						msg += sc.nextLine() + "\n";
 					}
 					msg = msg.trim();
-					
+
 					Log.f2("Downloading update info - done.");
-					
-					if(vs <= Const.VERSION_SERIAL) {
+
+					if (vs <= Const.VERSION_SERIAL) {
 						Log.i("Your version is up-to-date.");
 						return;
 					}
 
 					String yesBtn = "Show on web", noBtn = "Later";
-					
-					String dlgMsg = "New version of RPW ("+v+") is available!\n"
-							+ "\n"
-							+ "\""+msg+"\"";
-					
+
+					String dlgMsg = "New version of RPW (" + v + ") is available!\n" + "\n" + "\"" + msg + "\"";
+
 					Log.i("New version available: " + v);
 
 					//@formatter:off
@@ -76,7 +75,7 @@ public class TaskCheckUpdate {
 					);
 					//@formatter:on
 
-					if(value == JOptionPane.YES_OPTION) {
+					if (value == JOptionPane.YES_OPTION) {
 						DesktopApi.browse(URI.create(Const.WEB_URL));
 					}
 

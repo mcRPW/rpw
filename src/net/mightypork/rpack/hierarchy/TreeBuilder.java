@@ -4,7 +4,9 @@ package net.mightypork.rpack.hierarchy;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.mightypork.rpack.App;
 import net.mightypork.rpack.Config;
+import net.mightypork.rpack.gui.windows.Alerts;
 import net.mightypork.rpack.hierarchy.groups.AssetGrouper;
 import net.mightypork.rpack.hierarchy.groups.AssetGrouperFancy;
 import net.mightypork.rpack.hierarchy.groups.AssetGrouperRaw;
@@ -64,6 +66,8 @@ public class TreeBuilder {
 		}
 
 
+		boolean orphans = false;
+
 		for (AssetEntry ae : Sources.vanilla.getAssetEntries()) {
 
 			if (!Config.SHOW_FONT) {
@@ -100,13 +104,35 @@ public class TreeBuilder {
 
 			if (success == false) {
 				Log.e("Orphaned file " + ae);
+				orphans = true;
 			}
-
 
 		}
 
 		if (rootGroup == null) {
 			Log.e("MISSING ROOT GROUP!");
+		}
+
+		if (Config.FANCY_GROUPS && orphans && Config.WARNING_ORPHANED_NODES) {
+			//@formatter:off
+			boolean yeah = Alerts.askYesNo(
+					App.getFrame(),
+					"Orphaned nodes",
+					"Some asset files could not be shown, because\n" +
+					"their parent groups are missing.\n" +
+					"\n" +
+					"This often happens when mods are installed and\n" +
+					"Fancy Tree is enabled.\n" +
+					"\n" +
+					"Disable Fancy Tree now?\n"
+			);
+			//@formatter:on
+
+			if (yeah) {
+				Config.FANCY_GROUPS = false;
+				Config.save();
+				return buildTree(project); // RISC: Recursion
+			}
 		}
 
 		return rootGroup;

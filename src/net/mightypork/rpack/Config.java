@@ -21,6 +21,7 @@ public class Config {
 	public static final boolean def_CLOSED_WITH_PROJECT_OPEN = false;
 	public static final boolean def_USE_INTERNAL_META_EDITOR = true;
 	public static final boolean def_USE_INTERNAL_TEXT_EDITOR = true;
+	public static final boolean def_WARNING_ORPHANED_NODES = true;
 	public static boolean FANCY_GROUPS;
 	public static boolean SHOW_FONT;
 	public static boolean SHOW_LANG;
@@ -29,6 +30,7 @@ public class Config {
 	public static boolean CLOSED_WITH_PROJECT_OPEN;
 	public static boolean USE_INTERNAL_META_EDITOR;
 	public static boolean USE_INTERNAL_TEXT_EDITOR;
+	public static boolean WARNING_ORPHANED_NODES;
 
 	public static final boolean def_USE_IMAGE_EDITOR = true;
 	public static final String def_IMAGE_EDITOR = "/usr/bin/gimp";
@@ -61,6 +63,7 @@ public class Config {
 	private static final String PK_SHOW_HIDDEN_IN_FILEPICKER = "system.showHiddenFiles";
 	private static final String PK_USE_INTERNAL_META_EDITOR = "system.editor.useInternalMetaEditor";
 	private static final String PK_USE_INTERNAL_TEXT_EDITOR = "system.editor.useInternalTextEditor";
+	private static final String PK_WARNING_ORPHANED_NODES = "display.warning.orphanedNodes";
 
 	private static final String PK_IMAGE_EDITOR = "system.editor.image.command";
 	private static final String PK_IMAGE_EDITOR_ARGS = "system.editor.image.args";
@@ -105,6 +108,7 @@ public class Config {
 		mgr.putBoolean(PK_CLOSED_WITH_PROJECT_OPEN, def_CLOSED_WITH_PROJECT_OPEN);
 		mgr.putBoolean(PK_USE_INTERNAL_META_EDITOR, def_USE_INTERNAL_META_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_USE_INTERNAL_TEXT_EDITOR, def_USE_INTERNAL_TEXT_EDITOR, "Use internal editor, ignore configured command.");
+		mgr.putBoolean(PK_WARNING_ORPHANED_NODES, def_WARNING_ORPHANED_NODES, "Warn when some nodes could not be displayed.");
 
 		mgr.putString(PK_IMAGE_EDITOR, def_IMAGE_EDITOR);
 		mgr.putString(PK_IMAGE_EDITOR_ARGS, def_IMAGE_EDITOR_ARGS);
@@ -139,6 +143,7 @@ public class Config {
 		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
 		mgr.setValue(PK_USE_INTERNAL_META_EDITOR, USE_INTERNAL_META_EDITOR);
 		mgr.setValue(PK_USE_INTERNAL_TEXT_EDITOR, USE_INTERNAL_TEXT_EDITOR);
+		mgr.setValue(PK_WARNING_ORPHANED_NODES, WARNING_ORPHANED_NODES);
 
 		mgr.setValue(PK_IMAGE_EDITOR, IMAGE_EDITOR);
 		mgr.setValue(PK_IMAGE_EDITOR_ARGS, IMAGE_EDITOR_ARGS);
@@ -170,6 +175,7 @@ public class Config {
 		CLOSED_WITH_PROJECT_OPEN = mgr.getBoolean(PK_CLOSED_WITH_PROJECT_OPEN);
 		USE_INTERNAL_META_EDITOR = mgr.getBoolean(PK_USE_INTERNAL_META_EDITOR);
 		USE_INTERNAL_TEXT_EDITOR = mgr.getBoolean(PK_USE_INTERNAL_TEXT_EDITOR);
+		WARNING_ORPHANED_NODES = mgr.getBoolean(PK_WARNING_ORPHANED_NODES);
 
 		IMAGE_EDITOR = mgr.getString(PK_IMAGE_EDITOR);
 		IMAGE_EDITOR_ARGS = mgr.getString(PK_IMAGE_EDITOR_ARGS);
@@ -190,7 +196,7 @@ public class Config {
 	public static final boolean LOG_FILTERS = false;
 	public static final boolean LOG_GROUPS = false;
 	public static final boolean LOG_FILTERS_DETAILED = false;
-	public static final boolean LOG_VANILLA_RELOAD = false;
+	public static final boolean LOG_ZIP_EXTRACTING = false;
 	public static final boolean LOG_VANILLA_LOAD_STRUCTURE = false;
 	public static final boolean LOG_EXPORT = true;
 

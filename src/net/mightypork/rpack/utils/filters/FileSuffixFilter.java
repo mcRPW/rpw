@@ -30,8 +30,13 @@ public class FileSuffixFilter implements FileFilter {
 	@Override
 	public boolean accept(File pathname) {
 
+		String fname = pathname.getName().toLowerCase().trim();
+
 		for (String suffix : suffixes) {
-			return pathname.isFile() && pathname.getName().toLowerCase().trim().endsWith(suffix.toLowerCase().trim());
+
+			if (pathname.isFile() && fname.endsWith(suffix.toLowerCase().trim())) {
+				return true;
+			}
 		}
 		return false;
 	}

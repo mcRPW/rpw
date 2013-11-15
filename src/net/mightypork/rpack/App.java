@@ -60,14 +60,13 @@ public class App {
 	public void init() {
 
 		if (!lockInstance()) {
-			Alerts.error(null, "Couldn't lock workdir", "The application is already running.\n" + "\n"
-					+ "No more than one instance can run at a time.");
+			Alerts.error(null, "Couldn't lock workdir", "The application is already running.\n" + "\n" + "No more than one instance can run at a time.");
 			System.exit(1);
 		}
 
 		Log.init();
-		
-		Log.i("ResourcePack Workbench v." + Const.VERSION+" (#"+Const.VERSION_SERIAL+")");
+
+		Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
 		Log.f1("Init started...");
 		OsUtils.initDirs();
@@ -77,16 +76,16 @@ public class App {
 		Icons.init();
 		Tasks.taskCreateModConfigFiles();
 		Sources.init();
-		
+
 		Tasks.checkUpdate();
 
 		Log.f2("Building main window");
 
 		int t = Tasks.taskBuildMainWindow();
-		while(Tasks.isRunning(t)) {} // wait for completion on EDT
+		while (Tasks.isRunning(t)) {} // wait for completion on EDT
 
 		Log.f2("Opening last project (if any)");
-		
+
 		Projects.openLastProject();
 
 		TaskDevel.run();
