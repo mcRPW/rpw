@@ -33,6 +33,8 @@ public class Paths {
 	public static final String FILE_RECENTPROJECTS = DIR_CONFIG + "/recentProjects.dat";
 
 	public static final String FILE_LOG = FILENAME_LOG;
-
+	
+	// paths used for internal resources
+	public static final String DATA_DIR_HELP = "/data/help/";
 
 }

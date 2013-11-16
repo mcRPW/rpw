@@ -84,6 +84,7 @@ public class App {
 
 
 		Icons.init();
+		Tasks.taskLoadHelp();
 		Tasks.taskCreateModConfigFiles();
 		Sources.init();
 

@@ -4,27 +4,18 @@ package net.mightypork.rpack.gui.windows;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.swing.*;
 
 import net.mightypork.rpack.App;
 import net.mightypork.rpack.gui.Icons;
-import net.mightypork.rpack.utils.FileUtils;
-import net.mightypork.rpack.utils.Log;
-import net.mightypork.rpack.utils.SimpleConfig;
-
+import net.mightypork.rpack.help.HelpPage;
+import net.mightypork.rpack.help.HelpStore;
 import org.jdesktop.swingx.JXTitledSeparator;
-import org.markdown4j.Markdown4jProcessor;
 
 
 public class DialogHelp extends RpwDialog {
 
 	private JButton buttonOK;
-
 
 	public DialogHelp() {
 
@@ -53,24 +44,9 @@ public class DialogHelp extends RpwDialog {
 		JTabbedPane tabPane = new JTabbedPane(SwingConstants.LEFT);
 		tabPane.setAlignmentX(0.5f);
 
-		InputStream in;
-		String text;
-
-
 		// build help pages
-		in = FileUtils.getResource("/data/help/index.txt");
-		text = FileUtils.streamToString(in);
-		Map<String, String> pages = SimpleConfig.mapFromString(text);
 
-		in = FileUtils.getResource("/data/help/html_top.html");
-		String html_top = FileUtils.streamToString(in);
-
-		in = FileUtils.getResource("/data/help/html_bottom.html");
-		String html_bottom = FileUtils.streamToString(in);
-
-		Markdown4jProcessor md = new Markdown4jProcessor(); // turn MD to HTML
-
-		for (Entry<String, String> entry : pages.entrySet()) {
+		for (HelpPage hp : HelpStore.getPages()) {
 
 			// build one page
 			final JScrollPane panel = new JScrollPane();
@@ -88,20 +64,10 @@ public class DialogHelp extends RpwDialog {
 			page.setContentType("text/html"); // let the text pane know this is what you want
 			page.setEditable(false); // as before
 
-			in = FileUtils.getResource("/data/help/" + entry.getKey());
-			if (in == null) text = "FAILED TO LOAD";
-
-			try {
-				text = md.process(in);
-			} catch (IOException e) {
-				Log.e(e);
-				text = "FAILED TO LOAD";
-			}
-
-			page.setText(html_top + text + html_bottom);
+			page.setText(hp.getContent());
 			panel.setViewportView(page);
 
-			tabPane.add(entry.getValue(), panel);
+			tabPane.add(hp.getName(), panel);
 
 			// move the scrollbar to top
 			// http://stackoverflow.com/questions/1166072/setting-scroll-bar-on-a-jscrollpane
@@ -119,9 +85,7 @@ public class DialogHelp extends RpwDialog {
 		vb.add(tabPane);
 
 		vb.add(Box.createVerticalStrut(10));
-
 		vb.add(new JSeparator(SwingConstants.HORIZONTAL));
-
 		vb.add(Box.createVerticalStrut(10));
 
 		//@formatter:off		

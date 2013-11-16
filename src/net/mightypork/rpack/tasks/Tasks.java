@@ -15,6 +15,7 @@ import net.mightypork.rpack.Const;
 import net.mightypork.rpack.Flags;
 import net.mightypork.rpack.Paths;
 import net.mightypork.rpack.gui.windows.*;
+import net.mightypork.rpack.help.HelpStore;
 import net.mightypork.rpack.hierarchy.processors.RenameSourceProcessor;
 import net.mightypork.rpack.hierarchy.processors.SaveToProjectNodeProcessor;
 import net.mightypork.rpack.hierarchy.tree.AssetTreeLeaf;
@@ -814,5 +815,20 @@ public class Tasks {
 	public static void checkUpdate() {
 
 		TaskCheckUpdate.run();
+	}
+
+
+	public static void taskLoadHelp() {
+
+		(new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+			
+				HelpStore.load();
+				
+			}
+		})).start();
+		
 	}
 }

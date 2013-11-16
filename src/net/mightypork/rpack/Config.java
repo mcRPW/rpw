@@ -201,5 +201,6 @@ public class Config {
 	public static final boolean LOG_EXPORT = true;
 
 	public static final boolean USE_LOADER_WINDOW = false;
+	public static final boolean LOG_HELP_LOADING = false;
 
 }
