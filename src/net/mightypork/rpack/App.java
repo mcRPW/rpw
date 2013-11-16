@@ -60,7 +60,7 @@ public class App {
 	public void init() {
 
 		if (!lockInstance()) {
-			
+
 			//@formatter:off
 			Alerts.error(
 					null,
@@ -70,7 +70,7 @@ public class App {
 					"No more than one instance can run at a time."
 			);
 			//@formatter:on
-			
+
 			System.exit(1);
 		}
 

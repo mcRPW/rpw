@@ -91,12 +91,12 @@ public class DialogExportToMc extends RpwDialog {
 							List<String> lines = SimpleConfig.listFromFile(f);
 
 							for (int i = 0; i < lines.size(); i++) {
-								
+
 								// 1.7+
 								if (lines.get(i).startsWith("resourcePacks:")) {
 									lines.set(i, "resourcePacks:[\"" + name + ".zip\"]");
 								}
-								
+
 								// 1.6-
 								if (lines.get(i).startsWith("skin:")) {
 									lines.set(i, "skin:" + name + ".zip");

@@ -4,6 +4,7 @@ package net.mightypork.rpack.gui.windows;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,9 +14,11 @@ import javax.swing.*;
 import net.mightypork.rpack.App;
 import net.mightypork.rpack.gui.Icons;
 import net.mightypork.rpack.utils.FileUtils;
+import net.mightypork.rpack.utils.Log;
 import net.mightypork.rpack.utils.SimpleConfig;
 
 import org.jdesktop.swingx.JXTitledSeparator;
+import org.markdown4j.Markdown4jProcessor;
 
 
 public class DialogHelp extends RpwDialog {
@@ -26,6 +29,9 @@ public class DialogHelp extends RpwDialog {
 	public DialogHelp() {
 
 		super(App.getFrame(), "Quick Guide");
+
+		setResizable(true);
+		setPreferredSize(new Dimension(800, 600));
 
 		Box hb;
 		Box vb = Box.createVerticalBox();
@@ -62,31 +68,52 @@ public class DialogHelp extends RpwDialog {
 		in = FileUtils.getResource("/data/help/html_bottom.html");
 		String html_bottom = FileUtils.streamToString(in);
 
-		for (Entry<String, String> e : pages.entrySet()) {
+		Markdown4jProcessor md = new Markdown4jProcessor(); // turn MD to HTML
+
+		for (Entry<String, String> entry : pages.entrySet()) {
+
 			// build one page
-			JScrollPane panel = new JScrollPane();
+			final JScrollPane panel = new JScrollPane();
 			panel.getVerticalScrollBar().setUnitIncrement(16);
 			panel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			panel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			panel.setPreferredSize(new Dimension(500, 400));
 			panel.setAlignmentY(0);
 
-			JLabel page = new JLabel();
+			JTextPane page = new JTextPane();//new JLabel();
 			page.setBackground(Color.WHITE);
 			page.setOpaque(true);
 			page.setAlignmentY(0);
-			page.setVerticalAlignment(SwingConstants.TOP);
-			page.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			page.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 			page.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+			page.setContentType("text/html"); // let the text pane know this is what you want
+			page.setEditable(false); // as before
 
-			in = FileUtils.getResource("/data/help/" + e.getKey() + ".html");
-			if (in == null) continue;
-			text = FileUtils.streamToString(in);
+			in = FileUtils.getResource("/data/help/" + entry.getKey());
+			if (in == null) text = "FAILED TO LOAD";
+
+			try {
+				text = md.process(in);
+			} catch (IOException e) {
+				Log.e(e);
+				text = "FAILED TO LOAD";
+			}
 
 			page.setText(html_top + text + html_bottom);
 			panel.setViewportView(page);
 
-			tabPane.add(e.getValue(), panel);
+			tabPane.add(entry.getValue(), panel);
+
+			// move the scrollbar to top
+			// http://stackoverflow.com/questions/1166072/setting-scroll-bar-on-a-jscrollpane
+			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+
+					panel.getVerticalScrollBar().setValue(0);
+				}
+			});
+
 		}
 
 		vb.add(tabPane);

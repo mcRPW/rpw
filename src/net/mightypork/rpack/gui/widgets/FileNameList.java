@@ -21,6 +21,7 @@ public class FileNameList extends JScrollPane {
 	private boolean selectable;
 
 
+	@SuppressWarnings("unchecked")
 	public void setOptions(List<String> options) {
 
 		list.removeAll();
@@ -44,6 +45,7 @@ public class FileNameList extends JScrollPane {
 			list.setCellRenderer(new DefaultListCellRenderer() {
 
 				@Override
+				@SuppressWarnings("rawtypes") 
 				public Component getListCellRendererComponent(JList list, Object value, int index, boolean selected, boolean focus) {
 
 					super.getListCellRendererComponent(list, value, index, false, false);
