@@ -18,6 +18,8 @@
 	
 	 * RPW on Minecraft Forum   -> http://goo.gl/ipbcH
 	 
+	 * RPW on GitHub            -> https://github.com/MightyPork/rpw
+	 
 	
 	Contact the author:
 	 
@@ -30,8 +32,8 @@
 
 	This is a README file of ResourcePack Workbench.
 	
-	This tool was created by MightyPork and is published as free
-	software, with the following conditions:
+	This tool was created by MightyPork and is published as free software, with
+	the following conditions:
 	
 	(1)
 	 
@@ -47,7 +49,7 @@
 	(3)
 	
 	When sharing the tool, do not mirror the JAR file, but instead share a
-	link to the official page, or at least a link to http://goo.gl/oZ4vTD
+	link to the official page, or at least a minified link.
 	
 	
 	(4)
@@ -57,6 +59,7 @@
 
 	License files of the used libraries follow:
 
+------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------
 
 
@@ -99,8 +102,8 @@
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 	Lesser General Public License for more details.
-	
-	
+
+
 ------------------------------------------------------------------------------------
 
 
@@ -130,9 +133,27 @@
 	ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-	
-	
+
+
 ------------------------------------------------------------------------------------
 
 
-	END OF TRANSMISSION
+	Google GSON
+	
+	Copyright 2008-2011 Google Inc.
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+
+
+------------------------------------------------------------------------------------
+
