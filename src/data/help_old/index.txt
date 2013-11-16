@@ -1,0 +1,10 @@
+resourcepacks.md = Resource packs
+projects.md = Projects
+library.md = Library
+mods.md = Support for Mods
+sources.md = Sources & Inheritance
+hierarchy.md = Tree view
+export.md = Exporting
+editors.md = File editors
+mcmeta.md = "McMeta" files
+technical.md = Technical details
