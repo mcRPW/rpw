@@ -146,4 +146,20 @@ public class Utils {
 		}
 		return orig;
 	}
+
+
+	public static String arrayToString(Object[] sounds) {
+
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append('[');
+		boolean first = true;
+		for(Object o: sounds) {
+			if(!first) sb.append(',');
+			sb.append(o.toString());
+		}
+		sb.append(']');
+		
+		return sb.toString();
+	}
 }
