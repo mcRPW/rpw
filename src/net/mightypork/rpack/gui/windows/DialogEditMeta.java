@@ -29,6 +29,9 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+
 
 public class DialogEditMeta extends RpwDialog {
 
@@ -36,6 +39,7 @@ public class DialogEditMeta extends RpwDialog {
 	private RSyntaxTextArea textArea;
 	private JButton btnSave;
 	private JButton btnPresets;
+	private JButton btnCheck;
 	private JPopupMenu presetsPopup;
 	private Box buttons;
 	private AssetTreeLeaf editedNode;
@@ -75,6 +79,7 @@ public class DialogEditMeta extends RpwDialog {
 
 
 		btnPresets = new JButton("Templates", Icons.MENU_GENERATE);
+		btnCheck = new JButton("Check JSON", Icons.MENU_INFO);
 		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
 		btnSave = new JButton("Save", Icons.MENU_YES);
 
@@ -82,6 +87,8 @@ public class DialogEditMeta extends RpwDialog {
 
 		buttons.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		buttons.add(btnPresets);
+		buttons.add(Box.createHorizontalStrut(5));
+		buttons.add(btnCheck);
 		buttons.add(Box.createHorizontalGlue());
 		buttons.add(btnSave);
 		buttons.add(Box.createHorizontalStrut(5));
@@ -278,6 +285,25 @@ public class DialogEditMeta extends RpwDialog {
 	protected void addActions() {
 
 		btnCancel.addActionListener(closeListener);
+		
+
+		btnCheck.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String text = textArea.getText();
+				
+				JsonParser jp = new JsonParser();
+				
+				try {
+					jp.parse(text);
+					Alerts.info(DialogEditMeta.this, "Check JSON", "Entered code is (probably) valid.");
+				}catch(Exception er) {
+					Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");					
+				}
+				
+			}
+		});
 
 		btnSave.addActionListener(new ActionListener() {
 
