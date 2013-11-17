@@ -13,6 +13,7 @@ public class Paths {
 
 	public static final String DIRNAME_PROJECT_PRIVATE = "project_files";
 	public static final String DIRNAME_PROJECT_INCLUDE = "included_files";
+	public static final String DIRNAME_PROJECT_SOUNDS = "custom_sounds";
 	public static final String FILENAME_PROJECT_FILES = "sources_files.dat";
 	public static final String FILENAME_PROJECT_GROUPS = "sources_groups.dat";
 	public static final String FILENAME_PROJECT_CONFIG = "properties.cfg";

@@ -29,6 +29,7 @@ public class Project extends Source implements NodeSourceProvider {
 	private File projectBase;
 	private File privateCopiesBase;
 	private File extraIncludesBase;
+	private File customSoundsBase;
 	private File fileSourcesFiles;
 	private File fileSourcesGroups;
 	private File fileConfig;
@@ -45,6 +46,7 @@ public class Project extends Source implements NodeSourceProvider {
 		projectBase = OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + identifier, true);
 		privateCopiesBase = new File(projectBase, Paths.DIRNAME_PROJECT_PRIVATE);
 		extraIncludesBase = new File(projectBase, Paths.DIRNAME_PROJECT_INCLUDE);
+		customSoundsBase = new File(projectBase, Paths.DIRNAME_PROJECT_SOUNDS);
 
 		fileSourcesFiles = new File(projectBase, Paths.FILENAME_PROJECT_FILES);
 		fileSourcesGroups = new File(projectBase, Paths.FILENAME_PROJECT_GROUPS);
@@ -114,6 +116,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 		privateCopiesBase.mkdirs();
 		extraIncludesBase.mkdirs();
+		customSoundsBase.mkdirs();
 
 		File asmc = new File(extraIncludesBase, "assets/minecraft");
 		asmc.mkdirs();
@@ -210,21 +213,5 @@ public class Project extends Source implements NodeSourceProvider {
 
 		return dirName;
 	}
-
-//
-//	@Override
-//	public InputStream getAssetMetaStream(String key) throws IOException {
-//
-//		File f = getAssetFile(key);
-//		if(f == null) return null;
-//		
-//		String p = f.getPath();
-//		p += ".mcmeta";
-//		f = new File(p);
-//		
-//		if(!f.exists()) return null;
-//		
-//		return new FileInputStream(f);
-//	}
 
 }
