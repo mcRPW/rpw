@@ -22,6 +22,8 @@ import net.mightypork.rpack.library.MagicSources;
 import net.mightypork.rpack.library.Sources;
 import net.mightypork.rpack.project.Project;
 import net.mightypork.rpack.project.Projects;
+import net.mightypork.rpack.struct.PackInfo;
+import net.mightypork.rpack.struct.PackInfoMap;
 import net.mightypork.rpack.utils.FileUtils;
 import net.mightypork.rpack.utils.Log;
 import net.mightypork.rpack.utils.ZipBuilder;
@@ -136,12 +138,11 @@ public class TaskExportProject {
 
 		// json mcmeta
 		String desc = project.getProjectName();
-		// escape for json
-		desc = desc.replace("\\", "\\\\");
-		desc = desc.replace("/", "\\/");
-		desc = desc.replace("\"", "\\\"");
-		String mcmeta = "{\"pack\":{\"pack_format\":1,\"description\":\"" + desc + "\"}}";
-		zb.addString("pack.mcmeta", mcmeta);
+
+		PackInfoMap pim = new PackInfoMap();
+		pim.setPackInfo(new PackInfo(1, desc));
+		
+		zb.addString("pack.mcmeta", pim.toJson());
 
 
 		// assets
@@ -154,8 +155,8 @@ public class TaskExportProject {
 
 					AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
-					String logSrcAsset = "null";
-					String logSrcMeta = "null";
+					String logSrcAsset = null;
+					String logSrcMeta = null;
 
 					// file
 					do {
@@ -224,8 +225,13 @@ public class TaskExportProject {
 
 
 					if (Config.LOG_EXPORT) {
-						if (!logSrcAsset.equals("null")) {
-							Log.f3(leaf.getAssetKey() + "\n A: " + logSrcAsset + ", M: " + logSrcMeta + "\n");
+						if (logSrcAsset != null) {
+							String s = leaf.getAssetKey();
+							s += " <- \"" + logSrcAsset+"\"";
+							
+							if(logSrcMeta != null) s += ", m: \""+logSrcMeta+"\"";
+					
+							Log.f3(s);
 						}
 					}
 
