@@ -118,15 +118,25 @@ public class Utils {
 
 	public static boolean isValidFilenameChar(char ch) {
 
-		String s = ch + "";
-
-		return isValidFilenameString(s);
+		return isValidFilenameString(Character.toString(ch));
 	}
 
 
 	public static boolean isValidFilenameString(String filename) {
 
 		return filename.matches("[a-zA-Z0-9 +\\-.,_%@#$!'\"]+");
+	}
+
+
+	public static boolean isValidIdentifierChar(char ch) {
+
+		return isValidIdentifierString(Character.toString(ch));
+	}
+
+
+	public static boolean isValidIdentifierString(String filename) {
+
+		return filename.matches("[a-zA-Z0-9._]+");
 	}
 
 
@@ -151,15 +161,15 @@ public class Utils {
 	public static String arrayToString(Object[] sounds) {
 
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append('[');
 		boolean first = true;
-		for(Object o: sounds) {
-			if(!first) sb.append(',');
+		for (Object o : sounds) {
+			if (!first) sb.append(',');
 			sb.append(o.toString());
 		}
 		sb.append(']');
-		
+
 		return sb.toString();
 	}
 }

@@ -30,7 +30,7 @@ public class HelpPage {
 			} else {
 				try {
 					content = HelpStore.htmlTop + HelpStore.md.process(in) + HelpStore.htmlBottom;
-					
+
 				} catch (IOException e) {
 					Log.e("Failed to load a help page " + filename, e);
 					content = "Failed to load.";

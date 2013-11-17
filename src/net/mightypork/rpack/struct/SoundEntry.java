@@ -1,17 +1,18 @@
 package net.mightypork.rpack.struct;
 
-import net.mightypork.rpack.utils.Utils;
+
+import java.util.ArrayList;
 
 
 public class SoundEntry {
+
 	public String category;
-	public String[] sounds;
-	
-	
-	
+	public ArrayList<String> sounds;
+
+
 	@Override
 	public String toString() {
-	
-		return "category: " + category + ", files: " + Utils.arrayToString(sounds);
+
+		return "SoundEntry[category: " + category + ", files: " + sounds + "]";
 	}
 }

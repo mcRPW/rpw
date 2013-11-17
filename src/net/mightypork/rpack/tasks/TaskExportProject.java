@@ -27,7 +27,7 @@ import net.mightypork.rpack.struct.PackInfoMap;
 import net.mightypork.rpack.utils.FileUtils;
 import net.mightypork.rpack.utils.Log;
 import net.mightypork.rpack.utils.ZipBuilder;
-import net.mightypork.rpack.utils.filters.FileSuffixFilter;
+import net.mightypork.rpack.utils.validation.FileSuffixFilter;
 
 
 public class TaskExportProject {
@@ -141,7 +141,7 @@ public class TaskExportProject {
 
 		PackInfoMap pim = new PackInfoMap();
 		pim.setPackInfo(new PackInfo(1, desc));
-		
+
 		zb.addString("pack.mcmeta", pim.toJson());
 
 
@@ -227,10 +227,10 @@ public class TaskExportProject {
 					if (Config.LOG_EXPORT) {
 						if (logSrcAsset != null) {
 							String s = leaf.getAssetKey();
-							s += " <- \"" + logSrcAsset+"\"";
-							
-							if(logSrcMeta != null) s += ", m: \""+logSrcMeta+"\"";
-					
+							s += " <- \"" + logSrcAsset + "\"";
+
+							if (logSrcMeta != null) s += ", m: \"" + logSrcMeta + "\"";
+
 							Log.f3(s);
 						}
 					}

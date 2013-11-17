@@ -26,7 +26,7 @@ public class HelpStore {
 
 
 	public static void load() {
-		
+
 		Log.f2("Loading help pages");
 
 		InputStream in;
@@ -42,12 +42,12 @@ public class HelpStore {
 		htmlBottom = FileUtils.streamToString(in);
 
 		for (Entry<String, String> entry : pageMap.entrySet()) {
-			
-			if(Config.LOG_HELP_LOADING) Log.f3("Loading file: "+entry.getKey()+" (\""+entry.getValue()+"\")");
-				
+
+			if (Config.LOG_HELP_LOADING) Log.f3("Loading file: " + entry.getKey() + " (\"" + entry.getValue() + "\")");
+
 			try {
 				pages.add(new HelpPage(entry.getValue(), entry.getKey()));
-				
+
 			} catch (Exception e) {
 				Log.w("Error while loading a help page " + entry.getKey());
 			}
@@ -56,8 +56,8 @@ public class HelpStore {
 
 		Log.f2("Loading help pages - done.");
 	}
-	
-	
+
+
 	public static List<HelpPage> getPages() {
 
 		return pages;

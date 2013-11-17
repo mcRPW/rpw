@@ -14,7 +14,7 @@ import net.mightypork.rpack.hierarchy.AssetEntry;
 import net.mightypork.rpack.project.Projects;
 import net.mightypork.rpack.utils.FileUtils;
 import net.mightypork.rpack.utils.Log;
-import net.mightypork.rpack.utils.filters.FileSuffixFilter;
+import net.mightypork.rpack.utils.validation.FileSuffixFilter;
 
 
 public class TaskImportReplacement {

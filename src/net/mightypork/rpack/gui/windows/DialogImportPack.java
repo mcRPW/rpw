@@ -25,8 +25,8 @@ import net.mightypork.rpack.Config;
 import net.mightypork.rpack.Paths;
 import net.mightypork.rpack.gui.Icons;
 import net.mightypork.rpack.gui.helpers.CharInputListener;
-import net.mightypork.rpack.gui.helpers.FilenameKeyAdapter;
-import net.mightypork.rpack.gui.widgets.FileNameList;
+import net.mightypork.rpack.gui.helpers.TextInputValidator;
+import net.mightypork.rpack.gui.widgets.SimpleStringList;
 import net.mightypork.rpack.hierarchy.EAsset;
 import net.mightypork.rpack.library.Sources;
 import net.mightypork.rpack.tasks.Tasks;
@@ -34,8 +34,8 @@ import net.mightypork.rpack.utils.FileUtils;
 import net.mightypork.rpack.utils.OsUtils;
 import net.mightypork.rpack.utils.Utils;
 import net.mightypork.rpack.utils.ZipUtils;
-import net.mightypork.rpack.utils.filters.FileSuffixFilter;
-import net.mightypork.rpack.utils.filters.StringFilter;
+import net.mightypork.rpack.utils.validation.FileSuffixFilter;
+import net.mightypork.rpack.utils.validation.StringFilter;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
@@ -51,7 +51,7 @@ public class DialogImportPack extends RpwDialog {
 	private JButton buttonOK;
 
 
-	private FileNameList list;
+	private SimpleStringList list;
 
 	private JXLabel importUrl;
 
@@ -99,7 +99,7 @@ public class DialogImportPack extends RpwDialog {
 
 		options = Sources.getResourcepackNames();
 
-		vb.add(list = new FileNameList(options, true));
+		vb.add(list = new SimpleStringList(options, true));
 		list.list.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -142,7 +142,7 @@ public class DialogImportPack extends RpwDialog {
 				}
 			};
 			
-			field.addKeyListener(new FilenameKeyAdapter(listener));
+			field.addKeyListener(TextInputValidator.filenames(listener));
 			
 			
 			hb.add(field);

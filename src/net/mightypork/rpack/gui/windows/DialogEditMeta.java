@@ -29,7 +29,6 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 
 
@@ -285,23 +284,24 @@ public class DialogEditMeta extends RpwDialog {
 	protected void addActions() {
 
 		btnCancel.addActionListener(closeListener);
-		
+
 
 		btnCheck.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				String text = textArea.getText();
-				
+
 				JsonParser jp = new JsonParser();
-				
+
 				try {
 					jp.parse(text);
 					Alerts.info(DialogEditMeta.this, "Check JSON", "Entered code is (probably) valid.");
-				}catch(Exception er) {
-					Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");					
+				} catch (Exception er) {
+					Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");
 				}
-				
+
 			}
 		});
 

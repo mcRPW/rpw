@@ -24,8 +24,8 @@ import net.mightypork.rpack.utils.Log;
 import net.mightypork.rpack.utils.OsUtils;
 import net.mightypork.rpack.utils.SimpleConfig;
 import net.mightypork.rpack.utils.Utils;
-import net.mightypork.rpack.utils.filters.FileSuffixFilter;
-import net.mightypork.rpack.utils.filters.StringFilter;
+import net.mightypork.rpack.utils.validation.FileSuffixFilter;
+import net.mightypork.rpack.utils.validation.StringFilter;
 
 
 public class TaskReloadVanilla {

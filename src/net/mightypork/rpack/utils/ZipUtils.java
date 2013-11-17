@@ -13,7 +13,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-import net.mightypork.rpack.utils.filters.StringFilter;
+import net.mightypork.rpack.utils.validation.StringFilter;
 
 
 public class ZipUtils {

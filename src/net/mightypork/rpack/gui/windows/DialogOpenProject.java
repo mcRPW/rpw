@@ -13,7 +13,7 @@ import javax.swing.event.ListSelectionListener;
 
 import net.mightypork.rpack.App;
 import net.mightypork.rpack.gui.Icons;
-import net.mightypork.rpack.gui.widgets.FileNameList;
+import net.mightypork.rpack.gui.widgets.SimpleStringList;
 import net.mightypork.rpack.project.Projects;
 import net.mightypork.rpack.tasks.Tasks;
 
@@ -24,7 +24,7 @@ public class DialogOpenProject extends RpwDialog {
 
 	private List<String> options;
 
-	private FileNameList list;
+	private SimpleStringList list;
 	private JButton buttonOK;
 	private JButton buttonCancel;
 
@@ -41,7 +41,7 @@ public class DialogOpenProject extends RpwDialog {
 
 		options = Projects.getProjectNames();
 
-		vb.add(list = new FileNameList(options, true));
+		vb.add(list = new SimpleStringList(options, true));
 		list.list.addListSelectionListener(new ListSelectionListener() {
 
 			@Override

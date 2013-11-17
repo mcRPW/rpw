@@ -19,7 +19,7 @@ import net.mightypork.rpack.tasks.Tasks;
 import net.mightypork.rpack.utils.DesktopApi;
 import net.mightypork.rpack.utils.FileUtils;
 import net.mightypork.rpack.utils.GuiUtils;
-import net.mightypork.rpack.utils.filters.FileSuffixFilter;
+import net.mightypork.rpack.utils.validation.FileSuffixFilter;
 
 import org.jdesktop.swingx.JXTextField;
 import org.jdesktop.swingx.JXTitledSeparator;

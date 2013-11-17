@@ -210,14 +210,4 @@ public class Sources {
 
 		return names;
 	}
-
-
-	public static List<String> getLinkedDirNames() {
-
-		List<String> names = new ArrayList<String>();
-
-		// FIXME TODO
-
-		return names;
-	}
 }

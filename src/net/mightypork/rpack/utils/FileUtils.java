@@ -10,7 +10,7 @@ import java.util.Map;
 import net.mightypork.rpack.Config;
 import net.mightypork.rpack.hierarchy.AssetEntry;
 import net.mightypork.rpack.hierarchy.EAsset;
-import net.mightypork.rpack.utils.filters.StringFilter;
+import net.mightypork.rpack.utils.validation.StringFilter;
 
 
 public class FileUtils {

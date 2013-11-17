@@ -15,8 +15,8 @@ import javax.swing.event.ListSelectionListener;
 import net.mightypork.rpack.App;
 import net.mightypork.rpack.gui.Icons;
 import net.mightypork.rpack.gui.helpers.CharInputListener;
-import net.mightypork.rpack.gui.helpers.FilenameKeyAdapter;
-import net.mightypork.rpack.gui.widgets.FileNameList;
+import net.mightypork.rpack.gui.helpers.TextInputValidator;
+import net.mightypork.rpack.gui.widgets.SimpleStringList;
 import net.mightypork.rpack.project.Projects;
 import net.mightypork.rpack.tasks.Tasks;
 
@@ -31,7 +31,7 @@ public class DialogSaveAs extends RpwDialog {
 
 	private JXTextField field;
 	private JButton buttonOK;
-	private FileNameList list;
+	private SimpleStringList list;
 
 	private JButton buttonCancel;
 
@@ -48,7 +48,7 @@ public class DialogSaveAs extends RpwDialog {
 
 		options = Projects.getProjectNames();
 
-		vb.add(list = new FileNameList(options, true));
+		vb.add(list = new SimpleStringList(options, true));
 		list.list.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -86,7 +86,7 @@ public class DialogSaveAs extends RpwDialog {
 				}
 			};
 			
-			field.addKeyListener(new FilenameKeyAdapter(listener));
+			field.addKeyListener(TextInputValidator.filenames(listener));
 			
 			
 			hb.add(field);

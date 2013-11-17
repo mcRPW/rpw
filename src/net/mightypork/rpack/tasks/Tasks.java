@@ -821,14 +821,14 @@ public class Tasks {
 	public static void taskLoadHelp() {
 
 		(new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
-			
+
 				HelpStore.load();
-				
+
 			}
 		})).start();
-		
+
 	}
 }

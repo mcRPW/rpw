@@ -18,15 +18,28 @@ public class GuiUtils {
 	}
 
 
+	public static void setMinPrefSize(Component c, int x, int y) {
+
+		Dimension d = new Dimension(x, y);
+		c.setMinimumSize(d);
+		c.setPreferredSize(d);
+	}
+
+
 	public static void centerWindow(Component window, Component parent) {
 
-		if (parent == null) {
-			Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
-			window.setLocation(p.x - window.getWidth() / 2, p.y - window.getHeight() / 2);
-		} else {
-			Point point = parent.getLocationOnScreen();
-			Dimension dim = parent.getSize();
-			window.setLocation(point.x + (dim.width - window.getWidth()) / 2, point.y + (dim.height - window.getHeight()) / 2);
+		try {
+			if (parent == null) {
+				Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
+				window.setLocation(p.x - window.getWidth() / 2, p.y - window.getHeight() / 2);
+			} else {
+				Point point = parent.getLocationOnScreen();
+				Dimension dim = parent.getSize();
+				window.setLocation(point.x + (dim.width - window.getWidth()) / 2, point.y + (dim.height - window.getHeight()) / 2);
+			}
+		} catch (IllegalStateException e) {
+			// meh
+			Log.e("Failed to center window.");
 		}
 	}
 }

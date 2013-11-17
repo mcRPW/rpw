@@ -15,7 +15,7 @@ import javax.swing.ListSelectionModel;
 import org.jdesktop.swingx.JXList;
 
 
-public class FileNameList extends JScrollPane {
+public class SimpleStringList extends JScrollPane {
 
 	public JXList list;
 	private boolean selectable;
@@ -31,7 +31,7 @@ public class FileNameList extends JScrollPane {
 	}
 
 
-	public FileNameList(List<String> options, boolean selectable) {
+	public SimpleStringList(List<String> options, boolean selectable) {
 
 		this.selectable = selectable;
 		list = new JXList(options.toArray());
@@ -45,7 +45,7 @@ public class FileNameList extends JScrollPane {
 			list.setCellRenderer(new DefaultListCellRenderer() {
 
 				@Override
-				@SuppressWarnings("rawtypes") 
+				@SuppressWarnings("rawtypes")
 				public Component getListCellRendererComponent(JList list, Object value, int index, boolean selected, boolean focus) {
 
 					super.getListCellRendererComponent(list, value, index, false, false);

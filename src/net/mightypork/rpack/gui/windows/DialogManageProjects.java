@@ -16,7 +16,7 @@ import javax.swing.event.ListSelectionListener;
 import net.mightypork.rpack.App;
 import net.mightypork.rpack.Paths;
 import net.mightypork.rpack.gui.Icons;
-import net.mightypork.rpack.gui.widgets.FileNameList;
+import net.mightypork.rpack.gui.widgets.SimpleStringList;
 import net.mightypork.rpack.project.Projects;
 import net.mightypork.rpack.tasks.Tasks;
 import net.mightypork.rpack.utils.FileUtils;
@@ -30,7 +30,7 @@ public class DialogManageProjects extends RpwDialog {
 
 	private List<String> options;
 
-	private FileNameList list;
+	private SimpleStringList list;
 
 	private JButton buttonClose;
 	private JButton buttonDelete;
@@ -56,7 +56,7 @@ public class DialogManageProjects extends RpwDialog {
 
 		options = Projects.getProjectNames();
 
-		vb.add(list = new FileNameList(options, true));
+		vb.add(list = new SimpleStringList(options, true));
 		list.setMultiSelect(true);
 
 		list.list.addListSelectionListener(new ListSelectionListener() {

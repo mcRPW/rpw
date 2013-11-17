@@ -4,18 +4,21 @@ package net.mightypork.rpack.gui.windows;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+
 import javax.swing.*;
 
 import net.mightypork.rpack.App;
 import net.mightypork.rpack.gui.Icons;
 import net.mightypork.rpack.help.HelpPage;
 import net.mightypork.rpack.help.HelpStore;
+
 import org.jdesktop.swingx.JXTitledSeparator;
 
 
 public class DialogHelp extends RpwDialog {
 
 	private JButton buttonOK;
+
 
 	public DialogHelp() {
 
