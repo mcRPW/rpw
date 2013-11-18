@@ -6,8 +6,12 @@ It's really huge, so if you want to help, you are welcome. Either via pull reque
 
 ## Getting it work with eclipse / netbeans / whatever
 
-* Checkout the repo
-* Create a new project in your IDE
-* Symlink the `src`, `lib` folders into your project
-* Add the libs to your build path
-* Try compile. If it works, you can start coding!
+* Install some Maven plugin (!important)
+* Checkout the repo to some folder
+
+    git init
+    git remote add origin https://github.com/MightyPork/rpw.git
+    git pull origin master
+
+* Import as a Maven project (or just a project, it should work too)
+
