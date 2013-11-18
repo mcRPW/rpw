@@ -9,9 +9,11 @@ It's really huge, so if you want to help, you are welcome. Either via pull reque
 * Install some Maven plugin (!important)
 * Checkout the repo to some folder
 
-    git init
-    git remote add origin https://github.com/MightyPork/rpw.git
-    git pull origin master
+   ```
+   git init
+   git remote add origin https://github.com/MightyPork/rpw.git
+   git pull origin master
+   ```
 
 * Import as a Maven project (or just a project, it should work too)
 
