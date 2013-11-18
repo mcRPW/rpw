@@ -172,4 +172,14 @@ public class Utils {
 
 		return sb.toString();
 	}
+
+
+	public static <T extends Object> List<T> arrayToList(T[] objs) {
+
+		ArrayList<T> list = new ArrayList<T>();
+		for (T o : objs) {
+			list.add(o);
+		}
+		return list;
+	}
 }

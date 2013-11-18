@@ -26,6 +26,7 @@ import net.coobird.thumbnailator.tasks.io.BufferedImageSink;
 import net.coobird.thumbnailator.tasks.io.BufferedImageSource;
 import net.coobird.thumbnailator.tasks.io.ImageSink;
 import net.coobird.thumbnailator.tasks.io.ImageSource;
+import net.mightypork.rpack.Paths;
 import net.mightypork.rpack.utils.FileUtils;
 import net.mightypork.rpack.utils.Log;
 
@@ -89,60 +90,62 @@ public class Icons {
 
 		Log.f2("Loading GUI icons");
 
-		MENU_NEW = loadImage("/images/menu/new.png");
-		MENU_SAVE = loadImage("/images/menu/save.png");
-		MENU_SAVE_AS = loadImage("/images/menu/save-as.png");
-		MENU_OPEN = loadImage("/images/menu/open.png");
-		MENU_SETUP = loadImage("/images/menu/config.png");
-		MENU_MANAGE = loadImage("/images/menu/manage.png");
-		MENU_EXPORT = loadImage("/images/menu/export.png");
-		MENU_UNDO = loadImage("/images/menu/undo.png");
-		MENU_REDO = loadImage("/images/menu/redo.png");
-		MENU_RELOAD = loadImage("/images/menu/reload.png");
-		MENU_RELOAD2 = loadImage("/images/menu/reload2.png");
-		MENU_EDIT = loadImage("/images/menu/edit.png");
-		MENU_CLEAR = loadImage("/images/menu/clear.png");
-		MENU_HELP = loadImage("/images/menu/help.png");
-		MENU_ABOUT = loadImage("/images/menu/information.png");
-		MENU_DELETE_ASSET = loadImage("/images/menu/delete.png");
-		MENU_DELETE = loadImage("/images/menu/delete-trash.png");
-		MENU_COPY = loadImage("/images/menu/copy.png");
-		MENU_SET_TO_SOURCE = loadImage("/images/menu/set-to-source.png");
-		MENU_PROJECT = loadImage("/images/menu/project.png");
-		MENU_SILENCE = loadImage("/images/menu/silence.png");
-		MENU_TREE = loadImage("/images/menu/tree.png");
-		MENU_RECURSION = loadImage("/images/menu/recursion.png");
-		MENU_CANCEL = loadImage("/images/menu/close.png");
-		MENU_EXIT = loadImage("/images/menu/exit.png");
-		MENU_RENAME = loadImage("/images/menu/rename.png");
-		MENU_YES = loadImage("/images/menu/yes.png");
-		MENU_TWITTER = loadImage("/images/menu/twitter.png");
-		MENU_LOG = loadImage("/images/menu/bug.png");
-		MENU_RECENT = loadImage("/images/menu/time.png");
-		MENU_IMPORT_BOX = loadImage("/images/menu/import-box.png");
-		MENU_EXPORT_BOX = loadImage("/images/menu/export-box.png");
-		MENU_VANILLA = loadImage("/images/menu/vanilla.png");
-		MENU_INHERIT = loadImage("/images/menu/inherit.png");
-		MENU_RESOLVE = loadImage("/images/menu/resolve.png");
-		MENU_INFO = loadImage("/images/menu/information.png");
-		MENU_GENERATE = loadImage("/images/menu/lightning.png");
+		String imgPath = Paths.DATA_DIR_IMAGES;
 
-		WINDOW = loadImage("/images/window-icon.png");
-		AUDIO = loadImage("/images/sound-icon.png");
-		TRANSPARENT = loadImage("/images/transparent.png");
-		TRANSPARENT_FONTS = loadImage("/images/transparent-fonts.png");
+		MENU_NEW = loadImage(imgPath + "menu/new.png");
+		MENU_SAVE = loadImage(imgPath + "menu/save.png");
+		MENU_SAVE_AS = loadImage(imgPath + "menu/save-as.png");
+		MENU_OPEN = loadImage(imgPath + "menu/open.png");
+		MENU_SETUP = loadImage(imgPath + "menu/config.png");
+		MENU_MANAGE = loadImage(imgPath + "menu/manage.png");
+		MENU_EXPORT = loadImage(imgPath + "menu/export.png");
+		MENU_UNDO = loadImage(imgPath + "menu/undo.png");
+		MENU_REDO = loadImage(imgPath + "menu/redo.png");
+		MENU_RELOAD = loadImage(imgPath + "menu/reload.png");
+		MENU_RELOAD2 = loadImage(imgPath + "menu/reload2.png");
+		MENU_EDIT = loadImage(imgPath + "menu/edit.png");
+		MENU_CLEAR = loadImage(imgPath + "menu/clear.png");
+		MENU_HELP = loadImage(imgPath + "menu/help.png");
+		MENU_ABOUT = loadImage(imgPath + "menu/information.png");
+		MENU_DELETE_ASSET = loadImage(imgPath + "menu/delete.png");
+		MENU_DELETE = loadImage(imgPath + "menu/delete-trash.png");
+		MENU_COPY = loadImage(imgPath + "menu/copy.png");
+		MENU_SET_TO_SOURCE = loadImage(imgPath + "menu/set-to-source.png");
+		MENU_PROJECT = loadImage(imgPath + "menu/project.png");
+		MENU_SILENCE = loadImage(imgPath + "menu/silence.png");
+		MENU_TREE = loadImage(imgPath + "menu/tree.png");
+		MENU_RECURSION = loadImage(imgPath + "menu/recursion.png");
+		MENU_CANCEL = loadImage(imgPath + "menu/close.png");
+		MENU_EXIT = loadImage(imgPath + "menu/exit.png");
+		MENU_RENAME = loadImage(imgPath + "menu/rename.png");
+		MENU_YES = loadImage(imgPath + "menu/yes.png");
+		MENU_TWITTER = loadImage(imgPath + "menu/twitter.png");
+		MENU_LOG = loadImage(imgPath + "menu/bug.png");
+		MENU_RECENT = loadImage(imgPath + "menu/time.png");
+		MENU_IMPORT_BOX = loadImage(imgPath + "menu/import-box.png");
+		MENU_EXPORT_BOX = loadImage(imgPath + "menu/export-box.png");
+		MENU_VANILLA = loadImage(imgPath + "menu/vanilla.png");
+		MENU_INHERIT = loadImage(imgPath + "menu/inherit.png");
+		MENU_RESOLVE = loadImage(imgPath + "menu/resolve.png");
+		MENU_INFO = loadImage(imgPath + "menu/information.png");
+		MENU_GENERATE = loadImage(imgPath + "menu/lightning.png");
 
-		ABOUT = loadImage("/images/about.png");
+		WINDOW = loadImage(imgPath + "window-icon.png");
+		AUDIO = loadImage(imgPath + "sound-icon.png");
+		TRANSPARENT = loadImage(imgPath + "transparent.png");
+		TRANSPARENT_FONTS = loadImage(imgPath + "transparent-fonts.png");
+
+		ABOUT = loadImage(imgPath + "about.png");
 
 
-		TREE_CLOSE = loadImage("/images/tree-16/close.png");
-		TREE_OPEN = loadImage("/images/tree-16/open.png");
-		TREE_FOLDER = loadImage("/images/tree-16/folder.png");
-		TREE_FILE_AUDIO = loadImage("/images/tree-16/file-audio.png");
-		TREE_FILE_IMAGE = loadImage("/images/tree-16/file-image.png");
-		TREE_FILE_TEXT = loadImage("/images/tree-16/file-text.png");
+		TREE_CLOSE = loadImage(imgPath + "tree-16/close.png");
+		TREE_OPEN = loadImage(imgPath + "tree-16/open.png");
+		TREE_FOLDER = loadImage(imgPath + "tree-16/folder.png");
+		TREE_FILE_AUDIO = loadImage(imgPath + "tree-16/file-audio.png");
+		TREE_FILE_IMAGE = loadImage(imgPath + "tree-16/file-image.png");
+		TREE_FILE_TEXT = loadImage(imgPath + "tree-16/file-text.png");
 
-		LOADING = new ImageIcon(Icons.class.getResource("/images/loading.gif"));
+		LOADING = new ImageIcon(Icons.class.getResource(imgPath + "loading.gif"));
 
 		Log.f2("Loading GUI icons - done.");
 	}

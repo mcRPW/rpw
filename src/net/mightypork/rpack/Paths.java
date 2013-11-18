@@ -37,5 +37,6 @@ public class Paths {
 
 	// paths used for internal resources
 	public static final String DATA_DIR_HELP = "/data/help/";
+	public static final String DATA_DIR_IMAGES = "/images/";
 
 }

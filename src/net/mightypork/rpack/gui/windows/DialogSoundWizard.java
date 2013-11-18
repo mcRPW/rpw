@@ -2,6 +2,7 @@ package net.mightypork.rpack.gui.windows;
 
 
 import java.awt.Dimension;
+import java.util.Arrays;
 
 import javax.swing.*;
 
@@ -10,11 +11,11 @@ import net.mightypork.rpack.Const;
 import net.mightypork.rpack.gui.Icons;
 import net.mightypork.rpack.gui.helpers.TextInputValidator;
 import net.mightypork.rpack.gui.widgets.SimpleStringList;
-import net.mightypork.rpack.library.Sources;
 import net.mightypork.rpack.utils.GuiUtils;
 
 import org.jdesktop.swingx.JXTextField;
 import org.jdesktop.swingx.JXTitledSeparator;
+import org.jdesktop.swingx.JXTree;
 
 
 public class DialogSoundWizard extends RpwDialog {
@@ -24,6 +25,9 @@ public class DialogSoundWizard extends RpwDialog {
 	private JButton buttonDeleteKey;
 	private JXTextField fieldKey;
 	private JComboBox<String> fieldCategory;
+	private SimpleStringList keyList;
+	private SimpleStringList fileList;
+	private JXTree fileTree;
 
 
 	public DialogSoundWizard() {
@@ -31,10 +35,8 @@ public class DialogSoundWizard extends RpwDialog {
 		super(App.getFrame(), "Sound Wizard");
 
 		Box hbMain, hb, hb2, vbMain, vb, vb2;
-		SimpleStringList simpleList;
 		JLabel label;
 
-		setResizable(true);
 		vbMain = Box.createVerticalBox();
 
 		vbMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -47,19 +49,19 @@ public class DialogSoundWizard extends RpwDialog {
 			// box with keys and editing current key
 			hb = Box.createHorizontalBox();
 			
-				hb.setBorder(
-						BorderFactory.createCompoundBorder(
-								BorderFactory.createTitledBorder("Custom sounds"),
-								BorderFactory.createEmptyBorder(5, 5, 5, 5)
-						)
-				);
+			hb.setBorder(
+					BorderFactory.createCompoundBorder(
+							BorderFactory.createTitledBorder("Sound Entries"),
+							BorderFactory.createEmptyBorder(5, 5, 5, 5)
+					)
+			);
 				
 				// box for the list of keys
 				vb = Box.createVerticalBox();
 				
-					simpleList = new SimpleStringList(Sources.getResourcepackNames(), true);
-					simpleList.setPreferredSize(new Dimension(250, 400));
-					vb.add(simpleList);
+					keyList = new SimpleStringList(Arrays.asList("cool.bang","cool.bell","stupid_name.something.hello"), true);
+					keyList.setPreferredSize(new Dimension(300, 400));
+					vb.add(keyList);
 				
 					// box with buttons under the list
 					hb2 = Box.createHorizontalBox();
@@ -99,8 +101,8 @@ public class DialogSoundWizard extends RpwDialog {
 								BorderFactory.createEmptyBorder(3,3,3,3)
 						));
 						fieldKey.addKeyListener(TextInputValidator.identifiers());
-						GuiUtils.setMinPrefSize(fieldKey, 140, 25);
-						fieldKey.setMaximumSize(new Dimension(1000, 25));
+						GuiUtils.setMinPrefSize(fieldKey, 200, 25);
+						fieldKey.setText("cool.bang");
 						
 					vb.add(hb2);
 					
@@ -117,20 +119,26 @@ public class DialogSoundWizard extends RpwDialog {
 						
 						hb2.add(fieldCategory = new JComboBox<String>(Const.SOUND_CATEGORIES));
 						fieldCategory.setEditable(true);
-						GuiUtils.setMinPrefSize(fieldCategory, 140, 25);
+						GuiUtils.setMinPrefSize(fieldCategory, 200, 25);
 						
 					vb.add(hb2);
 					
 					vb.add(Box.createVerticalStrut(10));
-					vb.add(new JXTitledSeparator("Included sounds (random)"));
+					vb.add(new JXTitledSeparator("Audio files"));
 					vb.add(Box.createVerticalStrut(10));
 					
-					simpleList = new SimpleStringList(Sources.getResourcepackNames(), true);
-					simpleList.setPreferredSize(new Dimension(250, 300));
-					vb.add(simpleList);
+					fileList = new SimpleStringList(Arrays.asList("cool_sounds/boing","cool_sounds/booom"), true);
+					fileList.setPreferredSize(new Dimension(300, 300));
+					vb.add(fileList);
+
+					vb.add(Box.createVerticalStrut(5));
 					
-					vb.add(Box.createVerticalStrut(50));
-				
+					vb.add(label = new JLabel("Add by dragging from the right panel."));//Box.createVerticalStrut(50));
+					label.setHorizontalAlignment(SwingConstants.LEFT);
+					label.setAlignmentX(0.5f);
+					
+					vb.add(Box.createVerticalStrut(22));
+					
 				hb.add(vb);
 				
 				
@@ -138,6 +146,21 @@ public class DialogSoundWizard extends RpwDialog {
 			hbMain.add(hb);
 			
 			
+			hb = Box.createHorizontalBox();
+			
+			hb.setBorder(
+					BorderFactory.createCompoundBorder(
+							BorderFactory.createTitledBorder("Audio Files"),
+							BorderFactory.createEmptyBorder(5, 5, 5, 5)
+					)
+			);
+			
+			JScrollPane scrollpane = new JScrollPane(fileTree = new JXTree());			
+			scrollpane.setPreferredSize(new Dimension(300, 400));
+
+			hb.add(scrollpane);
+			
+			hbMain.add(hb);
 			
 		vbMain.add(hbMain);
 		
@@ -155,7 +178,16 @@ public class DialogSoundWizard extends RpwDialog {
 
 		getContentPane().add(vbMain);
 
+
+		pupulateLists();
+
 		prepareForDisplay();
+	}
+
+
+	private void pupulateLists() {
+
+		// TODO
 	}
 
 

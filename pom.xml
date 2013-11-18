@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>RPW</groupId>
+  <artifactId>net.mightypork.rpw</artifactId>
+  <version>3.7.0</version>
+  <name>ResourcePack Workbench</name>
+  <description>MC resource pack manager and editor.</description>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      
+      
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.5</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}</outputDirectory>
+              <resources>   
+                <resource>
+                  <directory>src</directory>
+                  <excludes>
+                    <exclude>**/*.java</exclude>
+                  </excludes>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>              
+            </configuration>            
+          </execution>
+        </executions>
+      </plugin>
+      
+    </plugins>
+  </build>
+  <dependencies>
+  				<dependency>
+  								<groupId>
+  												com.google.code.gson
+  								</groupId>
+  								<artifactId>gson</artifactId>
+  								<version>2.2.4</version>
+  				</dependency>
+  				<dependency>
+  								<groupId>
+  												org.commonjava.googlecode.markdown4j
+  								</groupId>
+  								<artifactId>markdown4j</artifactId>
+  								<version>2.2-cj-1.0</version>
+  				</dependency>
+  				<dependency>
+  								<groupId>com.fifesoft</groupId>
+  								<artifactId>
+  												rsyntaxtextarea
+  								</artifactId>
+  								<version>2.5.0</version>
+  				</dependency>
+  				<dependency>
+  								<groupId>
+  												org.swinglabs.swingx
+  								</groupId>
+  								<artifactId>swingx-all</artifactId>
+  								<version>1.6.5-1</version>
+  				</dependency>
+  				<dependency>
+  								<groupId>net.coobird</groupId>
+  								<artifactId>thumbnailator</artifactId>
+  								<version>0.4.6</version>
+  				</dependency>
+  </dependencies>
+  <organization>
+  				<name>MightyPork</name>
+  				<url>http://www.ondrovo.com/</url>
+  </organization>
+  <issueManagement>
+  				<system>GitHub</system>
+  				<url>https://github.com/MightyPork/rpw/issues</url>
+  </issueManagement>
+  <url>https://github.com/MightyPork/rpw</url>
+</project>
