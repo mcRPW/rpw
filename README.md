@@ -15,5 +15,7 @@ It's really huge, so if you want to help, you are welcome. Either via pull reque
    git pull origin master
    ```
 
-* Import as a Maven project (or just a project, it should work too)
+* Import as a Maven project
+* Add any jars in the `/libs` folder to build path (those could not be taken from Maven)
+
 
