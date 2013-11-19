@@ -55,6 +55,8 @@
   								<artifactId>gson</artifactId>
   								<version>2.2.4</version>
   				</dependency>
+
+<!-- REPO PROVIDES ONLY JAVA 7 BUILD
   				<dependency>
   								<groupId>
   												org.commonjava.googlecode.markdown4j
@@ -62,6 +64,7 @@
   								<artifactId>markdown4j</artifactId>
   								<version>2.2-cj-1.0</version>
   				</dependency>
+-->
   				<dependency>
   								<groupId>com.fifesoft</groupId>
   								<artifactId>

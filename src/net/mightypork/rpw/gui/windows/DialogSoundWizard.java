@@ -24,7 +24,7 @@ public class DialogSoundWizard extends RpwDialog {
 	private JButton buttonNewKey;
 	private JButton buttonDeleteKey;
 	private JXTextField fieldKey;
-	private JComboBox<String> fieldCategory;
+	private JComboBox fieldCategory;
 	private SimpleStringList keyList;
 	private SimpleStringList fileList;
 	private JXTree fileTree;
@@ -117,7 +117,7 @@ public class DialogSoundWizard extends RpwDialog {
 						
 						hb2.add(Box.createHorizontalStrut(5));
 						
-						hb2.add(fieldCategory = new JComboBox<String>(Const.SOUND_CATEGORIES));
+						hb2.add(fieldCategory = new JComboBox(Const.SOUND_CATEGORIES));
 						fieldCategory.setEditable(true);
 						GuiUtils.setMinPrefSize(fieldCategory, 200, 25);
 						

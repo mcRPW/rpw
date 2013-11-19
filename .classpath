@@ -16,5 +16,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/markdown4j-2.2.jar" sourcepath="lib/markdown4j-src-2.2.zip"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
