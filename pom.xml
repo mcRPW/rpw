@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>RPW</groupId>
   <artifactId>ResourcePackWorkbench</artifactId>
-  <version>3.7.0</version>
+  <version>3.8.0</version>
   <name>ResourcePack Workbench</name>
   <description>MC resource pack manager and editor.</description>
   <build>
@@ -73,16 +73,16 @@
   								<version>2.5.0</version>
   				</dependency>
   				<dependency>
+  								<groupId>net.coobird</groupId>
+  								<artifactId>thumbnailator</artifactId>
+  								<version>0.4.6</version>
+  				</dependency>
+  				<dependency>
   								<groupId>
   												org.swinglabs.swingx
   								</groupId>
   								<artifactId>swingx-all</artifactId>
   								<version>1.6.5-1</version>
-  				</dependency>
-  				<dependency>
-  								<groupId>net.coobird</groupId>
-  								<artifactId>thumbnailator</artifactId>
-  								<version>0.4.6</version>
   				</dependency>
   </dependencies>
   <organization>

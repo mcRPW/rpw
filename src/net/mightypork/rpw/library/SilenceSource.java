@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.mightypork.rpw.hierarchy.AssetEntry;
-import net.mightypork.rpw.hierarchy.EAsset;
+import net.mightypork.rpw.tree.assets.AssetEntry;
+import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.FileUtils;
 
 

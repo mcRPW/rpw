@@ -80,7 +80,7 @@ public class TaskCheckUpdate {
 					}
 
 				} catch (Throwable t) {
-					Log.e(t);
+					Log.e("Could not download update info file.");
 				} finally {
 					if (sc != null) sc.close();
 				}

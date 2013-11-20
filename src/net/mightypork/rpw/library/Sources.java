@@ -12,10 +12,10 @@ import java.util.Map;
 
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
-import net.mightypork.rpw.hierarchy.AssetEntry;
-import net.mightypork.rpw.hierarchy.EAsset;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.tree.assets.AssetEntry;
+import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;

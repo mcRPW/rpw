@@ -1,6 +1,7 @@
 package net.mightypork.rpw.gui.windows;
 
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.util.Arrays;
 
@@ -11,6 +12,7 @@ import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
+import net.mightypork.rpw.gui.widgets.SoundFileTreeDisplay;
 import net.mightypork.rpw.utils.GuiUtils;
 
 import org.jdesktop.swingx.JXTextField;
@@ -155,10 +157,12 @@ public class DialogSoundWizard extends RpwDialog {
 					)
 			);
 			
-			JScrollPane scrollpane = new JScrollPane(fileTree = new JXTree());			
-			scrollpane.setPreferredSize(new Dimension(300, 400));
+			SoundFileTreeDisplay treeDisplay = new SoundFileTreeDisplay();
+			
+			JComponent c = treeDisplay.getComponent();			
+			c.setPreferredSize(new Dimension(300, 400));
 
-			hb.add(scrollpane);
+			hb.add(c);
 			
 			hbMain.add(hb);
 			

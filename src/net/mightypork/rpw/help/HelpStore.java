@@ -19,15 +19,18 @@ import org.markdown4j.Markdown4jProcessor;
 public class HelpStore {
 
 	private static List<HelpPage> pages = new ArrayList<HelpPage>();
-	static Markdown4jProcessor md = new Markdown4jProcessor();
+	static Markdown4jProcessor md;
 
 	static String htmlTop;
 	static String htmlBottom;
 
 
 	public static void load() {
+		
 
 		Log.f2("Loading help pages");
+		
+		md = new Markdown4jProcessor();
 
 		InputStream in;
 

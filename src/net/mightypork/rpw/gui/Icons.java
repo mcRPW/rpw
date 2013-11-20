@@ -216,7 +216,12 @@ public class Icons {
 			} else {
 				i = orig;
 			}
-			return new ImageIcon(i);
+
+			ImageIcon ic = new ImageIcon(i);
+			
+			ic.setDescription(orig.getWidth() + "x" + orig.getHeight());
+			
+			return ic;
 
 		} catch (Exception e) {
 			Log.e("Failed loading icon.", e);

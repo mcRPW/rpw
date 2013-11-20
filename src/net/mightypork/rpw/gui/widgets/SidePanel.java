@@ -18,14 +18,14 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
 import net.mightypork.rpw.gui.windows.Alerts;
-import net.mightypork.rpw.hierarchy.EAsset;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeGroup;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeLeaf;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeNode;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.tree.assets.EAsset;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeGroup;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.utils.DesktopApi;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.GuiUtils;
@@ -34,6 +34,7 @@ import net.mightypork.rpw.utils.Utils;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTitledSeparator;
+import org.jdesktop.swingx.renderer.IconValue;
 
 
 public class SidePanel {
@@ -408,7 +409,9 @@ public class SidePanel {
 			projectBase.setText(path);
 
 			File iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
-			projectIconLabel.setIcon(Icons.getIconFromFile(iconFile, new Dimension(128, 128)));
+			
+			ImageIcon ic = Icons.getIconFromFile(iconFile, new Dimension(128, 128));
+			projectIconLabel.setIcon(ic);
 
 			infoBox.setVisible(true);
 			//previewBox.setVisible(true);
@@ -441,7 +444,7 @@ public class SidePanel {
 			String source = leaf.resolveAssetSource();
 
 			String path = leaf.getAssetEntry().getPath();
-			String fname = Utils.fromLastChar(path, '/');
+			String fname = FileUtils.removeExtension(Utils.fromLastChar(path, '/'))[0];
 
 			displayedLeaf = leaf;
 
@@ -469,10 +472,11 @@ public class SidePanel {
 				if (in == null) {
 					previewImage.setIcon(null);
 				} else {
-					Icon i = Icons.getIconFromStream(in, new Dimension(256, 256));
+					ImageIcon i = Icons.getIconFromStream(in, new Dimension(256, 256));
+					
 					previewImage.setIcon(i);
 
-					previewImageBorder.setTitle(fname);
+					previewImageBorder.setTitle(fname+" ("+i.getDescription()+")");
 				}
 
 				boolean metaInProj = leaf.isMetaProvidedByProject();

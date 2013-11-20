@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.mightypork.rpw.hierarchy.AssetEntry;
+import net.mightypork.rpw.tree.assets.AssetEntry;
 
 
 /**

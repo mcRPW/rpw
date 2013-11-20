@@ -1,14 +1,20 @@
 package net.mightypork.rpw.gui.widgets;
 
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.Enumeration;
 
+import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -17,13 +23,14 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.*;
-import net.mightypork.rpw.hierarchy.TreeBuilder;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeGroup;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeModel;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeNode;
-import net.mightypork.rpw.hierarchy.tree.SourceName;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
+import net.mightypork.rpw.tree.TreeIconProvider;
+import net.mightypork.rpw.tree.assets.TreeBuilder;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeGroup;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeModel;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
+import net.mightypork.rpw.tree.assets.tree.SourceName;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
@@ -64,12 +71,16 @@ public class TreeDisplay {
 		treeTable.setAutoCreateColumnsFromModel(false);
 		treeTable.setRowHeight(20);
 		treeTable.addMouseListener(new AssetTableClickListener(treeTable));
-		treeTable.setTreeCellRenderer(new DefaultTreeRenderer(new TreeIconProvider()));
+		
+		DefaultTreeRenderer renderer = new DefaultTreeRenderer(new TreeIconProvider());
+		
+		treeTable.putClientProperty("JTree.lineStyle", "Angled");
+		treeTable.setTreeCellRenderer(renderer);
 		treeTable.getTableHeader().setReorderingAllowed(false);
 
-		treeTable.setDefaultRenderer(Boolean.class, new NullAwareCellBooleanRenderer());
-		treeTable.setDefaultRenderer(SourceName.class, new MagicAwareCellStringRenderer());
-
+		treeTable.setDefaultRenderer(Boolean.class, new NullAwareTableCellBooleanRenderer());
+		treeTable.setDefaultRenderer(SourceName.class, new MagicAwareTableCellStringRenderer());
+		
 		final TreeSelectionListener tsl = new TreeSelectionListener() {
 
 			@Override

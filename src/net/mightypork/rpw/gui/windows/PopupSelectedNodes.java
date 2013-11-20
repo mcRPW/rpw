@@ -19,16 +19,16 @@ import javax.swing.JPopupMenu;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.hierarchy.EAsset;
-import net.mightypork.rpw.hierarchy.processors.*;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeGroup;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeLeaf;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeNode;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeProcessor;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.tree.assets.EAsset;
+import net.mightypork.rpw.tree.assets.processors.*;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeGroup;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 import net.mightypork.rpw.utils.Log;
 
 

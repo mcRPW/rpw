@@ -7,8 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.mightypork.rpw.Paths;
-import net.mightypork.rpw.hierarchy.AssetEntry;
 import net.mightypork.rpw.tasks.TaskLoadVanillaStructure;
+import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.OsUtils;
 
 

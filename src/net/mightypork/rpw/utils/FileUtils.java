@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.mightypork.rpw.Config;
-import net.mightypork.rpw.hierarchy.AssetEntry;
-import net.mightypork.rpw.hierarchy.EAsset;
+import net.mightypork.rpw.tree.assets.AssetEntry;
+import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 
@@ -249,6 +249,16 @@ public class FileUtils {
 
 		return removeExtension(file.getName());
 	}
+	
+	public static String getExtension(File file) {
+
+		return removeExtension(file.getName())[1];
+	}
+	
+	public static String getExtension(String file) {
+
+		return removeExtension(file)[1];
+	}
 
 
 	/**
@@ -470,8 +480,7 @@ public class FileUtils {
 
 					boolean ok = false;
 
-					String[] parts = FileUtils.removeExtension(path);
-					String ext = parts[1];
+					String ext = FileUtils.getExtension(path);
 					EAsset type = EAsset.forExtension(ext);
 
 					ok |= path.startsWith("assets");

@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.tree.TreePath;
 
 import net.mightypork.rpw.gui.windows.PopupSelectedNodes;
-import net.mightypork.rpw.hierarchy.tree.AssetTreeNode;
+import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.utils.Log;
 
 import org.jdesktop.swingx.JXTreeTable;

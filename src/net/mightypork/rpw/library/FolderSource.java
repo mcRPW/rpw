@@ -3,7 +3,7 @@ package net.mightypork.rpw.library;
 
 import java.io.File;
 
-import net.mightypork.rpw.hierarchy.AssetEntry;
+import net.mightypork.rpw.tree.assets.AssetEntry;
 
 
 public class FolderSource extends Source {

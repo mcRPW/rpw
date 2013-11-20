@@ -27,9 +27,9 @@ import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.CharInputListener;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
-import net.mightypork.rpw.hierarchy.EAsset;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.OsUtils;
 import net.mightypork.rpw.utils.Utils;
@@ -243,8 +243,7 @@ public class DialogImportPack extends RpwDialog {
 
 						boolean ok = false;
 
-						String[] parts = FileUtils.removeExtension(path);
-						String ext = parts[1];
+						String ext = FileUtils.getExtension(path);
 						EAsset type = EAsset.forExtension(ext);
 
 						ok |= path.startsWith("assets");
