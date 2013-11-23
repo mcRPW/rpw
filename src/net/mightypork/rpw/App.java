@@ -17,7 +17,6 @@ import net.mightypork.rpw.gui.windows.WindowMain;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.NodeSourceProvider;
 import net.mightypork.rpw.project.Projects;
-import net.mightypork.rpw.tasks.TaskDevel;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
@@ -101,7 +100,6 @@ public class App {
 
 		Projects.openLastProject();
 
-		TaskDevel.run();
 	}
 
 

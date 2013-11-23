@@ -4,13 +4,12 @@ package net.mightypork.rpw.gui.widgets;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
+
+import net.mightypork.rpw.utils.AlphanumComparator;
 
 import org.jdesktop.swingx.JXList;
 
@@ -19,22 +18,43 @@ public class SimpleStringList extends JScrollPane {
 
 	public JXList list;
 	private boolean selectable;
+	private DefaultListModel model;
+
+	private ArrayList<String> items = new ArrayList<String>();
 
 
-	public void setOptions(List<String> options) {
+	public void setItems(List<String> options) {
 
-		list.removeAll();
-		list.setListData(options.toArray());
-		list.validate();
-		validate();
+		items.clear();
+		items.addAll(options);
+
+		sortAndUpdate();
+	}
+
+
+	public SimpleStringList() {
+
+		this(null, true);
+	}
+
+
+	public SimpleStringList(boolean selectable) {
+
+		this(null, selectable);
 	}
 
 
 	public SimpleStringList(List<String> options, boolean selectable) {
 
 		this.selectable = selectable;
-		list = new JXList(options.toArray());
-//		list.setVisibleRowCount(10);
+
+		model = new DefaultListModel();
+
+		list = new JXList(model);
+
+		if (options != null) {
+			setItems(options);
+		}
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -101,6 +121,89 @@ public class SimpleStringList extends JScrollPane {
 		}
 
 		return selected;
+	}
+
+
+	public void sortAndUpdate() {
+
+		Collections.sort(items, AlphanumComparator.instance);
+
+		model.removeAllElements();
+
+		for (String item : items) {
+			model.addElement(item);
+		}
+
+		list.validate();
+		validate();
+	}
+
+
+	public void addItemNoSort(String item) {
+
+		if (!items.contains(item)) {
+			items.add(item);
+		}
+	}
+
+
+	public void addItem(String item) {
+
+		if (!items.contains(item)) {
+			items.add(item);
+			sortAndUpdate();
+		}
+	}
+
+
+	public void removeItemNoSort(String item) {
+
+		items.remove(item);
+	}
+
+
+	public void removeItem(String item) {
+
+		items.remove(item);
+		sortAndUpdate();
+	}
+
+
+	public void removeItem(int index) {
+
+		items.remove(index);
+		sortAndUpdate();
+	}
+
+
+	public ArrayList<String> getItems() {
+
+		return items;
+	}
+
+
+	public String getItemAt(int where) {
+
+		return items.get(where);
+	}
+
+
+	public boolean contains(String data) {
+
+		return items.contains(data);
+	}
+
+
+	public JXList getList() {
+
+		return list;
+	}
+
+
+	public void empty() {
+
+		items.clear();
+		sortAndUpdate();
 	}
 
 }

@@ -100,7 +100,7 @@ public class DialogImportPack extends RpwDialog {
 		options = Sources.getResourcepackNames();
 
 		vb.add(list = new SimpleStringList(options, true));
-		list.list.addListSelectionListener(new ListSelectionListener() {
+		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -177,6 +177,7 @@ public class DialogImportPack extends RpwDialog {
 	private void initFileChooser() {
 
 		fc = new JFileChooser();
+		fc.setCurrentDirectory(new File(Config.FILECHOOSER_PATH_IMPORT_PACK));
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setDialogTitle("Import ResourcePack archive");
 		fc.setFileFilter(new FileFilter() {
@@ -277,6 +278,9 @@ public class DialogImportPack extends RpwDialog {
 			if (btn == JFileChooser.APPROVE_OPTION) {
 				File f = fc.getSelectedFile();
 
+				Config.FILECHOOSER_PATH_IMPORT_PACK = fc.getCurrentDirectory().getPath();
+				Config.save();
+
 				if (f == null) return;
 
 				if (f.exists()) {
@@ -289,7 +293,7 @@ public class DialogImportPack extends RpwDialog {
 					importUrl.setText(path);
 
 					try {
-						String[] parts = FileUtils.removeExtension(f);
+						String[] parts = FileUtils.getFilenameParts(f);
 						field.setText(parts[0]);
 
 						buttonOK.setEnabled(!options.contains(parts[0]));

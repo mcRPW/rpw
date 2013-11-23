@@ -1,5 +1,6 @@
 package net.mightypork.rpw.tree.assets;
 
+
 import java.io.File;
 
 import net.mightypork.rpw.utils.FileUtils;
@@ -64,12 +65,16 @@ public enum EAsset {
 
 		return null;
 	}
-	
+
+
 	public static EAsset forFile(File file) {
+
 		return forExtension(FileUtils.getExtension(file));
 	}
-	
+
+
 	public static EAsset forFile(String file) {
+
 		return forExtension(FileUtils.getExtension(file));
 	}
 }

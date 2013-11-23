@@ -245,19 +245,21 @@ public class FileUtils {
 	 * @param file file
 	 * @return filename without extension
 	 */
-	public static String[] removeExtension(File file) {
+	public static String[] getFilenameParts(File file) {
 
-		return removeExtension(file.getName());
+		return getFilenameParts(file.getName());
 	}
-	
+
+
 	public static String getExtension(File file) {
 
-		return removeExtension(file.getName())[1];
+		return getExtension(file.getName());
 	}
-	
+
+
 	public static String getExtension(String file) {
 
-		return removeExtension(file)[1];
+		return Utils.fromLastChar(file, '.');
 	}
 
 
@@ -267,7 +269,7 @@ public class FileUtils {
 	 * @param filename
 	 * @return filename and extension
 	 */
-	public static String[] removeExtension(String filename) {
+	public static String[] getFilenameParts(String filename) {
 
 		String ext, name;
 
@@ -424,7 +426,7 @@ public class FileUtils {
 	 */
 	public static String escapeFilename(String filename) {
 
-		String[] parts = removeExtension(filename);
+		String[] parts = getFilenameParts(filename);
 
 		return escapeFileString(parts[0]) + "." + parts[1];
 	}
@@ -438,7 +440,7 @@ public class FileUtils {
 	 */
 	public static String unescapeFilename(String filename) {
 
-		String[] parts = removeExtension(filename);
+		String[] parts = getFilenameParts(filename);
 
 		return unescapeFileString(parts[0]) + "." + parts[1];
 	}
@@ -495,7 +497,7 @@ public class FileUtils {
 			for (String s : list) {
 				if (s.startsWith("assets")) {
 					s = FileUtils.escapeFilename(s);
-					String[] parts = FileUtils.removeExtension(s);
+					String[] parts = FileUtils.getFilenameParts(s);
 					String key = parts[0].replace('\\', '.');
 					key = key.replace('/', '.');
 					String ext = parts[1];
@@ -517,5 +519,11 @@ public class FileUtils {
 
 			return null; // success = false
 		}
+	}
+
+
+	public static String getBasename(String name) {
+
+		return Utils.toLastChar(Utils.fromLastChar(name, '/'), '.');
 	}
 }

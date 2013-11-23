@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import javax.swing.tree.TreeNode;
 
 import net.mightypork.rpw.tree.assets.EAsset;
+import net.mightypork.rpw.utils.FileUtils;
 
 
 /**
@@ -16,7 +17,6 @@ import net.mightypork.rpw.tree.assets.EAsset;
  */
 public class FileFsTreeNode extends AbstractFsTreeNode {
 
-	private File path;
 	private String name;
 	private EAsset type;
 
@@ -24,7 +24,7 @@ public class FileFsTreeNode extends AbstractFsTreeNode {
 	public FileFsTreeNode(File path) {
 
 		this.path = path;
-		this.name = path.getName();
+		this.name = FileUtils.getBasename(path.getName());
 		this.type = EAsset.forFile(path);
 	}
 
@@ -37,7 +37,7 @@ public class FileFsTreeNode extends AbstractFsTreeNode {
 
 
 	@Override
-	public TreeNode getChildAt(int childIndex) {
+	public AbstractFsTreeNode getChildAt(int childIndex) {
 
 		return null;
 	}
@@ -59,6 +59,7 @@ public class FileFsTreeNode extends AbstractFsTreeNode {
 
 	/**
 	 * Get file path
+	 * 
 	 * @return path
 	 */
 	@Override
@@ -105,6 +106,7 @@ public class FileFsTreeNode extends AbstractFsTreeNode {
 
 	@Override
 	public boolean isText() {
+
 		return type.isText();
 	}
 

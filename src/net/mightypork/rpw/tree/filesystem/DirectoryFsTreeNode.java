@@ -20,19 +20,40 @@ import net.mightypork.rpw.utils.FileUtils;
  */
 public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 
-	private File path = null;
 	private String name = null;
 	private ArrayList<AbstractFsTreeNode> children = new ArrayList<AbstractFsTreeNode>();
+	private boolean pathRoot = false;
 
 
 	/**
 	 * @param path represented folder
 	 */
 	public DirectoryFsTreeNode(File path) {
-		
-		this(path.getName(), FileUtils.listDirectory(path));
+
+		this(path.getName(), path);
+
+	}
+
+
+	/**
+	 * @param name the name
+	 */
+	public DirectoryFsTreeNode(String name) {
+
+		this.name = name;
+	}
+
+
+	/**
+	 * @param name display name
+	 * @param path paths to this directory
+	 */
+	public DirectoryFsTreeNode(String name, File path) {
+
+		this(name, FileUtils.listDirectory(path));
 
 		this.path = path;
+
 	}
 
 
@@ -42,29 +63,13 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 */
 	public DirectoryFsTreeNode(String name, List<File> childPaths) {
 
-		this.name = name;
-
-		for (File f : childPaths) {
-			AbstractFsTreeNode node = makeChildForFile(f);
-			
-			if(node != null) children.add(node);
-		}
-	}
-
-
-	/**
-	 * @param name display name
-	 * @param childPaths paths to children
-	 */
-	public DirectoryFsTreeNode(String name, File... childPaths) {
-
-		this.name = name;
+		this(name);
 
 		for (File f : childPaths) {
 
 			AbstractFsTreeNode node = makeChildForFile(f);
-			
-			if(node != null) children.add(node);
+
+			addChild(node);
 		}
 	}
 
@@ -73,9 +78,18 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 
 		if (!f.exists()) return null;
 		if (f.isDirectory()) return new DirectoryFsTreeNode(f);
-		if(EAsset.forFile(f) == null) return null;
+		if (EAsset.forFile(f) == null) return null;
 		if (f.isFile()) return new FileFsTreeNode(f);
 		return null;
+	}
+
+
+	public void addChild(AbstractFsTreeNode node) {
+
+		if (node != null) {
+			node.parent = this;
+			children.add(node);
+		}
 	}
 
 
@@ -87,7 +101,7 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 
 
 	@Override
-	public TreeNode getChildAt(int childIndex) {
+	public AbstractFsTreeNode getChildAt(int childIndex) {
 
 		return children.get(childIndex);
 	}
@@ -112,13 +126,6 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 
 
 	@Override
-	public boolean isLeaf() {
-
-		return false;
-	}
-
-
-	@Override
 	public File getPath() {
 
 		return path;
@@ -127,8 +134,9 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 
 	@Override
 	public void sort() {
+
 		Collections.sort(children);
-		for(AbstractFsTreeNode n: children) {
+		for (AbstractFsTreeNode n : children) {
 			n.sort();
 		}
 	}
@@ -173,5 +181,63 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	public boolean isText() {
 
 		return false;
+	}
+
+
+	/**
+	 * Get if this node is a path root
+	 * 
+	 * @return is path root
+	 */
+	@Override
+	public boolean isRoot() {
+
+		return pathRoot;
+	}
+
+
+	/**
+	 * Set if this is the path root
+	 * 
+	 * @param pathRoot is root
+	 */
+	public void setPathRoot(boolean pathRoot) {
+
+		this.pathRoot = pathRoot;
+	}
+
+
+	/**
+	 * Get root path
+	 * 
+	 * @return root path
+	 */
+	public File getRoot() {
+
+		if (this.isRoot() || getParent() == null) return path;
+
+		return getParent().getRoot();
+	}
+
+
+	/**
+	 * Reload this directory node, if it was initialized using File
+	 */
+	public void reload() {
+
+		if (path == null) return; // can't do this, path wasn't used to init this dir.
+
+		children.clear();
+
+		for (File f : FileUtils.listDirectory(path)) {
+
+			AbstractFsTreeNode node = makeChildForFile(f);
+
+			addChild(node);
+		}
+
+		setMark(mark);
+
+		sort();
 	}
 }

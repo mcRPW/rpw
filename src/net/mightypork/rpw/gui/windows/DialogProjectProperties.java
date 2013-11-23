@@ -135,6 +135,7 @@ public class DialogProjectProperties extends RpwDialog {
 	private void initFileChooser() {
 
 		fc = new JFileChooser();
+		fc.setCurrentDirectory(new File(Config.FILECHOOSER_PATH_IMPORT_FILE));
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setDialogTitle("Import Project Icon (128x128 PNG)");
 		fc.setFileFilter(new FileFilter() {
@@ -226,6 +227,9 @@ public class DialogProjectProperties extends RpwDialog {
 			int btn = fc.showDialog(self(), "Import");
 			if (btn == JFileChooser.APPROVE_OPTION) {
 				File f = fc.getSelectedFile();
+
+				Config.FILECHOOSER_PATH_IMPORT_FILE = fc.getCurrentDirectory().getPath();
+				Config.save();
 
 				if (f == null) return;
 

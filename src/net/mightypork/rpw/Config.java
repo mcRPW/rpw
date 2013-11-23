@@ -13,6 +13,7 @@ import net.mightypork.rpw.utils.PropertyManager;
  */
 public class Config {
 
+	// opts
 	public static final boolean def_FANCY_GROUPS = true;
 	public static final boolean def_SHOW_FONT = false;
 	public static final boolean def_SHOW_LANG = false;
@@ -22,6 +23,7 @@ public class Config {
 	public static final boolean def_USE_INTERNAL_META_EDITOR = true;
 	public static final boolean def_USE_INTERNAL_TEXT_EDITOR = true;
 	public static final boolean def_WARNING_ORPHANED_NODES = true;
+	public static final boolean def_PRETTY_JSON = true;
 	public static boolean FANCY_GROUPS;
 	public static boolean SHOW_FONT;
 	public static boolean SHOW_LANG;
@@ -31,7 +33,18 @@ public class Config {
 	public static boolean USE_INTERNAL_META_EDITOR;
 	public static boolean USE_INTERNAL_TEXT_EDITOR;
 	public static boolean WARNING_ORPHANED_NODES;
+	public static boolean PRETTY_JSON;
 
+	// filechooser paths
+	public static final String def_FILECHOOSER_PATH_IMPORT_FILE = System.getProperty("user.home");
+	public static final String def_FILECHOOSER_PATH_IMPORT_PACK = System.getProperty("user.home");
+	public static final String def_FILECHOOSER_PATH_EXPORT = System.getProperty("user.home");
+
+	public static String FILECHOOSER_PATH_IMPORT_FILE;
+	public static String FILECHOOSER_PATH_IMPORT_PACK;
+	public static String FILECHOOSER_PATH_EXPORT;
+
+	// editors
 	public static final boolean def_USE_IMAGE_EDITOR = true;
 	public static final String def_IMAGE_EDITOR = "/usr/bin/gimp";
 	public static final String def_IMAGE_EDITOR_ARGS = "%s";
@@ -52,6 +65,7 @@ public class Config {
 	public static boolean USE_AUDIO_EDITOR = true;
 	public static String AUDIO_EDITOR;
 	public static String AUDIO_EDITOR_ARGS;
+
 
 	private static PropertyManager mgr;
 
@@ -76,6 +90,11 @@ public class Config {
 	private static final String PK_AUDIO_EDITOR = "system.editor.audio.command";
 	private static final String PK_AUDIO_EDITOR_ARGS = "system.editor.audio.command.args";
 	private static final String PK_USE_AUDIO_EDITOR = "system.editor.audio.enabled";
+	private static final String PK_PRETTY_JSON = "export.prettyJSON";
+
+	public static final String PK_FILECHOOSER_PATH_IMPORT_FILE = "status.path.importFile";
+	public static final String PK_FILECHOOSER_PATH_IMPORT_PACK = "status.path.importPack";
+	public static final String PK_FILECHOOSER_PATH_EXPORT = "status.path.exportPack";
 
 
 	/**
@@ -105,7 +124,7 @@ public class Config {
 		mgr.putBoolean(PK_SHOW_LANG, def_SHOW_LANG, "Show translation files (*.lang)");
 		mgr.putBoolean(PK_PREVIEW_HOVER, def_PREVIEW_HOVER, "Display preview of item under mouse");
 		mgr.putBoolean(PK_SHOW_HIDDEN_IN_FILEPICKER, def_SHOW_HIDDEN_IN_FILEPICKER, "Show hidden files in file pickers (import, export)");
-		mgr.putBoolean(PK_CLOSED_WITH_PROJECT_OPEN, def_CLOSED_WITH_PROJECT_OPEN);
+
 		mgr.putBoolean(PK_USE_INTERNAL_META_EDITOR, def_USE_INTERNAL_META_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_USE_INTERNAL_TEXT_EDITOR, def_USE_INTERNAL_TEXT_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_WARNING_ORPHANED_NODES, def_WARNING_ORPHANED_NODES, "Warn when some nodes could not be displayed.");
@@ -121,6 +140,14 @@ public class Config {
 		mgr.putString(PK_TEXT_EDITOR, def_TEXT_EDITOR);
 		mgr.putString(PK_TEXT_EDITOR_ARGS, def_TEXT_EDITOR_ARGS);
 		mgr.putBoolean(PK_USE_TEXT_EDITOR, def_USE_TEXT_EDITOR, "Use command instead of system default.");
+
+		mgr.putBoolean(PK_PRETTY_JSON, def_PRETTY_JSON, "Use pretty formatting for output JSON.");
+
+		mgr.putBoolean(PK_CLOSED_WITH_PROJECT_OPEN, def_CLOSED_WITH_PROJECT_OPEN);
+
+		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_FILE, def_FILECHOOSER_PATH_IMPORT_FILE);
+		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_PACK, def_FILECHOOSER_PATH_IMPORT_PACK);
+		mgr.putString(PK_FILECHOOSER_PATH_EXPORT, def_FILECHOOSER_PATH_EXPORT);
 
 		load(); // load what has been "put"
 
@@ -145,6 +172,8 @@ public class Config {
 		mgr.setValue(PK_USE_INTERNAL_TEXT_EDITOR, USE_INTERNAL_TEXT_EDITOR);
 		mgr.setValue(PK_WARNING_ORPHANED_NODES, WARNING_ORPHANED_NODES);
 
+		mgr.setValue(PK_PRETTY_JSON, PRETTY_JSON);
+
 		mgr.setValue(PK_IMAGE_EDITOR, IMAGE_EDITOR);
 		mgr.setValue(PK_IMAGE_EDITOR_ARGS, IMAGE_EDITOR_ARGS);
 		mgr.setValue(PK_USE_IMAGE_EDITOR, USE_IMAGE_EDITOR);
@@ -157,6 +186,10 @@ public class Config {
 		mgr.setValue(PK_TEXT_EDITOR_ARGS, TEXT_EDITOR_ARGS);
 		mgr.setValue(PK_USE_TEXT_EDITOR, USE_TEXT_EDITOR);
 
+		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_FILE, FILECHOOSER_PATH_IMPORT_FILE);
+		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_PACK, FILECHOOSER_PATH_IMPORT_PACK);
+		mgr.setValue(PK_FILECHOOSER_PATH_EXPORT, FILECHOOSER_PATH_EXPORT);
+
 		mgr.apply();
 	}
 
@@ -167,6 +200,7 @@ public class Config {
 	public static void load() {
 
 		mgr.apply();
+
 		FANCY_GROUPS = mgr.getBoolean(PK_FANCY_GROUPS);
 		SHOW_FONT = mgr.getBoolean(PK_SHOW_FONT);
 		SHOW_LANG = mgr.getBoolean(PK_SHOW_LANG);
@@ -176,6 +210,8 @@ public class Config {
 		USE_INTERNAL_META_EDITOR = mgr.getBoolean(PK_USE_INTERNAL_META_EDITOR);
 		USE_INTERNAL_TEXT_EDITOR = mgr.getBoolean(PK_USE_INTERNAL_TEXT_EDITOR);
 		WARNING_ORPHANED_NODES = mgr.getBoolean(PK_WARNING_ORPHANED_NODES);
+
+		PRETTY_JSON = mgr.getBoolean(PK_PRETTY_JSON);
 
 		IMAGE_EDITOR = mgr.getString(PK_IMAGE_EDITOR);
 		IMAGE_EDITOR_ARGS = mgr.getString(PK_IMAGE_EDITOR_ARGS);
@@ -188,6 +224,10 @@ public class Config {
 		TEXT_EDITOR = mgr.getString(PK_TEXT_EDITOR);
 		TEXT_EDITOR_ARGS = mgr.getString(PK_TEXT_EDITOR_ARGS);
 		USE_TEXT_EDITOR = mgr.getBoolean(PK_USE_TEXT_EDITOR);
+
+		FILECHOOSER_PATH_IMPORT_FILE = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_FILE);
+		FILECHOOSER_PATH_IMPORT_PACK = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_PACK);
+		FILECHOOSER_PATH_EXPORT = mgr.getString(PK_FILECHOOSER_PATH_EXPORT);
 	}
 
 

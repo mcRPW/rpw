@@ -26,10 +26,10 @@ public class HelpStore {
 
 
 	public static void load() {
-		
+
 
 		Log.f2("Loading help pages");
-		
+
 		md = new Markdown4jProcessor();
 
 		InputStream in;

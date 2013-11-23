@@ -4,13 +4,16 @@ package net.mightypork.rpw.struct;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
+import net.mightypork.rpw.Config;
+import net.mightypork.rpw.Const;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
 public class PackInfoMap extends HashMap<String, PackInfo> {
 
-	private static Gson gson = new Gson();
+	private static Gson gson = Config.PRETTY_JSON ? Const.PRETTY_GSON : Const.UGLY_GSON;
 	private static Type type = null;
 
 

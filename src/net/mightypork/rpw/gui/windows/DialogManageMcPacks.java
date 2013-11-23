@@ -40,7 +40,7 @@ public class DialogManageMcPacks extends RpwDialog {
 
 		for (File f : aList) {
 			if (f.isDirectory()) continue;
-			String[] parts = FileUtils.removeExtension(f);
+			String[] parts = FileUtils.getFilenameParts(f);
 
 			if (parts[1].equalsIgnoreCase("zip")) {
 				options.add(parts[0]);
@@ -55,7 +55,7 @@ public class DialogManageMcPacks extends RpwDialog {
 
 	private void reloadOptions() {
 
-		list.setOptions(options = getOptions());
+		list.setItems(options = getOptions());
 	}
 
 
@@ -74,7 +74,7 @@ public class DialogManageMcPacks extends RpwDialog {
 		vb.add(list = new SimpleStringList(options, true));
 		list.setMultiSelect(true);
 
-		list.list.addListSelectionListener(new ListSelectionListener() {
+		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {

@@ -218,9 +218,9 @@ public class Icons {
 			}
 
 			ImageIcon ic = new ImageIcon(i);
-			
+
 			ic.setDescription(orig.getWidth() + "x" + orig.getHeight());
-			
+
 			return ic;
 
 		} catch (Exception e) {

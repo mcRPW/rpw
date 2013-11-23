@@ -142,7 +142,7 @@ public class DialogExportToMc extends RpwDialog {
 		options = getOptions();
 
 		vb.add(list = new SimpleStringList(options, true));
-		list.list.addListSelectionListener(new ListSelectionListener() {
+		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -227,7 +227,7 @@ public class DialogExportToMc extends RpwDialog {
 
 		for (File f : aList) {
 			if (f.isDirectory()) continue;
-			String[] parts = FileUtils.removeExtension(f);
+			String[] parts = FileUtils.getFilenameParts(f);
 
 			if (parts[1].equalsIgnoreCase("zip")) {
 				options.add(parts[0]);

@@ -45,6 +45,9 @@ public class TaskExportProject {
 
 		File f = fc.getSelectedFile();
 
+		Config.FILECHOOSER_PATH_EXPORT = fc.getCurrentDirectory().getPath();
+		Config.save();
+
 		if (f.exists()) {
 			//@formatter:off
 			int overwrite = Alerts.askYesNoCancel(
@@ -81,42 +84,27 @@ public class TaskExportProject {
 
 		// Add includes
 
-		if (Config.LOG_EXPORT) {
-			Log.f2("Adding included extra files");
-		}
-
+		if (Config.LOG_EXPORT) Log.f2("Adding included extra files");
 		try {
-			File extrasDir = project.getExtrasDirectory();
-
-			List<File> extras = new ArrayList<File>();
-
-			FileUtils.listDirectoryRecursive(extrasDir, null, extras);
-
-			for (File file : extras) {
-
-				if (!file.isFile()) return;
-
-				String path = file.getAbsolutePath();
-				path = path.replace(extrasDir.getAbsolutePath(), "");
-
-				in = new FileInputStream(file);
-
-				zb.addStream(path, in);
-
-				if (Config.LOG_EXPORT) {
-					Log.f3(path);
-				}
-			}
+			File dir = project.getExtrasDirectory();
+			addDirectoryToZip(zb, dir, "");
 		} catch (Throwable t) {
 			Log.e("Error when including extras.", t);
 		}
 
 
-		if (Config.LOG_EXPORT) {
-			Log.f2("Adding project files");
+		if (Config.LOG_EXPORT) Log.f2("Adding custom sound files");
+		try {
+			File dir = project.getCustomSoundsDirectory();
+			addDirectoryToZip(zb, dir, "assets/minecraft/sounds");
+		} catch (Throwable t) {
+			Log.e("Error when including sounds.", t);
 		}
 
+		if (Config.LOG_EXPORT) Log.f2("Adding configuration files");
+
 		// pack.png
+		if (Config.LOG_EXPORT) Log.f3("* pack.png");
 		try {
 
 			f = new File(project.getProjectDirectory(), "pack.png");
@@ -132,11 +120,17 @@ public class TaskExportProject {
 		}
 
 
-		// readme.txt
+		if (Config.LOG_EXPORT) Log.f3("* readme.txt");
 		zb.addResource("readme.txt", "/data/export/pack-readme.txt");
 
 
+		if (Config.LOG_EXPORT) Log.f3("* assets/minecraft/sounds.json");
+		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
+
+
 		// json mcmeta
+
+		if (Config.LOG_EXPORT) Log.f3("* pack.mcmeta");
 		String desc = project.getProjectName();
 
 		PackInfoMap pim = new PackInfoMap();
@@ -144,6 +138,8 @@ public class TaskExportProject {
 
 		zb.addString("pack.mcmeta", pim.toJson());
 
+
+		if (Config.LOG_EXPORT) Log.f2("Adding project asset files");
 
 		// assets
 		AssetTreeProcessor processor = new AssetTreeProcessor() {
@@ -155,10 +151,10 @@ public class TaskExportProject {
 
 					AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
-					String logSrcAsset = null;
-					String logSrcMeta = null;
+					String logEntry = null;
 
 					// file
+					boolean fileSaved = false;
 					do {
 						String srcName = leaf.resolveAssetSource();
 						if (srcName == null) break;
@@ -175,19 +171,27 @@ public class TaskExportProject {
 
 								String path = leaf.getAssetEntry().getPath();
 
+								logEntry = "* " + path;
+
 								zb.addStream(path, data);
-								logSrcAsset = srcName;
+
+								logEntry += " <- \"" + srcName + "\"";
+
 							} finally {
 								if (data != null) {
 									data.close();
 								}
 							}
 
+							fileSaved = true;
+
 						} catch (IOException e) {
 							Log.e("Error getting asset stream.", e);
 						}
 
 					} while (false);
+
+					if (!fileSaved) return;
 
 					// meta
 					do {
@@ -210,7 +214,9 @@ public class TaskExportProject {
 								String path = leaf.getAssetEntry().getPath() + ".mcmeta";
 
 								zb.addStream(path, data);
-								logSrcMeta = srcName;
+
+								logEntry += ", m: \"" + srcName + "\"";
+
 							} finally {
 								if (data != null) {
 									data.close();
@@ -224,15 +230,8 @@ public class TaskExportProject {
 					} while (false);
 
 
-					if (Config.LOG_EXPORT) {
-						if (logSrcAsset != null) {
-							String s = leaf.getAssetKey();
-							s += " <- \"" + logSrcAsset + "\"";
-
-							if (logSrcMeta != null) s += ", m: \"" + logSrcMeta + "\"";
-
-							Log.f3(s);
-						}
+					if (Config.LOG_EXPORT && logEntry != null) {
+						Log.f3(logEntry);
 					}
 
 				}
@@ -246,6 +245,31 @@ public class TaskExportProject {
 		zb.close();
 	}
 
+
+	private static void addDirectoryToZip(ZipBuilder zb, File dir, String pathPrefix) throws IOException {
+
+		List<File> extras = new ArrayList<File>();
+
+		FileUtils.listDirectoryRecursive(dir, null, extras);
+
+		for (File file : extras) {
+
+			if (!file.isFile()) return;
+
+			String path = file.getAbsolutePath();
+			path = pathPrefix + path.replace(dir.getAbsolutePath(), "");
+
+			FileInputStream in = new FileInputStream(file);
+
+			zb.addStream(path, in);
+
+			in.close();
+
+			if (Config.LOG_EXPORT) Log.f3("* " + path);
+		}
+
+	}
+
 	private static JFileChooser fc = null;
 
 
@@ -254,6 +278,8 @@ public class TaskExportProject {
 		Project project = Projects.getActive();
 
 		if (fc == null) fc = new JFileChooser();
+
+		fc.setCurrentDirectory(new File(Config.FILECHOOSER_PATH_EXPORT));
 
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setDialogTitle("Export project");

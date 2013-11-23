@@ -12,6 +12,7 @@ import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Source;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Log;
@@ -24,6 +25,8 @@ public class Project extends Source implements NodeSourceProvider {
 
 	private Map<String, String> files = new LinkedHashMap<String, String>();
 	private Map<String, String> groups = new LinkedHashMap<String, String>();
+	private SoundEntryMap sounds = new SoundEntryMap();
+
 	private PropertyManager cfg;
 
 	private File projectBase;
@@ -32,6 +35,7 @@ public class Project extends Source implements NodeSourceProvider {
 	private File customSoundsBase;
 	private File fileSourcesFiles;
 	private File fileSourcesGroups;
+	private File fileSounds;
 	private File fileConfig;
 	private String dirName;
 
@@ -50,6 +54,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 		fileSourcesFiles = new File(projectBase, Paths.FILENAME_PROJECT_FILES);
 		fileSourcesGroups = new File(projectBase, Paths.FILENAME_PROJECT_GROUPS);
+		fileSounds = new File(projectBase, Paths.FILENAME_PROJECT_SOUNDS);
 
 		fileConfig = new File(projectBase, Paths.FILENAME_PROJECT_CONFIG);
 
@@ -114,6 +119,10 @@ public class Project extends Source implements NodeSourceProvider {
 			groups = SimpleConfig.mapFromFile(fileSourcesGroups);
 		}
 
+		if (fileSounds.exists()) {
+			sounds = SoundEntryMap.fromJson(FileUtils.fileToString(fileSounds));
+		}
+
 		privateCopiesBase.mkdirs();
 		extraIncludesBase.mkdirs();
 		customSoundsBase.mkdirs();
@@ -125,13 +134,18 @@ public class Project extends Source implements NodeSourceProvider {
 
 	public void save() throws IOException {
 
+		Log.f2("Saving project " + projectName);
+
 		files.remove(null);
 		groups.remove(null);
 
 		SimpleConfig.mapToFile(fileSourcesFiles, files);
 		SimpleConfig.mapToFile(fileSourcesGroups, groups);
+		FileUtils.stringToFile(fileSounds, sounds.toJson());
 
 		saveProperties();
+
+		Log.f2("Saving project " + projectName + " - done.");
 	}
 
 
@@ -209,9 +223,21 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 
 
+	public File getCustomSoundsDirectory() {
+
+		return customSoundsBase;
+	}
+
+
 	public String getDirName() {
 
 		return dirName;
+	}
+
+
+	public SoundEntryMap getSoundsMap() {
+
+		return sounds;
 	}
 
 }

@@ -64,7 +64,7 @@ public class TaskReloadVanilla {
 			public boolean accept(String entry) {
 
 				entry = FileUtils.escapeFilename(entry);
-				String[] split = FileUtils.removeExtension(entry);
+				String[] split = FileUtils.getFilenameParts(entry);
 
 				String name = split[0];
 				String ext = split[1];
@@ -85,7 +85,7 @@ public class TaskReloadVanilla {
 				path = path.replace(source.getAbsolutePath(), "assets/minecraft");
 
 				path = FileUtils.escapeFilename(path);
-				String[] parts = FileUtils.removeExtension(path);
+				String[] parts = FileUtils.getFilenameParts(path);
 				String key;
 				key = parts[0].replace('\\', '.');
 				key = key.replace('/', '.');

@@ -143,7 +143,7 @@ public class Utils {
 	public static String cropStringAtStart(String orig, int length) {
 
 		if (orig.length() > length) {
-			orig = "\u2026" + orig.substring(orig.length() - length, orig.length());
+			orig = "\u2026" + orig.substring(strSizeWeighted(orig) - length, orig.length());
 		}
 		return orig;
 	}
@@ -152,9 +152,28 @@ public class Utils {
 	public static String cropStringAtEnd(String orig, int length) {
 
 		if (orig.length() > length) {
-			orig = orig.substring(0, Math.min(orig.length(), length) - 1) + "\u2026";
+			orig = orig.substring(0, Math.min(strSizeWeighted(orig), length) - 1) + "\u2026";
 		}
 		return orig;
+	}
+
+
+	private static int strSizeWeighted(String str) {
+
+		double size = 0;
+		for (char c : str.toCharArray()) {
+			String s = String.valueOf(c);
+			if ("1li,.'I;".contains(s)) {
+				size += 0.4;
+			} else if ("WwmM".contains(s)) {
+				size += 1.5;
+			} else if ("tf".contains(s)) {
+				size += 0.8;
+			} else {
+				size += 1;
+			}
+		}
+		return (int) Math.round(size);
 	}
 
 

@@ -10,21 +10,20 @@ import javax.swing.filechooser.FileFilter;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.windows.Alerts;
-import net.mightypork.rpw.project.Projects;
-import net.mightypork.rpw.tree.assets.AssetEntry;
+import net.mightypork.rpw.tree.filesystem.FileFsTreeNode;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 
 
-public class TaskImportReplacement {
+public class TaskImportCustomSoundReplacement {
 
-	private static AssetEntry replacedEntry;
+	private static FileFsTreeNode fileNode;
 
 
-	public static void run(AssetEntry entry, Runnable afterImport) {
+	public static void run(FileFsTreeNode node, Runnable afterImport) {
 
-		replacedEntry = entry;
+		fileNode = node;
 
 		initFileChooser();
 
@@ -33,26 +32,26 @@ public class TaskImportReplacement {
 			return;
 		}
 
-		File f = fc.getSelectedFile();
+		File file = fc.getSelectedFile();
 
 		Config.FILECHOOSER_PATH_IMPORT_FILE = fc.getCurrentDirectory().getPath();
 		Config.save();
 
-		if (f == null || !f.exists()) {
-			Log.w("Problem accessing file:\n" + f);
+		if (file == null || !file.exists()) {
 			Alerts.error(App.getFrame(), "That's not a valid file.");
 			return;
 		}
 
 		try {
 
-			File target = new File(Projects.getActive().getAssetsBaseDirectory(), replacedEntry.getPath());
+			File target = fileNode.getPath();
 
-			target.getParentFile().mkdirs();
+			target.mkdirs();
 
-			FileUtils.copyFile(f, target);
+			FileUtils.copyFile(file, new File(target, file.getName()));
 
-			afterImport.run();
+
+			if (afterImport != null) afterImport.run();
 
 		} catch (IOException e) {
 			Log.e(e);
@@ -69,16 +68,16 @@ public class TaskImportReplacement {
 
 		fc.setCurrentDirectory(new File(Config.FILECHOOSER_PATH_IMPORT_FILE));
 		fc.setAcceptAllFileFilterUsed(false);
-		fc.setDialogTitle("Replace " + replacedEntry.getLabel() + "." + replacedEntry.getType().getExtension());
+		fc.setDialogTitle("Import sound file into sounds/" + fileNode.getPathRelativeToRoot());
 		fc.setFileFilter(new FileFilter() {
 
-			FileSuffixFilter fsf = new FileSuffixFilter(replacedEntry.getType().getExtension());
+			FileSuffixFilter fsf = new FileSuffixFilter("ogg");
 
 
 			@Override
 			public String getDescription() {
 
-				return replacedEntry.getType() + " *." + replacedEntry.getType().getExtension();
+				return "OGG files, *.ogg";
 			}
 
 

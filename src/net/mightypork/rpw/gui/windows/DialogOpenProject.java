@@ -42,7 +42,7 @@ public class DialogOpenProject extends RpwDialog {
 		options = Projects.getProjectNames();
 
 		vb.add(list = new SimpleStringList(options, true));
-		list.list.addListSelectionListener(new ListSelectionListener() {
+		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {

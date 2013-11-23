@@ -20,8 +20,8 @@ public class TaskDevel {
 
 	public static void run() {
 
-		//DialogSoundWizard dlg = new DialogSoundWizard();
-	//dlg.setVisible(true);
+		DialogSoundWizard dlg = new DialogSoundWizard();
+		dlg.setVisible(true);
 //
 //		SoundEntryMap map = SoundEntryMap.fromJson("{"
 //				+ "\"a\":   {\"category\": \"neutral\",\"sounds\": [\"custom_sounds/test\"]},"

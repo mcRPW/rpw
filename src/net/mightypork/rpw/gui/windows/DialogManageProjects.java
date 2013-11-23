@@ -40,7 +40,7 @@ public class DialogManageProjects extends RpwDialog {
 
 	private void reloadOptions() {
 
-		list.setOptions(options = Projects.getProjectNames());
+		list.setItems(options = Projects.getProjectNames());
 	}
 
 
@@ -59,7 +59,7 @@ public class DialogManageProjects extends RpwDialog {
 		vb.add(list = new SimpleStringList(options, true));
 		list.setMultiSelect(true);
 
-		list.list.addListSelectionListener(new ListSelectionListener() {
+		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {

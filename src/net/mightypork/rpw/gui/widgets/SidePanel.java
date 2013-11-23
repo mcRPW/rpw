@@ -34,7 +34,6 @@ import net.mightypork.rpw.utils.Utils;
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTitledSeparator;
-import org.jdesktop.swingx.renderer.IconValue;
 
 
 public class SidePanel {
@@ -409,7 +408,7 @@ public class SidePanel {
 			projectBase.setText(path);
 
 			File iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
-			
+
 			ImageIcon ic = Icons.getIconFromFile(iconFile, new Dimension(128, 128));
 			projectIconLabel.setIcon(ic);
 
@@ -444,7 +443,7 @@ public class SidePanel {
 			String source = leaf.resolveAssetSource();
 
 			String path = leaf.getAssetEntry().getPath();
-			String fname = FileUtils.removeExtension(Utils.fromLastChar(path, '/'))[0];
+			String fname = FileUtils.getBasename(path);
 
 			displayedLeaf = leaf;
 
@@ -473,10 +472,12 @@ public class SidePanel {
 					previewImage.setIcon(null);
 				} else {
 					ImageIcon i = Icons.getIconFromStream(in, new Dimension(256, 256));
-					
+
 					previewImage.setIcon(i);
 
-					previewImageBorder.setTitle(fname+" ("+i.getDescription()+")");
+					String fn = Utils.cropStringAtEnd(fname, 25);
+
+					previewImageBorder.setTitle(fn + " (" + i.getDescription() + ")");
 				}
 
 				boolean metaInProj = leaf.isMetaProvidedByProject();

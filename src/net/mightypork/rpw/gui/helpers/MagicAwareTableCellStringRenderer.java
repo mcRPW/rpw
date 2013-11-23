@@ -46,13 +46,13 @@ public class MagicAwareTableCellStringRenderer extends JLabel implements TableCe
 
 
 		setFont(table.getFont());
-		
-		int index = 0 + (row%2==0?1:0);
-		if(isSelected) index = 2;
-		
+
+		int index = 0 + (row % 2 == 0 ? 1 : 0);
+		if (isSelected) index = 2;
+
 		setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
 
-		
+
 		if (MagicSources.isProject(source)) {
 			setBackground(bgProject[index]);
 		} else if (MagicSources.isVanilla(source)) {

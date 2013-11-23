@@ -16,6 +16,7 @@ public class Paths {
 	public static final String DIRNAME_PROJECT_SOUNDS = "custom_sounds";
 	public static final String FILENAME_PROJECT_FILES = "sources_files.dat";
 	public static final String FILENAME_PROJECT_GROUPS = "sources_groups.dat";
+	public static final String FILENAME_PROJECT_SOUNDS = "sounds.json";
 	public static final String FILENAME_PROJECT_CONFIG = "properties.cfg";
 	public static final String FILENAME_LOG = "Runtime.log";
 

@@ -9,6 +9,7 @@ import javax.swing.tree.TreeNode;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.tree.IFileTreeNode;
+import net.mightypork.rpw.utils.AlphanumComparator;
 
 
 public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNode, IFileTreeNode {
@@ -217,14 +218,7 @@ public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNo
 
 	private int compareTo_3(AssetTreeNode o) {
 
-		if (label.matches("[0-9]+") && o.label.matches("[0-9]+")) {
-			Integer a = Integer.parseInt(label);
-			Integer b = Integer.parseInt(o.label);
-
-			return a.compareTo(b);
-		}
-
-		return label.compareToIgnoreCase(o.label);
+		return AlphanumComparator.instance.compare(label.toLowerCase(), o.label.toLowerCase());
 	}
 
 

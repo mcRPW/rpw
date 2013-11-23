@@ -10,6 +10,19 @@ public class SoundEntry {
 	public ArrayList<String> sounds;
 
 
+	public SoundEntry() {
+
+	}
+
+
+	public SoundEntry(String ctg, ArrayList<String> files) {
+
+		category = ctg;
+		sounds = new ArrayList<String>();
+		sounds.addAll(files);
+	}
+
+
 	@Override
 	public String toString() {
 

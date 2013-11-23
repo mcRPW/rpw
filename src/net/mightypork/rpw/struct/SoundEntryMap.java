@@ -2,15 +2,16 @@ package net.mightypork.rpw.struct;
 
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 
-public class SoundEntryMap extends HashMap<String, SoundEntry> {
+public class SoundEntryMap extends LinkedHashMap<String, SoundEntry> {
 
-	private static Gson gson = new Gson();
+	private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private static Type type = null;
 
 

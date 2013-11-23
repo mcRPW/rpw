@@ -39,7 +39,7 @@ public class DialogManageLibrary extends RpwDialog {
 
 	private void reloadOptions() {
 
-		list.setOptions(options = Sources.getResourcepackNames());
+		list.setItems(options = Sources.getResourcepackNames());
 	}
 
 
@@ -58,7 +58,7 @@ public class DialogManageLibrary extends RpwDialog {
 		vb.add(list = new SimpleStringList(options, true));
 		list.setMultiSelect(true);
 
-		list.list.addListSelectionListener(new ListSelectionListener() {
+		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {

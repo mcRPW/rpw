@@ -1,20 +1,14 @@
 package net.mightypork.rpw.gui.widgets;
 
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.Enumeration;
 
-import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -22,7 +16,11 @@ import javax.swing.tree.TreePath;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.helpers.*;
+import net.mightypork.rpw.gui.helpers.AssetTableClickListener;
+import net.mightypork.rpw.gui.helpers.ColumnHeaderToolTipsMouseListener;
+import net.mightypork.rpw.gui.helpers.MagicAwareTableCellStringRenderer;
+import net.mightypork.rpw.gui.helpers.MouseLeaveListener;
+import net.mightypork.rpw.gui.helpers.NullAwareTableCellBooleanRenderer;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.TreeIconProvider;
@@ -71,16 +69,16 @@ public class TreeDisplay {
 		treeTable.setAutoCreateColumnsFromModel(false);
 		treeTable.setRowHeight(20);
 		treeTable.addMouseListener(new AssetTableClickListener(treeTable));
-		
+
 		DefaultTreeRenderer renderer = new DefaultTreeRenderer(new TreeIconProvider());
-		
+
 		treeTable.putClientProperty("JTree.lineStyle", "Angled");
 		treeTable.setTreeCellRenderer(renderer);
 		treeTable.getTableHeader().setReorderingAllowed(false);
 
 		treeTable.setDefaultRenderer(Boolean.class, new NullAwareTableCellBooleanRenderer());
 		treeTable.setDefaultRenderer(SourceName.class, new MagicAwareTableCellStringRenderer());
-		
+
 		final TreeSelectionListener tsl = new TreeSelectionListener() {
 
 			@Override

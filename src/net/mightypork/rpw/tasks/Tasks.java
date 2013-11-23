@@ -669,6 +669,10 @@ public class Tasks {
 						Tasks.taskOnProjectChanged();
 						Alerts.loading(false);
 
+						// DEBUG FIXME TODO
+
+						TaskDevel.run();
+
 						// -- task end --
 					}
 
