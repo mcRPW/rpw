@@ -9,7 +9,7 @@ import javax.swing.filechooser.FileFilter;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
-import net.mightypork.rpw.gui.windows.Alerts;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.tree.filesystem.FileFsTreeNode;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Log;

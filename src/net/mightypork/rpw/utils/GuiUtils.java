@@ -1,13 +1,29 @@
 package net.mightypork.rpw.utils;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GraphicsEnvironment;
-import java.awt.Point;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+
+import net.mightypork.rpw.gui.windows.RpwDialog;
 
 
 public class GuiUtils {
+
+	public static final ActionListener openUrlListener = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			DesktopApi.browse(URI.create(e.getActionCommand()));
+		}
+	};
+
 
 	public static void forceSize(Component c, int x, int y) {
 
@@ -41,5 +57,23 @@ public class GuiUtils {
 			// meh
 			Log.e("Failed to center window.");
 		}
+	}
+
+
+	public static JComponent createDialogHeading(String text) {
+
+		JLabel title = new JLabel(text);
+		title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+		title.setForeground(new Color(0x045A80));
+		title.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+		title.setAlignmentX(0.5f);
+
+		return title;
+	}
+
+
+	public static void open(RpwDialog dialog) {
+
+		dialog.setVisible(true);
 	}
 }

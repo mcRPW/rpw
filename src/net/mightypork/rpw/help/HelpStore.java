@@ -13,16 +13,10 @@ import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.SimpleConfig;
 
-import org.markdown4j.Markdown4jProcessor;
-
 
 public class HelpStore {
 
 	private static List<HelpPage> pages = new ArrayList<HelpPage>();
-	static Markdown4jProcessor md;
-
-	static String htmlTop;
-	static String htmlBottom;
 
 
 	public static void load() {
@@ -30,19 +24,12 @@ public class HelpStore {
 
 		Log.f2("Loading help pages");
 
-		md = new Markdown4jProcessor();
-
 		InputStream in;
 
 		in = FileUtils.getResource(Paths.DATA_DIR_HELP + "index.txt");
 		String text = FileUtils.streamToString(in);
 		Map<String, String> pageMap = SimpleConfig.mapFromString(text);
 
-		in = FileUtils.getResource(Paths.DATA_DIR_HELP + "html_top.html");
-		htmlTop = FileUtils.streamToString(in);
-
-		in = FileUtils.getResource(Paths.DATA_DIR_HELP + "html_bottom.html");
-		htmlBottom = FileUtils.streamToString(in);
 
 		for (Entry<String, String> entry : pageMap.entrySet()) {
 

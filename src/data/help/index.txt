@@ -1,1 +1,7 @@
-about-rpw.md = Overview
+about-rpw.md = Goals of RPW
+understanding-packs.md = Understanding r.packs
+pack-library.md = Pack library
+main-tree.md = Working with asset tree
+mcmeta.md = Texture effects
+custom-sounds.md = Adding custom sounds
+technical.md = Technical info

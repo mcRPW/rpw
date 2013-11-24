@@ -11,13 +11,14 @@ import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.widgets.MenuMain;
 import net.mightypork.rpw.gui.widgets.SidePanel;
 import net.mightypork.rpw.gui.widgets.TreeDisplay;
-import net.mightypork.rpw.gui.windows.Alerts;
-import net.mightypork.rpw.gui.windows.WindowCrash;
 import net.mightypork.rpw.gui.windows.WindowMain;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
+import net.mightypork.rpw.gui.windows.messages.WindowCrash;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.NodeSourceProvider;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.utils.HtmlBuilder;
 import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
 
@@ -82,6 +83,8 @@ public class App {
 		OsUtils.initDirs();
 		Config.init();
 
+		HtmlBuilder.init();
+
 		Icons.init();
 
 		// preload RSyntaxTextArea (it's big and causes lag otherwise)		
@@ -89,22 +92,24 @@ public class App {
 		RSyntaxTextArea rsa = new RSyntaxTextArea();
 		rsa = null;
 
-
 		Tasks.taskLoadHelp();
 		Tasks.taskCreateModConfigFiles();
+
 		Sources.init();
 
-		Tasks.checkUpdate();
 
 		Log.f2("Building main window.");
 
 		int t = Tasks.taskBuildMainWindow();
 		while (Tasks.isRunning(t)) {} // wait for completion on EDT
 
+		Tasks.checkUpdate();
+
 		Log.f2("Opening last project (if any).");
 
 		Projects.openLastProject();
 
+		Tasks.taskShowChangelog();
 	}
 
 

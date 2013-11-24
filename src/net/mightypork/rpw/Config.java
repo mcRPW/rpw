@@ -21,6 +21,7 @@ public class Config {
 	public static final boolean def_PREVIEW_HOVER = true;
 	public static final boolean def_SHOW_HIDDEN_IN_FILEPICKER = true;
 	public static final boolean def_CLOSED_WITH_PROJECT_OPEN = false;
+	public static final int def_LAST_RUN_VERSION = 0;
 	public static final boolean def_USE_INTERNAL_META_EDITOR = true;
 	public static final boolean def_USE_INTERNAL_TEXT_EDITOR = true;
 	public static final boolean def_WARNING_ORPHANED_NODES = true;
@@ -31,11 +32,13 @@ public class Config {
 	public static boolean SHOW_OBSOLETE_DIRS;
 	public static boolean PREVIEW_HOVER;
 	public static boolean SHOW_HIDDEN_FILES;
-	public static boolean CLOSED_WITH_PROJECT_OPEN;
 	public static boolean USE_INTERNAL_META_EDITOR;
 	public static boolean USE_INTERNAL_TEXT_EDITOR;
 	public static boolean WARNING_ORPHANED_NODES;
 	public static boolean PRETTY_JSON;
+	public static boolean CLOSED_WITH_PROJECT_OPEN;
+	public static int LAST_RUN_VERSION;
+
 
 	// filechooser paths
 	public static final String def_FILECHOOSER_PATH_IMPORT_FILE = System.getProperty("user.home");
@@ -72,7 +75,6 @@ public class Config {
 	private static PropertyManager mgr;
 
 	private static final String PK_FANCY_GROUPS = "display.fancyTree";
-	private static final String PK_CLOSED_WITH_PROJECT_OPEN = "status.closedWithProjectOpen";
 	private static final String PK_SHOW_FONT = "assets.showFont";
 	private static final String PK_SHOW_LANG = "assets.showLang";
 	private static final String PK_SHOW_OBSOLETE_DIRS = "assets.showObsoleteDirs";
@@ -81,6 +83,7 @@ public class Config {
 	private static final String PK_USE_INTERNAL_META_EDITOR = "system.editor.useInternalMetaEditor";
 	private static final String PK_USE_INTERNAL_TEXT_EDITOR = "system.editor.useInternalTextEditor";
 	private static final String PK_WARNING_ORPHANED_NODES = "display.warning.orphanedNodes";
+
 
 	private static final String PK_IMAGE_EDITOR = "system.editor.image.command";
 	private static final String PK_IMAGE_EDITOR_ARGS = "system.editor.image.args";
@@ -98,6 +101,8 @@ public class Config {
 	public static final String PK_FILECHOOSER_PATH_IMPORT_FILE = "status.path.importFile";
 	public static final String PK_FILECHOOSER_PATH_IMPORT_PACK = "status.path.importPack";
 	public static final String PK_FILECHOOSER_PATH_EXPORT = "status.path.exportPack";
+	private static final String PK_CLOSED_WITH_PROJECT_OPEN = "status.closedWithProjectOpen";
+	private static final String PK_LAST_RUN_VERSION = "status.lastRunVersion";
 
 
 	/**
@@ -145,6 +150,7 @@ public class Config {
 		mgr.putBoolean(PK_PRETTY_JSON, def_PRETTY_JSON, "Use pretty formatting for output JSON.");
 
 		mgr.putBoolean(PK_CLOSED_WITH_PROJECT_OPEN, def_CLOSED_WITH_PROJECT_OPEN);
+		mgr.putInteger(PK_LAST_RUN_VERSION, def_LAST_RUN_VERSION);
 
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_FILE, def_FILECHOOSER_PATH_IMPORT_FILE);
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_PACK, def_FILECHOOSER_PATH_IMPORT_PACK);
@@ -167,7 +173,6 @@ public class Config {
 		mgr.setValue(PK_SHOW_OBSOLETE_DIRS, SHOW_OBSOLETE_DIRS);
 		mgr.setValue(PK_PREVIEW_HOVER, PREVIEW_HOVER);
 		mgr.setValue(PK_SHOW_HIDDEN_IN_FILEPICKER, SHOW_HIDDEN_FILES);
-		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
 		mgr.setValue(PK_USE_INTERNAL_META_EDITOR, USE_INTERNAL_META_EDITOR);
 		mgr.setValue(PK_USE_INTERNAL_TEXT_EDITOR, USE_INTERNAL_TEXT_EDITOR);
 		mgr.setValue(PK_WARNING_ORPHANED_NODES, WARNING_ORPHANED_NODES);
@@ -189,6 +194,8 @@ public class Config {
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_FILE, FILECHOOSER_PATH_IMPORT_FILE);
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_PACK, FILECHOOSER_PATH_IMPORT_PACK);
 		mgr.setValue(PK_FILECHOOSER_PATH_EXPORT, FILECHOOSER_PATH_EXPORT);
+		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
+		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL);
 
 		mgr.apply();
 
@@ -233,6 +240,8 @@ public class Config {
 		FILECHOOSER_PATH_IMPORT_FILE = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_FILE);
 		FILECHOOSER_PATH_IMPORT_PACK = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_PACK);
 		FILECHOOSER_PATH_EXPORT = mgr.getString(PK_FILECHOOSER_PATH_EXPORT);
+
+		LAST_RUN_VERSION = mgr.getInteger(PK_LAST_RUN_VERSION);
 	}
 
 	public static final boolean LOGGING_ENABLED = true;

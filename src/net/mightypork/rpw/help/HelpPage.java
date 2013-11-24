@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.HtmlBuilder;
 import net.mightypork.rpw.utils.Log;
 
 
@@ -28,13 +29,8 @@ public class HelpPage {
 				Log.w("Missing help page " + filename);
 				content = "Page not found.";
 			} else {
-				try {
-					content = HelpStore.htmlTop + HelpStore.md.process(in) + HelpStore.htmlBottom;
-
-				} catch (IOException e) {
-					Log.e("Failed to load a help page " + filename, e);
-					content = "Failed to load.";
-				}
+				String str = FileUtils.streamToString(in);
+				content = HtmlBuilder.markdownToHtmlHelp(str);
 			}
 
 		} finally {

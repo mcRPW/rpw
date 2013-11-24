@@ -17,7 +17,7 @@ import javax.swing.border.TitledBorder;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
-import net.mightypork.rpw.gui.windows.Alerts;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;

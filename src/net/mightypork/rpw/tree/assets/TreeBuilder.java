@@ -6,7 +6,7 @@ import java.util.Map;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
-import net.mightypork.rpw.gui.windows.Alerts;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.NodeSourceProvider;

@@ -4,20 +4,23 @@ package net.mightypork.rpw.gui.widgets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.net.URI;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.windows.Alerts;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.DesktopApi;
+import net.mightypork.rpw.utils.GuiUtils;
 
 
 public class MenuMain {
@@ -59,7 +62,7 @@ public class MenuMain {
 	private JCheckBoxMenuItem itemOptionObsoleteDirs;
 	private JMenuItem itemConfigureEditors;
 
-	private JMenuItem itemQuickGuide;
+	private JMenuItem itemHelp;
 	private JMenuItem itemRuntimeLog;
 	private JMenuItem itemAbout;
 
@@ -319,36 +322,28 @@ public class MenuMain {
 		menu = menuHelp = new JMenu("Help");
 		menu.setMnemonic(KeyEvent.VK_H);
 					
-			item = itemQuickGuide = new JMenuItem("Quick Guide", KeyEvent.VK_G);
+			item = itemHelp = new JMenuItem("Guide Book", KeyEvent.VK_G);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 			item.setIcon(Icons.MENU_HELP);
 			menu.add(item);
 			
 			menu.addSeparator();
 			
-			item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
-			item.setIcon(Icons.MENU_DONATE);
-			item.addActionListener(openUrlListener);
-			item.setActionCommand(Paths.URL_DONATE);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
 			item = new JMenuItem("RPW on GitHub");
 			item.setIcon(Icons.MENU_GITHUB);
-			item.addActionListener(openUrlListener);
+			item.addActionListener(GuiUtils.openUrlListener);
 			item.setActionCommand(Paths.URL_GITHUB_WEB);
 			menu.add(item);	
 			
 			item = new JMenuItem("RPW on Planet Minecraft");
 			item.setIcon(Icons.MENU_PMC);
-			item.addActionListener(openUrlListener);
+			item.addActionListener(GuiUtils.openUrlListener);
 			item.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
 			menu.add(item);	
 			
 			item = new JMenuItem("RPW on Minecraft Forum");
 			item.setIcon(Icons.MENU_MCF);
-			item.addActionListener(openUrlListener);
+			item.addActionListener(GuiUtils.openUrlListener);
 			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
 			menu.add(item);	
 			
@@ -356,9 +351,17 @@ public class MenuMain {
 			
 			item = new JMenuItem("Download latest version");
 			item.setIcon(Icons.MENU_DOWNLOAD);
-			item.addActionListener(openUrlListener);
+			item.addActionListener(GuiUtils.openUrlListener);
 			item.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
-			menu.add(item);	
+			menu.add(item);
+			
+			menu.addSeparator();
+			
+			item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
+			item.setIcon(Icons.MENU_DONATE);
+			item.addActionListener(GuiUtils.openUrlListener);
+			item.setActionCommand(Paths.URL_DONATE);
+			menu.add(item);
 			
 			menu.addSeparator();
 		
@@ -589,7 +592,7 @@ public class MenuMain {
 			}
 		});
 
-		itemQuickGuide.addActionListener(new ActionListener() {
+		itemHelp.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -771,15 +774,6 @@ public class MenuMain {
 		public void actionPerformed(ActionEvent e) {
 
 			Tasks.taskOpenProject(e.getActionCommand());
-		}
-	};
-	
-	private ActionListener openUrlListener = new ActionListener() {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			DesktopApi.browse(URI.create(e.getActionCommand()));
 		}
 	};
 

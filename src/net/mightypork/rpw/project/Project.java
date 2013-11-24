@@ -11,7 +11,7 @@ import java.util.Map;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
-import net.mightypork.rpw.gui.windows.Alerts;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Source;
 import net.mightypork.rpw.library.Sources;
@@ -135,7 +135,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 		Log.f3("Calculating checksums");
 
-		FastDirectoryComparator comparator = new FastDirectoryComparator();
+		FastRecursiveDiff comparator = new FastRecursiveDiff();
 
 		boolean retval = !comparator.areEqual(getProjectDirectory(), getRealProjectBase());
 

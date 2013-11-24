@@ -40,6 +40,7 @@ public class Paths {
 
 	// paths used for internal resources
 	public static final String DATA_DIR_HELP = "/data/help/";
+	public static final String DATA_DIR_HTML = "/data/html/";
 	public static final String DATA_DIR_IMAGES = "/images/";
 
 
@@ -50,5 +51,6 @@ public class Paths {
 	public static final String URL_UPDATE_WEB = URL_PLANETMINECRAFT_WEB;
 	public static final String URL_GITHUB_WEB = "https://github.com/MightyPork/rpw/";
 	public static final String URL_LATEST_DOWNLOAD = "https://dl.dropboxusercontent.com/u/64454818/RPW/RPW-LATEST.jar";
+
 
 }

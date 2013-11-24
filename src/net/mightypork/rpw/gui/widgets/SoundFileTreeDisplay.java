@@ -6,8 +6,8 @@ import javax.swing.JScrollPane;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.helpers.SoundFileTreeClickListener;
-import net.mightypork.rpw.gui.windows.DialogSoundWizard;
+import net.mightypork.rpw.gui.helpers.trees.SoundFileTreeClickListener;
+import net.mightypork.rpw.gui.windows.dialogs.DialogSoundWizard;
 import net.mightypork.rpw.tree.TreeIconProvider;
 import net.mightypork.rpw.tree.filesystem.DirectoryFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.FsTreeModel;

@@ -14,7 +14,11 @@ import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
-import net.mightypork.rpw.gui.windows.*;
+import net.mightypork.rpw.gui.windows.RpwDialog;
+import net.mightypork.rpw.gui.windows.WindowMain;
+import net.mightypork.rpw.gui.windows.dialogs.*;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
+import net.mightypork.rpw.gui.windows.messages.DialogChangelog;
 import net.mightypork.rpw.help.HelpStore;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
@@ -27,6 +31,7 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 import net.mightypork.rpw.utils.DesktopApi;
 import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.GuiUtils;
 import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
 
@@ -154,16 +159,13 @@ public class Tasks {
 
 	public static void taskDialogAbout() {
 
-		JDialog dialog = new DialogAbout();
-
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogAbout());
 	}
 
 
 	public static void taskDialogExportToMc() {
 
-		JDialog dialog = new DialogExportToMc();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogExportToMc());
 	}
 
 
@@ -178,15 +180,13 @@ public class Tasks {
 
 	public static void taskDialogLog() {
 
-		JDialog dialog = new DialogShowLog();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogShowLog());
 	}
 
 
 	public static void taskDialogImportPack() {
 
-		JDialog dialog = new DialogImportPack();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogImportPack());
 	}
 
 
@@ -695,8 +695,6 @@ public class Tasks {
 						Tasks.taskOnProjectChanged();
 						Alerts.loading(false);
 
-						// DEBUG FIXME TODO
-
 						TaskDevel.run();
 
 						// -- task end --
@@ -742,57 +740,49 @@ public class Tasks {
 
 	public static void taskDialogProjectProperties() {
 
-		JDialog dialog = new DialogProjectProperties();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogProjectProperties());
 	}
 
 
 	public static void taskDialogProjectSummary() {
 
-		JDialog dialog = new DialogProjectSummary();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogProjectSummary());
 	}
 
 
 	public static void taskDialogManageLibrary() {
 
-		JDialog dialog = new DialogManageLibrary();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogManageLibrary());
 	}
 
 
 	public static void taskDialogManageProjects() {
 
-		JDialog dialog = new DialogManageProjects();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogManageProjects());
 	}
 
 
 	private static void taskDialogOpenProject() {
 
-		JDialog dialog = new DialogOpenProject();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogOpenProject());
 	}
 
 
 	public static void taskDialogNewProject() {
 
-		JDialog dialog = new DialogNewProject();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogNewProject());
 	}
 
 
 	public static void taskDialogSaveAs() {
 
-		JDialog dialog = new DialogSaveAs();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogSaveAs());
 	}
 
 
 	public static void taskDialogSettings() {
 
-		JDialog dialog = new DialogConfigureEditors();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogConfigureEditors());
 	}
 
 
@@ -830,8 +820,7 @@ public class Tasks {
 	public static void taskDialogManageMcPacks() {
 
 
-		JDialog dialog = new DialogManageMcPacks();
-		dialog.setVisible(true);
+		GuiUtils.open(new DialogManageMcPacks());
 	}
 
 
@@ -872,5 +861,14 @@ public class Tasks {
 		Alerts.loading(false);
 		dlg.setVisible(true);
 
+	}
+
+
+	public static void taskShowChangelog() {
+
+		if (Config.LAST_RUN_VERSION != Const.VERSION_SERIAL) {
+
+			GuiUtils.open(new DialogChangelog());
+		}
 	}
 }
