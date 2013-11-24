@@ -18,7 +18,7 @@ public class Config {
 	public static final boolean def_SHOW_FONT = false;
 	public static final boolean def_SHOW_OBSOLETE_DIRS = false;
 	public static final boolean def_SHOW_LANG = false;
-	public static final boolean def_PREVIEW_HOVER = true;
+	public static final boolean def_PREVIEW_HOVER = false;
 	public static final boolean def_SHOW_HIDDEN_IN_FILEPICKER = true;
 	public static final boolean def_CLOSED_WITH_PROJECT_OPEN = false;
 	public static final int def_LAST_RUN_VERSION = 0;

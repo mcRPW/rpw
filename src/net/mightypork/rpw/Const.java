@@ -7,8 +7,8 @@ import com.google.gson.GsonBuilder;
 
 public class Const {
 
-	public static final String VERSION = "3.8.0";
-	public static final int VERSION_SERIAL = 380;
+	public static final String VERSION = "3.8.1";
+	public static final int VERSION_SERIAL = 381;
 
 	public static final String APP_NAME = "ResourcePack Workbench";
 	public static final String WINDOW_TITLE = APP_NAME + " \u2022 v" + VERSION + "  \u2022  Crafted by MightyPork";

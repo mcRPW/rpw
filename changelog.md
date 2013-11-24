@@ -3,3 +3,5 @@
 - New Guide Book
 - Main menu overhaul
 - Many important bugfixes
+
+*3.8.1 fixes some encoding issues.*

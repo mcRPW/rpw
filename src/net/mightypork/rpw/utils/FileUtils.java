@@ -305,7 +305,7 @@ public class FileUtils {
 		String line;
 		try {
 
-			br = new BufferedReader(new InputStreamReader(in));
+			br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 			while ((line = br.readLine()) != null) {
 				sb.append(line + "\n");
 			}
@@ -355,9 +355,12 @@ public class FileUtils {
 		PrintStream out = null;
 		try {
 
-			out = new PrintStream(new FileOutputStream(file));
+			out = new PrintStream(new FileOutputStream(file), false, "UTF-8");
 
 			out.print(text);
+			
+			out.flush();
+			
 		} finally {
 			if (out != null) out.close();
 		}

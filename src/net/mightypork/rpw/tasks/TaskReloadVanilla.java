@@ -132,6 +132,7 @@ public class TaskReloadVanilla {
 			}
 			modList = modList.trim();
 
+			Alerts.loading(false);
 			//@formatter:off
 			boolean yeah = Alerts.askYesNo(
 					App.getFrame(),
@@ -144,6 +145,7 @@ public class TaskReloadVanilla {
 					"Do you want to load them too?"
 			);
 			//@formatter:on
+			Alerts.loading(true);
 
 			if (yeah) {
 				int added = 0;
