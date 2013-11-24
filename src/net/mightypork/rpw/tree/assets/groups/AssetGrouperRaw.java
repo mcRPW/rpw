@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.mightypork.rpw.Config;
 import net.mightypork.rpw.library.Sources;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.Utils;
 
 
@@ -47,10 +45,14 @@ public class AssetGrouperRaw extends AssetGrouper {
 			addGroup(gn, Utils.fromLastDot(gn));
 			addFilter(gn, gf);
 
+
+			//if (Config.LOG_GROUPS) Log.f3("Group: " + gn + " | "+gf);
+
 			createdGroups.add(gn);
 
 		}
 
+		//if (Config.LOG_GROUPS) Log.f3("---");
 
 		ArrayList<GroupInfo> toAdd = new ArrayList<GroupInfo>();
 
@@ -64,7 +66,7 @@ public class AssetGrouperRaw extends AssetGrouper {
 
 					GroupInfo parentGroup = new GroupInfo(parent, Utils.fromLastDot(parent));
 					toAdd.add(parentGroup);
-					if (Config.LOG_GROUPS) Log.f3("Group: " + parentGroup);
+					//if (Config.LOG_GROUPS) Log.f3("Group: " + parentGroup);
 
 					createdGroups.add(parent);
 				}
@@ -75,6 +77,8 @@ public class AssetGrouperRaw extends AssetGrouper {
 
 		Collections.sort(groups, new DotComparator<GroupInfo>());
 
+
+		Collections.reverse(filters); // important!
 	}
 
 }

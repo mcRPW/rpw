@@ -38,8 +38,7 @@ public class TreeBuilder {
 		groups.clear();
 		rootGroup = new AssetTreeGroup(null, null, MagicSources.VANILLA);
 
-		AssetGrouper grouper = (Config.FANCY_GROUPS ? new AssetGrouperFancy() : new AssetGrouperRaw());
-
+		AssetGrouper grouper = (Config.FANCY_TREE ? new AssetGrouperFancy() : new AssetGrouperRaw());
 
 		// build group structure
 		for (GroupInfo gi : grouper.groups) {
@@ -72,6 +71,17 @@ public class TreeBuilder {
 
 			if (!Config.SHOW_FONT) {
 				if (DELETE_FONT.matches(ae)) continue; // skip fonts				
+			}
+
+			if (!Config.SHOW_OBSOLETE_DIRS) {
+				boolean del = false;
+				if (ae.getKey().startsWith("assets.minecraft.sound") && !ae.getKey().startsWith("assets.minecraft.sounds")) del = true; // sound dir
+				if (ae.getKey().startsWith("assets.minecraft.music")) del = true; // music dir	
+				if (ae.getKey().startsWith("assets.minecraft.records")) del = true; // records dir	
+				if (del) {
+					//if(Config.LOG_GROUPS) Log.f3("IGNORE OBSOLETE: "+ae.getKey());
+					continue;
+				}
 			}
 
 			if (!Config.SHOW_LANG) {
@@ -113,7 +123,7 @@ public class TreeBuilder {
 			Log.e("MISSING ROOT GROUP!");
 		}
 
-		if (Config.FANCY_GROUPS && orphans && Config.WARNING_ORPHANED_NODES) {
+		if (Config.FANCY_TREE && orphans && Config.WARNING_ORPHANED_NODES) {
 			//@formatter:off
 			boolean yeah = Alerts.askYesNo(
 					App.getFrame(),
@@ -129,7 +139,7 @@ public class TreeBuilder {
 			//@formatter:on
 
 			if (yeah) {
-				Config.FANCY_GROUPS = false;
+				Config.FANCY_TREE = false;
 				Config.save();
 				return buildTree(project); // RISC: Recursion
 			}

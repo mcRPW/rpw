@@ -104,7 +104,7 @@ public class DialogExportToMc extends RpwDialog {
 							}
 
 							SimpleConfig.listToFile(f, lines);
-							Log.i("Pack set as Minecraft's skin.");
+							Log.i("Minecraft config file was changed.");
 
 						} catch (IOException e) {
 							Log.e(e);

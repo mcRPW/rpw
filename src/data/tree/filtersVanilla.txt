@@ -138,10 +138,14 @@ root.audio2.sound.fireworks = assets.minecraft.sounds.fireworks.*
 root.audio2.sound.dig = assets.minecraft.sounds.dig.*
 root.audio2.sound.step = assets.minecraft.sounds.step.*
 root.audio2.sound.damage = assets.minecraft.sounds.damage.*
+root.audio2.sound.note = assets.minecraft.sounds.note.*
 
-root.audio2.music.ambient = assets.minecraft.sounds.music.*
+root.audio2.music.game.creative = assets.minecraft.sounds.music.game.creative.*
+root.audio2.music.game.end = assets.minecraft.sounds.music.game.end.*
+root.audio2.music.game.nether = assets.minecraft.sounds.music.game.nether.*
+root.audio2.music.game = assets.minecraft.sounds.music.game.*
+root.audio2.music.menu = assets.minecraft.sounds.music.menu.*
 root.audio2.music.records = assets.minecraft.sounds.records.*
-root.audio2.music.note = assets.minecraft.sounds.note.*
 root.audio2.music = NULL
 
 root.audio2.sound = assets.minecraft.sounds.*

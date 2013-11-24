@@ -486,7 +486,7 @@ public class FileUtils {
 					EAsset type = EAsset.forExtension(ext);
 
 					ok |= path.startsWith("assets");
-					ok &= (type != null || ext.equals("mcmeta"));
+					ok &= type.isAssetOrMeta();
 
 					return ok;
 				}
@@ -503,7 +503,7 @@ public class FileUtils {
 					String ext = parts[1];
 					EAsset type = EAsset.forExtension(ext);
 
-					if (type == null) {
+					if (!type.isAsset()) {
 						if (Config.LOG_ZIP_EXTRACTING) Log.f3("# excluding: " + s);
 						continue;
 					}

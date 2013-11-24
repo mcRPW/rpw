@@ -68,6 +68,12 @@ public class Icons {
 	public static ImageIcon MENU_RESOLVE;
 	public static ImageIcon MENU_INFO;
 	public static ImageIcon MENU_GENERATE;
+	public static ImageIcon MENU_DONATE;
+	public static ImageIcon MENU_GITHUB;
+	public static ImageIcon MENU_SOUND_WIZARD;
+	public static ImageIcon MENU_MCF;
+	public static ImageIcon MENU_PMC;
+	public static ImageIcon MENU_DOWNLOAD;
 
 	public static ImageIcon TREE_CLOSE;
 	public static ImageIcon TREE_OPEN;
@@ -129,6 +135,12 @@ public class Icons {
 		MENU_RESOLVE = loadImage(imgPath + "menu/resolve.png");
 		MENU_INFO = loadImage(imgPath + "menu/information.png");
 		MENU_GENERATE = loadImage(imgPath + "menu/lightning.png");
+		MENU_DONATE = loadImage(imgPath + "menu/heart.png");
+		MENU_GITHUB = loadImage(imgPath + "menu/github.png");
+		MENU_SOUND_WIZARD = loadImage(imgPath + "menu/wand.png");
+		MENU_PMC = loadImage(imgPath + "menu/pmc.png");
+		MENU_MCF = loadImage(imgPath + "menu/mcf.png");
+		MENU_DOWNLOAD = loadImage(imgPath + "menu/download.png");
 
 		WINDOW = loadImage(imgPath + "window-icon.png");
 		AUDIO = loadImage(imgPath + "sound-icon.png");

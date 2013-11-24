@@ -76,6 +76,8 @@ public class TaskExportProject {
 
 		Project project = Projects.getActive();
 
+		if (Config.LOG_EXPORT) Log.f1("Exporting project \"" + project.getProjectName() + "\" to " + target);
+
 		final ZipBuilder zb = new ZipBuilder(target);
 
 		InputStream in = null;
@@ -151,6 +153,7 @@ public class TaskExportProject {
 
 					AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
+					@SuppressWarnings("unused")
 					String logEntry = null;
 
 					// file
@@ -230,8 +233,10 @@ public class TaskExportProject {
 					} while (false);
 
 
-					if (Config.LOG_EXPORT && logEntry != null) {
-						Log.f3(logEntry);
+					if (Config.LOG_EXPORT) {
+						if (logEntry != null) {
+							Log.f3(logEntry);
+						}
 					}
 
 				}

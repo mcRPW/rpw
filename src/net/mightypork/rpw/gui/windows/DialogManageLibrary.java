@@ -76,20 +76,24 @@ public class DialogManageLibrary extends RpwDialog {
 		hb = Box.createHorizontalBox();
 
 			hb.add(buttonDelete = new JButton(Icons.MENU_DELETE));
+			buttonDelete.setToolTipText("Delete");
 			buttonDelete.setEnabled(false);
 			
 			hb.add(Box.createHorizontalStrut(5));
 			
 			hb.add(buttonRename = new JButton(Icons.MENU_RENAME));
+			buttonRename.setToolTipText("Rename");
 			buttonRename.setEnabled(false);
 			
 			hb.add(Box.createHorizontalStrut(5));
 			
 			hb.add(buttonImport = new JButton(Icons.MENU_IMPORT_BOX));
+			buttonImport.setToolTipText("Import (zip)");
 			
 			hb.add(Box.createHorizontalGlue());
 			
 			hb.add(buttonClose = new JButton(Icons.MENU_EXIT));
+			buttonClose.setToolTipText("Close");
 		vb.add(hb);
 		//@formatter:on
 

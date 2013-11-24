@@ -96,9 +96,9 @@ root.image.item.books = Books & Maps
 
 
 # audio pre-1.7
-root.audio = Audio (old, pre-1.7)
+root.audio = Audio (obsolete, pre-1.7)
 root.audio.music = Music
-root.audio.music.records = Music Discs
+root.audio.music.records = Records
 root.audio.music.ambient = Ambient Music
 root.audio.music.note = Note Blocks
 root.audio.sound = Sounds
@@ -151,9 +151,13 @@ root.audio.sound.mob.zombiepig = Zombie Pigman
 
 root.audio2 = Audio
 root.audio2.music = Music
-root.audio2.music.records = Music Discs
-root.audio2.music.ambient = Ambient Music
-root.audio2.music.note = Note Blocks
+root.audio2.music.game = Game Music
+root.audio2.music.game.nether = Nether
+root.audio2.music.game.end = End
+root.audio2.music.game.creative = Creative
+root.audio2.music.menu = Menu Music
+root.audio2.music.records = Records
+root.audio2.sound.note = Note Blocks
 root.audio2.sound = Sounds
 root.audio2.sound.environment = Environment
 root.audio2.sound.environment.ambient_cave = Cave

@@ -33,10 +33,10 @@ public class DialogAbout extends RpwDialog {
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		JLabel title = new JLabel(Const.APP_NAME + " v." + Const.VERSION);
+		JLabel title = new JLabel(Const.APP_NAME + " v" + Const.VERSION);
 		title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
 		title.setForeground(new Color(0x045A80));
-		title.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
+		title.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		title.setAlignmentX(0.5f);
 		vb.add(title);
 

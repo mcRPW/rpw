@@ -21,6 +21,7 @@ import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
 
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.jdesktop.swingx.JXFrame;
 
 
@@ -81,8 +82,12 @@ public class App {
 		OsUtils.initDirs();
 		Config.init();
 
-
 		Icons.init();
+
+		// preload RSyntaxTextArea (it's big and causes lag otherwise)		
+		@SuppressWarnings("unused")
+		RSyntaxTextArea rsa = new RSyntaxTextArea();
+		rsa = null;
 
 
 		Tasks.taskLoadHelp();
@@ -91,12 +96,12 @@ public class App {
 
 		Tasks.checkUpdate();
 
-		Log.f2("Building main window");
+		Log.f2("Building main window.");
 
 		int t = Tasks.taskBuildMainWindow();
 		while (Tasks.isRunning(t)) {} // wait for completion on EDT
 
-		Log.f2("Opening last project (if any)");
+		Log.f2("Opening last project (if any).");
 
 		Projects.openLastProject();
 
@@ -161,7 +166,9 @@ public class App {
 
 		JFrame frame = new WindowCrash(error);
 		frame.setVisible(true);
-		while (true) {}
+//		while (true) {
+//			Utils.sleep(200);
+//		}
 	}
 
 

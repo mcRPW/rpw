@@ -29,7 +29,7 @@ public class Log {
 	 */
 	private static final Logger logger = Logger.getLogger("McRpMgr");
 	/** Logging enabled */
-	public static boolean loggingEnabled = Config.LOG_ON;
+	public static boolean loggingEnabled = Config.LOGGING_ENABLED;
 	/** Stdout printing enabled */
 	public static boolean printToStdout = Config.LOG_TO_STDOUT;
 

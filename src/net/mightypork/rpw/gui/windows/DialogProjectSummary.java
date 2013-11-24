@@ -14,6 +14,7 @@ import javax.swing.*;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.assets.processors.GetProjectSummaryProcessor;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 
@@ -48,6 +49,10 @@ public class DialogProjectSummary extends RpwDialog {
 
 		for (Entry<String, String> e : summary.entrySet()) {
 			rows.add(new Object[] { e.getKey(), Sources.processForDisplay(e.getValue()) });
+		}
+		
+		for (String s : Projects.getActive().getSoundsMap().keySet()) {
+			rows.add(new Object[] { s, "CUSTOM_SOUND" });
 		}
 
 		final Object[][] data = new Object[rows.size()][2];

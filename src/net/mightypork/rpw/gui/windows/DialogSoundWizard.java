@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +37,7 @@ import net.mightypork.rpw.gui.widgets.SoundFileTreeDisplay;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.struct.SoundEntry;
 import net.mightypork.rpw.struct.SoundEntryMap;
+import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.tree.filesystem.AbstractFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.DirectoryFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.FileFsTreeNode;
@@ -548,13 +550,26 @@ public class DialogSoundWizard extends RpwDialog {
 		File f;
 		DirectoryFsTreeNode dir;
 
+		FileFilter soundOnlyFileFilter = new FileFilter() {
+
+			@Override
+			public boolean accept(File file) {
+
+				if (file.isDirectory()) return true;
+
+				if (!EAsset.forFile(file).isSound()) return false;
+
+				return true;
+			}
+		};
+
 		f = new File(OsUtils.getAppDir(Paths.DIR_VANILLA), "assets/minecraft/sounds");
-		root.addChild(dir = new DirectoryFsTreeNode("Vanilla sounds", f));
+		root.addChild(dir = new DirectoryFsTreeNode("Vanilla sounds", f, soundOnlyFileFilter));
 		dir.setPathRoot(true);
 		dir.setMark(1);
 
 		f = Projects.getActive().getCustomSoundsDirectory();
-		root.addChild(dir = new DirectoryFsTreeNode("Custom sounds", f));
+		root.addChild(dir = new DirectoryFsTreeNode("Custom sounds", f, soundOnlyFileFilter));
 		dir.setPathRoot(true);
 		dir.setMark(2);
 

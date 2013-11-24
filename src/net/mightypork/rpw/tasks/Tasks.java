@@ -124,7 +124,7 @@ public class Tasks {
 
 				// -- task begin --
 
-				Tasks.taskPushTreeToProject();
+				Tasks.taskStoreProjectChanges();
 				Sources.initLibrary();
 				Tasks.taskTreeRedraw();
 
@@ -196,7 +196,7 @@ public class Tasks {
 		AssetTreeProcessor processor = new RenameSourceProcessor(oldSource, newSource);
 		root.processThisAndChildren(processor);
 
-		taskPushTreeToProject();
+		taskStoreProjectChanges();
 		taskTreeRedraw();
 		Projects.markChange();
 	}
@@ -211,20 +211,28 @@ public class Tasks {
 	}
 
 
-	public static void taskPushTreeToProject() {
+	public static void taskStoreProjectChanges() {
 
-		Log.f3("Pushing tree data to project");
-		taskPushTreeToProject(Projects.getActive());
+		Log.f3("Saving project data to working directory");
+		taskStoreProjectChanges(Projects.getActive());
 	}
 
 
-	public static void taskPushTreeToProject(Project proj) {
+	public static void taskStoreProjectChanges(Project proj) {
 
 		if (proj == null) return;
 
 		AssetTreeProcessor proc = new SaveToProjectNodeProcessor(proj);
 		AssetTreeNode root = App.getTreeDisplay().treeModel.getRoot();
 		root.processThisAndChildren(proc);
+
+		try {
+			proj.flushToDisk();
+		} catch (IOException e) {
+			Log.e(e);
+		}
+
+		Projects.clearChangeFlag();
 	}
 
 
@@ -249,7 +257,7 @@ public class Tasks {
 				// -- task begin --
 
 				Alerts.loading(true);
-				Tasks.taskPushTreeToProject();
+				Tasks.taskStoreProjectChanges();
 				Projects.saveProject();
 				Alerts.loading(false);
 				Projects.clearChangeFlag();
@@ -278,7 +286,7 @@ public class Tasks {
 				// -- task begin --
 
 				Alerts.loading(true);
-				Tasks.taskPushTreeToProject();
+				Tasks.taskStoreProjectChanges();
 
 				try {
 					TaskExportProject.doExport(target);
@@ -311,17 +319,33 @@ public class Tasks {
 
 	public static void taskAskToSaveIfChanged(Runnable afterSave) {
 
-		if (Projects.getActive() != null && Projects.isChanged()) {
-			Log.f3("Project is marked as edited. Asking to save.");
+		Log.f3("Check project for changes.");
+
+		if (Projects.isChanged()) {
+			taskStoreProjectChanges();
+		}
+
+		boolean needsSave = false;
+
+		if (Projects.isProjectOpen()) {
+
+			Alerts.loading(true);
+			needsSave = Projects.getActive().needsSave();
+			Alerts.loading(false);
+		}
+
+		if (needsSave) {
+
+			Log.f3("Asking to save.");
 
 			//@formatter:off
 			int choice = Alerts.askYesNoCancel(
 					App.getFrame(),
-					"Project Changed", 
-					"There are some unsaved changes\n" +
-					"in the current project.\n" +
+					"Unsaved Changes", 
+					"There are some unsaved changes\n" + 
+					"in the project.\n" +
 					"\n" +
-					"Do you want to save it?"
+					"Save it now?\n"
 			);
 			//@formatter:on
 
@@ -417,39 +441,41 @@ public class Tasks {
 
 	public static void taskEditModFilters() {
 
-		if (!DesktopApi.editText(OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS))) {
-			//@formatter:off
-			Alerts.error(
-					App.getFrame(),
-					"Could not edit file, your\n" +
-					"platform is not supported.\n" +
-					"\n" +
-					"Check log file for details."
-			);
-			//@formatter:on
-		}
+		File f = OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS);
+
+		editTextFile(f);
 	}
 
 
 	public static void taskEditModGroups() {
 
-		if (!DesktopApi.editText(OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS))) {
-			//@formatter:off
-			Alerts.error(
-					App.getFrame(),
-					"Could not edit file, your\n" +
-					"platform is not supported.\n" +
-					"\n" +
-					"Check log file for details."
-			);
-			//@formatter:on
+		File f = OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS);
+
+		editTextFile(f);
+	}
+
+
+	private static void editTextFile(File f) {
+
+		if (Config.USE_INTERNAL_META_EDITOR) {
+			RpwDialog dlg;
+			try {
+				Alerts.loading(true);
+				dlg = new DialogEditText(f);
+				Alerts.loading(false);
+				dlg.setVisible(true);
+			} catch (IOException e) {
+				Log.e(e);
+			}
+		} else {
+			DesktopApi.editText(f);
 		}
 	}
 
 
 	public static void taskTreeSaveAndRebuild() {
 
-		Tasks.taskPushTreeToProject();
+		Tasks.taskStoreProjectChanges();
 		Tasks.taskTreeRebuild();
 	}
 
@@ -661,7 +687,7 @@ public class Tasks {
 
 						// -- task begin --
 
-						Log.f2("Loading project " + name);
+						Log.f1("Loading project " + name);
 						Alerts.loading(true);
 						Projects.closeProject();
 						Projects.openProject(name);
@@ -833,6 +859,18 @@ public class Tasks {
 
 			}
 		})).start();
+
+	}
+
+
+	public static void taskOpenSoundWizard() {
+
+		if (!Projects.isProjectOpen()) return;
+
+		Alerts.loading(true);
+		DialogSoundWizard dlg = new DialogSoundWizard();
+		Alerts.loading(false);
+		dlg.setVisible(true);
 
 	}
 }

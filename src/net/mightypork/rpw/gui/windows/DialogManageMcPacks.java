@@ -91,11 +91,13 @@ public class DialogManageMcPacks extends RpwDialog {
 		hb = Box.createHorizontalBox();
 
 			hb.add(buttonDelete = new JButton(Icons.MENU_DELETE));
+			buttonDelete.setToolTipText("Delete");
 			buttonDelete.setEnabled(false);
 			
 			hb.add(Box.createHorizontalGlue());
 			
 			hb.add(buttonClose = new JButton(Icons.MENU_EXIT));
+			buttonClose.setToolTipText("Close");
 		vb.add(hb);
 		//@formatter:on
 

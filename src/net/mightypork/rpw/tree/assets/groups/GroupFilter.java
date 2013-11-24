@@ -16,8 +16,8 @@ public class GroupFilter {
 //	public static GroupFilter DELETE_FONT = new GroupFilter(null, "assets.minecraft.textures.font.unicode_*");
 
 	private ArrayList<Matcher> matchers = new ArrayList<Matcher>();
-	private String filterSyntax = null;
-	private String groupKey = null;
+	public String filterSyntax = null;
+	public String groupKey = null;
 
 
 	/**

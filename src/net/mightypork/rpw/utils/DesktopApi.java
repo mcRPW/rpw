@@ -16,7 +16,7 @@ public class DesktopApi {
 
 	public static boolean browse(URI uri) {
 
-		if (openSystemSpecific(uri.toString())) return true;
+		if (openSystemSpecificURL(uri.toString())) return true;
 
 		if (browseDESKTOP(uri)) return true;
 
@@ -71,6 +71,28 @@ public class DesktopApi {
 		if (openSystemSpecific(file.getPath())) return true;
 
 		if (editDESKTOP(file)) return true;
+
+		return false;
+	}
+
+
+	private static boolean openSystemSpecificURL(String what) {
+
+		EnumOS os = OsUtils.getOs();
+
+		if (os.isLinux()) {
+			if (runCommand("gnome-open", "%s", what)) return true;
+			if (runCommand("xdg-open", "%s", what)) return true;
+			if (runCommand("kde-open", "%s", what)) return true;
+		}
+
+		if (os.isMac()) {
+			if (runCommand("open", "%s", what)) return true;
+		}
+
+		if (os.isWindows()) {
+			if (runCommand("explorer", "%s", what)) return true;
+		}
 
 		return false;
 	}

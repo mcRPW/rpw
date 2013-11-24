@@ -248,7 +248,7 @@ public class DialogImportPack extends RpwDialog {
 						EAsset type = EAsset.forExtension(ext);
 
 						ok |= path.startsWith("assets");
-						ok &= ((type != null) || ext.equals("mcmeta"));
+						ok &= type.isAsset();
 
 						return ok;
 					}

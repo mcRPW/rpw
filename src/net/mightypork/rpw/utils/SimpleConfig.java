@@ -141,17 +141,18 @@ public class SimpleConfig {
 	 * 
 	 * @param target
 	 * @param data
+	 * @param allowNulls allow nulls.
 	 * @throws IOException
 	 */
-	public static void mapToFile(File target, Map<String, String> data) throws IOException {
+	public static void mapToFile(File target, Map<String, String> data, boolean allowNulls) throws IOException {
 
-		String text = ""; //# File written by SimpleConfig
+		List<String> lines = new ArrayList<String>();
 
 		for (Entry<String, String> e : data.entrySet()) {
-			if (text.length() > 0) text += "\n";
-
 			String key = e.getKey();
 			String value = e.getValue();
+
+			if (!allowNulls && (key == null || value == null || key.length() == 0 || value.length() == 0)) continue;
 
 			if (key == null) key = "NULL";
 			if (value == null) value = "NULL";
@@ -159,7 +160,15 @@ public class SimpleConfig {
 			key = key.replace("\n", "\\n");
 			value = value.replace("\n", "\\n");
 
-			text += key + " = " + value;
+			lines.add(key + " = " + value);
+		}
+
+		String text = ""; //# File written by SimpleConfig
+
+		for (String s : lines) {
+			if (text.length() > 0) text += "\n";
+
+			text += s;
 		}
 
 		FileUtils.stringToFile(target, text);

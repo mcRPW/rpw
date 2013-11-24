@@ -68,7 +68,7 @@ public class DialogConfigureEditors extends RpwDialog {
 		Border fieldBorder = BorderFactory.createEmptyBorder(3, 3, 3, 3);
 		JXTitledSeparator sep;
 
-		Color mainSepColor = new Color(200, 0, 200);
+		Color mainSepColor = new Color(0x0000cc);
 
 		//@formatter:off
 

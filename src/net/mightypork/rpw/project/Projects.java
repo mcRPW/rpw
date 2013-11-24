@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
-import net.mightypork.rpw.gui.windows.Alerts;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Log;
@@ -32,7 +30,7 @@ public class Projects {
 
 	public static boolean isChanged() {
 
-		return Flags.PROJECT_EDITED;
+		return isProjectOpen() && Flags.PROJECT_EDITED;
 	}
 
 
@@ -71,7 +69,7 @@ public class Projects {
 	public static void openNewProject(String name) {
 
 		openProject(name);
-		Tasks.taskPushTreeToProject();
+		Tasks.taskStoreProjectChanges();
 		saveProject();
 
 	}
@@ -89,11 +87,7 @@ public class Projects {
 	public static void saveProject() {
 
 		if (active != null) {
-			try {
-				active.save();
-			} catch (IOException e) {
-				Alerts.error(App.getFrame(), "Failed to save project.");
-			}
+			active.save();
 		}
 	}
 

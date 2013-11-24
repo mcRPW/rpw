@@ -274,18 +274,12 @@ public class OsUtils {
 
 	public static void initDirs() {
 
-		Log.f2("Checking Minecraft installation");
-
+		Log.f2("Checking Minecraft installation.");
 		OsUtils.checkMinecraft();
 
-		Log.f2("Checking Minecraft installation - done.");
-
-
-		Log.f2("Checking working directory");
-
+		Log.f2("Checking working directory.");
 		OsUtils.initWorkdir();
 
-		Log.f2("Checking working directory - done.");
 	}
 
 

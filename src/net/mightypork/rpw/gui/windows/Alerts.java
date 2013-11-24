@@ -2,6 +2,8 @@ package net.mightypork.rpw.gui.windows;
 
 
 import java.awt.Component;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -13,7 +15,6 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.utils.GuiUtils;
 import net.mightypork.rpw.utils.Log;
-import net.mightypork.rpw.utils.Utils;
 
 import org.jdesktop.swingx.JXFrame;
 
@@ -21,6 +22,9 @@ import org.jdesktop.swingx.JXFrame;
 public class Alerts {
 
 	private static JXFrame loaderFrame;
+	private static boolean loadingState = false;
+	private static boolean loadingStateDisplayed = false;
+	private static Timer t = new Timer();
 
 
 	public static void error(Component c, String message) {
@@ -88,6 +92,27 @@ public class Alerts {
 
 	public static void loading(final boolean waiting) {
 
+		loadingState = waiting;
+
+		if (loadingStateDisplayed == loadingState) return; // no change.
+
+		t.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+
+				updateLoadingVisuals();
+			}
+		}, 150);
+	}
+
+
+	private static void updateLoadingVisuals() {
+
+		if (loadingStateDisplayed == loadingState) {
+			return; // nothing to change
+		}
+
 		if (loaderFrame == null || loaderFrame.getParent() != App.getFrame()) {
 			if (loaderFrame != null) loaderFrame.dispose();
 
@@ -112,16 +137,14 @@ public class Alerts {
 			loaderFrame.setWaitPaneVisible(true);
 		}
 
-		if (!waiting) {
-			Utils.sleep(80); // to show the loading dialog even the minimal length
-		}
-
-		if (App.getFrame() == null || !waiting) {
+		if (App.getFrame() == null || !loadingState) {
 			GuiUtils.centerWindow(loaderFrame, App.getFrame());
-			loaderFrame.setVisible(waiting);
+			loaderFrame.setVisible(loadingState);
 		}
 
-		App.setWaiting(waiting);
+		App.setWaiting(loadingState);
+
+		loadingStateDisplayed = loadingState;
 	}
 
 

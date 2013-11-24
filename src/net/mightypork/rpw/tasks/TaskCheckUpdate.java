@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
+import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.utils.DesktopApi;
 import net.mightypork.rpw.utils.Log;
 
@@ -27,7 +28,7 @@ public class TaskCheckUpdate {
 				Scanner sc = null;
 				try {
 
-					URL u = new URL(Const.UPDATE_URL);
+					URL u = new URL(Paths.URL_UPDATE_FILE);
 
 					sc = new Scanner(u.openStream(), "UTF-8");
 
@@ -76,7 +77,7 @@ public class TaskCheckUpdate {
 					//@formatter:on
 
 					if (value == JOptionPane.YES_OPTION) {
-						DesktopApi.browse(URI.create(Const.WEB_URL));
+						DesktopApi.browse(URI.create(Paths.URL_UPDATE_WEB));
 					}
 
 				} catch (Throwable t) {

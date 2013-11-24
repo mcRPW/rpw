@@ -1,9 +1,6 @@
 package net.mightypork.rpw.tasks;
 
 
-import net.mightypork.rpw.gui.windows.DialogSoundWizard;
-
-
 //import java.util.HashMap;
 //import java.util.Map;
 //
@@ -20,8 +17,7 @@ public class TaskDevel {
 
 	public static void run() {
 
-		DialogSoundWizard dlg = new DialogSoundWizard();
-		dlg.setVisible(true);
+
 //
 //		SoundEntryMap map = SoundEntryMap.fromJson("{"
 //				+ "\"a\":   {\"category\": \"neutral\",\"sounds\": [\"custom_sounds/test\"]},"

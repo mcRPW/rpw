@@ -211,12 +211,7 @@ public class SidePanel {
 					
 			panelText.add(hb);
 			panelText.add(Box.createRigidArea(new Dimension(0, 5)));	
-			
-			
-			
-			
-			
-			
+						
 			
 			hb = Box.createHorizontalBox();
 				hb.setAlignmentX(0);
@@ -374,8 +369,7 @@ public class SidePanel {
 		hb.add(buttonOpenBase);
 		hb.add(Box.createHorizontalStrut(5));
 
-		projectBase = new JXLabel(" ");
-		projectBase.setToolTipText("Project base directory");
+		projectBase = new JXLabel("Open in file manager...");
 		projectBase.setForeground(new Color(0x333333));
 		projectBase.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 		hb.add(projectBase);
@@ -402,10 +396,10 @@ public class SidePanel {
 			name = Utils.cropStringAtEnd(name, length_name);
 			projectName.setText(name);
 
-			String path = p.getProjectDirectory().getPath();
+			/*String path = p.getProjectDirectory().getPath();
 			int length = (panel.getWidth() - 90) / 7;
 			path = Utils.cropStringAtStart(path, length);
-			projectBase.setText(path);
+			projectBase.setText(path);*/
 
 			File iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
 

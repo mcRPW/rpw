@@ -467,7 +467,7 @@ public class PropertyManager {
 		 * Load property value from a file
 		 * 
 		 * @param string the string loaded
-		 * @return this entry
+		 * @return was OK
 		 */
 		public boolean parse(String string) {
 
@@ -581,6 +581,8 @@ public class PropertyManager {
 	 */
 	private boolean cfgSeparateSections = true;
 
+	private boolean cfgForceSave;
+
 	private String comment = "";
 
 	private TreeMap<String, Property> entries;
@@ -684,7 +686,7 @@ public class PropertyManager {
 		}
 
 		// save if needed
-		if (needsSave) {
+		if (needsSave || cfgForceSave) {
 			try {
 				pr.store(new FileOutputStream(file), comment);
 			} catch (IOException ioe) {
@@ -724,6 +726,15 @@ public class PropertyManager {
 	public void cfgSeparateSections(boolean separateSections) {
 
 		this.cfgSeparateSections = separateSections;
+	}
+
+
+	/**
+	 * @param forceSave save even if unchanged.
+	 */
+	public void cfgForceSave(boolean forceSave) {
+
+		this.cfgForceSave = forceSave;
 	}
 
 

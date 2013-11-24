@@ -18,7 +18,9 @@ import javax.swing.*;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
+import net.mightypork.rpw.gui.helpers.TextEditListener;
 import net.mightypork.rpw.project.Projects;
+import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Log;
@@ -41,20 +43,80 @@ public class DialogEditText extends RpwDialog {
 	private JButton btnFormatCodes;
 	private JPopupMenu formatCodesPopup;
 	private Box buttons;
-	private AssetTreeLeaf editedNode;
+	private EAsset type;
+	private TextEditListener listener;
 
 
-	public DialogEditText(AssetTreeLeaf node) throws IOException {
+	public DialogEditText(final AssetTreeLeaf node) throws IOException {
 
-		super(App.getFrame(), "TEXT EDITOR");
+		this();
 
 		String path = Utils.fromLastChar(node.getAssetEntry().getPath(), '/');
 
-		setTitle(path + " - RPW Text editor");
+		InputStream in = Projects.getActive().getAssetStream(node.getAssetKey());
+		String text = FileUtils.streamToString(in);
+
+		create(path, text, node.getAssetType(), true, new TextEditListener() {
+
+			@Override
+			public void onDialogClosed(String text) {
+
+
+				File file = Projects.getActive().getAssetFile(node.getAssetKey());
+
+				try {
+					FileUtils.stringToFile(file, text);
+				} catch (IOException e1) {
+					Log.e(e1);
+
+					Alerts.error(App.getFrame(), "Could not save file.");
+				}
+
+			}
+		});
+	}
+
+
+	public DialogEditText(final File file) throws IOException {
+
+		this();
+
+		String path = Utils.fromLastChar(file.getPath(), '/');
+
+		String text = FileUtils.fileToString(file);
+
+		create(path, text, EAsset.forFile(file), true, new TextEditListener() {
+
+			@Override
+			public void onDialogClosed(String text) {
+
+				try {
+					FileUtils.stringToFile(file, text);
+				} catch (IOException e1) {
+					Log.e(e1);
+
+					Alerts.error(App.getFrame(), "Could not save file.");
+				}
+			}
+		});
+	}
+
+
+	public DialogEditText() {
+
+		super(App.getFrame(), "TEXT EDITOR");
+	}
+
+
+	private void create(String title, String text, EAsset type, boolean showFormatingCodes, TextEditListener listener) {
+
+		setTitle(title + " - RPW Text editor");
 
 		setResizable(true);
 
-		editedNode = node;
+		this.type = type;
+
+		this.listener = listener;
 
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
@@ -78,6 +140,8 @@ public class DialogEditText extends RpwDialog {
 
 
 		btnFormatCodes = new JButton("Formatting codes", Icons.MENU_GENERATE);
+		btnFormatCodes.setVisible(showFormatingCodes);
+
 		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
 		btnSave = new JButton("Save", Icons.MENU_YES);
 
@@ -96,10 +160,6 @@ public class DialogEditText extends RpwDialog {
 		getContentPane().add(sp);
 		getContentPane().add(buttons);
 		getContentPane().doLayout();
-
-
-		InputStream in = Projects.getActive().getAssetStream(node.getAssetKey());
-		String text = FileUtils.streamToString(in);
 
 		setTextareaText(text);
 
@@ -150,7 +210,7 @@ public class DialogEditText extends RpwDialog {
 
 		String mime;
 
-		switch (editedNode.getAssetType()) {
+		switch (type) {
 			case CFG:
 			case INI:
 			case LANG:
@@ -253,17 +313,9 @@ public class DialogEditText extends RpwDialog {
 
 				String text = textArea.getText();
 
-				File file = Projects.getActive().getAssetFile(editedNode.getAssetKey());
+				listener.onDialogClosed(text);
 
-				try {
-					FileUtils.stringToFile(file, text);
-					closeDialog();
-				} catch (IOException e1) {
-					Log.e(e1);
-
-					Alerts.error(self(), "Could not save file.");
-
-				}
+				closeDialog();
 			}
 		});
 

@@ -12,7 +12,12 @@ import net.mightypork.rpw.utils.FileUtils;
  * @author MightyPork
  */
 public enum EAsset {
-	SOUND("ogg"), IMAGE("png"), TEXT("txt"), LANG("lang"), PROPERTIES("properties"), INI("ini"), CFG("cfg");
+
+	//@formatter:off
+	SOUND("ogg"), IMAGE("png"), TEXT("txt"), LANG("lang"),
+	PROPERTIES("properties"), INI("ini"), MCMETA("mcmeta"),
+	CFG("cfg"), UNKNOWN("");
+	//@formatter:on
 
 	private EAsset(String extension) {
 
@@ -55,6 +60,30 @@ public enum EAsset {
 	}
 
 
+	public boolean isMeta() {
+
+		return this == MCMETA;
+	}
+
+
+	public boolean isAsset() {
+
+		return isText() || isImage() || isSound();
+	}
+
+
+	public boolean isAssetOrMeta() {
+
+		return isMeta() || isAsset();
+	}
+
+
+	public boolean isUnknown() {
+
+		return this == UNKNOWN;
+	}
+
+
 	public static EAsset forExtension(String ext) {
 
 		for (EAsset a : EAsset.values()) {
@@ -63,7 +92,7 @@ public enum EAsset {
 			}
 		}
 
-		return null;
+		return UNKNOWN;
 	}
 
 
@@ -77,4 +106,6 @@ public enum EAsset {
 
 		return forExtension(FileUtils.getExtension(file));
 	}
+
+
 }

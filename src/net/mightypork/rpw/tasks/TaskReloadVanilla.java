@@ -71,7 +71,7 @@ public class TaskReloadVanilla {
 
 				if (name.contains("READ_ME")) return false;
 
-				return (EAsset.forExtension(ext) != null);
+				return EAsset.forExtension(ext).isAssetOrMeta();
 			}
 		};
 
@@ -92,8 +92,8 @@ public class TaskReloadVanilla {
 				String ext = parts[1];
 				EAsset type = EAsset.forExtension(ext);
 
-				if (type == null) {
-					if (Config.LOG_ZIP_EXTRACTING) Log.f3("# excluding: " + path);
+				if (!type.isAsset()) {
+					if (Config.LOG_ZIP_EXTRACTING) Log.f3("# non-asset: " + path);
 					continue;
 				}
 
@@ -118,7 +118,6 @@ public class TaskReloadVanilla {
 
 		for (File f : list) {
 			if (f.exists() && fsf.accept(f)) {
-				System.out.println("Passed:" + f);
 				modFiles.add(f);
 			}
 		}
@@ -175,7 +174,7 @@ public class TaskReloadVanilla {
 
 		File datafile = OsUtils.getAppDir(Paths.FILE_VANILLA_STRUCTURE);
 		try {
-			SimpleConfig.mapToFile(datafile, saveMap);
+			SimpleConfig.mapToFile(datafile, saveMap, false);
 		} catch (IOException e) {
 			Log.e(e);
 
@@ -188,7 +187,7 @@ public class TaskReloadVanilla {
 		Flags.VANILLA_STRUCTURE_LOAD_OK = true;
 		Alerts.loading(false);
 
-		if (Config.FANCY_GROUPS && modsLoaded) {
+		if (Config.FANCY_TREE && modsLoaded) {
 			//@formatter:off
 			boolean yeah = Alerts.askYesNo(
 					App.getFrame(),
@@ -202,7 +201,7 @@ public class TaskReloadVanilla {
 			//@formatter:on
 
 			if (yeah) {
-				Config.FANCY_GROUPS = false;
+				Config.FANCY_TREE = false;
 				Config.save();
 			}
 		}

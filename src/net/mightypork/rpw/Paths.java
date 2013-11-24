@@ -21,6 +21,8 @@ public class Paths {
 	public static final String FILENAME_LOG = "Runtime.log";
 
 	// paths based in workdir	
+	public static final String DIR_TMP = "tmp";
+	public static final String DIR_PROJECT_WORKING_COPY_TMP = DIR_TMP + "/workdir";
 	public static final String DIR_LIBRARY = "library";
 	public static final String DIR_VANILLA = DIR_LIBRARY + "/" + DIRNAME_VANILLA;
 	public static final String DIR_RESOURCEPACKS = DIR_LIBRARY + "/" + "resourcepacks";
@@ -39,5 +41,14 @@ public class Paths {
 	// paths used for internal resources
 	public static final String DATA_DIR_HELP = "/data/help/";
 	public static final String DATA_DIR_IMAGES = "/images/";
+
+
+	public static final String URL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B9X6Q5QU7FKPC";
+	public static final String URL_UPDATE_FILE = "http://dl.dropboxusercontent.com/u/64454818/RPW/version.txt";
+	public static final String URL_PLANETMINECRAFT_WEB = "http://www.planetminecraft.com/mod/tool-resourcepack-workbench---the-ultimate-pack-creator/";
+	public static final String URL_MINECRAFTFORUM_WEB = "http://www.minecraftforum.net/topic/1897669-tool-resourcepack-workbench-v1-the-ultimate-composition-tool/";
+	public static final String URL_UPDATE_WEB = URL_PLANETMINECRAFT_WEB;
+	public static final String URL_GITHUB_WEB = "https://github.com/MightyPork/rpw/";
+	public static final String URL_LATEST_DOWNLOAD = "https://dl.dropboxusercontent.com/u/64454818/RPW/RPW-LATEST.jar";
 
 }

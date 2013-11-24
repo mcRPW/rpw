@@ -4,21 +4,20 @@ package net.mightypork.rpw.gui.widgets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URI;
 import java.util.List;
 
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
+import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.windows.Alerts;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.utils.DesktopApi;
 
 
 public class MenuMain {
@@ -35,8 +34,10 @@ public class MenuMain {
 	private JMenuItem itemProjectSummary;
 	private JMenuItem itemProjectExportMc;
 	private JMenuItem itemProjectExport;
-	private JMenuItem itemProjectExit;
+	private JMenuItem itemExit;
 	private JMenuItem itemProjectClose;
+	private JMenuItem itemProjectOpenFolder;
+	private JMenuItem itemCustomSounds;
 
 	private JMenuItem itemLibraryManage;
 	private JMenuItem itemLibraryRefreshVanilla;
@@ -49,37 +50,38 @@ public class MenuMain {
 	private JMenuItem itemTreeExpandAll;
 	private JMenuItem itemTreeRefreshTree;
 
-	private JCheckBoxMenuItem itemOptionsFancyTree;
-	private JCheckBoxMenuItem itemOptionsLangFiles;
-	private JCheckBoxMenuItem itemOptionsFontFiles;
-	private JCheckBoxMenuItem itemOptionsPreviewHover;
-	private JCheckBoxMenuItem itemOptionsHiddenFiles;
-	private JCheckBoxMenuItem itemOptionsWarningOrphanedNodes;
-	private JMenuItem itemOptionsSettings;
+	private JCheckBoxMenuItem itemOptionFancyTree;
+	private JCheckBoxMenuItem itemOptionLangFiles;
+	private JCheckBoxMenuItem itemOptionFontFiles;
+	private JCheckBoxMenuItem itemOptionPreviewHover;
+	private JCheckBoxMenuItem itemOptionHiddenFiles;
+	private JCheckBoxMenuItem itemOptionWarningOrphanedNodes;
+	private JCheckBoxMenuItem itemOptionObsoleteDirs;
+	private JMenuItem itemConfigureEditors;
 
-	private JMenuItem itemHelpGuide;
-	private JMenuItem itemHelpLog;
-	private JMenuItem itemHelpAbout;
+	private JMenuItem itemQuickGuide;
+	private JMenuItem itemRuntimeLog;
+	private JMenuItem itemAbout;
+
 
 	@SuppressWarnings("unused")
 	private JMenu menuProject;
 	@SuppressWarnings("unused")
 	private JMenu menuLibrary;
-	private JMenu menuTree;
+	private JMenu menuRecentProjects;
+	private JMenu menuView;
 	@SuppressWarnings("unused")
 	private JMenu menuOptions;
 	@SuppressWarnings("unused")
 	private JMenu menuHelp;
-
-	private JMenu menuRecentProjects;
-
-	private JMenuItem itemProjectOpenFolder;
+	@SuppressWarnings("unused")
+	private JMenu menuTools;
 
 
 	public MenuMain() {
 
 		menuBar = new JMenuBar();
-		JMenu menu;
+		JMenu menu, menu2;
 		JCheckBoxMenuItem ckitem;
 
 		//@formatter:off
@@ -133,23 +135,14 @@ public class MenuMain {
 			menu.add(item);		
 						
 			item = itemProjectExportMc = new JMenuItem("Export to Minecraft", KeyEvent.VK_M);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 			item.setIcon(Icons.MENU_EXPORT_BOX);
 			menu.add(item);
 			
-			
-			item = itemProjectManageMcPacks = new JMenuItem("Manage packs in MC", KeyEvent.VK_D);
-			item.setIcon(Icons.MENU_MANAGE);
-			menu.add(item);
-			
 			menu.addSeparator();
-			
-			item = itemProjectSummary = new JMenuItem("Project summary", KeyEvent.VK_J);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_INFO);
-			menu.add(item);
-			
+						
 			item = itemProjectOpenFolder = new JMenuItem("Open project folder", KeyEvent.VK_I);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_OPEN);
 			menu.add(item);
 			
@@ -167,28 +160,79 @@ public class MenuMain {
 			
 			menu.addSeparator();
 			
-			item = itemProjectExit = new JMenuItem("Exit", KeyEvent.VK_X);
+			item = itemExit = new JMenuItem("Exit", KeyEvent.VK_X);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_EXIT);
 			menu.add(item);
 			
 		menuBar.add(menu);
-
-		menu = menuTree = new JMenu("Tree");
-		menu.setMnemonic(KeyEvent.VK_T);			
-				
-			item = itemTreeCollapseAll = new JMenuItem("Collapse all", KeyEvent.VK_C);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.TREE_CLOSE);
-			menu.add(item);
 		
-			item = itemTreeExpandAll = new JMenuItem("Expand all", KeyEvent.VK_E);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.TREE_OPEN);
+
+		menu = menuTools = new JMenu("Tools");
+		menu.setMnemonic(KeyEvent.VK_T);
+		
+			item = itemProjectSummary = new JMenuItem("Project summary", KeyEvent.VK_J);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.MENU_INFO);
+			menu.add(item);
+			
+			item = itemCustomSounds = new JMenuItem("Manage custom sounds", KeyEvent.VK_S);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.MENU_SOUND_WIZARD);
 			menu.add(item);
 			
 			menu.addSeparator();
 			
+			item = itemProjectManageMcPacks = new JMenuItem("Manage packs in MC", KeyEvent.VK_D);
+			item.setIcon(Icons.MENU_MANAGE);
+			menu.add(item);
+			
+
+		menuBar.add(menu);	
+		
+
+		menu = menuView = new JMenu("View");
+		menu.setMnemonic(KeyEvent.VK_V);
+		
+			item = itemRuntimeLog = new JMenuItem("Show runtime log", KeyEvent.VK_L);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+			item.setIcon(Icons.MENU_LOG);
+			menu.add(item);
+			
+			menu.addSeparator();
+
+			ckitem = itemOptionFancyTree = new JCheckBoxMenuItem("Use \"fancy\" tree structure");
+			ckitem.setMnemonic(KeyEvent.VK_S);
+			ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
+			menu.add(ckitem);
+			
+			menu.addSeparator();
+			
+			ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete files");
+			ckitem.setMnemonic(KeyEvent.VK_W);
+			ckitem.setToolTipText("Show assets that are no longer used by the game.");
+			menu.add(ckitem);
+						
+			ckitem = itemOptionLangFiles = new JCheckBoxMenuItem("Show translation files (*.lang)");
+			ckitem.setMnemonic(KeyEvent.VK_L);	
+			menu.add(ckitem);
+			
+			ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font textures");
+			ckitem.setMnemonic(KeyEvent.VK_F);		
+			menu.add(ckitem);
+		
+			menu.addSeparator();
+		
+			item = itemTreeCollapseAll = new JMenuItem("Collapse tree", KeyEvent.VK_C);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.TREE_CLOSE);
+			menu.add(item);
+		
+			item = itemTreeExpandAll = new JMenuItem("Expand tree", KeyEvent.VK_E);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.TREE_OPEN);
+			menu.add(item);
+						
 			item = itemTreeRefreshTree = new JMenuItem("Refresh tree display", KeyEvent.VK_T);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 			item.setIcon(Icons.MENU_RELOAD);
@@ -199,7 +243,6 @@ public class MenuMain {
 
 		menu = menuLibrary = new JMenu("Library");
 		menu.setMnemonic(KeyEvent.VK_L);
-		
 			
 			item = itemLibraryImport = new JMenuItem("Import resource pack...", KeyEvent.VK_I);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
@@ -214,74 +257,58 @@ public class MenuMain {
 			menu.add(item);	
 			
 			item = itemLibraryRefreshSources = new JMenuItem("Reload library", KeyEvent.VK_B);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_RELOAD);
 			menu.add(item);
 			
 			menu.addSeparator();		
 			
 			item = itemLibraryRefreshVanilla = new JMenuItem("Re-extract Minecraft assets", KeyEvent.VK_R);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
 			item.setIcon(Icons.MENU_RELOAD2);
 			menu.add(item);
 			
 			menu.addSeparator();
+			
+			menu2 = new JMenu("Fancy Tree mod support");
+			menu2.setMnemonic(KeyEvent.VK_T);
+			menu2.setIcon(Icons.MENU_TREE);
 		
-			item = itemLibraryManageModGroups = new JMenuItem("Edit mod Groups", KeyEvent.VK_G);
-			item.setIcon(Icons.MENU_EDIT);
-			menu.add(item);
-		
-			item = itemLibraryManageModFilters = new JMenuItem("Edit mod Filters", KeyEvent.VK_F);
-			item.setIcon(Icons.MENU_EDIT);
-			menu.add(item);
+				item = itemLibraryManageModGroups = new JMenuItem("Edit mod Groups", KeyEvent.VK_G);
+				item.setIcon(Icons.MENU_EDIT);
+				menu2.add(item);
+			
+				item = itemLibraryManageModFilters = new JMenuItem("Edit mod Filters", KeyEvent.VK_F);
+				item.setIcon(Icons.MENU_EDIT);
+				menu2.add(item);
+			
+			menu.add(menu2);
 		
 		menuBar.add(menu);
 		
 
 		menu = menuOptions = new JMenu("Options");
-		menu.setMnemonic(KeyEvent.VK_E);
+		menu.setMnemonic(KeyEvent.VK_O);
 			
-			ckitem = itemOptionsFancyTree = new JCheckBoxMenuItem("Use \"fancy\" tree structure");
-			ckitem.setMnemonic(KeyEvent.VK_S);
-			ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
-			ckitem.setSelected(Config.FANCY_GROUPS);
-			menu.add(ckitem);
 			
-			ckitem = itemOptionsWarningOrphanedNodes = new JCheckBoxMenuItem("Warn about orphaned files");
+			ckitem = itemOptionWarningOrphanedNodes = new JCheckBoxMenuItem("Warn about orphaned files");
 			ckitem.setMnemonic(KeyEvent.VK_O);
 			ckitem.setToolTipText("Show warning when Fancy Tree prevents some files from being displayed.");
-			ckitem.setSelected(Config.WARNING_ORPHANED_NODES);
 			menu.add(ckitem);
 			
-			
-			ckitem = itemOptionsPreviewHover = new JCheckBoxMenuItem("Preview when mousing over");
+			ckitem = itemOptionPreviewHover = new JCheckBoxMenuItem("Preview when mousing over");
 			ckitem.setMnemonic(KeyEvent.VK_P);
-			ckitem.setSelected(Config.PREVIEW_HOVER);
 			menu.add(ckitem);
-			
-			menu.addSeparator();
-			
-			ckitem = itemOptionsLangFiles = new JCheckBoxMenuItem("Show translation files (*.lang)");
-			ckitem.setMnemonic(KeyEvent.VK_L);
-			ckitem.setSelected(Config.SHOW_LANG);
-			menu.add(ckitem);
-			
-			ckitem = itemOptionsFontFiles = new JCheckBoxMenuItem("Show unicode font textures");
-			ckitem.setMnemonic(KeyEvent.VK_F);	
-			ckitem.setSelected(Config.SHOW_FONT);		
-			menu.add(ckitem);
-			
-			menu.addSeparator();
-						
-			ckitem = itemOptionsHiddenFiles = new JCheckBoxMenuItem("Show hidden files in file pickers");
+									
+			ckitem = itemOptionHiddenFiles = new JCheckBoxMenuItem("Show hidden files in file pickers");
 			ckitem.setMnemonic(KeyEvent.VK_H);	
-			ckitem.setSelected(Config.SHOW_HIDDEN_FILES);		
 			menu.add(ckitem);
 			
 			menu.addSeparator();
 						
-			item = itemOptionsSettings = new JMenuItem("Configure editors");
-			item.setMnemonic(KeyEvent.VK_E);	
-			item.setIcon(Icons.MENU_SETUP);
+			item = itemConfigureEditors = new JMenuItem("Configure editors");
+			item.setMnemonic(KeyEvent.VK_E);
+			item.setIcon(Icons.MENU_SETUP);		
 			menu.add(item);
 			
 		menuBar.add(menu);
@@ -291,23 +318,51 @@ public class MenuMain {
 
 		menu = menuHelp = new JMenu("Help");
 		menu.setMnemonic(KeyEvent.VK_H);
-		
-			item = itemHelpLog = new JMenuItem("Show runtime log", KeyEvent.VK_L);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-			item.setIcon(Icons.MENU_LOG);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
-			item = itemHelpGuide = new JMenuItem("Quick Guide", KeyEvent.VK_G);
+					
+			item = itemQuickGuide = new JMenuItem("Quick Guide", KeyEvent.VK_G);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 			item.setIcon(Icons.MENU_HELP);
 			menu.add(item);
 			
 			menu.addSeparator();
+			
+			item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
+			item.setIcon(Icons.MENU_DONATE);
+			item.addActionListener(openUrlListener);
+			item.setActionCommand(Paths.URL_DONATE);
+			menu.add(item);
+			
+			menu.addSeparator();
+			
+			item = new JMenuItem("RPW on GitHub");
+			item.setIcon(Icons.MENU_GITHUB);
+			item.addActionListener(openUrlListener);
+			item.setActionCommand(Paths.URL_GITHUB_WEB);
+			menu.add(item);	
+			
+			item = new JMenuItem("RPW on Planet Minecraft");
+			item.setIcon(Icons.MENU_PMC);
+			item.addActionListener(openUrlListener);
+			item.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
+			menu.add(item);	
+			
+			item = new JMenuItem("RPW on Minecraft Forum");
+			item.setIcon(Icons.MENU_MCF);
+			item.addActionListener(openUrlListener);
+			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
+			menu.add(item);	
+			
+			menu.addSeparator();
+			
+			item = new JMenuItem("Download latest version");
+			item.setIcon(Icons.MENU_DOWNLOAD);
+			item.addActionListener(openUrlListener);
+			item.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
+			menu.add(item);	
+			
+			menu.addSeparator();
 		
-		
-			item = itemHelpAbout = new JMenuItem("About", KeyEvent.VK_A);
+			item = itemAbout = new JMenuItem("About", KeyEvent.VK_A);
 			item.setIcon(Icons.MENU_ABOUT);
 			menu.add(item);
 		
@@ -315,6 +370,8 @@ public class MenuMain {
 		//@formatter:on
 
 		addActions();
+
+		updateOptionCheckboxes();
 	}
 
 
@@ -339,7 +396,7 @@ public class MenuMain {
 		});
 
 
-		itemProjectExit.addActionListener(new ActionListener() {
+		itemExit.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -374,7 +431,7 @@ public class MenuMain {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				Tasks.taskPushTreeToProject();
+				Tasks.taskStoreProjectChanges();
 				Tasks.taskReloadVanilla();
 			}
 		});
@@ -384,7 +441,7 @@ public class MenuMain {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				Tasks.taskPushTreeToProject();
+				Tasks.taskStoreProjectChanges();
 				Tasks.taskReloadSources(new Runnable() {
 
 					@Override
@@ -477,6 +534,24 @@ public class MenuMain {
 			}
 		});
 
+		itemAbout.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Tasks.taskDialogAbout();
+			}
+		});
+
+		itemRuntimeLog.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Tasks.taskDialogLog();
+			}
+		});
+
 		itemLibraryManageModFilters.addActionListener(new ActionListener() {
 
 			@Override
@@ -486,23 +561,6 @@ public class MenuMain {
 			}
 		});
 
-		itemHelpAbout.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				Tasks.taskDialogAbout();
-			}
-		});
-
-		itemHelpLog.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				Tasks.taskDialogLog();
-			}
-		});
 
 		itemLibraryManageModGroups.addActionListener(new ActionListener() {
 
@@ -531,7 +589,7 @@ public class MenuMain {
 			}
 		});
 
-		itemHelpGuide.addActionListener(new ActionListener() {
+		itemQuickGuide.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -550,15 +608,15 @@ public class MenuMain {
 			}
 		});
 
-		itemOptionsFancyTree.addActionListener(new ActionListener() {
+		itemOptionFancyTree.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				boolean newOpt = itemOptionsFancyTree.isSelected();
+				boolean newOpt = itemOptionFancyTree.isSelected();
 
-				if (Config.FANCY_GROUPS != newOpt) {
-					Config.FANCY_GROUPS = newOpt;
+				if (Config.FANCY_TREE != newOpt) {
+					Config.FANCY_TREE = newOpt;
 					Config.save();
 					Tasks.taskTreeSaveAndRebuild();
 					updateEnabledItems();
@@ -567,12 +625,12 @@ public class MenuMain {
 			}
 		});
 
-		itemOptionsWarningOrphanedNodes.addActionListener(new ActionListener() {
+		itemOptionWarningOrphanedNodes.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				boolean newOpt = itemOptionsWarningOrphanedNodes.isSelected();
+				boolean newOpt = itemOptionWarningOrphanedNodes.isSelected();
 
 				if (Config.WARNING_ORPHANED_NODES != newOpt) {
 					Config.WARNING_ORPHANED_NODES = newOpt;
@@ -582,12 +640,28 @@ public class MenuMain {
 			}
 		});
 
-		itemOptionsPreviewHover.addActionListener(new ActionListener() {
+		itemOptionObsoleteDirs.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				boolean newOpt = itemOptionsPreviewHover.isSelected();
+				boolean newOpt = itemOptionObsoleteDirs.isSelected();
+
+				if (Config.SHOW_OBSOLETE_DIRS != newOpt) {
+					Config.SHOW_OBSOLETE_DIRS = newOpt;
+					Config.save();
+					Tasks.taskTreeSaveAndRebuild();
+				}
+
+			}
+		});
+
+		itemOptionPreviewHover.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				boolean newOpt = itemOptionPreviewHover.isSelected();
 
 				if (Config.PREVIEW_HOVER != newOpt) {
 					Config.PREVIEW_HOVER = newOpt;
@@ -598,12 +672,12 @@ public class MenuMain {
 		});
 
 
-		itemOptionsFontFiles.addActionListener(new ActionListener() {
+		itemOptionFontFiles.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				boolean newOpt = itemOptionsFontFiles.isSelected();
+				boolean newOpt = itemOptionFontFiles.isSelected();
 
 				if (Config.SHOW_FONT != newOpt) {
 					Config.SHOW_FONT = newOpt;
@@ -614,12 +688,12 @@ public class MenuMain {
 		});
 
 
-		itemOptionsHiddenFiles.addActionListener(new ActionListener() {
+		itemOptionHiddenFiles.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				boolean newOpt = itemOptionsHiddenFiles.isSelected();
+				boolean newOpt = itemOptionHiddenFiles.isSelected();
 
 				if (Config.SHOW_HIDDEN_FILES != newOpt) {
 					Config.SHOW_HIDDEN_FILES = newOpt;
@@ -628,13 +702,13 @@ public class MenuMain {
 			}
 		});
 
-		itemOptionsLangFiles.addActionListener(new ActionListener() {
+		itemOptionLangFiles.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
 
-				boolean newOpt = itemOptionsLangFiles.isSelected();
+				boolean newOpt = itemOptionLangFiles.isSelected();
 
 				if (Config.SHOW_LANG != newOpt) {
 					Config.SHOW_LANG = newOpt;
@@ -644,7 +718,7 @@ public class MenuMain {
 			}
 		});
 
-		itemOptionsSettings.addActionListener(new ActionListener() {
+		itemConfigureEditors.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -662,6 +736,15 @@ public class MenuMain {
 			}
 		});
 
+		itemCustomSounds.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				Tasks.taskOpenSoundWizard();
+			}
+		});
+
 	}
 
 
@@ -676,11 +759,9 @@ public class MenuMain {
 		itemProjectSetup.setEnabled(open);
 		itemProjectSummary.setEnabled(open);
 		itemProjectClose.setEnabled(open);
-		menuTree.setEnabled(open);
+		menuView.setEnabled(open);
 		itemProjectOpenFolder.setEnabled(open);
-
-		itemLibraryManageModFilters.setEnabled(Config.FANCY_GROUPS);
-		itemLibraryManageModGroups.setEnabled(Config.FANCY_GROUPS);
+		itemCustomSounds.setEnabled(open);
 
 	}
 
@@ -690,6 +771,15 @@ public class MenuMain {
 		public void actionPerformed(ActionEvent e) {
 
 			Tasks.taskOpenProject(e.getActionCommand());
+		}
+	};
+	
+	private ActionListener openUrlListener = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			DesktopApi.browse(URI.create(e.getActionCommand()));
 		}
 	};
 
@@ -712,5 +802,17 @@ public class MenuMain {
 			item.setActionCommand(s);
 			item.addActionListener(openRecentProjectListener);
 		}
+	}
+
+
+	public void updateOptionCheckboxes() {
+
+		itemOptionFancyTree.setSelected(Config.FANCY_TREE);
+		itemOptionObsoleteDirs.setSelected(Config.SHOW_OBSOLETE_DIRS);
+		itemOptionLangFiles.setSelected(Config.SHOW_LANG);
+		itemOptionFontFiles.setSelected(Config.SHOW_FONT);
+		itemOptionWarningOrphanedNodes.setSelected(Config.WARNING_ORPHANED_NODES);
+		itemOptionPreviewHover.setSelected(Config.PREVIEW_HOVER);
+		itemOptionHiddenFiles.setSelected(Config.SHOW_HIDDEN_FILES);
 	}
 }

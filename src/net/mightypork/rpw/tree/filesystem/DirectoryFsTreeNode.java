@@ -2,6 +2,7 @@ package net.mightypork.rpw.tree.filesystem;
 
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -9,7 +10,6 @@ import java.util.List;
 
 import javax.swing.tree.TreeNode;
 
-import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.FileUtils;
 
 
@@ -24,18 +24,33 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	private ArrayList<AbstractFsTreeNode> children = new ArrayList<AbstractFsTreeNode>();
 	private boolean pathRoot = false;
 
+	private FileFilter filter = null;
+
 
 	/**
 	 * @param path represented folder
 	 */
 	public DirectoryFsTreeNode(File path) {
 
-		this(path.getName(), path);
+		this(path.getName(), path, null);
 
 	}
 
 
 	/**
+	 * @param path represented folder
+	 * @param filter file filter
+	 */
+	public DirectoryFsTreeNode(File path, FileFilter filter) {
+
+		this(path.getName(), path, filter);
+
+	}
+
+
+	/**
+	 * Create directory node without adding children.
+	 * 
 	 * @param name the name
 	 */
 	public DirectoryFsTreeNode(String name) {
@@ -50,10 +65,20 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 */
 	public DirectoryFsTreeNode(String name, File path) {
 
-		this(name, FileUtils.listDirectory(path));
+		this(name, path, null);
+	}
+
+
+	/**
+	 * @param name display name
+	 * @param path paths to this directory
+	 * @param filter file filter
+	 */
+	public DirectoryFsTreeNode(String name, File path, FileFilter filter) {
+
+		this(name, FileUtils.listDirectory(path), filter);
 
 		this.path = path;
-
 	}
 
 
@@ -63,7 +88,20 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 */
 	public DirectoryFsTreeNode(String name, List<File> childPaths) {
 
-		this(name);
+		this(name, childPaths, null);
+	}
+
+
+	/**
+	 * @param name display name
+	 * @param childPaths paths to children
+	 * @param filter file filter
+	 */
+	public DirectoryFsTreeNode(String name, List<File> childPaths, FileFilter filter) {
+
+		this.name = name;
+
+		this.filter = filter;
 
 		for (File f : childPaths) {
 
@@ -77,8 +115,8 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	private AbstractFsTreeNode makeChildForFile(File f) {
 
 		if (!f.exists()) return null;
-		if (f.isDirectory()) return new DirectoryFsTreeNode(f);
-		if (EAsset.forFile(f) == null) return null;
+		if (filter != null && !filter.accept(f)) return null; // filter can remove directories
+		if (f.isDirectory()) return new DirectoryFsTreeNode(f, filter);
 		if (f.isFile()) return new FileFsTreeNode(f);
 		return null;
 	}
