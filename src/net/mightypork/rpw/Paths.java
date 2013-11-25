@@ -39,8 +39,10 @@ public class Paths {
 	public static final String FILE_LOG = FILENAME_LOG;
 
 	// paths used for internal resources
-	public static final String DATA_DIR_HELP = "/data/help/";
-	public static final String DATA_DIR_HTML = "/data/html/";
+	public static final String DATA_DIR = "/data";
+	public static final String DATA_DIR_CHANGELOGS = DATA_DIR + "/changelog/";
+	public static final String DATA_DIR_HELP = DATA_DIR + "/help/";
+	public static final String DATA_DIR_HTML = DATA_DIR + "/html/";
 	public static final String DATA_DIR_IMAGES = "/images/";
 
 

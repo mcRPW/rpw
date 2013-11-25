@@ -71,7 +71,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 		fileConfig = new File(workDirBase, Paths.FILENAME_PROJECT_CONFIG);
 
-		props = new PropertyManager(fileConfig, "Project config file");
+		props = new PropertyManager(fileConfig, "Project '" + dirName + "' config file");
 		props.cfgNewlineBeforeComments(false);
 		props.cfgSeparateSections(false);
 
@@ -113,15 +113,21 @@ public class Project extends Source implements NodeSourceProvider {
 			flushToDisk();
 
 		} catch (IOException e) {
-			Log.w("Project data files could not be loaded: " + projectName);
+			Log.w(getLogPrefix() + "Project data files could not be loaded.");
 		}
 
 	}
 
 
+	public String getLogPrefix() {
+
+		return "Project '" + dirName + "': ";
+	}
+
+
 	public void flushToDisk() throws IOException {
 
-		Log.f2("Saving ephemeral project data to workdir.");
+		Log.f2(getLogPrefix() + "Saving ephemeral project data to TMP");
 
 		SimpleConfig.mapToFile(fileSourcesFiles, files, false);
 		SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
@@ -133,13 +139,13 @@ public class Project extends Source implements NodeSourceProvider {
 
 	public boolean needsSave() {
 
-		Log.f3("Calculating checksums");
+		Log.f3(getLogPrefix() + "Finding differences TMP:BASE");
 
 		FastRecursiveDiff comparator = new FastRecursiveDiff();
 
 		boolean retval = !comparator.areEqual(getProjectDirectory(), getRealProjectBase());
 
-		Log.f3("Calculating checksums - done.");
+		Log.f3(getLogPrefix() + "Finding differences TMP:BASE - done.");
 
 		return retval;
 	}
@@ -161,11 +167,11 @@ public class Project extends Source implements NodeSourceProvider {
 
 		try {
 
-			Log.f2("Copying project to temporary workdir");
+			Log.f2(getLogPrefix() + "Copying BASE->TMP");
 
 			FileUtils.copyDirectory(getRealProjectBase(), workDirBase);
 
-			Log.f2("Copying project to temporary workdir - done.");
+			Log.f2(getLogPrefix() + "Copying BASE->TMP - done.");
 
 		} catch (IOException e) {
 			Alerts.error(App.getFrame(), "Error", "An error occured while\nopening the project.");
@@ -183,11 +189,11 @@ public class Project extends Source implements NodeSourceProvider {
 
 		try {
 
-			Log.f2("Copying project from workdir to storage");
+			Log.f2(getLogPrefix() + "Copying TMP->BASE");
 
 			FileUtils.copyDirectory(workDirBase, realBase);
 
-			Log.f2("Copying project from workdir to storage - done.");
+			Log.f2(getLogPrefix() + "Copying TMP->BASE - done.");
 
 		} catch (IOException e) {
 			Alerts.error(App.getFrame(), "Error Saving Project", "Failed to save project.\nThe project may have been corrupted.");
@@ -243,7 +249,7 @@ public class Project extends Source implements NodeSourceProvider {
 			FileOutputStream out = new FileOutputStream(img);
 			FileUtils.copyStream(in, out);
 		} catch (IOException e) {
-			Log.e("Error creating pack title image.", e);
+			Log.e(getLogPrefix() + "Error creating pack title image.", e);
 		}
 	}
 
@@ -277,7 +283,7 @@ public class Project extends Source implements NodeSourceProvider {
 		AssetEntry ae = Sources.vanilla.getAssetForKey(key);
 
 		if (ae == null) {
-			Log.w("NULL vanilla asset entry for key: " + key);
+			Log.w(getLogPrefix() + "NULL vanilla asset entry for key: " + key);
 			Utils.printStackTrace();
 			return null;
 		}

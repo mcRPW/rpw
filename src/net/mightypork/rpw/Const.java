@@ -1,14 +1,18 @@
 package net.mightypork.rpw;
 
 
+import net.mightypork.rpw.help.VersionUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 
 public class Const {
 
-	public static final String VERSION = "3.8.1";
-	public static final int VERSION_SERIAL = 381;
+	public static final int VERSION_SERIAL = 382;
+
+	public static final String VERSION = VersionUtils.getVersionString(VERSION_SERIAL);
+	public static final int VERSION_MAJOR = VersionUtils.getVersionMajor(VERSION_SERIAL);
 
 	public static final String APP_NAME = "ResourcePack Workbench";
 	public static final String WINDOW_TITLE = APP_NAME + " \u2022 v" + VERSION + "  \u2022  Crafted by MightyPork";

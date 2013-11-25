@@ -252,7 +252,7 @@ public class Config {
 	public static final boolean LOG_FILTERS_DETAILED = false;
 	public static final boolean LOG_ZIP_EXTRACTING = false;
 	public static final boolean LOG_VANILLA_LOAD_STRUCTURE = false;
-	public static final boolean LOG_EXPORT = false;
+	public static final boolean LOG_EXPORT = true;
 
 	public static final boolean USE_LOADER_WINDOW = false;
 	public static final boolean LOG_HELP_LOADING = false;

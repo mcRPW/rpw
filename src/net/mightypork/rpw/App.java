@@ -5,15 +5,15 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
-import javax.swing.JFrame;
-
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.widgets.MenuMain;
 import net.mightypork.rpw.gui.widgets.SidePanel;
 import net.mightypork.rpw.gui.widgets.TreeDisplay;
+import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.WindowMain;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
-import net.mightypork.rpw.gui.windows.messages.WindowCrash;
+import net.mightypork.rpw.gui.windows.messages.DialogCrash;
+import net.mightypork.rpw.help.VersionUtils;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.NodeSourceProvider;
 import net.mightypork.rpw.project.Projects;
@@ -82,6 +82,8 @@ public class App {
 		Log.f1("Init started...");
 		OsUtils.initDirs();
 		Config.init();
+
+		Log.f3("Last run version: " + VersionUtils.getVersionString(Config.LAST_RUN_VERSION) + " (#" + Config.LAST_RUN_VERSION + ")");
 
 		HtmlBuilder.init();
 
@@ -169,11 +171,8 @@ public class App {
 	 */
 	public static void onCrash(final Throwable error) {
 
-		JFrame frame = new WindowCrash(error);
-		frame.setVisible(true);
-//		while (true) {
-//			Utils.sleep(200);
-//		}
+		RpwDialog dialog = new DialogCrash(error);
+		dialog.setVisible(true);
 	}
 
 

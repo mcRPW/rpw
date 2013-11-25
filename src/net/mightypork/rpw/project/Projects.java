@@ -68,6 +68,8 @@ public class Projects {
 
 	public static void openNewProject(String name) {
 
+		closeProject();
+		Tasks.taskTreeRebuild();
 		openProject(name);
 		Tasks.taskStoreProjectChanges();
 		saveProject();

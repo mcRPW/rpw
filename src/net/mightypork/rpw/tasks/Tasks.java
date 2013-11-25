@@ -19,6 +19,7 @@ import net.mightypork.rpw.gui.windows.WindowMain;
 import net.mightypork.rpw.gui.windows.dialogs.*;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogChangelog;
+import net.mightypork.rpw.gui.windows.messages.DialogRuntimeLog;
 import net.mightypork.rpw.help.HelpStore;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
@@ -180,7 +181,7 @@ public class Tasks {
 
 	public static void taskDialogLog() {
 
-		GuiUtils.open(new DialogShowLog());
+		GuiUtils.open(new DialogRuntimeLog());
 	}
 
 
@@ -319,7 +320,10 @@ public class Tasks {
 
 	public static void taskAskToSaveIfChanged(Runnable afterSave) {
 
-		Log.f3("Check project for changes.");
+		if (Flags.GOING_FOR_HALT) {
+			if (afterSave != null) afterSave.run();
+			return;
+		}
 
 		if (Projects.isChanged()) {
 			taskStoreProjectChanges();
@@ -328,6 +332,8 @@ public class Tasks {
 		boolean needsSave = false;
 
 		if (Projects.isProjectOpen()) {
+
+			Log.f3("Checking active project.");
 
 			Alerts.loading(true);
 			needsSave = Projects.getActive().needsSave();
@@ -638,6 +644,7 @@ public class Tasks {
 			public void run() {
 
 				Config.CLOSED_WITH_PROJECT_OPEN = Projects.isProjectOpen();
+				Flags.GOING_FOR_HALT = true;
 				Config.save();
 				App.inst.deinit();
 				System.exit(0);

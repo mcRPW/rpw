@@ -84,8 +84,9 @@ public class TaskExportProject {
 
 		File f;
 
+		
+		
 		// Add includes
-
 		if (Config.LOG_EXPORT) Log.f2("Adding included extra files");
 		try {
 			File dir = project.getExtrasDirectory();
@@ -94,7 +95,8 @@ public class TaskExportProject {
 			Log.e("Error when including extras.", t);
 		}
 
-
+		
+		
 		if (Config.LOG_EXPORT) Log.f2("Adding custom sound files");
 		try {
 			File dir = project.getCustomSoundsDirectory();
@@ -103,8 +105,12 @@ public class TaskExportProject {
 			Log.e("Error when including sounds.", t);
 		}
 
+		
+				
 		if (Config.LOG_EXPORT) Log.f2("Adding configuration files");
 
+		
+		
 		// pack.png
 		if (Config.LOG_EXPORT) Log.f3("* pack.png");
 		try {
@@ -121,17 +127,19 @@ public class TaskExportProject {
 			if (in != null) in.close();
 		}
 
-
+		
+		
 		if (Config.LOG_EXPORT) Log.f3("* readme.txt");
 		zb.addResource("readme.txt", "/data/export/pack-readme.txt");
 
-
+		
+		
 		if (Config.LOG_EXPORT) Log.f3("* assets/minecraft/sounds.json");
 		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
 
-
+		
+		
 		// json mcmeta
-
 		if (Config.LOG_EXPORT) Log.f3("* pack.mcmeta");
 		String desc = project.getProjectName();
 
@@ -140,9 +148,12 @@ public class TaskExportProject {
 
 		zb.addString("pack.mcmeta", pim.toJson());
 
+		
 
 		if (Config.LOG_EXPORT) Log.f2("Adding project asset files");
 
+		
+		
 		// assets
 		AssetTreeProcessor processor = new AssetTreeProcessor() {
 
@@ -153,7 +164,6 @@ public class TaskExportProject {
 
 					AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
-					@SuppressWarnings("unused")
 					String logEntry = null;
 
 					// file
@@ -253,11 +263,11 @@ public class TaskExportProject {
 
 	private static void addDirectoryToZip(ZipBuilder zb, File dir, String pathPrefix) throws IOException {
 
-		List<File> extras = new ArrayList<File>();
+		List<File> filesToAdd = new ArrayList<File>();
 
-		FileUtils.listDirectoryRecursive(dir, null, extras);
+		FileUtils.listDirectoryRecursive(dir, null, filesToAdd);
 
-		for (File file : extras) {
+		for (File file : filesToAdd) {
 
 			if (!file.isFile()) return;
 

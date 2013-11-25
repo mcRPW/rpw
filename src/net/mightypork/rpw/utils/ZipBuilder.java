@@ -25,7 +25,10 @@ public class ZipBuilder {
 	public void addStream(String path, InputStream in) throws IOException {
 
 		path = preparePath(path);
-		if (included.contains(path)) return; // ignore
+		if (included.contains(path)) {
+			Log.f3("Zip already contains file "+path+", skipping.");
+			return; // ignore
+		}
 		included.add(path);
 
 		//System.out.println("Adding path: " + path);

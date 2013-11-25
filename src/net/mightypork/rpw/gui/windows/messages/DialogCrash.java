@@ -2,7 +2,6 @@ package net.mightypork.rpw.gui.windows.messages;
 
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -15,25 +14,35 @@ import javax.swing.*;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.GuiUtils;
 import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
 
 
-public class WindowCrash extends JFrame {
+public class DialogCrash extends RpwDialog {
 
-	public WindowCrash(Throwable error) {
 
-		super(Const.APP_NAME + " has crashed!");
+	private JButton buttonQuit;
+	private JButton buttonContinue;
 
-		Log.e(error);
 
-		try {
-			App.inst.deinit();
-		} catch (Throwable t) {}
+	public DialogCrash(Throwable error) {
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		super(App.getFrame(), Const.APP_NAME + " has crashed!");
+
+		Box hb;
+		Box vb = Box.createVerticalBox();
+		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+		vb.add(GuiUtils.createDialogHeading("Crash Report"));
+
+		Log.e("Unhandled error, opening error screen.", error);
+
+		setModal(true);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
@@ -84,36 +93,54 @@ public class WindowCrash extends JFrame {
 		sbrText.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		sbrText.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+		vb.add(sbrText);
 
-		// Create Quit Button
-		JButton btnQuit = new JButton("Quit");
-		btnQuit.setAlignmentX(Component.CENTER_ALIGNMENT);
+		//@formatter:off		
+		hb = Box.createHorizontalBox();
 
-		btnQuit.addActionListener(new ActionListener() {
+			hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+			hb.add(Box.createHorizontalGlue());
+
+			hb.add(buttonContinue = new JButton("Carry On", Icons.MENU_CANCEL));
+
+			hb.add(Box.createHorizontalStrut(5));
+			
+			hb.add(buttonQuit = new JButton("Terminate", Icons.MENU_EXIT));
+			
+			hb.add(Box.createHorizontalGlue());	
+			hb.setAlignmentX(0.5f);
+		vb.add(hb);
+		//@formatter:on
+
+		getContentPane().add(vb);
+
+		prepareForDisplay();
+	}
+
+
+	@Override
+	protected void addActions() {
+
+		buttonContinue.addActionListener(closeListener);
+		buttonQuit.addActionListener(closeListener);
+		buttonQuit.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				System.exit(0);
+				try {
+					App.inst.deinit();
+					System.exit(1);
+				} catch (Throwable t) {}
 			}
 		});
-
-		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
-		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-		buttonPane.add(btnQuit);
+	}
 
 
-		getContentPane().add(sbrText);
-		getContentPane().add(buttonPane);
+	@Override
+	public void onClose() {
 
-		// Close when the close button is clicked
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		//Display Frame
-		pack(); // Adjusts frame to size of components
-
-		GuiUtils.centerWindow(this, null);
+		// do nothing
 	}
 
 }

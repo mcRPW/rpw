@@ -299,6 +299,8 @@ public class FileUtils {
 	 */
 	public static String streamToString(InputStream in) {
 
+		if (in == null) return null;
+
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();
 
@@ -328,6 +330,8 @@ public class FileUtils {
 
 	public static InputStream stringToStream(String text) {
 
+		if (text == null) return null;
+
 		try {
 			return new ByteArrayInputStream(text.getBytes("UTF-8"));
 		} catch (UnsupportedEncodingException e) {
@@ -340,6 +344,12 @@ public class FileUtils {
 	public static InputStream getResource(String path) {
 
 		return FileUtils.class.getResourceAsStream(path);
+	}
+
+
+	public static String getResourceAsString(String path) {
+
+		return streamToString(FileUtils.class.getResourceAsStream(path));
 	}
 
 
@@ -358,9 +368,9 @@ public class FileUtils {
 			out = new PrintStream(new FileOutputStream(file), false, "UTF-8");
 
 			out.print(text);
-			
+
 			out.flush();
-			
+
 		} finally {
 			if (out != null) out.close();
 		}

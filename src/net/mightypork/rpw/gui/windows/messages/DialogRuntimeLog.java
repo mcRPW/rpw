@@ -1,8 +1,7 @@
-package net.mightypork.rpw.gui.windows.dialogs;
+package net.mightypork.rpw.gui.windows.messages;
 
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
 
@@ -13,19 +12,24 @@ import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.GuiUtils;
 import net.mightypork.rpw.utils.OsUtils;
 
 
-public class DialogShowLog extends RpwDialog {
+public class DialogRuntimeLog extends RpwDialog {
 
 	private JButton btnClose;
 
 
-	public DialogShowLog() {
+	public DialogRuntimeLog() {
 
 		super(App.getFrame(), "Runtime log");
+		
+		Box hb;
+		Box vb = Box.createVerticalBox();
+		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		vb.add(GuiUtils.createDialogHeading("Runtime Log"));
 
 
 		String wholeLogAsString = "Not found.";
@@ -63,17 +67,24 @@ public class DialogShowLog extends RpwDialog {
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-		btnClose = new JButton("Close", Icons.MENU_EXIT);
-		btnClose.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		vb.add(sp);
 
-		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
-		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-		buttonPane.add(btnClose);
+		//@formatter:off		
+		hb = Box.createHorizontalBox();
 
-		getContentPane().add(sp);
-		getContentPane().add(buttonPane);
+			hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+			hb.add(Box.createHorizontalGlue());
+			
+			hb.add(btnClose = new JButton("Close", Icons.MENU_EXIT));
+			
+			hb.add(Box.createHorizontalGlue());	
+			hb.setAlignmentX(0.5f);
+		vb.add(hb);
+		//@formatter:on
 
+		getContentPane().add(vb);
+		
 		prepareForDisplay();
 	}
 

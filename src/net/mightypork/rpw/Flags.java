@@ -9,4 +9,7 @@ public class Flags {
 	public static boolean PROJECT_EDITED = false;
 	public static boolean PROJECT_CHANGED = false;
 
+
+	public static boolean GOING_FOR_HALT = false;
+
 }
