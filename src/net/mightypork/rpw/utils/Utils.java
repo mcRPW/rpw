@@ -104,7 +104,7 @@ public class Utils {
 
 	public static void printStackTrace() {
 
-		new Throwable().printStackTrace();
+		(new Throwable()).printStackTrace();
 	}
 
 

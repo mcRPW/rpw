@@ -299,7 +299,10 @@ public class FileUtils {
 	 */
 	public static String streamToString(InputStream in) {
 
-		if (in == null) return null;
+		if (in == null) {
+			Log.e(new NullPointerException("Null stream to be converted to String."));
+			return ""; // to avoid NPE's
+		}
 
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();
