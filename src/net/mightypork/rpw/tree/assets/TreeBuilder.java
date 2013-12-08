@@ -17,7 +17,7 @@ import net.mightypork.rpw.tree.assets.groups.GroupFilter;
 import net.mightypork.rpw.tree.assets.groups.GroupInfo;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeGroup;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TreeBuilder {
@@ -27,9 +27,21 @@ public class TreeBuilder {
 	private Map<String, AssetTreeGroup> groups = new HashMap<String, AssetTreeGroup>();
 	private AssetTreeGroup rootGroup = null;
 
+	private boolean fullTree = false;
+	private boolean ignoreOrphans = false;
+
 
 	public TreeBuilder() {
 
+	}
+
+
+	public AssetTreeGroup buildTreeForExport(NodeSourceProvider project) {
+
+		this.fullTree = true;
+		this.ignoreOrphans = true;
+
+		return buildTree(project);
 	}
 
 
@@ -69,23 +81,27 @@ public class TreeBuilder {
 
 		for (AssetEntry ae : Sources.vanilla.getAssetEntries()) {
 
-			if (!Config.SHOW_FONT) {
-				if (DELETE_FONT.matches(ae)) continue; // skip fonts				
-			}
-
-			if (!Config.SHOW_OBSOLETE_DIRS) {
-				boolean del = false;
-				if (ae.getKey().startsWith("assets.minecraft.sound") && !ae.getKey().startsWith("assets.minecraft.sounds")) del = true; // sound dir
-				if (ae.getKey().startsWith("assets.minecraft.music")) del = true; // music dir	
-				if (ae.getKey().startsWith("assets.minecraft.records")) del = true; // records dir	
-				if (del) {
-					//if(Config.LOG_GROUPS) Log.f3("IGNORE OBSOLETE: "+ae.getKey());
-					continue;
+			if(!fullTree) {
+				
+				if (!Config.SHOW_FONT) {
+					if (DELETE_FONT.matches(ae)) continue; // skip fonts				
 				}
-			}
-
-			if (!Config.SHOW_LANG) {
-				if (ae.getType() == EAsset.LANG) continue; // skip lang files				
+	
+				if (!Config.SHOW_OBSOLETE_DIRS) {
+					boolean del = false;
+					if (ae.getKey().startsWith("assets.minecraft.sound") && !ae.getKey().startsWith("assets.minecraft.sounds")) del = true; // sound dir
+					if (ae.getKey().startsWith("assets.minecraft.music")) del = true; // music dir	
+					if (ae.getKey().startsWith("assets.minecraft.records")) del = true; // records dir	
+					if (del) {
+						//if(Config.LOG_GROUPS) Log.f3("IGNORE OBSOLETE: "+ae.getKey());
+						continue;
+					}
+				}
+	
+				if (!Config.SHOW_LANG) {
+					if (ae.getType() == EAsset.LANG) continue; // skip lang files				
+				}
+				
 			}
 
 			boolean success = false;
@@ -123,7 +139,7 @@ public class TreeBuilder {
 			Log.e("MISSING ROOT GROUP!");
 		}
 
-		if (Config.FANCY_TREE && orphans && Config.WARNING_ORPHANED_NODES) {
+		if (!ignoreOrphans && Config.FANCY_TREE && orphans && Config.WARNING_ORPHANED_NODES) {
 			//@formatter:off
 			boolean yeah = Alerts.askYesNo(
 					App.getFrame(),

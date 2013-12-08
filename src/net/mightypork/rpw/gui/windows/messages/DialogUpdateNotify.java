@@ -18,12 +18,23 @@ import org.jdesktop.swingx.JXTitledSeparator;
 public class DialogUpdateNotify extends RpwDialog {
 
 	private JButton buttonOK;
+	private String version;
+	private String textMd;
 
 
 	public DialogUpdateNotify(String version, String textMd) {
 
 		super(App.getFrame(), "Your RPW is outdated");
-
+		
+		this.version = version;
+		this.textMd = textMd;
+		
+		createDialog();
+	}
+	
+	@Override
+	protected JComponent buildGui() {
+		
 		Box hb;
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -67,13 +78,6 @@ public class DialogUpdateNotify extends RpwDialog {
 
 		hb.add(Box.createHorizontalStrut(5));
 
-		hb.add(btn = new JButton("GitHub", Icons.MENU_GITHUB));
-		btn.setActionCommand(Paths.URL_GITHUB_WEB);
-		btn.addActionListener(GuiUtils.openUrlListener);
-		btn.addActionListener(closeListener);
-
-		hb.add(Box.createHorizontalStrut(5));
-
 		hb.add(btn = new JButton("Direct", Icons.MENU_DOWNLOAD));
 		btn.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
 		btn.addActionListener(closeListener);
@@ -100,9 +104,7 @@ public class DialogUpdateNotify extends RpwDialog {
 		vb.add(hb);
 		//@formatter:on
 
-		getContentPane().add(vb);
-
-		prepareForDisplay();
+		return vb;
 	}
 
 
@@ -112,10 +114,4 @@ public class DialogUpdateNotify extends RpwDialog {
 		buttonOK.addActionListener(closeListener);
 	}
 
-
-	@Override
-	public void onClose() {
-
-		// do nothing
-	}
 }

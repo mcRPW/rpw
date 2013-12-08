@@ -5,6 +5,18 @@
           /_/|_/_/   |__/|__/  
 
 ----------------------------------------------------------------------------
+ 
+    To run the program, mark it as executable and use:
+   
+        java -jar ThisJarFile.jar
+       
+    ...or right-click it and select "Open using JRE".
+
+---------------------------------------------------------------------------- 
+   
+    Java 7 is recommended, Java 6 minimal.
+
+----------------------------------------------------------------------------
           
       Links:
 
@@ -17,10 +29,12 @@
        * RPW on GitHub            -> https://github.com/MightyPork/rpw
        
       
-      Contact the author:
+      Contact MightyPork (author):
        
-       * MightyPork on twitter    -> @MightyPork
+       * Twitter  -> @MightyPork
        
-       * MightyPork's e-mail      -> ondra@ondrovo.com
+       * Google+  -> +OndrejHruska
+       
+       * e-mail   -> ondra@ondrovo.com
 
 ----------------------------------------------------------------------------

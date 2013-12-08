@@ -11,7 +11,6 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeGroup;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
-import net.mightypork.rpw.utils.Log;
 
 
 public class DeleteFromProjectProcessor implements AssetTreeProcessor {
@@ -62,7 +61,6 @@ public class DeleteFromProjectProcessor implements AssetTreeProcessor {
 			File target = new File(base, path);
 			File targetMeta = new File(base, path + ".mcmeta");
 
-			Log.f3("Deleting: " + target);
 			if (assets) target.delete();
 			if (meta) targetMeta.delete();
 		}

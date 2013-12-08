@@ -25,6 +25,12 @@ public class DialogHelp extends RpwDialog {
 	public DialogHelp() {
 
 		super(App.getFrame(), "Quick Guide");
+		
+		createDialog();
+	}
+	
+	@Override
+	protected JComponent buildGui() {
 
 		setResizable(true);
 		setPreferredSize(new Dimension(900, 600));
@@ -99,9 +105,7 @@ public class DialogHelp extends RpwDialog {
 		vb.add(hb);
 		//@formatter:on
 
-		getContentPane().add(vb);
-
-		prepareForDisplay();
+		return vb;
 	}
 
 
@@ -111,10 +115,4 @@ public class DialogHelp extends RpwDialog {
 		buttonOK.addActionListener(closeListener);
 	}
 
-
-	@Override
-	public void onClose() {
-
-		// do nothing
-	}
 }

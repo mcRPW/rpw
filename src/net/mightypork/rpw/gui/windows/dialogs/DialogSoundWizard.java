@@ -79,15 +79,12 @@ public class DialogSoundWizard extends RpwDialog {
 
 		super(App.getFrame(), "Sound Wizard");
 
-		buildGui();
-
-		initLists();
-
-		prepareForDisplay();
+		createDialog();
 	}
 
 
-	private void buildGui() {
+	@Override
+	protected JComponent buildGui() {
 
 		Box hbMain, hb, vbMain;
 
@@ -133,221 +130,21 @@ public class DialogSoundWizard extends RpwDialog {
 		hb.add(buttonOK = new JButton("Close", Icons.MENU_EXIT));
 		vbMain.add(hb);
 
-
-		getContentPane().add(vbMain);
-
 		fileList.setMultiSelect(true);
-
-		fileList.list.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-
-			}
-
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					for (String val : fileList.getSelectedValues()) {
-						fileList.removeItemNoSort(val);
-						if (val.equals(editedKey)) enableMiddlePanel(false);
-					}
-					fileList.sortAndUpdate();
-				}
-			}
-
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-
-			}
-		});
-
-		fileList.setTransferHandler(new TransferHandler() {
-
-			@Override
-			public int getSourceActions(JComponent comp) {
-
-				return COPY;
-			}
-
-
-			@Override
-			public boolean canImport(TransferSupport support) {
-
-				if (!support.isDrop()) return false;
-
-				if (!fileList.isEnabled()) return false;
-
-				if (!support.isDataFlavorSupported(FLAVOR_FSTREE_FILE)) return false;
-
-				support.setShowDropLocation(true);
-
-				return true;
-			}
-
-
-			@Override
-			public boolean importData(TransferSupport support) {
-
-				if (!canImport(support)) return false;
-
-				try {
-
-					Transferable trans = support.getTransferable();
-
-					List<FileFsTreeNode> nodes = (List<FileFsTreeNode>) trans.getTransferData(FLAVOR_FSTREE_FILE);
-
-					boolean changed = false;
-					for (FileFsTreeNode node : nodes) {
-						String path = Utils.toLastDot(node.getPathRelativeToRoot().getPath());
-						if (!fileList.contains(path)) {
-							fileList.addItemNoSort(path);
-							changed = true;
-						}
-					}
-
-					if (changed) {
-						fileList.sortAndUpdate();
-						markChange();
-					}
-
-				} catch (UnsupportedFlavorException e) {
-					e.printStackTrace();
-					return false;
-				} catch (IOException e) {
-					e.printStackTrace();
-					return false;
-				} catch (RuntimeException e) {
-					e.printStackTrace();
-				}
-
-
-				return true;
-			}
-
-		});
-
-
-		treeDisplay.tree.setTransferHandler(new TransferHandler() {
-
-			@Override
-			public int getSourceActions(JComponent comp) {
-
-				return COPY;
-			}
-
-
-			@Override
-			public boolean canImport(TransferSupport support) {
-
-				return !support.isDataFlavorSupported(FLAVOR_FSTREE_FILE);
-			}
-
-
-			@Override
-			public boolean importData(TransferSupport support) {
-
-				try {
-
-					if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-
-						String str = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
-
-						String[] lines = str.split("\n");
-
-						List<String> sel = fileList.getSelectedValues();
-
-						for (String line : lines) {
-							if (line != null && sel.contains(line)) {
-								fileList.removeItemNoSort(line);
-
-								markChange();
-							}
-						}
-
-						fileList.sortAndUpdate();
-					}
-
-				} catch (Exception e) {}
-
-				return true;
-			}
-
-			private List<FileFsTreeNode> tmpNodeList;
-
-
-			private void recursiveAddChildrenToTmpList(DirectoryFsTreeNode fsnode) {
-
-				for (int i = 0; i < fsnode.getChildCount(); i++) {
-					AbstractFsTreeNode fsn = fsnode.getChildAt(i);
-					if (fsn.isFile()) {
-						tmpNodeList.add((FileFsTreeNode) fsn);
-					} else {
-						recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsn);
-					}
-				}
-			}
-
-
-			@Override
-			protected Transferable createTransferable(JComponent c) {
-
-				JTree tree = (JTree) c;
-
-				tmpNodeList = new ArrayList<FileFsTreeNode>();
-
-				TreePath[] paths = tree.getSelectionPaths();
-				for (TreePath path : paths) {
-					AbstractFsTreeNode fsnode = (AbstractFsTreeNode) path.getLastPathComponent();
-					if (fsnode.isDirectory()) {
-						recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsnode);
-					} else {
-						tmpNodeList.add((FileFsTreeNode) fsnode);
-					}
-				}
-
-				if (tmpNodeList.size() == 0) return null;
-
-				return new Transferable() {
-
-					private List<FileFsTreeNode> nodes = tmpNodeList;
-
-
-					@Override
-					public boolean isDataFlavorSupported(DataFlavor flavor) {
-
-						return flavor.equals(FLAVOR_FSTREE_FILE);
-					}
-
-
-					@Override
-					public DataFlavor[] getTransferDataFlavors() {
-
-						return new DataFlavor[] { FLAVOR_FSTREE_FILE };
-					}
-
-
-					@Override
-					public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
-
-						if (!isDataFlavorSupported(flavor)) throw new UnsupportedFlavorException(flavor);
-
-						if (flavor.equals(FLAVOR_FSTREE_FILE)) return nodes;
-
-						return null;
-					}
-				};
-			}
-
-
-		});
-
 		fileList.getList().setDragEnabled(true);
 		treeDisplay.tree.setDragEnabled(true);
 
+		return vbMain;
+	}
+
+
+	@Override
+	protected void initGui() {
+
+		fileList.setTransferHandler(new FileListTransferHandler());
+		treeDisplay.tree.setTransferHandler(new FileTreeTransferHandler());
+
+		initLists();
 	}
 
 
@@ -585,6 +382,36 @@ public class DialogSoundWizard extends RpwDialog {
 	@Override
 	protected void addActions() {
 
+
+		// DEL key handler
+		fileList.list.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					for (String val : fileList.getSelectedValues()) {
+						fileList.removeItemNoSort(val);
+						if (val.equals(editedKey)) enableMiddlePanel(false);
+					}
+					fileList.sortAndUpdate();
+				}
+			}
+
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+			}
+		});
+
+
 		// create key (not save yet)
 		buttonNewKey.addActionListener(new ActionListener() {
 
@@ -604,7 +431,7 @@ public class DialogSoundWizard extends RpwDialog {
 			}
 		});
 
-		// delete key
+		// delete button
 		buttonDeleteKey.addActionListener(new ActionListener() {
 
 			@Override
@@ -822,6 +649,184 @@ public class DialogSoundWizard extends RpwDialog {
 
 	@Override
 	public void onClose() {
+
+	}
+
+
+	private class FileTreeTransferHandler extends TransferHandler {
+
+		@Override
+		public int getSourceActions(JComponent comp) {
+
+			return COPY;
+		}
+
+
+		@Override
+		public boolean canImport(TransferSupport support) {
+
+			return !support.isDataFlavorSupported(FLAVOR_FSTREE_FILE);
+		}
+
+
+		@Override
+		public boolean importData(TransferSupport support) {
+
+			try {
+
+				if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+
+					String str = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
+
+					String[] lines = str.split("\n");
+
+					List<String> sel = fileList.getSelectedValues();
+
+					for (String line : lines) {
+						if (line != null && sel.contains(line)) {
+							fileList.removeItemNoSort(line);
+
+							markChange();
+						}
+					}
+
+					fileList.sortAndUpdate();
+				}
+
+			} catch (Exception e) {}
+
+			return true;
+		}
+
+		private List<FileFsTreeNode> tmpNodeList;
+
+
+		private void recursiveAddChildrenToTmpList(DirectoryFsTreeNode fsnode) {
+
+			for (int i = 0; i < fsnode.getChildCount(); i++) {
+				AbstractFsTreeNode fsn = fsnode.getChildAt(i);
+				if (fsn.isFile()) {
+					tmpNodeList.add((FileFsTreeNode) fsn);
+				} else {
+					recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsn);
+				}
+			}
+		}
+
+
+		@Override
+		protected Transferable createTransferable(JComponent c) {
+
+			JTree tree = (JTree) c;
+
+			tmpNodeList = new ArrayList<FileFsTreeNode>();
+
+			TreePath[] paths = tree.getSelectionPaths();
+			for (TreePath path : paths) {
+				AbstractFsTreeNode fsnode = (AbstractFsTreeNode) path.getLastPathComponent();
+				if (fsnode.isDirectory()) {
+					recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsnode);
+				} else {
+					tmpNodeList.add((FileFsTreeNode) fsnode);
+				}
+			}
+
+			if (tmpNodeList.size() == 0) return null;
+
+			return new Transferable() {
+
+				private List<FileFsTreeNode> nodes = tmpNodeList;
+
+
+				@Override
+				public boolean isDataFlavorSupported(DataFlavor flavor) {
+
+					return flavor.equals(FLAVOR_FSTREE_FILE);
+				}
+
+
+				@Override
+				public DataFlavor[] getTransferDataFlavors() {
+
+					return new DataFlavor[] { FLAVOR_FSTREE_FILE };
+				}
+
+
+				@Override
+				public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+
+					if (!isDataFlavorSupported(flavor)) throw new UnsupportedFlavorException(flavor);
+
+					if (flavor.equals(FLAVOR_FSTREE_FILE)) return nodes;
+
+					return null;
+				}
+			};
+		}
+	}
+
+	private class FileListTransferHandler extends TransferHandler {
+
+		@Override
+		public int getSourceActions(JComponent comp) {
+
+			return COPY;
+		}
+
+
+		@Override
+		public boolean canImport(TransferSupport support) {
+
+			if (!support.isDrop()) return false;
+
+			if (!fileList.isEnabled()) return false;
+
+			if (!support.isDataFlavorSupported(FLAVOR_FSTREE_FILE)) return false;
+
+			support.setShowDropLocation(true);
+
+			return true;
+		}
+
+
+		@Override
+		public boolean importData(TransferSupport support) {
+
+			if (!canImport(support)) return false;
+
+			try {
+
+				Transferable trans = support.getTransferable();
+
+				List<FileFsTreeNode> nodes = (List<FileFsTreeNode>) trans.getTransferData(FLAVOR_FSTREE_FILE);
+
+				boolean changed = false;
+				for (FileFsTreeNode node : nodes) {
+					String path = Utils.toLastDot(node.getPathRelativeToRoot().getPath());
+					if (!fileList.contains(path)) {
+						fileList.addItemNoSort(path);
+						changed = true;
+					}
+				}
+
+				if (changed) {
+					fileList.sortAndUpdate();
+					markChange();
+				}
+
+			} catch (UnsupportedFlavorException e) {
+				e.printStackTrace();
+				return false;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+			}
+
+
+			return true;
+		}
 
 	}
 }

@@ -18,7 +18,7 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class CopyToProjectProcessor implements AssetTreeProcessor {

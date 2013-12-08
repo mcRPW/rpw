@@ -10,13 +10,14 @@ import java.util.List;
 
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.utils.OsUtils.EnumOS;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class DesktopApi {
 
 	public static boolean browse(URI uri) {
 
-		if (openSystemSpecificURL(uri.toString())) return true;
+		if (openSystemSpecific(uri.toString())) return true;
 
 		if (browseDESKTOP(uri)) return true;
 
@@ -49,9 +50,13 @@ public class DesktopApi {
 
 
 	public static boolean editImage(File file) {
-
+		
 		if (Config.USE_IMAGE_EDITOR) {
 			if (runCommand(Config.IMAGE_EDITOR, Config.IMAGE_EDITOR_ARGS, file.getPath())) return true;
+		}
+		
+		if(OsUtils.getOs().isWindows()) {
+			if (editDESKTOP(file)) return true;
 		}
 
 		if (openSystemSpecific(file.getPath())) return true;
@@ -71,28 +76,6 @@ public class DesktopApi {
 		if (openSystemSpecific(file.getPath())) return true;
 
 		if (editDESKTOP(file)) return true;
-
-		return false;
-	}
-
-
-	private static boolean openSystemSpecificURL(String what) {
-
-		EnumOS os = OsUtils.getOs();
-
-		if (os.isLinux()) {
-			if (runCommand("gnome-open", "%s", what)) return true;
-			if (runCommand("xdg-open", "%s", what)) return true;
-			if (runCommand("kde-open", "%s", what)) return true;
-		}
-
-		if (os.isMac()) {
-			if (runCommand("open", "%s", what)) return true;
-		}
-
-		if (os.isWindows()) {
-			if (runCommand("explorer", "%s", what)) return true;
-		}
 
 		return false;
 	}

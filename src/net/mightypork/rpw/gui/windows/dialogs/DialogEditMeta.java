@@ -2,7 +2,6 @@ package net.mightypork.rpw.gui.windows.dialogs;
 
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,78 +12,72 @@ import java.io.InputStream;
 
 import javax.swing.*;
 
-import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
-import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.logging.Log;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Style;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
-import org.fife.ui.rtextarea.RTextScrollPane;
-
 import com.google.gson.JsonParser;
 
 
-public class DialogEditMeta extends RpwDialog {
+public class DialogEditMeta extends DialogEditorBase {
 
 	private JButton btnCancel;
-	private RSyntaxTextArea textArea;
 	private JButton btnSave;
 	private JButton btnPresets;
 	private JButton btnCheck;
 	private JPopupMenu presetsPopup;
-	private Box buttons;
-	private AssetTreeLeaf editedNode;
+	protected AssetTreeLeaf editedNode;
 
 
-	public DialogEditMeta(AssetTreeLeaf node) throws IOException {
+	public DialogEditMeta(AssetTreeLeaf node) {
 
-		super(App.getFrame(), "MCMETA EDITOR");
+		this.editedNode = node;
 
-		String path = Utils.fromLastChar(node.getAssetEntry().getPath(), '/');
+		createDialog();
+	}
 
-		setTitle(path + ".mcmeta - RPW McMeta editor");
 
-		setResizable(true);
+	@Override
+	protected String getTitleText() {
 
-		editedNode = node;
+		String path = Utils.fromLastChar(editedNode.getAssetEntry().getPath(), '/');
 
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		return path + ".mcmeta - RPW McMeta editor";
+	}
 
-		textArea = buildTextArea();
-		RTextScrollPane sp = new RTextScrollPane(textArea);
 
-		sp.setPreferredSize(new Dimension(800, 600));
+	@Override
+	protected String getInitialText() {
 
-		//@formatter:off
-		sp.setBorder(
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createEmptyBorder(10, 10, 10, 10),
-						BorderFactory.createEtchedBorder()
-				)
-		);		
-		//@formatter:on
+		InputStream in;
+		try {
+			in = Projects.getActive().getAssetMetaStream(editedNode.getAssetKey());
+		} catch (IOException e) {
+			Log.e(e);
+			return "";
+		}
 
-		sp.setWheelScrollingEnabled(true);
-		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		return FileUtils.streamToString(in);
+	}
 
+
+	@Override
+	protected void buildButtons(Box buttons) {
 
 		btnPresets = new JButton("Templates", Icons.MENU_GENERATE);
 		btnCheck = new JButton("Check JSON", Icons.MENU_INFO);
 		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
 		btnSave = new JButton("Save", Icons.MENU_YES);
-
-		buttons = Box.createHorizontalBox();
 
 		buttons.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 		buttons.add(btnPresets);
@@ -97,18 +90,6 @@ public class DialogEditMeta extends RpwDialog {
 
 		presetsPopup = buildPresetsPopup();
 		buttons.add(presetsPopup);
-
-		getContentPane().add(sp);
-		getContentPane().add(buttons);
-		getContentPane().doLayout();
-
-
-		InputStream in = Projects.getActive().getAssetMetaStream(node.getAssetKey());
-		String text = FileUtils.streamToString(in);
-
-		setTextareaText(text);
-
-		prepareForDisplay();
 	}
 
 
@@ -142,7 +123,19 @@ public class DialogEditMeta extends RpwDialog {
 
 		menu2.add(menu3 = new JMenu("Vanilla"));
 
-		String[] anims = { "clock", "compass", "fire_layer_0", "fire_layer_1", "lava_flow", "lava_still", "portal", "water_flow", "water_still" };
+		//@formatter:off
+		String[] anims = { 
+				"clock",
+				"compass",
+				"fire_layer_0",
+				"fire_layer_1",
+				"lava_flow",
+				"lava_still",
+				"portal",
+				"water_flow",
+				"water_still"
+		};
+		//@formatter:on
 
 		for (String a : anims) {
 			menu3.add(item = new JMenuItem(a));
@@ -161,7 +154,14 @@ public class DialogEditMeta extends RpwDialog {
 
 		menu2.add(menu3 = new JMenu("Vanilla"));
 
-		String[] textures = { "enchanted_item_glint", "pumpkinblur", "shadow", "vignette" };
+		//@formatter:off
+		String[] textures = {
+				"enchanted_item_glint",
+				"pumpkinblur",
+				"shadow",
+				"vignette"
+		};
+		//@formatter:on
 
 		for (String t : textures) {
 			menu3.add(item = new JMenuItem(t));
@@ -189,13 +189,91 @@ public class DialogEditMeta extends RpwDialog {
 	}
 
 
-	private RSyntaxTextArea buildTextArea() {
+	@Override
+	protected void addActions() {
 
-		RSyntaxTextArea ta = new RSyntaxTextArea(20, 60);
+		btnCancel.addActionListener(closeListener);
+
+
+		btnCheck.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String text = getTextArea().getText();
+
+				JsonParser jp = new JsonParser();
+
+				try {
+					jp.parse(text);
+					Alerts.info(DialogEditMeta.this, "Check JSON", "Entered code is (probably) valid.");
+				} catch (Exception er) {
+					Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");
+				}
+
+			}
+		});
+
+		btnSave.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String text = getTextArea().getText();
+
+				File file = Projects.getActive().getAssetMetaFile(editedNode.getAssetKey());
+
+				try {
+					FileUtils.stringToFile(file, text);
+					closeDialog();
+				} catch (IOException e1) {
+					Log.e(e1);
+
+					Alerts.error(self(), "Could not save file.");
+
+				}
+			}
+		});
+
+		btnPresets.addMouseListener(new ClickListener() {
+
+			boolean first = true;
+
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if (first) {
+					presetsPopup.show(getButtonsBox(), 0, 0);
+					presetsPopup.setVisible(false);
+					first = false;
+				}
+
+				presetsPopup.show(getButtonsBox(), btnPresets.getBounds().x, btnPresets.getBounds().y - presetsPopup.getHeight());
+			}
+		});
+	}
+
+	private ActionListener loadTemplateListener = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			String res = e.getActionCommand();
+
+			InputStream in = FileUtils.getResource("/data/mcmeta/" + res);
+
+			String text = FileUtils.streamToString(in);
+
+			setTextareaText(text);
+		}
+	};
+
+
+	@Override
+	protected void configureTextarea(RSyntaxTextArea ta) {
+
 		ta.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-		ta.setCodeFoldingEnabled(true);
-		ta.setAntiAliasingEnabled(true);
-
 		Font font = new Font(Font.MONOSPACED, Font.PLAIN, 16);
 
 		// destroy all styles
@@ -265,112 +343,6 @@ public class DialogEditMeta extends RpwDialog {
 		ta.setSyntaxScheme(ss);
 		ta.setFont(font);
 
-		return ta;
-	}
-
-
-	@Override
-	protected void onShown() {
-
-	}
-
-
-	@Override
-	public void onClose() {
-
-		// nothing
-	}
-
-
-	@Override
-	protected void addActions() {
-
-		btnCancel.addActionListener(closeListener);
-
-
-		btnCheck.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String text = textArea.getText();
-
-				JsonParser jp = new JsonParser();
-
-				try {
-					jp.parse(text);
-					Alerts.info(DialogEditMeta.this, "Check JSON", "Entered code is (probably) valid.");
-				} catch (Exception er) {
-					Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");
-				}
-
-			}
-		});
-
-		btnSave.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String text = textArea.getText();
-
-				File file = Projects.getActive().getAssetMetaFile(editedNode.getAssetKey());
-
-				try {
-					FileUtils.stringToFile(file, text);
-					closeDialog();
-				} catch (IOException e1) {
-					Log.e(e1);
-
-					Alerts.error(self(), "Could not save file.");
-
-				}
-			}
-		});
-
-		btnPresets.addMouseListener(new ClickListener() {
-
-			boolean first = true;
-
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				if (first) {
-					presetsPopup.show(buttons, 0, 0);
-					presetsPopup.setVisible(false);
-					first = false;
-				}
-
-				presetsPopup.show(buttons, btnPresets.getBounds().x, btnPresets.getBounds().y - presetsPopup.getHeight());
-			}
-		});
-	}
-
-	private ActionListener loadTemplateListener = new ActionListener() {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			String res = e.getActionCommand();
-
-			InputStream in = FileUtils.getResource("/data/mcmeta/" + res);
-
-			String text = FileUtils.streamToString(in);
-
-			setTextareaText(text);
-		}
-	};
-
-
-	private void setTextareaText(String text) {
-
-		textArea.setText(text);
-		textArea.revalidate();
-
-		textArea.setCaretPosition(0);
-
-		textArea.requestFocusInWindow();
 	}
 
 }

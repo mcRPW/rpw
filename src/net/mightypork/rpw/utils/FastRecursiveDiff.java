@@ -12,6 +12,8 @@ import java.util.zip.Adler32;
 import java.util.zip.CheckedInputStream;
 import java.util.zip.Checksum;
 
+import net.mightypork.rpw.utils.logging.Log;
+
 
 public class FastRecursiveDiff {
 

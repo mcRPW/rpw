@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.mightypork.rpw.App;
@@ -23,7 +24,13 @@ public class DialogChangelog extends RpwDialog {
 	public DialogChangelog() {
 
 		super(App.getFrame(), "What's new");
-
+		
+		createDialog();
+	}
+	
+	@Override
+	protected JComponent buildGui() {
+		
 		Box hb;
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -51,9 +58,7 @@ public class DialogChangelog extends RpwDialog {
 		vb.add(hb);
 		//@formatter:on
 
-		getContentPane().add(vb);
-
-		prepareForDisplay();
+		return vb;
 	}
 
 
@@ -63,10 +68,4 @@ public class DialogChangelog extends RpwDialog {
 		buttonOK.addActionListener(closeListener);
 	}
 
-
-	@Override
-	public void onClose() {
-
-		// do nothing
-	}
 }

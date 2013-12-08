@@ -12,7 +12,7 @@ import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.tree.filesystem.DirectoryFsTreeNode;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 
 

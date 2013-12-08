@@ -25,6 +25,7 @@ import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
+import net.mightypork.rpw.tasks.sequences.SequenceExportProject;
 import net.mightypork.rpw.tree.assets.processors.RenameSourceProcessor;
 import net.mightypork.rpw.tree.assets.processors.SaveToProjectNodeProcessor;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
@@ -33,8 +34,8 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 import net.mightypork.rpw.utils.DesktopApi;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.GuiUtils;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 /**
@@ -285,29 +286,11 @@ public class Tasks {
 			public void run() {
 
 				// -- task begin --
-
-				Alerts.loading(true);
+				
 				Tasks.taskStoreProjectChanges();
 
-				try {
-					TaskExportProject.doExport(target);
-				} catch (Exception e) {
-
-					Log.e(e);
-
-					//@formatter:off
-					Alerts.error(
-							App.getFrame(),
-							"An error occured while exporting.\n" +
-							"Check log file for details."
-					);
-					//@formatter:on					
-				}
-
-				Alerts.loading(false);
-
-				if (afterExport != null) afterExport.run();
-
+				(new SequenceExportProject(target, afterExport)).run();
+				
 				Tasks.stopTask(task);
 
 				// -- task end --

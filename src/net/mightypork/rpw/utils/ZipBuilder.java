@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import net.mightypork.rpw.utils.logging.Log;
+
 
 public class ZipBuilder {
 

@@ -8,7 +8,7 @@ import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.windows.messages.DialogUpdateNotify;
 import net.mightypork.rpw.utils.GuiUtils;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TaskCheckUpdate {

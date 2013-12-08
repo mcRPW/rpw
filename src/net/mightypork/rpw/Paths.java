@@ -18,10 +18,12 @@ public class Paths {
 	public static final String FILENAME_PROJECT_GROUPS = "sources_groups.dat";
 	public static final String FILENAME_PROJECT_SOUNDS = "sounds.json";
 	public static final String FILENAME_PROJECT_CONFIG = "properties.cfg";
+	
 	public static final String FILENAME_LOG = "Runtime.log";
 
 	// paths based in workdir	
 	public static final String DIR_TMP = "tmp";
+	public static final String DIR_LOGS = "logs";
 	public static final String DIR_PROJECT_WORKING_COPY_TMP = DIR_TMP + "/workdir";
 	public static final String DIR_LIBRARY = "library";
 	public static final String DIR_VANILLA = DIR_LIBRARY + "/" + DIRNAME_VANILLA;

@@ -13,10 +13,10 @@ import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
 import net.mightypork.rpw.utils.SimpleConfig;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TaskLoadVanillaStructure {
@@ -46,7 +46,7 @@ public class TaskLoadVanillaStructure {
 
 				assets.put(e.getKey(), ae);
 
-				if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("- " + ae);
+				if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("+ " + ae);
 			}
 
 		} catch (IOException e) {

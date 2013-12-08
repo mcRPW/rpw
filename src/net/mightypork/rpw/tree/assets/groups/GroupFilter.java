@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.tree.assets.AssetEntry;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class GroupFilter {

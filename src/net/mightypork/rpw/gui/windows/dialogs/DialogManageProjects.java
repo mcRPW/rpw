@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -49,6 +50,12 @@ public class DialogManageProjects extends RpwDialog {
 	public DialogManageProjects() {
 
 		super(App.getFrame(), "Manage Projects");
+		
+		createDialog();
+	}
+		
+	@Override
+	protected JComponent buildGui() {
 
 		Box hb;
 		Box vb = Box.createVerticalBox();
@@ -108,9 +115,7 @@ public class DialogManageProjects extends RpwDialog {
 		vb.add(hb);
 		//@formatter:on
 
-		getContentPane().add(vb);
-
-		prepareForDisplay();
+		return vb;
 	}
 
 

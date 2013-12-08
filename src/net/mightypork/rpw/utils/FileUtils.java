@@ -10,6 +10,7 @@ import java.util.Map;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
+import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 
@@ -50,7 +51,7 @@ public class FileUtils {
 	 * @param filter filter accepting only files and dirs to be copied
 	 * @throws IOException on error
 	 */
-	public static void copyDirectory(File source, File target, StringFilter filter, List<File> filesCopied) throws IOException {
+	public static void copyDirectory(File source, File target, FileFilter filter, List<File> filesCopied) throws IOException {
 
 		if (source.isDirectory()) {
 
@@ -64,7 +65,7 @@ public class FileUtils {
 			}
 
 		} else {
-			if (filter != null && !filter.accept(source.getAbsolutePath())) {
+			if (filter != null && !filter.accept(source)) {
 				return;
 			}
 
@@ -520,11 +521,14 @@ public class FileUtils {
 					EAsset type = EAsset.forExtension(ext);
 
 					if (!type.isAsset()) {
-						if (Config.LOG_ZIP_EXTRACTING) Log.f3("# excluding: " + s);
 						continue;
 					}
 
-					assets.put(key, new AssetEntry(key, type));
+					AssetEntry ae = new AssetEntry(key, type);
+					
+					assets.put(key, ae);
+					
+					if(Config.LOG_EXTRACTED_ASSETS) Log.f3("+ "+ae.toString());
 				}
 			}
 

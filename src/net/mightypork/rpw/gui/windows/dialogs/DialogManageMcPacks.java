@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -64,6 +65,12 @@ public class DialogManageMcPacks extends RpwDialog {
 	public DialogManageMcPacks() {
 
 		super(App.getFrame(), "Manage packs in MC");
+		
+		createDialog();
+	}
+	
+	@Override
+	protected JComponent buildGui() {
 
 		Box hb;
 		Box vb = Box.createVerticalBox();
@@ -103,16 +110,8 @@ public class DialogManageMcPacks extends RpwDialog {
 		vb.add(hb);
 		//@formatter:on
 
-		getContentPane().add(vb);
+		return vb;
 
-		prepareForDisplay();
-	}
-
-
-	@Override
-	public void onClose() {
-
-		// nothing
 	}
 
 

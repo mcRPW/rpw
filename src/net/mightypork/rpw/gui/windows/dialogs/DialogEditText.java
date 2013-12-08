@@ -2,7 +2,6 @@ package net.mightypork.rpw.gui.windows.dialogs;
 
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,34 +18,34 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
 import net.mightypork.rpw.gui.helpers.TextEditListener;
-import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.SimpleConfig;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.logging.Log;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Style;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
 
-public class DialogEditText extends RpwDialog {
+public class DialogEditText extends DialogEditorBase {
 
 	private JButton btnCancel;
-	private RSyntaxTextArea textArea;
 	private JButton btnSave;
 	private JButton btnFormatCodes;
 	private JPopupMenu formatCodesPopup;
-	private Box buttons;
+	
 	private EAsset type;
 	private TextEditListener listener;
+	private String dlgTitle;
+	private String dlgText;
+	private boolean dlgFormattingCodes;
 
 
 	public DialogEditText(final AssetTreeLeaf node) throws IOException {
@@ -106,68 +105,22 @@ public class DialogEditText extends RpwDialog {
 
 	public DialogEditText() {
 
-		super(App.getFrame(), "TEXT EDITOR");
+		super();
 	}
 
 
 	private void create(String title, String text, EAsset type, boolean showFormatingCodes, TextEditListener listener) {
 
-		setTitle(title + " - RPW Text editor");
-
-		setResizable(true);
-
+		this.dlgTitle = title + " - RPW Text editor";
+		this.dlgText = text;
+		this.dlgFormattingCodes = showFormatingCodes;
+		
 		this.type = type;
 
 		this.listener = listener;
-
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-
-		textArea = buildTextArea();
-		RTextScrollPane sp = new RTextScrollPane(textArea);
-
-		sp.setPreferredSize(new Dimension(800, 600));
-
-		//@formatter:off
-		sp.setBorder(
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createEmptyBorder(10, 10, 10, 10),
-						BorderFactory.createEtchedBorder()
-				)
-		);		
-		//@formatter:on
-
-		sp.setWheelScrollingEnabled(true);
-		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-
-		btnFormatCodes = new JButton("Formatting codes", Icons.MENU_GENERATE);
-		btnFormatCodes.setVisible(showFormatingCodes);
-
-		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
-		btnSave = new JButton("Save", Icons.MENU_YES);
-
-		buttons = Box.createHorizontalBox();
-
-		buttons.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-		buttons.add(btnFormatCodes);
-		buttons.add(Box.createHorizontalGlue());
-		buttons.add(btnSave);
-		buttons.add(Box.createHorizontalStrut(5));
-		buttons.add(btnCancel);
-
-		formatCodesPopup = buildCodesPopup();
-		buttons.add(formatCodesPopup);
-
-		getContentPane().add(sp);
-		getContentPane().add(buttons);
-		getContentPane().doLayout();
-
-		setTextareaText(text);
-
-		prepareForDisplay();
+		
+		createDialog();
 	}
-
 
 	private JPopupMenu buildCodesPopup() {
 
@@ -206,10 +159,96 @@ public class DialogEditText extends RpwDialog {
 	}
 
 
-	private RSyntaxTextArea buildTextArea() {
+	@Override
+	protected void addActions() {
 
-		RSyntaxTextArea ta = new RSyntaxTextArea(20, 60);
+		btnCancel.addActionListener(closeListener);
 
+		btnSave.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String text = getTextArea().getText();
+
+				listener.onDialogClosed(text);
+
+				closeDialog();
+			}
+		});
+
+		btnFormatCodes.addMouseListener(new ClickListener() {
+
+			boolean first = true;
+
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				if (first) {
+					formatCodesPopup.show(getButtonsBox(), 0, 0);
+					formatCodesPopup.setVisible(false);
+					first = false;
+				}
+
+				formatCodesPopup.show(getButtonsBox(), btnFormatCodes.getBounds().x, btnFormatCodes.getBounds().y - formatCodesPopup.getHeight());
+			}
+		});
+	}
+
+	private ActionListener insertFormattingCodeListener = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			String code = e.getActionCommand();
+			
+			RSyntaxTextArea ta = getTextArea();
+
+			ta.insert(code, ta.getCaretPosition());
+
+			ta.requestFocusInWindow();
+		}
+	};
+
+	
+	@Override
+	protected String getTitleText() {
+
+		return dlgTitle;
+	}
+
+
+	@Override
+	protected void buildButtons(Box buttons) {
+
+		btnFormatCodes = new JButton("Formatting codes", Icons.MENU_GENERATE);
+		btnFormatCodes.setVisible(dlgFormattingCodes);
+
+		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
+		btnSave = new JButton("Save", Icons.MENU_YES);
+
+		buttons.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		buttons.add(btnFormatCodes);
+		buttons.add(Box.createHorizontalGlue());
+		buttons.add(btnSave);
+		buttons.add(Box.createHorizontalStrut(5));
+		buttons.add(btnCancel);
+
+		formatCodesPopup = buildCodesPopup();
+		buttons.add(formatCodesPopup);
+	}
+
+
+	@Override
+	protected String getInitialText() {
+
+		return dlgText;
+	}
+
+
+	@Override
+	protected void configureTextarea(RSyntaxTextArea ta) {
 		String mime;
 
 		switch (type) {
@@ -227,7 +266,6 @@ public class DialogEditText extends RpwDialog {
 
 		ta.setSyntaxEditingStyle(mime);
 		ta.setCodeFoldingEnabled(false);
-		ta.setAntiAliasingEnabled(true);
 
 		Font font = new Font(Font.MONOSPACED, Font.PLAIN, 16);
 
@@ -291,75 +329,7 @@ public class DialogEditText extends RpwDialog {
 
 		ta.setSyntaxScheme(ss);
 		ta.setFont(font);
-
-		return ta;
-	}
-
-
-	@Override
-	public void onClose() {
-
-		// nothing
-	}
-
-
-	@Override
-	protected void addActions() {
-
-		btnCancel.addActionListener(closeListener);
-
-		btnSave.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String text = textArea.getText();
-
-				listener.onDialogClosed(text);
-
-				closeDialog();
-			}
-		});
-
-		btnFormatCodes.addMouseListener(new ClickListener() {
-
-			boolean first = true;
-
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				if (first) {
-					formatCodesPopup.show(buttons, 0, 0);
-					formatCodesPopup.setVisible(false);
-					first = false;
-				}
-
-				formatCodesPopup.show(buttons, btnFormatCodes.getBounds().x, btnFormatCodes.getBounds().y - formatCodesPopup.getHeight());
-			}
-		});
-	}
-
-	private ActionListener insertFormattingCodeListener = new ActionListener() {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			String code = e.getActionCommand();
-
-			textArea.insert(code, textArea.getCaretPosition());
-
-			textArea.requestFocusInWindow();
-		}
-	};
-
-
-	private void setTextareaText(String text) {
-
-		textArea.setText(text);
-		textArea.revalidate();
-
-		textArea.setCaretPosition(0);
+		
 	}
 
 }

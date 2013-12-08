@@ -54,81 +54,91 @@ public class DialogProjectProperties extends RpwDialog {
 
 		iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
 
+		
+		createDialog();
+	}
+	
+	@Override
+	protected JComponent buildGui() {
+		
 		Project proj = Projects.getActive();
-
+		
 		//@formatter:off
 		Box hb;
 		Box vb, vb2;
 		vb = Box.createVerticalBox();
-			vb.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-	
-			vb.add(new JXTitledSeparator("Properties"));
-			vb.add(Box.createVerticalStrut(5));
-	
-			hb = Box.createHorizontalBox();
-				hb.add(new JLabel("Title:"));
-				hb.add(Box.createHorizontalStrut(5));
-				String name = proj.getProjectName();
-				hb.add(titleField = new JXTextField());
-				titleField.setText(name);
-			vb.add(hb);
-	
-			vb.add(Box.createVerticalStrut(8));
-	
-			vb.add(new JXTitledSeparator("Icon"));
-			vb.add(Box.createVerticalStrut(5));
-	
-			hb = Box.createHorizontalBox();
-	
-				imageView = new JLabel(getProjectIcon());
-				hb.add(imageView);
 		
-				hb.add(Box.createHorizontalStrut(8));
-		
-				vb2 = Box.createVerticalBox();
-				
-					vb2.add(btnIconEdit = new JButton("Edit", Icons.MENU_EDIT));
-					btnIconEdit.setHorizontalAlignment(SwingConstants.LEFT);
-					GuiUtils.forceSize(btnIconEdit, 115, 25);			
-			
-					vb2.add(Box.createVerticalStrut(3));
-					
-					vb2.add(btnIconImport = new JButton("Import", Icons.MENU_IMPORT_BOX));
-					btnIconImport.setHorizontalAlignment(SwingConstants.LEFT);
-					GuiUtils.forceSize(btnIconImport, 115, 25);
-			
-					vb2.add(Box.createVerticalStrut(3));
-					
-					vb2.add(btnIconDefault = new JButton("Default", Icons.MENU_DELETE));
-					btnIconDefault.setHorizontalAlignment(SwingConstants.LEFT);
-					GuiUtils.forceSize(btnIconDefault, 115, 25);
-								
-					vb2.add(Box.createVerticalStrut(10));
-					
-					vb2.add(btnIconRefresh = new JButton("Refresh", Icons.MENU_RELOAD));
-					btnIconRefresh.setHorizontalAlignment(SwingConstants.LEFT);
-					GuiUtils.forceSize(btnIconRefresh, 115, 25);
-					
-					vb2.add(Box.createVerticalGlue());
-		
-				hb.add(vb2);
-	
-			vb.add(hb);
-	
-	
-			vb.add(Box.createVerticalStrut(8));
-			
-			hb = Box.createHorizontalBox();
-				hb.add(Box.createHorizontalGlue());
-		
-				buttonOK = new JButton("OK", Icons.MENU_YES);
-				hb.add(buttonOK);
-			vb.add(hb);
+		vb.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 
-		getContentPane().add(vb);
+		vb.add(new JXTitledSeparator("Properties"));
+		vb.add(Box.createVerticalStrut(5));
+
+		hb = Box.createHorizontalBox();
+			hb.add(new JLabel("Title:"));
+			hb.add(Box.createHorizontalStrut(5));
+			String name = proj.getProjectName();
+			hb.add(titleField = new JXTextField());
+			titleField.setText(name);
+		vb.add(hb);
+
+		vb.add(Box.createVerticalStrut(8));
+
+		vb.add(new JXTitledSeparator("Icon"));
+		vb.add(Box.createVerticalStrut(5));
+
+		hb = Box.createHorizontalBox();
+
+			imageView = new JLabel(getProjectIcon());
+			hb.add(imageView);
+	
+			hb.add(Box.createHorizontalStrut(8));
+	
+			vb2 = Box.createVerticalBox();
+			
+				vb2.add(btnIconEdit = new JButton("Edit", Icons.MENU_EDIT));
+				btnIconEdit.setHorizontalAlignment(SwingConstants.LEFT);
+				GuiUtils.forceSize(btnIconEdit, 115, 25);			
+		
+				vb2.add(Box.createVerticalStrut(3));
+				
+				vb2.add(btnIconImport = new JButton("Import", Icons.MENU_IMPORT_BOX));
+				btnIconImport.setHorizontalAlignment(SwingConstants.LEFT);
+				GuiUtils.forceSize(btnIconImport, 115, 25);
+		
+				vb2.add(Box.createVerticalStrut(3));
+				
+				vb2.add(btnIconDefault = new JButton("Default", Icons.MENU_DELETE));
+				btnIconDefault.setHorizontalAlignment(SwingConstants.LEFT);
+				GuiUtils.forceSize(btnIconDefault, 115, 25);
+							
+				vb2.add(Box.createVerticalStrut(10));
+				
+				vb2.add(btnIconRefresh = new JButton("Refresh", Icons.MENU_RELOAD));
+				btnIconRefresh.setHorizontalAlignment(SwingConstants.LEFT);
+				GuiUtils.forceSize(btnIconRefresh, 115, 25);
+				
+				vb2.add(Box.createVerticalGlue());
+	
+			hb.add(vb2);
+
+		vb.add(hb);
+
+
+		vb.add(Box.createVerticalStrut(8));
+		
+		hb = Box.createHorizontalBox();
+			hb.add(Box.createHorizontalGlue());
+	
+			buttonOK = new JButton("OK", Icons.MENU_YES);
+			hb.add(buttonOK);
+		vb.add(hb);
 		//@formatter:on
 
-		prepareForDisplay();
+		return vb;
+	}
+	
+	@Override
+	protected void initGui() {
 
 		initFileChooser();
 	}

@@ -13,7 +13,7 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 
 

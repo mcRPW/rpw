@@ -9,11 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -50,25 +46,27 @@ public class DialogImportPack extends RpwDialog {
 
 	private JXTextField field;
 
+	private JButton buttonPickFile;
 	private JButton buttonOK;
-
-
-	private SimpleStringList list;
+	private JButton buttonCancel;
 
 	private JXLabel importUrl;
-
-	private JButton buttonPickFile;
-
 	private JFileChooser fc;
-
 	private File selectedFile;
 
-	private JButton buttonCancel;
+	private SimpleStringList list;
 
 
 	public DialogImportPack() {
 
 		super(App.getFrame(), "Import ResourcePack");
+
+		createDialog();
+	}
+
+
+	@Override
+	protected JComponent buildGui() {
 
 		Box hb;
 		Box vb = Box.createVerticalBox();
@@ -168,9 +166,12 @@ public class DialogImportPack extends RpwDialog {
 		vb.add(hb);
 		//@formatter:on
 
-		getContentPane().add(vb);
+		return vb;
+	}
 
-		prepareForDisplay();
+
+	@Override
+	protected void initGui() {
 
 		initFileChooser();
 	}

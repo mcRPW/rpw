@@ -28,7 +28,7 @@ import net.coobird.thumbnailator.tasks.io.ImageSink;
 import net.coobird.thumbnailator.tasks.io.ImageSource;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class Icons {
@@ -90,6 +90,12 @@ public class Icons {
 	public static ImageIcon MENU_TWITTER;
 	public static ImageIcon WINDOW;
 	public static ImageIcon AUDIO;
+	
+	
+	public static ImageIcon DIALOG_ERROR;
+	public static ImageIcon DIALOG_INFORMATION;
+	public static ImageIcon DIALOG_QUESTION;
+	public static ImageIcon DIALOG_WARNING;
 
 
 	public static void init() {
@@ -149,6 +155,10 @@ public class Icons {
 
 		ABOUT = loadImage(imgPath + "about.png");
 
+		DIALOG_ERROR = loadImage(imgPath + "dialog/error.png");
+		DIALOG_INFORMATION = loadImage(imgPath + "dialog/information.png");
+		DIALOG_QUESTION = loadImage(imgPath + "dialog/question.png");
+		DIALOG_WARNING = loadImage(imgPath + "dialog/warning.png");
 
 		TREE_CLOSE = loadImage(imgPath + "tree-16/close.png");
 		TREE_OPEN = loadImage(imgPath + "tree-16/open.png");

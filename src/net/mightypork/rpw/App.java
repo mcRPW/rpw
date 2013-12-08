@@ -19,8 +19,8 @@ import net.mightypork.rpw.project.NodeSourceProvider;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.HtmlBuilder;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
+import net.mightypork.rpw.utils.logging.Log;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.jdesktop.swingx.JXFrame;

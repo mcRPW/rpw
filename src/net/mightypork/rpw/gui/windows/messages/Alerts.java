@@ -14,7 +14,7 @@ import javax.swing.WindowConstants;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.utils.GuiUtils;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXFrame;
 
@@ -42,7 +42,8 @@ public class Alerts {
 				c,
 				message,
 				title,
-				JOptionPane.ERROR_MESSAGE
+				JOptionPane.ERROR_MESSAGE,
+				Icons.DIALOG_ERROR
 			);
 		//@formatter:on
 	}
@@ -63,7 +64,8 @@ public class Alerts {
 				c,
 				message,
 				title,
-				JOptionPane.WARNING_MESSAGE
+				JOptionPane.WARNING_MESSAGE,
+				Icons.DIALOG_WARNING
 			);
 		//@formatter:on
 	}
@@ -84,7 +86,8 @@ public class Alerts {
 				c,
 				message,
 				title,
-				JOptionPane.INFORMATION_MESSAGE
+				JOptionPane.INFORMATION_MESSAGE,
+				Icons.DIALOG_INFORMATION
 			);
 		//@formatter:on
 	}
@@ -156,7 +159,8 @@ public class Alerts {
 				message,
 				title,
 				JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE
+				JOptionPane.QUESTION_MESSAGE,
+				Icons.DIALOG_QUESTION
 		);
 		//@formatter:on
 	}
@@ -170,7 +174,8 @@ public class Alerts {
 				message,
 				title,
 				JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE
+				JOptionPane.QUESTION_MESSAGE,
+				Icons.DIALOG_QUESTION
 		);
 		//@formatter:on
 	}
@@ -184,7 +189,8 @@ public class Alerts {
 				message,
 				title,
 				JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE
+				JOptionPane.QUESTION_MESSAGE,
+				Icons.DIALOG_QUESTION
 		);
 		//@formatter:on
 	}
@@ -192,15 +198,17 @@ public class Alerts {
 
 	public static String askForInput(Component c, String title, String message, String initial) {
 
-		return (String) JOptionPane.showInputDialog(c, message, title, JOptionPane.QUESTION_MESSAGE, null, null, initial);
+		//@formatter:off
+		return (String) JOptionPane.showInputDialog(
+				c,
+				message,
+				title,
+				JOptionPane.QUESTION_MESSAGE,
+				Icons.DIALOG_QUESTION,
+				null,
+				initial
+		);
+		//@formatter:on
 
-//		//@formatter:off
-//		return JOptionPane.showInputDialog(
-//				c,
-//				message,
-//				title,
-//				JOptionPane.QUESTION_MESSAGE
-//		);
-//		//@formatter:on
 	}
 }

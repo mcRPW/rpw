@@ -10,7 +10,7 @@ import javax.swing.tree.TreePath;
 import net.mightypork.rpw.gui.helpers.PopupTriggerListener;
 import net.mightypork.rpw.gui.windows.popups.PopupSelectedNodes;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXTreeTable;
 

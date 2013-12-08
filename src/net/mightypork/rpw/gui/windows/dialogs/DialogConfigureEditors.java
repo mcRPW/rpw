@@ -60,6 +60,13 @@ public class DialogConfigureEditors extends RpwDialog {
 	public DialogConfigureEditors() {
 
 		super(App.getFrame(), "Configure Editors");
+		
+		createDialog();
+	}
+	
+	
+	@Override
+	protected JComponent buildGui() {
 
 		Box box, box2;
 		Box vb = Box.createVerticalBox();
@@ -74,120 +81,123 @@ public class DialogConfigureEditors extends RpwDialog {
 
 		//@formatter:off
 
-			vb.add(GuiUtils.createDialogHeading("Configure Editors"));
+		vb.add(GuiUtils.createDialogHeading("Configure Editors"));
 
-			vb.add(Box.createVerticalStrut(15));
-			vb.add(sep = new JXTitledSeparator("External Editors"));
-				sep.setForeground(mainSepColor);
-			vb.add(Box.createVerticalStrut(10));
-		
-			vb.add(sep = new JXTitledSeparator("Image Editor"));
-				sep.setForeground(Color.GRAY);
-				sep.add(ckI = new JCheckBox("Use this command"));	
-			vb.add(Box.createVerticalStrut(10));
+		vb.add(Box.createVerticalStrut(15));
+		vb.add(sep = new JXTitledSeparator("External Editors"));
+			sep.setForeground(mainSepColor);
+		vb.add(Box.createVerticalStrut(10));
 	
-			boxI = Box.createHorizontalBox();		
-				boxI.add(labelExI = new JLabel("Executable:"));
-					labelExI.setHorizontalAlignment(SwingConstants.RIGHT);		
-				boxI.add(Box.createHorizontalStrut(5));		
-				boxI.add(fieldCommandI = new JTextField());
-					fieldCommandI.setPreferredSize(fieldSize);
-					fieldCommandI.setBorder(new CompoundBorder(fieldCommandI.getBorder(), fieldBorder));		
-				boxI.add(Box.createHorizontalStrut(5));		
-				boxI.add(btnBrowseI = new JButton(Icons.MENU_OPEN));		
-				boxI.add(Box.createHorizontalStrut(8));		
-				boxI.add(labelArI = new JLabel("Args:"));
-					labelArI.setHorizontalAlignment(SwingConstants.RIGHT);		
-				boxI.add(Box.createHorizontalStrut(5));		
-				boxI.add(fieldArgsI = new JTextField());
-					fieldArgsI.setPreferredSize(argsSize);
-					fieldArgsI.setBorder(new CompoundBorder(fieldArgsI.getBorder(), fieldBorder));		
-			vb.add(boxI);
-			vb.add(Box.createVerticalStrut(35));
-	
-	
-			vb.add(sep = new JXTitledSeparator("Text Editor"));
-				sep.setForeground(Color.GRAY);
-				sep.add(ckT = new JCheckBox("Use this command"));	
-			vb.add(Box.createVerticalStrut(10));
-	
-			boxT = Box.createHorizontalBox();		
-				boxT.add(labelExT = new JLabel("Executable:"));
-					labelExT.setHorizontalAlignment(SwingConstants.RIGHT);		
-				boxT.add(Box.createHorizontalStrut(5));		
-				boxT.add(fieldCommandT = new JTextField());
-					fieldCommandT.setPreferredSize(fieldSize);
-					fieldCommandT.setBorder(new CompoundBorder(fieldCommandT.getBorder(), fieldBorder));		
-				boxT.add(Box.createHorizontalStrut(5));		
-				boxT.add(btnBrowseT = new JButton(Icons.MENU_OPEN));		
-				boxT.add(Box.createHorizontalStrut(8));		
-				boxT.add(labelArT = new JLabel("Args:"));
-					labelArT.setHorizontalAlignment(SwingConstants.RIGHT);		
-				boxT.add(Box.createHorizontalStrut(5));		
-				boxT.add(fieldArgsT = new JTextField());
-					fieldArgsT.setPreferredSize(argsSize);
-					fieldArgsT.setBorder(new CompoundBorder(fieldArgsT.getBorder(), fieldBorder));	
-			vb.add(boxT);
-			vb.add(Box.createVerticalStrut(35));
-	
-	
-			vb.add(sep = new JXTitledSeparator("Sound Editor"));
-				sep.setForeground(Color.GRAY);
-				sep.add(ckA = new JCheckBox("Use this command"));
-			vb.add(Box.createVerticalStrut(10));
-	
-			boxA = Box.createHorizontalBox();
-				boxA.add(labelExA = new JLabel("Executable:"));
-					labelExA.setHorizontalAlignment(SwingConstants.RIGHT);	
-				boxA.add(Box.createHorizontalStrut(5));		
-				boxA.add(fieldCommandA = new JTextField());
-					fieldCommandA.setPreferredSize(fieldSize);
-					fieldCommandA.setBorder(new CompoundBorder(fieldCommandA.getBorder(), fieldBorder));		
-				boxA.add(Box.createHorizontalStrut(5));		
-				boxA.add(btnBrowseA = new JButton(Icons.MENU_OPEN));		
-				boxA.add(Box.createHorizontalStrut(8));		
-				boxA.add(labelArA = new JLabel("Args:"));
-					labelArA.setHorizontalAlignment(SwingConstants.RIGHT);		
-				boxA.add(Box.createHorizontalStrut(5));		
-				boxA.add(fieldArgsA = new JTextField());
-					fieldArgsA.setPreferredSize(argsSize);
-					fieldArgsA.setBorder(new CompoundBorder(fieldArgsA.getBorder(), fieldBorder));		
-			vb.add(boxA);
-			vb.add(Box.createVerticalStrut(35));
-			
-			
-			vb.add(sep = new JXTitledSeparator("Built-in editors"));
-				sep.setForeground(mainSepColor);
-			vb.add(Box.createVerticalStrut(10));
-			
-			box = Box.createHorizontalBox();
-				box2 = Box.createVerticalBox();
-					box2.add(ckInternalMeta = new JCheckBox("Use built-in McMeta editor"));
-					box2.add(ckInternalText = new JCheckBox("Use built-in Text editor"));
-					
-					ckInternalMeta.setAlignmentX(0);
-					ckInternalText.setAlignmentX(0);
-				box.add(box2);
-				box.add(Box.createHorizontalGlue());		
-			vb.add(box);
-			
-			vb.add(Box.createVerticalStrut(16));
-		
-			box = Box.createHorizontalBox();
-				box.add(Box.createHorizontalGlue());
-				box.add(btnDefaults = new JButton("Defaults", Icons.MENU_DELETE));
-				box.add(Box.createHorizontalStrut(10));
-				box.add(btnOK = new JButton("OK", Icons.MENU_YES));
-				box.add(Box.createHorizontalStrut(5));
-				box.add(btnCancel = new JButton("Cancel", Icons.MENU_CANCEL));			
-			vb.add(box);
+		vb.add(sep = new JXTitledSeparator("Image Editor"));
+			sep.setForeground(Color.GRAY);
+			sep.add(ckI = new JCheckBox("Use this command"));	
+		vb.add(Box.createVerticalStrut(10));
 
-		getContentPane().add(vb);
+		boxI = Box.createHorizontalBox();		
+			boxI.add(labelExI = new JLabel("Executable:"));
+				labelExI.setHorizontalAlignment(SwingConstants.RIGHT);		
+			boxI.add(Box.createHorizontalStrut(5));		
+			boxI.add(fieldCommandI = new JTextField());
+				fieldCommandI.setPreferredSize(fieldSize);
+				fieldCommandI.setBorder(new CompoundBorder(fieldCommandI.getBorder(), fieldBorder));		
+			boxI.add(Box.createHorizontalStrut(5));		
+			boxI.add(btnBrowseI = new JButton(Icons.MENU_OPEN));		
+			boxI.add(Box.createHorizontalStrut(8));		
+			boxI.add(labelArI = new JLabel("Args:"));
+				labelArI.setHorizontalAlignment(SwingConstants.RIGHT);		
+			boxI.add(Box.createHorizontalStrut(5));		
+			boxI.add(fieldArgsI = new JTextField());
+				fieldArgsI.setPreferredSize(argsSize);
+				fieldArgsI.setBorder(new CompoundBorder(fieldArgsI.getBorder(), fieldBorder));		
+		vb.add(boxI);
+		vb.add(Box.createVerticalStrut(35));
+
+
+		vb.add(sep = new JXTitledSeparator("Text Editor"));
+			sep.setForeground(Color.GRAY);
+			sep.add(ckT = new JCheckBox("Use this command"));	
+		vb.add(Box.createVerticalStrut(10));
+
+		boxT = Box.createHorizontalBox();		
+			boxT.add(labelExT = new JLabel("Executable:"));
+				labelExT.setHorizontalAlignment(SwingConstants.RIGHT);		
+			boxT.add(Box.createHorizontalStrut(5));		
+			boxT.add(fieldCommandT = new JTextField());
+				fieldCommandT.setPreferredSize(fieldSize);
+				fieldCommandT.setBorder(new CompoundBorder(fieldCommandT.getBorder(), fieldBorder));		
+			boxT.add(Box.createHorizontalStrut(5));		
+			boxT.add(btnBrowseT = new JButton(Icons.MENU_OPEN));		
+			boxT.add(Box.createHorizontalStrut(8));		
+			boxT.add(labelArT = new JLabel("Args:"));
+				labelArT.setHorizontalAlignment(SwingConstants.RIGHT);		
+			boxT.add(Box.createHorizontalStrut(5));		
+			boxT.add(fieldArgsT = new JTextField());
+				fieldArgsT.setPreferredSize(argsSize);
+				fieldArgsT.setBorder(new CompoundBorder(fieldArgsT.getBorder(), fieldBorder));	
+		vb.add(boxT);
+		vb.add(Box.createVerticalStrut(35));
+
+
+		vb.add(sep = new JXTitledSeparator("Sound Editor"));
+			sep.setForeground(Color.GRAY);
+			sep.add(ckA = new JCheckBox("Use this command"));
+		vb.add(Box.createVerticalStrut(10));
+
+		boxA = Box.createHorizontalBox();
+			boxA.add(labelExA = new JLabel("Executable:"));
+				labelExA.setHorizontalAlignment(SwingConstants.RIGHT);	
+			boxA.add(Box.createHorizontalStrut(5));		
+			boxA.add(fieldCommandA = new JTextField());
+				fieldCommandA.setPreferredSize(fieldSize);
+				fieldCommandA.setBorder(new CompoundBorder(fieldCommandA.getBorder(), fieldBorder));		
+			boxA.add(Box.createHorizontalStrut(5));		
+			boxA.add(btnBrowseA = new JButton(Icons.MENU_OPEN));		
+			boxA.add(Box.createHorizontalStrut(8));		
+			boxA.add(labelArA = new JLabel("Args:"));
+				labelArA.setHorizontalAlignment(SwingConstants.RIGHT);		
+			boxA.add(Box.createHorizontalStrut(5));		
+			boxA.add(fieldArgsA = new JTextField());
+				fieldArgsA.setPreferredSize(argsSize);
+				fieldArgsA.setBorder(new CompoundBorder(fieldArgsA.getBorder(), fieldBorder));		
+		vb.add(boxA);
+		vb.add(Box.createVerticalStrut(35));
+		
+		
+		vb.add(sep = new JXTitledSeparator("Built-in editors"));
+			sep.setForeground(mainSepColor);
+		vb.add(Box.createVerticalStrut(10));
+		
+		box = Box.createHorizontalBox();
+			box2 = Box.createVerticalBox();
+				box2.add(ckInternalMeta = new JCheckBox("Use built-in McMeta editor"));
+				box2.add(ckInternalText = new JCheckBox("Use built-in Text editor"));
+				
+				ckInternalMeta.setAlignmentX(0);
+				ckInternalText.setAlignmentX(0);
+			box.add(box2);
+			box.add(Box.createHorizontalGlue());		
+		vb.add(box);
+		
+		vb.add(Box.createVerticalStrut(16));
+	
+		box = Box.createHorizontalBox();
+			box.add(Box.createHorizontalGlue());
+			box.add(btnDefaults = new JButton("Defaults", Icons.MENU_DELETE));
+			box.add(Box.createHorizontalStrut(10));
+			box.add(btnOK = new JButton("OK", Icons.MENU_YES));
+			box.add(Box.createHorizontalStrut(5));
+			box.add(btnCancel = new JButton("Cancel", Icons.MENU_CANCEL));			
+		vb.add(box);
 		
 		//@formatter:on
+		
+		return vb;
 
-		prepareForDisplay();
-
+	}
+	
+	@Override
+	protected void initGui() {
+		
 		initFileChooser();
 
 		initFields();
@@ -332,13 +342,6 @@ public class DialogConfigureEditors extends RpwDialog {
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fc.setMultiSelectionEnabled(false);
 		fc.setFileHidingEnabled(!Config.SHOW_HIDDEN_FILES);
-	}
-
-
-	@Override
-	public void onClose() {
-
-		// do nothing
 	}
 
 

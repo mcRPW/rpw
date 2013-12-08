@@ -1,9 +1,9 @@
 package net.mightypork.rpw;
 
 
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
 import net.mightypork.rpw.utils.PropertyManager;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 /**
@@ -26,6 +26,7 @@ public class Config {
 	public static final boolean def_USE_INTERNAL_TEXT_EDITOR = true;
 	public static final boolean def_WARNING_ORPHANED_NODES = true;
 	public static final boolean def_PRETTY_JSON = true;
+	public static final boolean def_SHOW_LOG_TERMINAL = true;
 	public static boolean FANCY_TREE;
 	public static boolean SHOW_FONT;
 	public static boolean SHOW_LANG;
@@ -38,6 +39,7 @@ public class Config {
 	public static boolean PRETTY_JSON;
 	public static boolean CLOSED_WITH_PROJECT_OPEN;
 	public static int LAST_RUN_VERSION;
+	public static boolean SHOW_LOG_TERMINAL;
 
 
 	// filechooser paths
@@ -83,6 +85,7 @@ public class Config {
 	private static final String PK_USE_INTERNAL_META_EDITOR = "system.editor.useInternalMetaEditor";
 	private static final String PK_USE_INTERNAL_TEXT_EDITOR = "system.editor.useInternalTextEditor";
 	private static final String PK_WARNING_ORPHANED_NODES = "display.warning.orphanedNodes";
+	private static final String PK_SHOW_LOG_TERMINAL = "display.logTerminal";
 
 
 	private static final String PK_IMAGE_EDITOR = "system.editor.image.command";
@@ -130,6 +133,7 @@ public class Config {
 		mgr.putBoolean(PK_SHOW_OBSOLETE_DIRS, def_SHOW_OBSOLETE_DIRS, "Show obsolete directories and groups (eg. the pre-1.7 sounds)");
 		mgr.putBoolean(PK_PREVIEW_HOVER, def_PREVIEW_HOVER, "Display preview of item under mouse");
 		mgr.putBoolean(PK_SHOW_HIDDEN_IN_FILEPICKER, def_SHOW_HIDDEN_IN_FILEPICKER, "Show hidden files in file pickers (import, export)");
+		mgr.putBoolean(PK_SHOW_LOG_TERMINAL, def_SHOW_LOG_TERMINAL, "Show terminal-like window with scrolling log for long operations");
 
 		mgr.putBoolean(PK_USE_INTERNAL_META_EDITOR, def_USE_INTERNAL_META_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_USE_INTERNAL_TEXT_EDITOR, def_USE_INTERNAL_TEXT_EDITOR, "Use internal editor, ignore configured command.");
@@ -178,6 +182,7 @@ public class Config {
 		mgr.setValue(PK_WARNING_ORPHANED_NODES, WARNING_ORPHANED_NODES);
 
 		mgr.setValue(PK_PRETTY_JSON, PRETTY_JSON);
+		mgr.setValue(PK_SHOW_LOG_TERMINAL, SHOW_LOG_TERMINAL);
 
 		mgr.setValue(PK_IMAGE_EDITOR, IMAGE_EDITOR);
 		mgr.setValue(PK_IMAGE_EDITOR_ARGS, IMAGE_EDITOR_ARGS);
@@ -224,6 +229,7 @@ public class Config {
 		WARNING_ORPHANED_NODES = mgr.getBoolean(PK_WARNING_ORPHANED_NODES);
 
 		PRETTY_JSON = mgr.getBoolean(PK_PRETTY_JSON);
+		SHOW_LOG_TERMINAL = mgr.getBoolean(PK_SHOW_LOG_TERMINAL);
 
 		IMAGE_EDITOR = mgr.getString(PK_IMAGE_EDITOR);
 		IMAGE_EDITOR_ARGS = mgr.getString(PK_IMAGE_EDITOR_ARGS);
@@ -247,14 +253,18 @@ public class Config {
 	public static final boolean LOGGING_ENABLED = true;
 
 	public static final boolean LOG_TO_STDOUT = true;
+	
 	public static final boolean LOG_FILTERS = false;
 	public static final boolean LOG_GROUPS = false;
+	
 	public static final boolean LOG_FILTERS_DETAILED = false;
-	public static final boolean LOG_ZIP_EXTRACTING = false;
 	public static final boolean LOG_VANILLA_LOAD_STRUCTURE = false;
-	public static final boolean LOG_EXPORT = true;
 
 	public static final boolean USE_LOADER_WINDOW = false;
 	public static final boolean LOG_HELP_LOADING = false;
+	
+	public static final boolean LOG_EXPORT_FILES = true;
+	
+	public static final boolean LOG_EXTRACTED_ASSETS = true;
 
 }

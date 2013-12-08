@@ -10,8 +10,8 @@ import java.util.Map.Entry;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.SimpleConfig;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class HelpStore {

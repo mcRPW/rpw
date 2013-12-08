@@ -11,6 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.mightypork.rpw.gui.windows.RpwDialog;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class GuiUtils {
@@ -74,6 +75,6 @@ public class GuiUtils {
 
 	public static void open(RpwDialog dialog) {
 
-		dialog.setVisible(true);
+		dialog.openDialog();
 	}
 }

@@ -6,7 +6,7 @@ import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.HtmlBuilder;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class VersionUtils {

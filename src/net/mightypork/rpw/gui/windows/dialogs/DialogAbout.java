@@ -8,6 +8,7 @@ import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.mightypork.rpw.App;
@@ -16,7 +17,7 @@ import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.DesktopApi;
 import net.mightypork.rpw.utils.GuiUtils;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class DialogAbout extends RpwDialog {
@@ -29,6 +30,13 @@ public class DialogAbout extends RpwDialog {
 
 		super(App.getFrame(), "About");
 
+		createDialog();
+	}
+	
+	
+	@Override
+	protected JComponent buildGui() {
+		
 		Box hb;
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -56,9 +64,7 @@ public class DialogAbout extends RpwDialog {
 		vb.add(hb);
 		//@formatter:on
 
-		getContentPane().add(vb);
-
-		prepareForDisplay();
+		return vb;
 	}
 
 
@@ -66,7 +72,6 @@ public class DialogAbout extends RpwDialog {
 	protected void addActions() {
 
 		buttonOK.addActionListener(closeListener);
-
 
 		buttonTwitter.addActionListener(new ActionListener() {
 
@@ -80,12 +85,5 @@ public class DialogAbout extends RpwDialog {
 				}
 			}
 		});
-	}
-
-
-	@Override
-	public void onClose() {
-
-		// do nothing
 	}
 }

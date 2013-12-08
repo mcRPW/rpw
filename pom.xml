@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>RPW</groupId>
   <artifactId>ResourcePackWorkbench</artifactId>
-  <version>3.8.2</version>
+  <version>3.8.3</version>
   <name>ResourcePack Workbench</name>
   <description>MC resource pack manager and editor.</description>
   <build>

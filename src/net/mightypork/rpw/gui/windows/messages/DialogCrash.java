@@ -1,9 +1,6 @@
 package net.mightypork.rpw.gui.windows.messages;
 
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintWriter;
@@ -15,36 +12,38 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.GuiUtils;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
+import net.mightypork.rpw.utils.logging.Log;
 
 
-public class DialogCrash extends RpwDialog {
-
+public class DialogCrash extends DialogTerminalBase {
 
 	private JButton buttonQuit;
 	private JButton buttonContinue;
+	private String reportText;
 
 
 	public DialogCrash(Throwable error) {
 
 		super(App.getFrame(), Const.APP_NAME + " has crashed!");
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-		vb.add(GuiUtils.createDialogHeading("Crash Report"));
-
 		Log.e("Unhandled error, opening error screen.", error);
+		
+		this.reportText = createReport(error);
+		
+		createDialog();
+	}
+	
+	@Override
+	protected void initGui() {
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
+	}
 
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+	private String createReport(Throwable error) {
 
 		StringWriter sw = new StringWriter();
 		error.printStackTrace(new PrintWriter(sw));
@@ -77,44 +76,8 @@ public class DialogCrash extends RpwDialog {
 		txt += "\n";
 		txt += "\n";
 		txt += "~~~ END OF REPORT ~~~";
-
-
-		// Create Scrolling Text Area in Swing
-		JTextArea ta = new JTextArea(txt, 25, 80);
-		ta.setFont(new Font(Font.MONOSPACED, 0, 14));
-		ta.setMargin(new Insets(10, 10, 10, 10));
-		ta.setEditable(false);
-		ta.setLineWrap(false);
-		ta.setBackground(Color.BLACK);
-		ta.setForeground(Color.LIGHT_GRAY);
-		JScrollPane sbrText = new JScrollPane(ta);
-		sbrText.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), BorderFactory.createEtchedBorder()));
-		sbrText.setWheelScrollingEnabled(true);
-		sbrText.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		sbrText.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-		vb.add(sbrText);
-
-		//@formatter:off		
-		hb = Box.createHorizontalBox();
-
-			hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-			hb.add(Box.createHorizontalGlue());
-
-			hb.add(buttonContinue = new JButton("Carry On", Icons.MENU_CANCEL));
-
-			hb.add(Box.createHorizontalStrut(5));
-			
-			hb.add(buttonQuit = new JButton("Terminate", Icons.MENU_EXIT));
-			
-			hb.add(Box.createHorizontalGlue());	
-			hb.setAlignmentX(0.5f);
-		vb.add(hb);
-		//@formatter:on
-
-		getContentPane().add(vb);
-
-		prepareForDisplay();
+		
+		return txt;
 	}
 
 
@@ -138,9 +101,34 @@ public class DialogCrash extends RpwDialog {
 
 
 	@Override
-	public void onClose() {
+	protected String getHeadingText() {
 
-		// do nothing
+		return "Crash Report";
+	}
+
+
+	@Override
+	protected String getLogText() {
+
+		return reportText;
+	}
+
+
+	@Override
+	protected boolean hasButtons() {
+
+		return true;
+	}
+
+
+	@Override
+	protected JButton[] makeButtons() {
+
+		buttonContinue = new JButton("Carry On", Icons.MENU_CANCEL);
+
+		buttonQuit = new JButton("Terminate", Icons.MENU_EXIT);
+		
+		return new JButton[] {buttonContinue, buttonQuit};
 	}
 
 }

@@ -19,7 +19,7 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 import net.mightypork.rpw.utils.DesktopApi;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TaskModifyAsset {
@@ -30,16 +30,12 @@ public class TaskModifyAsset {
 
 		if (editMeta && Config.USE_INTERNAL_META_EDITOR) {
 
-			try {
-				Alerts.loading(true);
-				Dialog d = new DialogEditMeta(node);
-				Alerts.loading(false);
-				d.setVisible(true);
-			} catch (IOException e) {
-				Log.e("Error openning mcmeta file for edit.", e);
-				Alerts.error(App.getFrame(), "Error openning mcmeta file for edit.");
-			}
-
+			
+			Alerts.loading(true);
+			Dialog d = new DialogEditMeta(node);
+			Alerts.loading(false);
+			d.setVisible(true);
+			
 			return;
 		}
 

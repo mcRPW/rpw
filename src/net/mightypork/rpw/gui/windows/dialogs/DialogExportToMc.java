@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -26,9 +27,9 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.Log;
 import net.mightypork.rpw.utils.OsUtils;
 import net.mightypork.rpw.utils.SimpleConfig;
+import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
@@ -78,9 +79,6 @@ public class DialogExportToMc extends RpwDialog {
 					@Override
 					public void run() {
 
-						Alerts.info(App.getFrame(), "Export successful.");
-
-
 						// set as default now.
 
 						File f = OsUtils.getMcDir("options.txt");
@@ -92,18 +90,29 @@ public class DialogExportToMc extends RpwDialog {
 						try {
 							List<String> lines = SimpleConfig.listFromFile(f);
 
+							boolean a=false,b=false;
+							
+							String optA = "skin:" + name + ".zip";
+							String optB = "resourcePacks:[\"" + name + ".zip\"]";
+							
 							for (int i = 0; i < lines.size(); i++) {
 
 								// 1.7+
 								if (lines.get(i).startsWith("resourcePacks:")) {
-									lines.set(i, "resourcePacks:[\"" + name + ".zip\"]");
+									b=true;
+									lines.set(i, optB);
 								}
 
 								// 1.6-
 								if (lines.get(i).startsWith("skin:")) {
-									lines.set(i, "skin:" + name + ".zip");
+									a=true;
+									lines.set(i, optA);
 								}
 							}
+							
+							// add the unused one (make sure both will be present when MC starts)
+							if (!b) lines.add(optB);
+							if (!a) lines.add(optA);
 
 							SimpleConfig.listToFile(f, lines);
 							Log.i("Minecraft config file was changed.");
@@ -134,6 +143,13 @@ public class DialogExportToMc extends RpwDialog {
 	public DialogExportToMc() {
 
 		super(App.getFrame(), "Export To Minecraft");
+
+		createDialog();
+	}
+
+
+	@Override
+	protected JComponent buildGui() {
 
 		Box hb;
 		Box vb = Box.createVerticalBox();
@@ -207,9 +223,7 @@ public class DialogExportToMc extends RpwDialog {
 		//@formatter:on
 
 
-		getContentPane().add(vb);
-
-		prepareForDisplay();
+		return vb;
 	}
 
 
@@ -239,12 +253,5 @@ public class DialogExportToMc extends RpwDialog {
 		Collections.sort(options);
 
 		return options;
-	}
-
-
-	@Override
-	public void onClose() {
-
-		// do nothing
 	}
 }

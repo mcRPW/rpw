@@ -1,11 +1,15 @@
-package net.mightypork.rpw.utils;
+package net.mightypork.rpw.utils.logging;
 
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
@@ -14,6 +18,8 @@ import java.util.logging.Logger;
 
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.OsUtils;
 
 
 /**
@@ -24,15 +30,57 @@ import net.mightypork.rpw.Paths;
  */
 public class Log {
 
-	/**
-	 * Global logger.
-	 */
+	/** Global logger. */
 	private static final Logger logger = Logger.getLogger("McRpMgr");
+	
 	/** Logging enabled */
 	public static boolean loggingEnabled = Config.LOGGING_ENABLED;
-	/** Stdout printing enabled */
-	public static boolean printToStdout = Config.LOG_TO_STDOUT;
 
+	private static File logfile = OsUtils.getAppDir(Paths.FILE_LOG);
+	private static File logsDir = OsUtils.getAppDir(Paths.DIR_LOGS, true);
+	
+	
+	private static int monitorId = 0;
+	private static HashMap<Integer, LogMonitor> monitors = new HashMap<Integer, LogMonitor>();
+
+	
+	private static void cleanup() {
+		
+		// move old logs
+		
+		for (File f : FileUtils.listDirectory(logfile.getParentFile())) {
+			if (!f.isFile()) continue;
+			if (f.getName().startsWith(Paths.FILENAME_LOG)) {
+
+				Date d = new Date(f.lastModified());
+				
+				int index = 0;
+									
+				String fname = (new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(d)+(index==0?"":"_"+index)+".log";
+					
+				File f2 = new File(logsDir, fname);
+				
+				f.renameTo(f2);
+			}
+		}
+		
+		// delete all but last 10 logs
+		
+		List<File> oldLogs = FileUtils.listDirectory(logsDir);
+		
+		Collections.sort(oldLogs, new Comparator<File>() {
+			@Override
+			public int compare(File o1, File o2) {
+
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+		
+		for(int i=0; i<oldLogs.size()-10; i++) {
+			oldLogs.get(i).delete();
+		}
+		
+	}
 
 	/**
 	 * Prepare logs for logging
@@ -40,29 +88,46 @@ public class Log {
 	public static void init() {
 
 		try {
-			File logfile = OsUtils.getAppDir(Paths.FILE_LOG);
-
-			// delete old numbered logs
-			for (File f : FileUtils.listDirectory(logfile.getParentFile())) {
-				if (!f.isFile()) continue;
-				if (f.getName().startsWith(Paths.FILENAME_LOG)) {
-					f.delete();
-				}
-			}
-
-			FileHandler handler1 = new FileHandler(logfile.getPath());
-			handler1.setFormatter(new LogFormatter(true));
-			logger.addHandler(handler1);
+			
+			cleanup();
+			
+			FileHandler handler = new FileHandler(logfile.getPath());
+			handler.setFormatter(new LogFormatter());
+			logger.addHandler(handler);
 
 			loggingEnabled = true;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		addMonitor(new LogToSysoutMonitor());
 
 		logger.setUseParentHandlers(false);
 		logger.setLevel(Level.ALL);
 		logger.info("Main logger initialized.");
 		logger.info((new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")).format(new Date()));
+	}
+	
+	
+	/**
+	 * Add log monitor
+	 * @param mon monitor
+	 * @return assigned ID
+	 */
+	public static int addMonitor(LogMonitor mon) {
+		int id = monitorId;
+		monitorId++;
+		monitors.put(id, mon);
+		return id;
+	}
+	
+	/**
+	 * Remove a monitor by ID
+	 * @param id monitor ID
+	 */
+	public static void removeMonitor(int id) {
+		monitors.remove(id);
 	}
 
 
@@ -74,17 +139,6 @@ public class Log {
 	public static void enable(boolean flag) {
 
 		loggingEnabled = flag;
-	}
-
-
-	/**
-	 * Enable debug mode - log also printed to stdout.
-	 * 
-	 * @param printToStdout
-	 */
-	public static void setPrintToStdout(boolean printToStdout) {
-
-		Log.printToStdout = printToStdout;
 	}
 
 
@@ -308,8 +362,6 @@ public class Log {
 	private static String getStackTraceHeader(Throwable t) {
 
 		return t.getMessage();
-//		StackTraceElement[] trace = t.getStackTrace();
-//		return trace[0].toString();
 	}
 
 
@@ -323,13 +375,6 @@ public class Log {
 
 		/** Newline string constant */
 		private static final String nl = System.getProperty("line.separator");
-		private boolean sysout;
-
-
-		public LogFormatter(boolean sysout) {
-
-			this.sysout = sysout;
-		}
 
 
 		@Override
@@ -390,15 +435,13 @@ public class Log {
 				buf.append(nl);
 			}
 
-			if (Log.printToStdout && sysout) {
-				if (level == Level.FINE || level == Level.FINER || level == Level.FINEST || level == Level.INFO) {
-					System.out.print(buf.toString());
-				} else if (level == Level.SEVERE || level == Level.WARNING) {
-					System.err.print(buf.toString());
-				}
+			String str = buf.toString();
+
+			for (LogMonitor mon : monitors.values()) {
+				mon.log(level, str);
 			}
 
-			return buf.toString();
+			return str;
 		}
 	}
 
