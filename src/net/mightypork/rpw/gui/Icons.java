@@ -97,12 +97,28 @@ public class Icons {
 	public static ImageIcon DIALOG_QUESTION;
 	public static ImageIcon DIALOG_WARNING;
 
+	private static ImageIcon IMAGE_ERROR_16;
+	private static ImageIcon IMAGE_ERROR_32;
+	private static ImageIcon IMAGE_ERROR_64;
+	private static ImageIcon IMAGE_ERROR_128;
+	
+	
+	private static ImageIcon IMAGE_NOT_FOUND;
+
 
 	public static void init() {
 
 		Log.f2("Loading GUI icons");
 
 		String imgPath = Paths.DATA_DIR_IMAGES;
+
+		IMAGE_ERROR_16 = loadImage(imgPath + "image-error-16.png");
+		IMAGE_ERROR_32 = loadImage(imgPath + "image-error-32.png");
+		IMAGE_ERROR_64 = loadImage(imgPath + "image-error-64.png");
+		IMAGE_ERROR_128 = loadImage(imgPath + "image-error-128.png");
+		
+		
+		IMAGE_NOT_FOUND = IMAGE_ERROR_16;
 
 		MENU_NEW = loadImage(imgPath + "menu/new.png");
 		MENU_SAVE = loadImage(imgPath + "menu/save.png");
@@ -147,18 +163,8 @@ public class Icons {
 		MENU_PMC = loadImage(imgPath + "menu/pmc.png");
 		MENU_MCF = loadImage(imgPath + "menu/mcf.png");
 		MENU_DOWNLOAD = loadImage(imgPath + "menu/download.png");
-
+		
 		WINDOW = loadImage(imgPath + "window-icon.png");
-		AUDIO = loadImage(imgPath + "sound-icon.png");
-		TRANSPARENT = loadImage(imgPath + "transparent.png");
-		TRANSPARENT_FONTS = loadImage(imgPath + "transparent-fonts.png");
-
-		ABOUT = loadImage(imgPath + "about.png");
-
-		DIALOG_ERROR = loadImage(imgPath + "dialog/error.png");
-		DIALOG_INFORMATION = loadImage(imgPath + "dialog/information.png");
-		DIALOG_QUESTION = loadImage(imgPath + "dialog/question.png");
-		DIALOG_WARNING = loadImage(imgPath + "dialog/warning.png");
 
 		TREE_CLOSE = loadImage(imgPath + "tree-16/close.png");
 		TREE_OPEN = loadImage(imgPath + "tree-16/open.png");
@@ -166,9 +172,37 @@ public class Icons {
 		TREE_FILE_AUDIO = loadImage(imgPath + "tree-16/file-audio.png");
 		TREE_FILE_IMAGE = loadImage(imgPath + "tree-16/file-image.png");
 		TREE_FILE_TEXT = loadImage(imgPath + "tree-16/file-text.png");
+		
+		
+		
+		IMAGE_NOT_FOUND = IMAGE_ERROR_64;
+		
+		AUDIO = loadImage(imgPath + "sound-icon.png");
+		
+		
+		
+		IMAGE_NOT_FOUND = IMAGE_ERROR_128;
+		
+		TRANSPARENT = loadImage(imgPath + "transparent.png");
+		TRANSPARENT_FONTS = loadImage(imgPath + "transparent-fonts.png");
+
+		ABOUT = loadImage(imgPath + "about.png");
+		
+		
+
+		IMAGE_NOT_FOUND = IMAGE_ERROR_32;
+
+		DIALOG_ERROR = loadImage(imgPath + "dialog/error.png");
+		DIALOG_INFORMATION = loadImage(imgPath + "dialog/information.png");
+		DIALOG_QUESTION = loadImage(imgPath + "dialog/question.png");
+		DIALOG_WARNING = loadImage(imgPath + "dialog/warning.png");
+		
 
 		LOADING = new ImageIcon(Icons.class.getResource(imgPath + "loading.gif"));
 
+
+		IMAGE_NOT_FOUND = IMAGE_ERROR_128;
+		
 		Log.f2("Loading GUI icons - done.");
 	}
 
@@ -181,13 +215,12 @@ public class Icons {
 		try {
 
 			bi = ImageIO.read(FileUtils.getResource(path));
-			// i = bi.getScaledInstance(32, 32, Image.SCALE_FAST);
 			i = bi;
 			return new ImageIcon(i);
 
 		} catch (Exception e) {
 			Log.e("Failed loading icon " + path, e);
-			return null;
+			return IMAGE_NOT_FOUND;
 		}
 
 	}
@@ -247,7 +280,7 @@ public class Icons {
 
 		} catch (Exception e) {
 			Log.e("Failed loading icon.", e);
-			return null;
+			return IMAGE_NOT_FOUND;
 		}
 	}
 
@@ -258,7 +291,7 @@ public class Icons {
 			return getIconFromStream(new FileInputStream(file), size);
 		} catch (Exception e) {
 			Log.e("Failed loading icon " + file, e);
-			return null;
+			return IMAGE_NOT_FOUND;
 		}
 	}
 }

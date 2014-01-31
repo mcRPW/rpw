@@ -93,6 +93,8 @@ public class Sources {
 
 	public static boolean doesSourceProvideAsset(String source, AssetEntry asset) {
 
+		if (asset == null || source == null) return false;
+
 		if (MagicSources.isMagic(source)) {
 			if (MagicSources.isVanilla(source)) {
 				return Sources.vanilla.doesProvideAsset(asset.getKey());
@@ -103,7 +105,7 @@ public class Sources {
 			}
 
 			if (MagicSources.isProject(source)) {
-				return Projects.getActive().doesProvideAsset(asset.getKey());
+				return Projects.isProjectOpen() && Projects.getActive().doesProvideAsset(asset.getKey());
 			}
 		}
 
@@ -115,6 +117,8 @@ public class Sources {
 
 	public static boolean doesSourceProvideAssetMeta(String source, AssetEntry asset) {
 
+		if (asset == null || source == null) return false;
+		
 		if (MagicSources.isMagic(source)) {
 			if (MagicSources.isVanilla(source)) {
 				return Sources.vanilla.doesProvideAssetMeta(asset.getKey());
@@ -125,7 +129,7 @@ public class Sources {
 			}
 
 			if (MagicSources.isProject(source)) {
-				return Projects.getActive().doesProvideAssetMeta(asset.getKey());
+				return Projects.isProjectOpen() && Projects.getActive().doesProvideAssetMeta(asset.getKey());
 			}
 		}
 
