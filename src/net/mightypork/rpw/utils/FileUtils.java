@@ -322,18 +322,16 @@ public class FileUtils {
 			}
 
 			if (cnt == lines && lines > 0) {
-				sb.append("--- snip ---\n");
+				sb.append("--- end of preview ---\n");
 			}
 
 		} catch (IOException e) {
 			Log.e(e);
 		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					Log.e(e);
-				}
+			try {
+				if (br != null) br.close();
+			} catch (IOException e) {
+				// piss off
 			}
 		}
 

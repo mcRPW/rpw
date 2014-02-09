@@ -9,18 +9,22 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileFilter;
 
 import net.mightypork.rpw.App;
-import net.mightypork.rpw.Config;
+import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.CharInputListener;
+import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.windows.RpwDialog;
@@ -32,7 +36,6 @@ import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.OsUtils;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.ZipUtils;
-import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 import org.jdesktop.swingx.JXLabel;
@@ -51,7 +54,7 @@ public class DialogImportPack extends RpwDialog {
 	private JButton buttonCancel;
 
 	private JXLabel importUrl;
-	private JFileChooser fc;
+	private FileChooser fc;
 	private File selectedFile;
 
 	private SimpleStringList list;
@@ -173,39 +176,8 @@ public class DialogImportPack extends RpwDialog {
 	@Override
 	protected void initGui() {
 
-		initFileChooser();
-	}
+		fc = new FileChooser(this, FilePath.IMPORT_PACK, "Import resource pack", "zip", "ZIP archives", true, false, false);
 
-
-	private void initFileChooser() {
-
-		fc = new JFileChooser();
-		fc.setCurrentDirectory(new File(Config.FILECHOOSER_PATH_IMPORT_PACK));
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.setDialogTitle("Import ResourcePack archive");
-		fc.setFileFilter(new FileFilter() {
-
-			FileSuffixFilter fsf = new FileSuffixFilter("zip", "jar");
-
-
-			@Override
-			public String getDescription() {
-
-				return "ZIP archives";
-			}
-
-
-			@Override
-			public boolean accept(File f) {
-
-				if (f.isDirectory()) return true;
-				return fsf.accept(f);
-			}
-		});
-
-		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fc.setMultiSelectionEnabled(false);
-		fc.setFileHidingEnabled(!Config.SHOW_HIDDEN_FILES);
 	}
 
 
@@ -277,12 +249,10 @@ public class DialogImportPack extends RpwDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			int btn = fc.showDialog(DialogImportPack.this, "Import");
-			if (btn == JFileChooser.APPROVE_OPTION) {
-				File f = fc.getSelectedFile();
+			fc.showOpenDialog();
 
-				Config.FILECHOOSER_PATH_IMPORT_PACK = fc.getCurrentDirectory().getPath();
-				Config.save();
+			if (fc.approved()) {
+				File f = fc.getSelectedFile();
 
 				if (f == null) return;
 

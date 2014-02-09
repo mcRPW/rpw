@@ -189,7 +189,7 @@ root.image.gui.title = assets.minecraft.textures.gui.title.*
 root.image.gui.map = assets.minecraft.textures.map.*
 root.image.gui = assets.minecraft.textures.gui.*
 
-root.image.misc = assets.minecraft.textures.misc.* | assets.minecraft.textures.painting.*
+root.image.misc = assets.minecraft.textures.misc.* | assets.minecraft.textures.painting.* | assets.minecraft.textures.effect.*
 
 root.image.entity.misc.chest = assets.minecraft.textures.entity.chest.*
 root.image.entity.misc = assets.minecraft.textures.entity.endercrystal.* | assets.minecraft.textures.entity.arrow | assets.minecraft.textures.entity.beacon_beam | assets.minecraft.textures.entity.boat | assets.minecraft.textures.entity.end_portal | assets.minecraft.textures.entity.enchanting_table_book | assets.minecraft.textures.entity.experience_orb | assets.minecraft.textures.entity.lead_knot | assets.minecraft.textures.entity.minecart | assets.minecraft.textures.entity.sign

@@ -4,39 +4,32 @@ package net.mightypork.rpw.tasks;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-
 import net.mightypork.rpw.App;
-import net.mightypork.rpw.Config;
+import net.mightypork.rpw.Config.FilePath;
+import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
-import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 
 
 public class TaskImportReplacement {
 
-	private static AssetEntry replacedEntry;
-
-
 	public static void run(AssetEntry entry, Runnable afterImport) {
 
-		replacedEntry = entry;
+		String suff = entry.getType().getExtension();
+		String filtername = entry.getType().toString() + " (*." + suff + ")";
+		String title = "Replace " + entry.getLabel() + "." + entry.getType().getExtension();
 
-		initFileChooser();
+		FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_FILE, title, suff, filtername, true, false, false);
 
-		int opt = fc.showDialog(App.getFrame(), "Import");
-		if (opt != JFileChooser.APPROVE_OPTION) {
+		fc.showDialog("Import");
+		if (!fc.approved()) {
 			return;
 		}
 
 		File f = fc.getSelectedFile();
-
-		Config.FILECHOOSER_PATH_IMPORT_FILE = fc.getCurrentDirectory().getPath();
-		Config.save();
 
 		if (f == null || !f.exists()) {
 			Log.w("Problem accessing file:\n" + f);
@@ -46,7 +39,7 @@ public class TaskImportReplacement {
 
 		try {
 
-			File target = new File(Projects.getActive().getAssetsBaseDirectory(), replacedEntry.getPath());
+			File target = new File(Projects.getActive().getAssetsBaseDirectory(), entry.getPath());
 
 			target.getParentFile().mkdirs();
 
@@ -58,41 +51,5 @@ public class TaskImportReplacement {
 			Log.e(e);
 			Alerts.error(App.getFrame(), "Something went wrong during import.");
 		}
-	}
-
-	private static JFileChooser fc = null;
-
-
-	private static void initFileChooser() {
-
-		if (fc == null) fc = new JFileChooser(); // keep last path
-
-		fc.setCurrentDirectory(new File(Config.FILECHOOSER_PATH_IMPORT_FILE));
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.setDialogTitle("Replace " + replacedEntry.getLabel() + "." + replacedEntry.getType().getExtension());
-		fc.setFileFilter(new FileFilter() {
-
-			FileSuffixFilter fsf = new FileSuffixFilter(replacedEntry.getType().getExtension());
-
-
-			@Override
-			public String getDescription() {
-
-				return replacedEntry.getType() + " *." + replacedEntry.getType().getExtension();
-			}
-
-
-			@Override
-			public boolean accept(File f) {
-
-				if (f.isDirectory()) return true;
-				return fsf.accept(f);
-			}
-		});
-
-		fc.setSelectedFile(null);
-		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fc.setMultiSelectionEnabled(false);
-		fc.setFileHidingEnabled(!Config.SHOW_HIDDEN_FILES);
 	}
 }

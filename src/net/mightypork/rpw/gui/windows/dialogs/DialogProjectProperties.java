@@ -8,11 +8,11 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 
 import net.mightypork.rpw.App;
-import net.mightypork.rpw.Config;
+import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Project;
@@ -21,7 +21,6 @@ import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.DesktopApi;
 import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.GuiUtils;
-import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 
 import org.jdesktop.swingx.JXTextField;
 import org.jdesktop.swingx.JXTitledSeparator;
@@ -30,7 +29,7 @@ import org.jdesktop.swingx.JXTitledSeparator;
 public class DialogProjectProperties extends RpwDialog {
 
 
-	private JFileChooser fc;
+	private FileChooser fc;
 	private JXTextField titleField;
 	private JButton buttonOK;
 	private JLabel imageView;
@@ -142,39 +141,7 @@ public class DialogProjectProperties extends RpwDialog {
 	@Override
 	protected void initGui() {
 
-		initFileChooser();
-	}
-
-
-	private void initFileChooser() {
-
-		fc = new JFileChooser();
-		fc.setCurrentDirectory(new File(Config.FILECHOOSER_PATH_IMPORT_FILE));
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.setDialogTitle("Import Project Icon (128x128 PNG)");
-		fc.setFileFilter(new FileFilter() {
-
-			FileSuffixFilter fsf = new FileSuffixFilter("png");
-
-
-			@Override
-			public String getDescription() {
-
-				return "PNG images";
-			}
-
-
-			@Override
-			public boolean accept(File f) {
-
-				if (f.isDirectory()) return true;
-				return fsf.accept(f);
-			}
-		});
-
-		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		fc.setMultiSelectionEnabled(false);
-		fc.setFileHidingEnabled(!Config.SHOW_HIDDEN_FILES);
+		fc = new FileChooser(this, FilePath.IMPORT_FILE, "Import Project Icon (128x128 PNG)", "png", "PNG images", true, false, false);
 	}
 
 
@@ -238,12 +205,9 @@ public class DialogProjectProperties extends RpwDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			int btn = fc.showDialog(self(), "Import");
-			if (btn == JFileChooser.APPROVE_OPTION) {
+			fc.showOpenDialog();
+			if (fc.approved()) {
 				File f = fc.getSelectedFile();
-
-				Config.FILECHOOSER_PATH_IMPORT_FILE = fc.getCurrentDirectory().getPath();
-				Config.save();
 
 				if (f == null) return;
 

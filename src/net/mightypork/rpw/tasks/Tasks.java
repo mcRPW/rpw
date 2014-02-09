@@ -472,8 +472,6 @@ public class Tasks {
 
 	public static void taskTreeRebuild() {
 
-		Log.f3("Rebuilding tree.");
-
 		if (App.getTreeDisplay() != null) App.getTreeDisplay().updateRoot();
 		if (App.getSidePanel() != null) App.getSidePanel().updatePreview(null);
 	}
@@ -758,7 +756,7 @@ public class Tasks {
 
 	public static void taskDialogNewProject() {
 
-		GuiUtils.open(new DialogNewProject());
+		GuiUtils.open(new DialogNewProject(true /* FALSE!! */));
 	}
 
 

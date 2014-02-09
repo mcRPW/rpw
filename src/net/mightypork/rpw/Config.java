@@ -13,6 +13,56 @@ import net.mightypork.rpw.utils.logging.Log;
  */
 public class Config {
 
+	public static enum FilePath {
+		IMPORT_FILE, IMPORT_SOUND, IMPORT_PACK, EXPORT, DEFAULT;
+
+		public String getPath() {
+
+			switch (this) {
+				case IMPORT_FILE:
+					return Config.FILECHOOSER_PATH_IMPORT_FILE;
+
+				case IMPORT_SOUND:
+					return Config.FILECHOOSER_PATH_IMPORT_SOUND;
+
+				case IMPORT_PACK:
+					return Config.FILECHOOSER_PATH_IMPORT_PACK;
+
+				case EXPORT:
+					return Config.FILECHOOSER_PATH_EXPORT;
+
+				default:
+					return System.getProperty("user.home");
+			}
+		}
+
+
+		public void savePath(String path) {
+
+			switch (this) {
+				case IMPORT_FILE:
+					Config.FILECHOOSER_PATH_IMPORT_FILE = path;
+					break;
+
+				case IMPORT_SOUND:
+					Config.FILECHOOSER_PATH_IMPORT_SOUND = path;
+					break;
+
+				case IMPORT_PACK:
+					Config.FILECHOOSER_PATH_IMPORT_PACK = path;
+					break;
+
+				case EXPORT:
+					Config.FILECHOOSER_PATH_EXPORT = path;
+					break;
+				default:
+					// can't do anything
+			}
+
+			Config.save();
+		}
+	}
+
 	// opts
 	public static final boolean def_FANCY_GROUPS = true;
 	public static final boolean def_SHOW_FONT = false;
@@ -44,12 +94,14 @@ public class Config {
 
 	// filechooser paths
 	public static final String def_FILECHOOSER_PATH_IMPORT_FILE = System.getProperty("user.home");
+	public static final String def_FILECHOOSER_PATH_IMPORT_SOUND = System.getProperty("user.home");
 	public static final String def_FILECHOOSER_PATH_IMPORT_PACK = System.getProperty("user.home");
 	public static final String def_FILECHOOSER_PATH_EXPORT = System.getProperty("user.home");
 
-	public static String FILECHOOSER_PATH_IMPORT_FILE;
-	public static String FILECHOOSER_PATH_IMPORT_PACK;
-	public static String FILECHOOSER_PATH_EXPORT;
+	private static String FILECHOOSER_PATH_IMPORT_FILE;
+	private static String FILECHOOSER_PATH_IMPORT_SOUND;
+	private static String FILECHOOSER_PATH_IMPORT_PACK;
+	private static String FILECHOOSER_PATH_EXPORT;
 
 	// editors
 	public static final boolean def_USE_IMAGE_EDITOR = true;
@@ -102,6 +154,7 @@ public class Config {
 	private static final String PK_PRETTY_JSON = "export.prettyJSON";
 
 	public static final String PK_FILECHOOSER_PATH_IMPORT_FILE = "status.path.importFile";
+	public static final String PK_FILECHOOSER_PATH_IMPORT_SOUND = "status.path.importCustomSound";
 	public static final String PK_FILECHOOSER_PATH_IMPORT_PACK = "status.path.importPack";
 	public static final String PK_FILECHOOSER_PATH_EXPORT = "status.path.exportPack";
 	private static final String PK_CLOSED_WITH_PROJECT_OPEN = "status.closedWithProjectOpen";
@@ -117,9 +170,9 @@ public class Config {
 
 		//@formatter:off
 		String comment = 
-				Const.APP_NAME + " config file\n" +
-				"\n" +
-				"RPW *must* be closed while you modify the settings.";
+				Const.APP_NAME + " config file\n\n" +
+				"RPW *must* be closed while you modify the settings,\n"+
+				"otherwise they will be overwritten.";
 		//@formatter:on
 
 		mgr = new PropertyManager(OsUtils.getAppDir(Paths.FILE_CONFIG), comment);
@@ -157,6 +210,7 @@ public class Config {
 		mgr.putInteger(PK_LAST_RUN_VERSION, def_LAST_RUN_VERSION);
 
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_FILE, def_FILECHOOSER_PATH_IMPORT_FILE);
+		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_SOUND, def_FILECHOOSER_PATH_IMPORT_SOUND);
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_PACK, def_FILECHOOSER_PATH_IMPORT_PACK);
 		mgr.putString(PK_FILECHOOSER_PATH_EXPORT, def_FILECHOOSER_PATH_EXPORT);
 
@@ -197,6 +251,7 @@ public class Config {
 		mgr.setValue(PK_USE_TEXT_EDITOR, USE_TEXT_EDITOR);
 
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_FILE, FILECHOOSER_PATH_IMPORT_FILE);
+		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_SOUND, FILECHOOSER_PATH_IMPORT_SOUND);
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_PACK, FILECHOOSER_PATH_IMPORT_PACK);
 		mgr.setValue(PK_FILECHOOSER_PATH_EXPORT, FILECHOOSER_PATH_EXPORT);
 		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
@@ -244,11 +299,14 @@ public class Config {
 		USE_TEXT_EDITOR = mgr.getBoolean(PK_USE_TEXT_EDITOR);
 
 		FILECHOOSER_PATH_IMPORT_FILE = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_FILE);
+		FILECHOOSER_PATH_IMPORT_SOUND = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_SOUND);
 		FILECHOOSER_PATH_IMPORT_PACK = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_PACK);
 		FILECHOOSER_PATH_EXPORT = mgr.getString(PK_FILECHOOSER_PATH_EXPORT);
 
 		LAST_RUN_VERSION = mgr.getInteger(PK_LAST_RUN_VERSION);
 	}
+
+	// options that can't be configured via config file
 
 	public static final boolean LOGGING_ENABLED = true;
 
