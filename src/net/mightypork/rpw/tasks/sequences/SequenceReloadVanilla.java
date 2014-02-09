@@ -19,8 +19,6 @@ import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
-import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.tasks.sequences.AbstractMonitoredSequence;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.FileUtils;
@@ -29,12 +27,18 @@ import net.mightypork.rpw.utils.SimpleConfig;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.validation.FileSuffixFilter;
+import net.mightypork.rpw.utils.validation.StringFilter;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 	private String version;
 	private boolean modsLoaded = false;
+	private String assetsVersion;
 
 	/** Directory for saving loaded assets */
 	private File outDir;
@@ -42,18 +46,22 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	/** Map of all the loaded stuff */
 	private Map<String, AssetEntry> assets;
 
-	private static final FileFilter ASSETS_DIR_FILTER = new FileFilter() {
+	private static final StringFilter ASSETS_DIR_FILTER = new StringFilter() {
 
 		@Override
-		public boolean accept(File entry) {
+		public boolean accept(String filename) {
 
-			String fname = FileUtils.escapeFilename(entry.getName());
+			String fname = FileUtils.escapeFilename(filename);
 			String[] split = FileUtils.getFilenameParts(fname);
 
-			String name = split[0];
+			//String name = split[0];
 			String ext = split[1];
 
-			if (name.startsWith("READ_ME")) return false;
+			// discard crap we don't want			
+			if (fname.equals("READ_ME_I_AM_VERY_IMPORTANT.txt")) return false;
+			if (fname.equals("icon_16x16.png")) return false;
+			if (fname.equals("icon_32x32.png")) return false;
+			if (fname.equals("sounds.json")) return false;
 
 			return EAsset.forExtension(ext).isAssetOrMeta();
 		}
@@ -76,7 +84,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	@Override
 	public int getStepCount() {
 
-		return 5; // Must match the actual number!
+		return 6; // Must match the actual number!
 	}
 
 
@@ -85,11 +93,12 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 		//@formatter:off
 		switch (step) {
-			case 0: return stepPrepareOutput();
-			case 1:	return stepLoadFromJar();
-			case 2:	return stepLoadFromAssetsDir();
-			case 3:	return stepLoadMods();
-			case 4:	return stepSaveStructure();
+			case 0: return stepCheckVersionCompatibility();
+			case 1: return stepPrepareOutput();
+			case 2:	return stepLoadFromJar(); // must be BEFORE assets dir
+			case 3:	return stepLoadFromAssetsDir();
+			case 4:	return stepLoadMods();
+			case 5:	return stepSaveStructure();
 		}
 		//@formatter:on
 
@@ -103,14 +112,74 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 		//@formatter:off
 		switch (step) {
-			case 0: return "Preparing output directory.";
-			case 1:	return "Getting files from jar.";
-			case 2:	return "Getting files from the assets directory.";
-			case 3:	return "Getting files from installed mods.";
-			case 4:	return "Saving structure data to file.";
+			case 0: return "Checking version compatibility.";
+			case 1: return "Cleaning output directory.";
+			case 2:	return "Getting files from jar.";
+			case 3:	return "Getting files from the assets directory.";
+			case 4:	return "Getting files from installed mods.";
+			case 5:	return "Saving structure data to file.";
 			default: return null;
 		}
 		//@formatter:on
+	}
+
+
+	/**
+	 * Prepare output directory
+	 * 
+	 * @return success
+	 */
+	private boolean stepCheckVersionCompatibility() {
+
+		Log.f2("Checking basic version compatibility.");
+
+		File jsonFile = new File(OsUtils.getMcDir("versions/" + version), version + ".json");
+
+		if (!jsonFile.exists()) {
+			Log.e("Version JSON file not found, aborting!");
+			return false;
+		}
+
+		Log.f3("Version JSON file: " + jsonFile);
+
+		try {
+			JsonParser jp = new JsonParser();
+
+			JsonElement root = jp.parse(FileUtils.fileToString(jsonFile));
+			root.isJsonObject();
+			if (!root.isJsonObject()) throw new IllegalArgumentException();
+
+			JsonObject rootobj = root.getAsJsonObject();
+
+			if (!rootobj.has("assets")) {
+				assetsVersion = "legacy"; // legacy assets index (1.7.2 and below)
+			} else {
+				assetsVersion = rootobj.get("assets").getAsString();
+			}
+
+			if (!rootobj.has("type")) {
+				Log.e("Unsupported JSON structure, aborting.\nIf you report this, ATTACH THE VERSION JSON FILE!");
+				return false;
+			} else {
+				String vtype = rootobj.get("type").getAsString();
+
+				if (!vtype.equals("release") && !vtype.equals("snapshot")) {
+					Log.e("Unsupported version type: " + vtype);
+					return false;
+				}
+			}
+
+			Log.f3("Assets version to be used: " + assetsVersion);
+
+		} catch (IOException e) {
+			Log.e("Error while parsing JSON file, aborting.", e);
+			return false;
+		} catch (IllegalArgumentException e) {
+			Log.e("Bad JSON file structure, aborting.", e);
+			return false;
+		}
+
+		return true;
 	}
 
 
@@ -149,6 +218,9 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 			return false;
 		}
 
+		Log.f3(assets.size() + " files extracted from JAR.");
+
+
 		return true;
 	}
 
@@ -167,41 +239,61 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 		Log.f3("Checking assets folder...");
 
+		boolean useObjectRegistry = true; // files straight in the assets folder
 
-		// determine the path
 		if (OsUtils.getMcDir("assets/pack.mcmeta").exists()) {
-			// rev1
+			// old system
 			source = OsUtils.getMcDir("assets");
-			Log.f3("Detected type 1 folder structure.");
-
-		} else if (OsUtils.getMcDir("assets/virtual/legacy/pack.mcmeta").exists()) {
-			// rev2
-			source = OsUtils.getMcDir("assets/virtual/legacy");
-			Log.f3("Detected type 2 folder structure.");
+			useObjectRegistry = false;
+			Log.f3("Detected legacy folder structure.");
+			Log.w("YOU SHOULD UPDATE YOUR MINECRAFT LAUNCHER!");
 
 		} else {
-			// fail
-			Log.e("Unsupported structure found, aborting.");
-			return false;
+			// objects
+			useObjectRegistry = true;
+			source = OsUtils.getMcDir("assets/indexes/" + assetsVersion + ".json"); // try per-version file
+
+			Log.f3("Detected object registry.");
+			Log.f3("Checking index file: " + source);
+
+			if (!source.exists()) {
+				Log.e("Index file not found, aborting.");
+				return false;
+			}
 		}
-
-
-		Log.f2("Copying asset files from: " + source);
-
 
 		File target = new File(outDir, "assets/minecraft");
 
-
-		// do the actual work
 		try {
 			ArrayList<File> list = new ArrayList<File>();
 
-			// copy the right files, add entries into list
-			FileUtils.copyDirectory(source, target, ASSETS_DIR_FILTER, list);
+			if (useObjectRegistry) {
+
+				Log.f2("Using index file: " + source);
+				FileUtils.extractObjectFiles(source, target, ASSETS_DIR_FILTER, list);
+
+			} else {
+
+				// legacy structure
+
+				Log.f2("Copying assets from: " + source);
+
+				FileUtils.copyDirectory(source, target, new FileFilter() {
+
+					@Override
+					public boolean accept(File f) {
+
+						return ASSETS_DIR_FILTER.accept(f.getName());
+					}
+
+				}, list);
+			}
+
+			Log.f3(list.size() + " files extracted from assets storage.");
 
 			for (File f : list) {
 				String path = f.getAbsolutePath();
-				path = path.replace(source.getAbsolutePath(), "assets/minecraft");
+				path = path.replace(target.getAbsolutePath(), "assets/minecraft");
 
 				path = FileUtils.escapeFilename(path);
 				String[] parts = FileUtils.getFilenameParts(path);
@@ -221,7 +313,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 				assets.put(key, ae);
 
-				if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ "+ae.toString());
+				if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ " + ae.toString());
 			}
 
 		} catch (Exception e) {
@@ -252,7 +344,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 		for (File f : list) {
 			if (f.exists() && fsf.accept(f)) {
 				modFiles.add(f);
-				Log.f3("found " + f.getName());
+				Log.f3("found mod: " + f.getName());
 			}
 		}
 
@@ -283,22 +375,20 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 			}
 
 			//@formatter:off
-		    int n = JOptionPane.showOptionDialog(
-		    		App.getFrame(), //parent
-		    		array, //message
-		    		"Mods found", //title
-		    		JOptionPane.YES_NO_OPTION, //option type
-		    		JOptionPane.QUESTION_MESSAGE, // message type
-		    		Icons.DIALOG_QUESTION, // icon
-		    		new String[] {"Import selected","Ignore mods"}, // options
-		    		null // default option
-		    );
-		    //@formatter:on
+			int n = JOptionPane.showOptionDialog(
+				App.getFrame(), //parent
+				array, //message
+				"Mods found", //title
+				JOptionPane.YES_NO_OPTION, //option type
+				JOptionPane.QUESTION_MESSAGE, // message type
+				Icons.DIALOG_QUESTION, // icon
+				new String[] {"Import selected","Ignore mods"}, // options
+				null // default option
+			);
+			//@formatter:on
 
 			boolean wantLoadMods = (n == 0);
 
-
-			//@formatter:on
 			Alerts.loading(true);
 
 			if (wantLoadMods) {
@@ -360,46 +450,37 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 		return true;
 
-	}	
+	}
 
-	
+
 	@Override
 	protected void doBefore() {
 
-		Log.f1("Reloading Vanilla assets (" + version + ")");
+		Log.f1("Extracting Minecraft assets (" + version + ")");
 
 	}
-	
+
 
 	@Override
 	protected void doAfter(boolean success) {
 
 		if (!success) {
-			Log.e("Reloading Vanilla assets - FAILED.");
+			Log.e("Extracting Minecraft assets - FAILED.");
 
 			//@formatter:off
-			boolean end = Alerts.askYesNo(
+			Alerts.error(
 					App.getFrame(),
-					"Asset extraction failed", 
-					"An error occured while extracting\n"+
-					"Minecraft assets.\n"+
+					"Extraction failed", 
+					"Something went wrong: check the log for details.\n"+
 					"\n"+
-					"Check the log file for details.\n"+
-					"\n"+
-					"RPW is pretty much useless without\n" +
-					"the assets.\n" + 
-					"Do you want to quit?"
+					"If you think this is a bug, please report it to MightyPork."
 			);
 			//@formatter:on
-
-			if (end) {
-				Tasks.taskExit();
-			}
 
 			return;
 		}
 
-		Log.f1("Reloading Vanilla assets - done.");
+		Log.f1("Extracting Minecraft assets - done.");
 		Flags.VANILLA_STRUCTURE_LOAD_OK = true;
 
 		if (Config.FANCY_TREE && modsLoaded) {
@@ -420,5 +501,8 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 				Config.save();
 			}
 		}
+
+		Alerts.info(App.getFrame(), "Minecraft assets reloaded.");
+		closeMonitor();
 	}
 }

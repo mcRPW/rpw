@@ -25,16 +25,17 @@ public class DialogUpdateNotify extends RpwDialog {
 	public DialogUpdateNotify(String version, String textMd) {
 
 		super(App.getFrame(), "Your RPW is outdated");
-		
+
 		this.version = version;
 		this.textMd = textMd;
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
-		
+
 		Box hb;
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

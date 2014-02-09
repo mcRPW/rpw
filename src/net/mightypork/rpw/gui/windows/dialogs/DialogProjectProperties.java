@@ -54,15 +54,16 @@ public class DialogProjectProperties extends RpwDialog {
 
 		iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
 
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
-		
+
 		Project proj = Projects.getActive();
-		
+
 		//@formatter:off
 		Box hb;
 		Box vb, vb2;
@@ -136,7 +137,8 @@ public class DialogProjectProperties extends RpwDialog {
 
 		return vb;
 	}
-	
+
+
 	@Override
 	protected void initGui() {
 

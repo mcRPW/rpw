@@ -93,6 +93,7 @@ public class PopupSelectedNodes {
 		int inProjectMeta = proc.getInProjectMeta();
 		int allLeaves = proc.getLeaves();
 		int vanillaLeaves = proc.getVanillaLeaves();
+		int metaLeaves = proc.getMetaLeaves();
 
 		JMenuItem item;
 		JPopupMenu popup;
@@ -123,10 +124,12 @@ public class PopupSelectedNodes {
 		item.setEnabled(inProject > 0);
 		popup.add(item);
 
-		item = itemDeleteMetaFromProject = new JMenuItem("Delete \".mcmeta\" files in project");
-		item.setIcon(Icons.MENU_DELETE_ASSET);
-		item.setEnabled(inProjectMeta > 0);
-		popup.add(item);
+		if (metaLeaves > 0) {
+			item = itemDeleteMetaFromProject = new JMenuItem("Delete \".mcmeta\" files in project");
+			item.setIcon(Icons.MENU_DELETE_ASSET);
+			item.setEnabled(inProjectMeta > 0);
+			popup.add(item);
+		}
 
 
 		popup.addSeparator();
@@ -136,16 +139,18 @@ public class PopupSelectedNodes {
 		item.setEnabled(allLeaves == 1 && nodes.size() == 1);
 		popup.add(item);
 
-		item = itemEditMeta = new JMenuItem("Edit \".mcmeta\"");
+		if (metaLeaves > 0) {
+			item = itemEditMeta = new JMenuItem("Edit \".mcmeta\"");
 
-		item.setIcon(Icons.MENU_EDIT);
-		item.setEnabled(allLeaves == 1 && nodes.size() == 1);
+			item.setIcon(Icons.MENU_EDIT);
+			item.setEnabled(allLeaves == 1 && nodes.size() == 1);
 
-		if (nodes.get(0).isLeaf()) {
-			AssetTreeLeaf leaf = (AssetTreeLeaf) nodes.get(0);
-			if (!leaf.isMetaProvidedByProject()) item.setIcon(Icons.MENU_NEW);
+			if (nodes.get(0).isLeaf()) {
+				AssetTreeLeaf leaf = (AssetTreeLeaf) nodes.get(0);
+				if (!leaf.isMetaProvidedByProject()) item.setIcon(Icons.MENU_NEW);
+			}
+			popup.add(item);
 		}
-		popup.add(item);
 
 		item = itemImportReplacement = new JMenuItem("Import replacement");
 		item.setIcon(Icons.MENU_IMPORT_BOX);
@@ -455,7 +460,7 @@ public class PopupSelectedNodes {
 			}
 		});
 
-		itemDeleteMetaFromProject.addActionListener(new ActionListener() {
+		if (itemDeleteMetaFromProject != null) itemDeleteMetaFromProject.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -512,7 +517,7 @@ public class PopupSelectedNodes {
 			}
 		});
 
-		itemEditMeta.addActionListener(new ActionListener() {
+		if (itemEditMeta != null) itemEditMeta.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

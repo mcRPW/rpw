@@ -215,12 +215,13 @@ public class Tasks {
 
 	public static void taskStoreProjectChanges() {
 
-		Log.f3("Saving project data to working directory");
 		taskStoreProjectChanges(Projects.getActive());
 	}
 
 
 	public static void taskStoreProjectChanges(Project proj) {
+
+		Log.f3("Writing project data to TMP");
 
 		if (proj == null) return;
 
@@ -286,11 +287,11 @@ public class Tasks {
 			public void run() {
 
 				// -- task begin --
-				
+
 				Tasks.taskStoreProjectChanges();
 
 				(new SequenceExportProject(target, afterExport)).run();
-				
+
 				Tasks.stopTask(task);
 
 				// -- task end --
@@ -570,7 +571,6 @@ public class Tasks {
 				Tasks.taskTreeSaveAndRebuild();
 
 				Tasks.stopTask(task);
-				Alerts.info(App.getFrame(), "Vanilla Pack reloaded.");
 
 				// -- task end --
 			}
@@ -685,8 +685,6 @@ public class Tasks {
 						Tasks.taskOnProjectChanged();
 						Alerts.loading(false);
 
-						TaskDevel.run();
-
 						// -- task end --
 					}
 
@@ -787,7 +785,7 @@ public class Tasks {
 		String title = Const.WINDOW_TITLE;
 
 		if (Projects.getActive() != null) {
-			title = Projects.getActive().getProjectName() + "  •  " + title;
+			title = Projects.getActive().getProjectName() + "  \u2022  " + title;
 		}
 
 		App.getFrame().setTitle(title);

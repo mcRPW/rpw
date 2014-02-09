@@ -111,4 +111,10 @@ public class FileFsTreeNode extends AbstractFsTreeNode {
 	}
 
 
+	@Override
+	public boolean isJson() {
+
+		return type.isText();
+	}
+
 }

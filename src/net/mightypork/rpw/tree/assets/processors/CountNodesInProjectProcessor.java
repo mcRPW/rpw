@@ -20,6 +20,7 @@ public class CountNodesInProjectProcessor implements AssetTreeProcessor {
 	private int countMeta = 0;
 	private int leaves = 0;
 	private int vanillaLeaves = 0;
+	private int metaLeaves = 0;
 
 	private Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 
@@ -58,6 +59,11 @@ public class CountNodesInProjectProcessor implements AssetTreeProcessor {
 			if (MagicSources.isVanilla(leaf.resolveAssetSource())) {
 				vanillaLeaves++;
 			}
+
+			if (leaf.canHaveMeta()) {
+				metaLeaves++;
+			}
+
 		}
 	}
 
@@ -89,6 +95,12 @@ public class CountNodesInProjectProcessor implements AssetTreeProcessor {
 	public int getVanillaLeaves() {
 
 		return vanillaLeaves;
+	}
+
+
+	public int getMetaLeaves() {
+
+		return metaLeaves;
 	}
 
 }

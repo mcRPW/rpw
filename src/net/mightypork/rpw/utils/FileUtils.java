@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.mightypork.rpw.Config;
+import net.mightypork.rpw.struct.FileObject;
+import net.mightypork.rpw.struct.FileObjectIndex;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.logging.Log;
@@ -25,30 +28,17 @@ public class FileUtils {
 	 */
 	public static void copyDirectory(File source, File target) throws IOException {
 
-		if (source.isDirectory()) {
-
-			if (!target.exists()) {
-				target.mkdir();
-			}
-
-			String[] children = source.list();
-			for (int i = 0; i < children.length; i++) {
-				copyDirectory(new File(source, children[i]), new File(target, children[i]));
-			}
-
-		} else {
-			copyFile(source, target);
-		}
+		copyDirectory(source, target, null, null);
 	}
 
 
 	/**
 	 * Copy directory recursively - advanced variant.
 	 * 
-	 * @param filesCopied list to write down copied files
 	 * @param source source file
 	 * @param target target file
 	 * @param filter filter accepting only files and dirs to be copied
+	 * @param filesCopied list into which all the target files will be added
 	 * @throws IOException on error
 	 */
 	public static void copyDirectory(File source, File target, FileFilter filter, List<File> filesCopied) throws IOException {
@@ -69,7 +59,7 @@ public class FileUtils {
 				return;
 			}
 
-			filesCopied.add(source);
+			if (filesCopied != null) filesCopied.add(target);
 			copyFile(source, target);
 		}
 	}
@@ -300,6 +290,19 @@ public class FileUtils {
 	 */
 	public static String streamToString(InputStream in) {
 
+		return streamToString(in, -1);
+	}
+
+
+	/**
+	 * Read input stream to a string.
+	 * 
+	 * @param in input stream
+	 * @param lines max number of lines (-1 to disable limit)
+	 * @return file contents
+	 */
+	public static String streamToString(InputStream in, int lines) {
+
 		if (in == null) {
 			Log.e(new NullPointerException("Null stream to be converted to String."));
 			return ""; // to avoid NPE's
@@ -311,9 +314,15 @@ public class FileUtils {
 		String line;
 		try {
 
+			int cnt = 0;
 			br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-			while ((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null && (cnt < lines || lines <= 0)) {
 				sb.append(line + "\n");
+				cnt++;
+			}
+
+			if (cnt == lines && lines > 0) {
+				sb.append("--- snip ---\n");
 			}
 
 		} catch (IOException e) {
@@ -406,15 +415,26 @@ public class FileUtils {
 	 */
 	public static String escapeFileString(String filestring) {
 
-		filestring = filestring.replace("{", "?");
-		filestring = filestring.replace("}", "*");
+		StringBuilder sb = new StringBuilder();
 
-		filestring = filestring.replace("?", "{LCB}");
-		filestring = filestring.replace("*", "{RCB}");
+		for (char c : filestring.toCharArray()) {
 
-		filestring = filestring.replace(".", "{DOT}");
+			switch (c) {
+				case '%':
+					sb.append("%%");
+					break;
 
-		return filestring;
+				case '.':
+					sb.append("%d");
+					break;
+
+				default:
+					sb.append(c);
+			}
+
+		}
+
+		return sb.toString();
 	}
 
 
@@ -426,10 +446,8 @@ public class FileUtils {
 	 */
 	public static String unescapeFileString(String filestring) {
 
-		filestring = filestring.replace("{LCB}", "{");
-		filestring = filestring.replace("{RCB}", "}");
-
-		filestring = filestring.replace("{DOT}", ".");
+		filestring = filestring.replace("%d", ".");
+		filestring = filestring.replace("%%", "%");
 
 		return filestring;
 	}
@@ -513,22 +531,23 @@ public class FileUtils {
 
 			for (String s : list) {
 				if (s.startsWith("assets")) {
-					s = FileUtils.escapeFilename(s);
-					String[] parts = FileUtils.getFilenameParts(s);
+					String s2 = FileUtils.escapeFilename(s);
+					String[] parts = FileUtils.getFilenameParts(s2);
 					String key = parts[0].replace('\\', '.');
 					key = key.replace('/', '.');
 					String ext = parts[1];
 					EAsset type = EAsset.forExtension(ext);
 
 					if (!type.isAsset()) {
+						if (Config.LOG_EXTRACTED_ASSETS) Log.f3("Skipping: " + s2);
 						continue;
 					}
 
 					AssetEntry ae = new AssetEntry(key, type);
-					
+
 					assets.put(key, ae);
-					
-					if(Config.LOG_EXTRACTED_ASSETS) Log.f3("+ "+ae.toString());
+
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ " + ae.toString());
 				}
 			}
 
@@ -538,6 +557,55 @@ public class FileUtils {
 			Log.e(e);
 
 			return null; // success = false
+		}
+	}
+
+
+	/**
+	 * Copy object files to target paths / names from the Minecraft assets
+	 * directory
+	 * 
+	 * @param indexFile index file to be used
+	 * @param targetDir output directory
+	 * @param filter filename filter
+	 * @param filesCopied
+	 * @throws IOException
+	 */
+	public static void extractObjectFiles(File indexFile, File targetDir, StringFilter filter, List<File> filesCopied) throws IOException {
+
+		File objectsDir = OsUtils.getMcDir("assets/objects");
+
+		String index_s = fileToString(indexFile);
+		FileObjectIndex index = FileObjectIndex.fromJson(index_s);
+		for (Entry<String, FileObject> entry : index.objects.entrySet()) {
+			String path = entry.getKey();
+			String hash = entry.getValue().hash;
+			int size = entry.getValue().size;
+
+			if (!filter.accept(new File(path).getName())) {
+				if (Config.LOG_EXTRACTED_ASSETS) Log.f3("Skipping file: " + path);
+				continue;
+			}
+
+			String hashPrefix = hash.substring(0, 2);
+
+			File source = new File(objectsDir + "/" + hashPrefix + "/" + hash);
+
+			if (!source.exists()) {
+				Log.w("Object '" + hash + "' does not exist, skipping.");
+				continue;
+			}
+
+			if (source.length() != size) {
+				Log.w("Object '" + hash + "' has wrong size.");
+			}
+
+			File target = new File(targetDir, path);
+			target.getParentFile().mkdirs();
+
+			copyFile(source, target);
+
+			filesCopied.add(target);
 		}
 	}
 

@@ -486,7 +486,7 @@ public class SidePanel {
 
 				try {
 					in = Sources.getAssetStream(leaf.resolveAssetSource(), leaf.getAssetKey());
-					text = FileUtils.streamToString(in);
+					text = FileUtils.streamToString(in, 1000);
 				} catch (Exception e) {
 					return;
 				}

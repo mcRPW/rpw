@@ -17,6 +17,7 @@ import net.mightypork.rpw.help.VersionUtils;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.NodeSourceProvider;
 import net.mightypork.rpw.project.Projects;
+import net.mightypork.rpw.tasks.TaskDevel;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.HtmlBuilder;
 import net.mightypork.rpw.utils.OsUtils;
@@ -82,6 +83,9 @@ public class App {
 		Log.f1("Init started...");
 		OsUtils.initDirs();
 		Config.init();
+
+
+		TaskDevel.run();
 
 		Log.f3("Last run version: " + VersionUtils.getVersionString(Config.LAST_RUN_VERSION) + " (#" + Config.LAST_RUN_VERSION + ")");
 

@@ -135,15 +135,15 @@ public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNo
 	}
 
 
-	/**
-	 * Set displayed label
-	 * 
-	 * @param label label
-	 */
-	public void setLabel(String label) {
-
-		this.label = label;
-	}
+//	/**
+//	 * Set displayed label
+//	 * 
+//	 * @param label label
+//	 */
+//	public void setLabel(String label) {
+//
+//		this.label = label;
+//	}
 
 
 	/**
@@ -240,5 +240,11 @@ public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNo
 
 
 	public abstract List<AssetTreeNode> getChildrenList();
+
+
+	public boolean canHaveMeta() {
+
+		return isLeaf();
+	}
 
 }

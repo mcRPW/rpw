@@ -263,6 +263,14 @@ root.image.block.wood = NULL
 root.image.block = assets.minecraft.textures.blocks.*
 root.image = assets.minecraft.textures.*
 
+root.shaders.post = assets.minecraft.shaders.post.*
+root.shaders.program = assets.minecraft.shaders.program.*
+root.shaders = assets.minecraft.shaders.*
+
+root.models.block = assets.minecraft.models.block.*
+root.models = assets.minecraft.models.*
+
+
 # some weird junk
 NULL = assets.minecraft.icons.*
 

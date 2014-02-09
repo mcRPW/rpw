@@ -81,12 +81,12 @@ public class TreeBuilder {
 
 		for (AssetEntry ae : Sources.vanilla.getAssetEntries()) {
 
-			if(!fullTree) {
-				
+			if (!fullTree) {
+
 				if (!Config.SHOW_FONT) {
 					if (DELETE_FONT.matches(ae)) continue; // skip fonts				
 				}
-	
+
 				if (!Config.SHOW_OBSOLETE_DIRS) {
 					boolean del = false;
 					if (ae.getKey().startsWith("assets.minecraft.sound") && !ae.getKey().startsWith("assets.minecraft.sounds")) del = true; // sound dir
@@ -97,11 +97,11 @@ public class TreeBuilder {
 						continue;
 					}
 				}
-	
+
 				if (!Config.SHOW_LANG) {
 					if (ae.getType() == EAsset.LANG) continue; // skip lang files				
 				}
-				
+
 			}
 
 			boolean success = false;

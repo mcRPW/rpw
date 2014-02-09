@@ -52,10 +52,11 @@ public class DialogManageLibrary extends RpwDialog {
 
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
-		
+
 		Box hb;
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

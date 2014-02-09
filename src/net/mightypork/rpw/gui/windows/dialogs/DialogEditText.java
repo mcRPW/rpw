@@ -12,7 +12,11 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
@@ -40,7 +44,7 @@ public class DialogEditText extends DialogEditorBase {
 	private JButton btnSave;
 	private JButton btnFormatCodes;
 	private JPopupMenu formatCodesPopup;
-	
+
 	private EAsset type;
 	private TextEditListener listener;
 	private String dlgTitle;
@@ -114,13 +118,14 @@ public class DialogEditText extends DialogEditorBase {
 		this.dlgTitle = title + " - RPW Text editor";
 		this.dlgText = text;
 		this.dlgFormattingCodes = showFormatingCodes;
-		
+
 		this.type = type;
 
 		this.listener = listener;
-		
+
 		createDialog();
 	}
+
 
 	private JPopupMenu buildCodesPopup() {
 
@@ -202,7 +207,7 @@ public class DialogEditText extends DialogEditorBase {
 		public void actionPerformed(ActionEvent e) {
 
 			String code = e.getActionCommand();
-			
+
 			RSyntaxTextArea ta = getTextArea();
 
 			ta.insert(code, ta.getCaretPosition());
@@ -211,7 +216,7 @@ public class DialogEditText extends DialogEditorBase {
 		}
 	};
 
-	
+
 	@Override
 	protected String getTitleText() {
 
@@ -249,6 +254,7 @@ public class DialogEditText extends DialogEditorBase {
 
 	@Override
 	protected void configureTextarea(RSyntaxTextArea ta) {
+
 		String mime;
 
 		switch (type) {
@@ -329,7 +335,7 @@ public class DialogEditText extends DialogEditorBase {
 
 		ta.setSyntaxScheme(ss);
 		ta.setFont(font);
-		
+
 	}
 
 }

@@ -20,7 +20,7 @@ public class TaskReloadVanilla {
 	public static void run(String version) {
 
 		(new SequenceReloadVanilla(version)).run();
-		
+
 	}
 
 
@@ -41,10 +41,10 @@ public class TaskReloadVanilla {
 				"Please, select a Minecraft version to use:";
 
 		String user = 
-				"Vanilla ResourcePack will be re-extracted.\n" +
+				"Minecraft assets will be re-extracted.\n" +
 				"\n" +
-				"Assets installed in the game jar and the\n" +
-				"assets folder will be included.\n" +
+				"If you have any mods installed, you'll be\n" + 
+				"offered to extract their assets too.\n" +
 				"\n" +
 				"Please, select a Minecraft version to use:";
 		//@formatter:on

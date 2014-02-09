@@ -45,7 +45,7 @@ public class AssetTreeModel extends AbstractTreeTableModel {
 						return null;
 					}
 				case 4:
-					if (atn instanceof AssetTreeLeaf) {
+					if (atn.canHaveMeta()) {
 						return ((AssetTreeLeaf) atn).isMetaProvidedByProject();
 					} else {
 						return null;

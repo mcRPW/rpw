@@ -208,3 +208,10 @@ root.font = Font
 root.font.unicode = Unicode
 root.text = Texts
 root.text.lang = Translations
+
+root.shaders = Shaders
+root.shaders.post = Setups
+root.shaders.program = Low-level code (better don't touch)
+
+root.models = Models
+root.models.block = Blocks

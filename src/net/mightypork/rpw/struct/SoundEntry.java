@@ -12,6 +12,7 @@ public class SoundEntry {
 
 	public SoundEntry() {
 
+		// implicit constructor for GSON
 	}
 
 

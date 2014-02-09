@@ -50,10 +50,11 @@ public class DialogManageProjects extends RpwDialog {
 	public DialogManageProjects() {
 
 		super(App.getFrame(), "Manage Projects");
-		
+
 		createDialog();
 	}
-		
+
+
 	@Override
 	protected JComponent buildGui() {
 

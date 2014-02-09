@@ -35,13 +35,14 @@ public class DialogOpenProject extends RpwDialog {
 	public DialogOpenProject() {
 
 		super(App.getFrame(), "Open Project");
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
-		
+
 		Box hb;
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

@@ -148,4 +148,10 @@ public class AssetTreeGroup extends AssetTreeNode {
 		return false;
 	}
 
+
+	@Override
+	public boolean isJson() {
+
+		return false;
+	}
 }

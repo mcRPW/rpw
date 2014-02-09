@@ -1,7 +1,7 @@
 package net.mightypork.rpw.gui.windows.messages;
 
 
-import javax.swing.*;
+import javax.swing.JButton;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Paths;
@@ -19,7 +19,7 @@ public class DialogRuntimeLog extends DialogTerminalBase {
 	public DialogRuntimeLog() {
 
 		super(App.getFrame(), "Runtime log");
-		
+
 		createDialog();
 	}
 

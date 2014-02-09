@@ -22,9 +22,12 @@ public class TreeIconProvider implements IconValue {
 		}
 
 		if (node.isFile()) {
+			// from most specific to general
 			if (node.isImage()) return Icons.TREE_FILE_IMAGE;
 			if (node.isSound()) return Icons.TREE_FILE_AUDIO;
+			if (node.isJson()) return Icons.TREE_FILE_JSON;
 			if (node.isText()) return Icons.TREE_FILE_TEXT;
+			return Icons.TREE_FILE_GENERIC;
 		}
 
 		return null;

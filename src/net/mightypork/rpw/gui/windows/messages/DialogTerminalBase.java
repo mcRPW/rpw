@@ -2,6 +2,7 @@ package net.mightypork.rpw.gui.windows.messages;
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Insets;
@@ -84,7 +85,22 @@ public abstract class DialogTerminalBase extends RpwDialog {
 				int i=0;
 				for(JButton btn : makeButtons()) {
 					if(i>0) hb.add(Box.createHorizontalStrut(5));
-					hb.add(btn);
+					if(btn == null) {
+						
+						// BEHOLD, MAGIC
+						// ugly fix for Swing bug
+						// http://stackoverflow.com/a/7515903/2180189
+						JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+						Dimension size = new Dimension(
+						separator.getPreferredSize().width,
+					    separator.getMaximumSize().height);
+						separator.setMaximumSize(size);
+						
+						hb.add(separator);
+						
+					} else {
+						hb.add(btn);
+					}
 					i++;
 				}
 				
@@ -101,6 +117,7 @@ public abstract class DialogTerminalBase extends RpwDialog {
 
 	/**
 	 * Add optional stuff above the textarea
+	 * 
 	 * @param vb main vertical box
 	 */
 	protected void addStuffAboveTextarea(Box vb) {

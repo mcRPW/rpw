@@ -24,13 +24,14 @@ public class DialogChangelog extends RpwDialog {
 	public DialogChangelog() {
 
 		super(App.getFrame(), "What's new");
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
-		
+
 		Box hb;
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

@@ -222,6 +222,13 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	}
 
 
+	@Override
+	public boolean isJson() {
+
+		return false;
+	}
+
+
 	/**
 	 * Get if this node is a path root
 	 * 

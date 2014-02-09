@@ -65,10 +65,11 @@ public class DialogManageMcPacks extends RpwDialog {
 	public DialogManageMcPacks() {
 
 		super(App.getFrame(), "Manage packs in MC");
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
 

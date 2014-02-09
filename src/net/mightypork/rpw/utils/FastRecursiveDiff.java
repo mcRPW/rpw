@@ -46,7 +46,7 @@ public class FastRecursiveDiff {
 
 			calcChecksum();
 
-			Log.f3((System.currentTimeMillis() - from) + " ms");
+			Log.f3("Checksums calculated in " + (System.currentTimeMillis() - from) + " ms");
 
 			return true;
 

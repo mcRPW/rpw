@@ -26,7 +26,7 @@ public class VersionUtils {
 		for (int i = Math.max(Config.LAST_RUN_VERSION, from); i <= Const.VERSION_SERIAL; i++) {
 			String chl = getChangelogForVersion(i);
 			if (chl == null) continue;
-			
+
 			document += "\n\n<p class=\"littleHeading\">" + getVersionString(i) + "</p>\n\n";
 
 			document += chl.trim() + "\n";

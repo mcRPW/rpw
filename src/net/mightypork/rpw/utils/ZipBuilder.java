@@ -28,7 +28,7 @@ public class ZipBuilder {
 
 		path = preparePath(path);
 		if (included.contains(path)) {
-			Log.f3("Zip already contains file "+path+", skipping.");
+			Log.f3("Zip already contains file " + path + ", skipping.");
 			return; // ignore
 		}
 		included.add(path);

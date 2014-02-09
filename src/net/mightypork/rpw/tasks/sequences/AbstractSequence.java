@@ -40,10 +40,11 @@ public abstract class AbstractSequence {
 	 * Stuff to be executed before the first step
 	 */
 	protected abstract void before();
-	
-	
+
+
 	/**
 	 * Stuff to be executed before calling given step
+	 * 
 	 * @param index step ID
 	 */
 	protected abstract void beforeStep(int index);
@@ -64,7 +65,7 @@ public abstract class AbstractSequence {
 	public void run() {
 
 		for (int i = 0; i < getStepCount(); i++) {
-			run(i);
+			if (!run(i)) break; // interrupted from within
 		}
 	}
 
@@ -105,6 +106,7 @@ public abstract class AbstractSequence {
 	public void runAsync() {
 
 		(new Thread(new Runnable() {
+
 			@Override
 			public void run() {
 

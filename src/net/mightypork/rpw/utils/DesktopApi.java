@@ -50,12 +50,12 @@ public class DesktopApi {
 
 
 	public static boolean editImage(File file) {
-		
+
 		if (Config.USE_IMAGE_EDITOR) {
 			if (runCommand(Config.IMAGE_EDITOR, Config.IMAGE_EDITOR_ARGS, file.getPath())) return true;
 		}
-		
-		if(OsUtils.getOs().isWindows()) {
+
+		if (OsUtils.getOs().isWindows()) {
 			if (editDESKTOP(file)) return true;
 		}
 

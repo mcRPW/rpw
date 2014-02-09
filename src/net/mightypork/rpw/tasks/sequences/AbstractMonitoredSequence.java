@@ -1,5 +1,6 @@
 package net.mightypork.rpw.tasks.sequences;
 
+
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
@@ -24,28 +25,32 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence {
 
 		Alerts.loading(true);
 
-		if(Config.SHOW_LOG_TERMINAL && App.getFrame()!=null) {
+		if (Config.SHOW_LOG_TERMINAL && App.getFrame() != null) {
 			dpt = new DialogProgressTerminal(getMonitorTitle(), getMonitorHeading());
-		
+
 			dpt.openDialog();
 		}
-		
+
 		doBefore();
 	}
-	
+
+
 	protected abstract String getMonitorHeading();
 
 
 	protected String getMonitorTitle() {
+
 		return getMonitorHeading();
 	}
 
 
 	@Override
 	protected void beforeStep(int index) {
-		if(dpt != null) dpt.onStepStarted(index, getStepCount(), getStepName(index));
+
+		if (dpt != null) dpt.onStepStarted(index, getStepCount(), getStepName(index));
 	}
-	
+
+
 	protected abstract void doBefore();
 
 
@@ -53,14 +58,21 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence {
 	protected final void after(boolean success) {
 
 		Alerts.loading(false);
-		
-		if(dpt != null) {
-			dpt.allowClose(true);
+
+		if (dpt != null) {
+			dpt.allowClose(true, success);
 		}
-		
+
 		doAfter(success);
 	}
-	
+
+
+	protected void closeMonitor() {
+
+		dpt.closeDialog();
+	}
+
+
 	protected abstract void doAfter(boolean success);
 
 

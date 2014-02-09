@@ -253,18 +253,18 @@ public class Config {
 	public static final boolean LOGGING_ENABLED = true;
 
 	public static final boolean LOG_TO_STDOUT = true;
-	
+
 	public static final boolean LOG_FILTERS = false;
 	public static final boolean LOG_GROUPS = false;
-	
+
 	public static final boolean LOG_FILTERS_DETAILED = false;
 	public static final boolean LOG_VANILLA_LOAD_STRUCTURE = false;
 
 	public static final boolean USE_LOADER_WINDOW = false;
 	public static final boolean LOG_HELP_LOADING = false;
-	
+
 	public static final boolean LOG_EXPORT_FILES = true;
-	
-	public static final boolean LOG_EXTRACTED_ASSETS = true;
+
+	public static final boolean LOG_EXTRACTED_ASSETS = false;
 
 }

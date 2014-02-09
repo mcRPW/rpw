@@ -31,13 +31,14 @@ public class DialogProjectSummary extends RpwDialog {
 	public DialogProjectSummary() {
 
 		super(App.getFrame(), "Project summary");
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
-		
+
 		setResizable(true);
 
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));

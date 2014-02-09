@@ -18,7 +18,7 @@ public class Paths {
 	public static final String FILENAME_PROJECT_GROUPS = "sources_groups.dat";
 	public static final String FILENAME_PROJECT_SOUNDS = "sounds.json";
 	public static final String FILENAME_PROJECT_CONFIG = "properties.cfg";
-	
+
 	public static final String FILENAME_LOG = "Runtime.log";
 
 	// paths based in workdir	

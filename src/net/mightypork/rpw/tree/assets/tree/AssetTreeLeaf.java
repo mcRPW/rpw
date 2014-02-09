@@ -219,4 +219,17 @@ public class AssetTreeLeaf extends AssetTreeNode {
 		return getAssetType().isText();
 	}
 
+
+	@Override
+	public boolean isJson() {
+
+		return getAssetType().isJson();
+	}
+
+
+	@Override
+	public boolean canHaveMeta() {
+
+		return isImage();
+	}
 }

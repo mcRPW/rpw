@@ -30,12 +30,12 @@ public class TaskModifyAsset {
 
 		if (editMeta && Config.USE_INTERNAL_META_EDITOR) {
 
-			
+
 			Alerts.loading(true);
 			Dialog d = new DialogEditMeta(node);
 			Alerts.loading(false);
 			d.setVisible(true);
-			
+
 			return;
 		}
 

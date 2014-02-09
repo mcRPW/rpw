@@ -90,26 +90,26 @@ public class DialogExportToMc extends RpwDialog {
 						try {
 							List<String> lines = SimpleConfig.listFromFile(f);
 
-							boolean a=false,b=false;
-							
+							boolean a = false, b = false;
+
 							String optA = "skin:" + name + ".zip";
 							String optB = "resourcePacks:[\"" + name + ".zip\"]";
-							
+
 							for (int i = 0; i < lines.size(); i++) {
 
 								// 1.7+
 								if (lines.get(i).startsWith("resourcePacks:")) {
-									b=true;
+									b = true;
 									lines.set(i, optB);
 								}
 
 								// 1.6-
 								if (lines.get(i).startsWith("skin:")) {
-									a=true;
+									a = true;
 									lines.set(i, optA);
 								}
 							}
-							
+
 							// add the unused one (make sure both will be present when MC starts)
 							if (!b) lines.add(optB);
 							if (!a) lines.add(optA);

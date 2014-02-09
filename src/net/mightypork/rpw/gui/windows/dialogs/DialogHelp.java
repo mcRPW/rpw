@@ -25,10 +25,11 @@ public class DialogHelp extends RpwDialog {
 	public DialogHelp() {
 
 		super(App.getFrame(), "Quick Guide");
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
 

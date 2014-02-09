@@ -41,10 +41,11 @@ public class DialogNewProject extends RpwDialog {
 	public DialogNewProject() {
 
 		super(App.getFrame(), "New Project");
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
 

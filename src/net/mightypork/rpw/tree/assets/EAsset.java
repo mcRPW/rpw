@@ -14,9 +14,26 @@ import net.mightypork.rpw.utils.FileUtils;
 public enum EAsset {
 
 	//@formatter:off
-	SOUND("ogg"), IMAGE("png"), TEXT("txt"), LANG("lang"),
-	PROPERTIES("properties"), INI("ini"), MCMETA("mcmeta"),
-	CFG("cfg"), UNKNOWN("");
+	
+	/* sound */
+	SOUND("ogg"),
+	
+	/* images */
+	IMAGE("png"),
+	
+	/* config files (ini based) */
+	TEXT("txt"), LANG("lang"), PROPERTIES("properties"),
+	INI("ini"), CFG("cfg"), // config files
+	
+	/* json based */
+	MCMETA("mcmeta"), JSON("json"),
+	
+	/* vertex shader, fragment shader */
+	VSH("vsh"), FSH("fsh"),
+	
+	/* unknown type */
+	UNKNOWN("");
+	
 	//@formatter:on
 
 	private EAsset(String extension) {
@@ -41,6 +58,7 @@ public enum EAsset {
 			case PROPERTIES:
 			case INI:
 			case CFG:
+			case JSON:
 				return true;
 			default:
 				return false;
@@ -66,15 +84,39 @@ public enum EAsset {
 	}
 
 
-	public boolean isAsset() {
+	public boolean isJson() {
 
-		return isText() || isImage() || isSound();
+		return this == JSON;
 	}
 
 
+	public boolean isShader() {
+
+		return this == VSH || this == FSH;
+	}
+
+
+	public boolean isAsset() {
+
+		return isText() || isImage() || isSound() || isJson();
+	}
+
+
+	/**
+	 * Get if type is asset or meta<br>
+	 * Used to filter out files not to be extracted from vanilla
+	 * 
+	 * @return is asset, meta or shader
+	 */
 	public boolean isAssetOrMeta() {
 
-		return isMeta() || isAsset();
+		// Shader is considered meta, because it has the same name
+		// as the json file, only different extension. Which is a
+		// common trait with mcmeta files.
+		//
+		// Future version may add shader editor to deal with them.
+
+		return isMeta() || isAsset() || isShader();
 	}
 
 
@@ -106,6 +148,4 @@ public enum EAsset {
 
 		return forExtension(FileUtils.getExtension(file));
 	}
-
-
 }

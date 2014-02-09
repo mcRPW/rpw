@@ -26,4 +26,7 @@ public interface IFileTreeNode {
 
 
 	public boolean isText();
+
+
+	public boolean isJson();
 }

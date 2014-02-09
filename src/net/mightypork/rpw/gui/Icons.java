@@ -81,6 +81,9 @@ public class Icons {
 	public static ImageIcon TREE_FILE_AUDIO;
 	public static ImageIcon TREE_FILE_IMAGE;
 	public static ImageIcon TREE_FILE_TEXT;
+	public static ImageIcon TREE_FILE_SHADER;
+	public static ImageIcon TREE_FILE_JSON;
+	public static ImageIcon TREE_FILE_GENERIC;
 
 	public static ImageIcon LOADING;
 	public static ImageIcon MENU_YES;
@@ -90,8 +93,8 @@ public class Icons {
 	public static ImageIcon MENU_TWITTER;
 	public static ImageIcon WINDOW;
 	public static ImageIcon AUDIO;
-	
-	
+
+
 	public static ImageIcon DIALOG_ERROR;
 	public static ImageIcon DIALOG_INFORMATION;
 	public static ImageIcon DIALOG_QUESTION;
@@ -101,8 +104,8 @@ public class Icons {
 	private static ImageIcon IMAGE_ERROR_32;
 	private static ImageIcon IMAGE_ERROR_64;
 	private static ImageIcon IMAGE_ERROR_128;
-	
-	
+
+
 	private static ImageIcon IMAGE_NOT_FOUND;
 
 
@@ -116,8 +119,8 @@ public class Icons {
 		IMAGE_ERROR_32 = loadImage(imgPath + "image-error-32.png");
 		IMAGE_ERROR_64 = loadImage(imgPath + "image-error-64.png");
 		IMAGE_ERROR_128 = loadImage(imgPath + "image-error-128.png");
-		
-		
+
+
 		IMAGE_NOT_FOUND = IMAGE_ERROR_16;
 
 		MENU_NEW = loadImage(imgPath + "menu/new.png");
@@ -163,32 +166,32 @@ public class Icons {
 		MENU_PMC = loadImage(imgPath + "menu/pmc.png");
 		MENU_MCF = loadImage(imgPath + "menu/mcf.png");
 		MENU_DOWNLOAD = loadImage(imgPath + "menu/download.png");
-		
+
 		WINDOW = loadImage(imgPath + "window-icon.png");
 
-		TREE_CLOSE = loadImage(imgPath + "tree-16/close.png");
-		TREE_OPEN = loadImage(imgPath + "tree-16/open.png");
-		TREE_FOLDER = loadImage(imgPath + "tree-16/folder.png");
-		TREE_FILE_AUDIO = loadImage(imgPath + "tree-16/file-audio.png");
-		TREE_FILE_IMAGE = loadImage(imgPath + "tree-16/file-image.png");
-		TREE_FILE_TEXT = loadImage(imgPath + "tree-16/file-text.png");
-		
-		
-		
+		TREE_CLOSE = loadImage(imgPath + "tree/close.png");
+		TREE_OPEN = loadImage(imgPath + "tree/open.png");
+		TREE_FOLDER = loadImage(imgPath + "tree/folder.png");
+		TREE_FILE_AUDIO = loadImage(imgPath + "tree/file-audio.png");
+		TREE_FILE_IMAGE = loadImage(imgPath + "tree/file-image.png");
+		TREE_FILE_TEXT = loadImage(imgPath + "tree/file-text.png");
+		TREE_FILE_SHADER = loadImage(imgPath + "tree/file-shader.png");
+		TREE_FILE_JSON = loadImage(imgPath + "tree/file-json.png");
+		TREE_FILE_GENERIC = loadImage(imgPath + "tree/file-unknown.png");
+
+
 		IMAGE_NOT_FOUND = IMAGE_ERROR_64;
-		
+
 		AUDIO = loadImage(imgPath + "sound-icon.png");
-		
-		
-		
+
+
 		IMAGE_NOT_FOUND = IMAGE_ERROR_128;
-		
+
 		TRANSPARENT = loadImage(imgPath + "transparent.png");
 		TRANSPARENT_FONTS = loadImage(imgPath + "transparent-fonts.png");
 
 		ABOUT = loadImage(imgPath + "about.png");
-		
-		
+
 
 		IMAGE_NOT_FOUND = IMAGE_ERROR_32;
 
@@ -196,13 +199,13 @@ public class Icons {
 		DIALOG_INFORMATION = loadImage(imgPath + "dialog/information.png");
 		DIALOG_QUESTION = loadImage(imgPath + "dialog/question.png");
 		DIALOG_WARNING = loadImage(imgPath + "dialog/warning.png");
-		
+
 
 		LOADING = new ImageIcon(Icons.class.getResource(imgPath + "loading.gif"));
 
 
 		IMAGE_NOT_FOUND = IMAGE_ERROR_128;
-		
+
 		Log.f2("Loading GUI icons - done.");
 	}
 
@@ -212,15 +215,24 @@ public class Icons {
 		BufferedImage bi = null;
 
 		Image i = null;
+		InputStream stream = null;
 		try {
 
-			bi = ImageIO.read(FileUtils.getResource(path));
+			stream = FileUtils.getResource(path);
+			bi = ImageIO.read(stream);
 			i = bi;
 			return new ImageIcon(i);
 
 		} catch (Exception e) {
 			Log.e("Failed loading icon " + path, e);
 			return IMAGE_NOT_FOUND;
+		} finally {
+
+			try {
+				if (stream != null) stream.close();
+			} catch (Exception e) {
+				// don't give a fuck
+			}
 		}
 
 	}
@@ -281,6 +293,12 @@ public class Icons {
 		} catch (Exception e) {
 			Log.e("Failed loading icon.", e);
 			return IMAGE_NOT_FOUND;
+		} finally {
+			try {
+				if (in != null) in.close();
+			} catch (Exception e) {
+				// don't give a fuck
+			}
 		}
 	}
 

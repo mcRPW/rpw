@@ -42,13 +42,14 @@ public class DialogSaveAs extends RpwDialog {
 	public DialogSaveAs() {
 
 		super(App.getFrame(), "Save Project As");
-		
+
 		createDialog();
 	}
-	
+
+
 	@Override
 	protected JComponent buildGui() {
-		
+
 		Box hb;
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

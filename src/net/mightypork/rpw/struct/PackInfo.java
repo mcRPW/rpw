@@ -17,6 +17,6 @@ public class PackInfo {
 	@Override
 	public String toString() {
 
-		return "rev: " + pack_format + ", name: " + description;
+		return "PACK[format: " + pack_format + ", description: " + description + "]";
 	}
 }

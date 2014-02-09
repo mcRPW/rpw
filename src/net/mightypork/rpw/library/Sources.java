@@ -118,7 +118,7 @@ public class Sources {
 	public static boolean doesSourceProvideAssetMeta(String source, AssetEntry asset) {
 
 		if (asset == null || source == null) return false;
-		
+
 		if (MagicSources.isMagic(source)) {
 			if (MagicSources.isVanilla(source)) {
 				return Sources.vanilla.doesProvideAssetMeta(asset.getKey());

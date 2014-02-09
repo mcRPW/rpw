@@ -42,11 +42,15 @@ public class TaskLoadVanillaStructure {
 
 			for (Entry<String, String> e : saveMap.entrySet()) {
 
-				AssetEntry ae = new AssetEntry(e.getKey(), EAsset.valueOf(e.getValue()));
+				try {
+					AssetEntry ae = new AssetEntry(e.getKey(), EAsset.valueOf(e.getValue()));
 
-				assets.put(e.getKey(), ae);
+					assets.put(e.getKey(), ae);
 
-				if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("+ " + ae);
+					if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("+ " + ae);
+				} catch (IllegalArgumentException iae) {
+					Log.w("Unknown asset type " + e.getValue() + " - skipping entry.");
+				}
 			}
 
 		} catch (IOException e) {

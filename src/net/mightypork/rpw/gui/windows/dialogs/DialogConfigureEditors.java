@@ -60,11 +60,11 @@ public class DialogConfigureEditors extends RpwDialog {
 	public DialogConfigureEditors() {
 
 		super(App.getFrame(), "Configure Editors");
-		
+
 		createDialog();
 	}
-	
-	
+
+
 	@Override
 	protected JComponent buildGui() {
 
@@ -190,14 +190,15 @@ public class DialogConfigureEditors extends RpwDialog {
 		vb.add(box);
 		
 		//@formatter:on
-		
+
 		return vb;
 
 	}
-	
+
+
 	@Override
 	protected void initGui() {
-		
+
 		initFileChooser();
 
 		initFields();

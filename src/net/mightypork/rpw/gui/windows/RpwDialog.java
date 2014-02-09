@@ -99,12 +99,13 @@ public abstract class RpwDialog extends JDialog {
 			afterOnClose();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Convention method to set visible
 	 */
 	public final void openDialog() {
+
 		setVisible(true);
 	}
 
@@ -185,7 +186,7 @@ public abstract class RpwDialog extends JDialog {
 	 * Called after onClose - run the hooks
 	 */
 	private void afterOnClose() {
-		
+
 		for (Runnable hook : closeHooks) {
 			hook.run();
 		}

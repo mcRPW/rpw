@@ -32,55 +32,57 @@ public class Log {
 
 	/** Global logger. */
 	private static final Logger logger = Logger.getLogger("McRpMgr");
-	
+
 	/** Logging enabled */
 	public static boolean loggingEnabled = Config.LOGGING_ENABLED;
 
 	private static File logfile = OsUtils.getAppDir(Paths.FILE_LOG);
 	private static File logsDir = OsUtils.getAppDir(Paths.DIR_LOGS, true);
-	
-	
+
+
 	private static int monitorId = 0;
 	private static HashMap<Integer, LogMonitor> monitors = new HashMap<Integer, LogMonitor>();
 
-	
+
 	private static void cleanup() {
-		
+
 		// move old logs
-		
+
 		for (File f : FileUtils.listDirectory(logfile.getParentFile())) {
 			if (!f.isFile()) continue;
 			if (f.getName().startsWith(Paths.FILENAME_LOG)) {
 
 				Date d = new Date(f.lastModified());
-				
+
 				int index = 0;
-									
-				String fname = (new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(d)+(index==0?"":"_"+index)+".log";
-					
+
+				String fname = (new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(d) + (index == 0 ? "" : "_" + index) + ".log";
+
 				File f2 = new File(logsDir, fname);
-				
+
 				f.renameTo(f2);
 			}
 		}
-		
+
 		// delete all but last 10 logs
-		
+
 		List<File> oldLogs = FileUtils.listDirectory(logsDir);
-		
+
 		Collections.sort(oldLogs, new Comparator<File>() {
+
 			@Override
 			public int compare(File o1, File o2) {
 
 				return o1.getName().compareTo(o2.getName());
 			}
 		});
-		
-		for(int i=0; i<oldLogs.size()-10; i++) {
+
+		for (int i = 0; i < oldLogs.size() - 10; i++) {
 			oldLogs.get(i).delete();
 		}
-		
+
 	}
+
 
 	/**
 	 * Prepare logs for logging
@@ -88,19 +90,19 @@ public class Log {
 	public static void init() {
 
 		try {
-			
+
 			cleanup();
-			
+
 			FileHandler handler = new FileHandler(logfile.getPath());
 			handler.setFormatter(new LogFormatter());
 			logger.addHandler(handler);
 
 			loggingEnabled = true;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		addMonitor(new LogToSysoutMonitor());
 
 		logger.setUseParentHandlers(false);
@@ -108,25 +110,30 @@ public class Log {
 		logger.info("Main logger initialized.");
 		logger.info((new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")).format(new Date()));
 	}
-	
-	
+
+
 	/**
 	 * Add log monitor
+	 * 
 	 * @param mon monitor
 	 * @return assigned ID
 	 */
 	public static int addMonitor(LogMonitor mon) {
+
 		int id = monitorId;
 		monitorId++;
 		monitors.put(id, mon);
 		return id;
 	}
-	
+
+
 	/**
 	 * Remove a monitor by ID
+	 * 
 	 * @param id monitor ID
 	 */
 	public static void removeMonitor(int id) {
+
 		monitors.remove(id);
 	}
 
@@ -400,7 +407,7 @@ public class Log {
 				trail = "[ - ] ";
 			}
 			if (level == Level.FINEST) {
-				trail = "[   ] ";
+				trail = "[   ]   ";
 			}
 			if (level == Level.INFO) {
 				trail = "[ i ] ";

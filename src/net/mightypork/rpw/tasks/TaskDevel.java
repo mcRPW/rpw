@@ -4,7 +4,8 @@ package net.mightypork.rpw.tasks;
 public class TaskDevel {
 
 	public static void run() {
-		
+
+
 //		DialogProgressTerminal dpt = new DialogProgressTerminal("Some stuffs");
 //				
 //		dpt.openDialog();
@@ -25,6 +26,6 @@ public class TaskDevel {
 //	    Object[] params = {message, checkbox, checkbox2, checkbox3, checkbox4};  
 //	    int n = JOptionPane.showConfirmDialog(null, params, "Disconnect Products", JOptionPane.YES_NO_OPTION);  
 //	    boolean dontShow = checkbox.isSelected();  
-	    
+
 	}
 }

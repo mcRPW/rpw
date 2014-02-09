@@ -128,7 +128,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 	public void flushToDisk() throws IOException {
 
-		Log.f2(getLogPrefix() + "Saving ephemeral project data to TMP");
+		Log.f2(getLogPrefix() + "Saving tree data to TMP");
 
 		SimpleConfig.mapToFile(fileSourcesFiles, files, false);
 		SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
@@ -146,7 +146,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 		boolean retval = !comparator.areEqual(getProjectDirectory(), getRealProjectBase());
 
-		Log.f3(getLogPrefix() + "Finding differences TMP:BASE - done.");
+		Log.f3(getLogPrefix() + (retval ? "Changes detected, needs save." : "No changes found."));
 
 		return retval;
 	}

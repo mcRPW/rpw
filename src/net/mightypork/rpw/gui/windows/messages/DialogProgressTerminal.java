@@ -1,8 +1,13 @@
 package net.mightypork.rpw.gui.windows.messages;
 
+
 import java.util.logging.Level;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
@@ -101,11 +106,11 @@ public class DialogProgressTerminal extends DialogTerminalBase implements LogMon
 	}
 
 
-	public void allowClose(boolean state) {
+	public void allowClose(boolean state, boolean success) {
 
 		btnClose.setEnabled(state);
 		setCloseable(state);
-		stepName.setText("Done.");
+		stepName.setText(success ? "Done." : "Failed.");
 	}
 
 
