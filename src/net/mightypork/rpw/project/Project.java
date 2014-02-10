@@ -5,8 +5,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
@@ -17,7 +20,13 @@ import net.mightypork.rpw.library.Source;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
-import net.mightypork.rpw.utils.*;
+import net.mightypork.rpw.utils.UpdateHelper;
+import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.FastRecursiveDiff;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
+import net.mightypork.rpw.utils.files.PropertyManager;
+import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -39,8 +48,7 @@ public class Project extends Source implements NodeSourceProvider {
 	private File fileConfig;
 	private String dirName;
 
-	private String projectName;
-	@SuppressWarnings("unused")
+	private String projectTitle;
 	private Integer lastRpwVersion;
 
 
@@ -48,7 +56,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 		dirName = identifier;
 
-		projectName = identifier; // by default
+		projectTitle = identifier; // by default
 
 		File f = getRealProjectBase();
 		f.mkdirs();
@@ -76,11 +84,11 @@ public class Project extends Source implements NodeSourceProvider {
 		props.cfgNewlineBeforeComments(false);
 		props.cfgSeparateSections(false);
 
-		props.putString("name", projectName);
+		props.putString("name", projectTitle);
 		props.putInteger("version", Const.VERSION_SERIAL);
 		props.apply();
 
-		projectName = props.getString("name");
+		projectTitle = props.getString("name");
 		lastRpwVersion = props.getInt("version");
 
 		privateCopiesBase = new File(workDirBase, Paths.DIRNAME_PROJECT_PRIVATE);
@@ -98,6 +106,16 @@ public class Project extends Source implements NodeSourceProvider {
 			if (fileSourcesFiles.exists() && fileSourcesGroups.exists()) {
 				files = SimpleConfig.mapFromFile(fileSourcesFiles);
 				groups = SimpleConfig.mapFromFile(fileSourcesGroups);
+				
+				if(UpdateHelper.needFixProjectKeys(lastRpwVersion)) {
+					Map<String, String> files_fixed = new HashMap<String, String>(files.size());
+					
+					for(Entry<String,String> e : files.entrySet()) {
+						files_fixed.put(UpdateHelper.fixLibraryKey(e.getKey()), e.getValue());
+					}
+					
+					files = files_fixed;
+				}
 			}
 
 			if (fileSounds.exists()) {
@@ -208,7 +226,7 @@ public class Project extends Source implements NodeSourceProvider {
 		// all properties
 		props.cfgForceSave(true);
 		props.setValue("version", Const.VERSION_SERIAL);
-		props.setValue("name", projectName);
+		props.setValue("name", projectTitle);
 		props.apply();
 	}
 
@@ -225,16 +243,16 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 
 
-	public void setProjectTitle(String name) {
+	public void setProjectTitle(String title) {
 
-		projectName = name;
+		projectTitle = title;
 		Projects.markChange();
 	}
 
 
-	public String getProjectName() {
+	public String getProjectTitle() {
 
-		return projectName;
+		return projectTitle;
 	}
 
 

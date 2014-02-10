@@ -7,11 +7,12 @@ import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.ScrollPaneConstants;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -25,7 +26,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 public abstract class DialogEditorBase extends RpwDialog {
 
 	private RSyntaxTextArea ta;
-	private Box buttonsBox;
+	private HBox buttonsBox;
 
 
 	public DialogEditorBase() {
@@ -42,40 +43,39 @@ public abstract class DialogEditorBase extends RpwDialog {
 
 		setResizable(true);
 
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		VBox vb = new VBox();
+		vb.windowPadding();
+
+		vb.heading(getFileName());
 
 		ta = buildTextArea();
 		RTextScrollPane sp = new RTextScrollPane(ta);
 
 		sp.setPreferredSize(new Dimension(800, 600));
 
-		//@formatter:off
-		sp.setBorder(
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createEmptyBorder(10, 10, 10, 10),
-						BorderFactory.createEtchedBorder()
-				)
-		);		
-		//@formatter:on
+		sp.setBorder(BorderFactory.createEtchedBorder());
 
 		sp.setWheelScrollingEnabled(true);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-		getContentPane().add(sp);
+		vb.add(sp);
 
-		buttonsBox = Box.createHorizontalBox();
+		buttonsBox = new HBox();
 		buttonsBox.setMaximumSize(new Dimension(9999, 30));
 
 		buildButtons(buttonsBox);
 
-		buttonsBox.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		vb.gap();
 
-		getContentPane().add(buttonsBox);
-		getContentPane().doLayout();
+		vb.add(buttonsBox);
+		vb.doLayout();
 
-		return null;
+		return vb;
 	}
+
+
+	protected abstract String getFileName();
 
 
 	public Box getButtonsBox() {
@@ -87,7 +87,7 @@ public abstract class DialogEditorBase extends RpwDialog {
 	protected abstract String getTitleText();
 
 
-	protected abstract void buildButtons(Box buttons);
+	protected abstract void buildButtons(HBox buttons);
 
 
 	@Override

@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.utils.GuiUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXFrame;
@@ -141,7 +141,7 @@ public class Alerts {
 		}
 
 		if (App.getFrame() == null || !loadingState) {
-			GuiUtils.centerWindow(loaderFrame, App.getFrame());
+			Gui.centerWindow(loaderFrame, App.getFrame());
 			loaderFrame.setVisible(loadingState);
 		}
 

@@ -32,7 +32,7 @@ public class TextInputValidator extends KeyAdapter {
 	public void keyTyped(KeyEvent e) {
 
 		char c = e.getKeyChar();
-		if (!isCharOK(c)) {
+		if (!isCharControl(c) && !validator.isValid(c)) {
 			e.consume();  // ignore event
 			return;
 		}
@@ -41,7 +41,7 @@ public class TextInputValidator extends KeyAdapter {
 	}
 
 
-	private boolean isCharOK(char c) {
+	private boolean isCharControl(char c) {
 
 		if (c == KeyEvent.VK_BACK_SPACE) return true;
 		if (c == KeyEvent.VK_LEFT) return true;
@@ -50,7 +50,7 @@ public class TextInputValidator extends KeyAdapter {
 		if (c == KeyEvent.VK_HOME) return true;
 		if (c == KeyEvent.VK_END) return true;
 
-		return validator.isValid(c);
+		return false;
 	}
 
 

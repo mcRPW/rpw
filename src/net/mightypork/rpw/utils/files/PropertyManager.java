@@ -1,9 +1,11 @@
-package net.mightypork.rpw.utils;
+package net.mightypork.rpw.utils.files;
 
 
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
+
+import net.mightypork.rpw.utils.Calc;
 
 
 /**

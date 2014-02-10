@@ -9,7 +9,7 @@ import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.tree.filesystem.FileFsTreeNode;
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 

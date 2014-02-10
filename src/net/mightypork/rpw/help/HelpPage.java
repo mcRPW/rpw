@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import net.mightypork.rpw.Paths;
-import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.HtmlBuilder;
+import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 

@@ -1,6 +1,7 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,19 +12,23 @@ import javax.swing.*;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config.FilePath;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.FileChooser;
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.ManagerLayout;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.DesktopApi;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.GuiUtils;
+import net.mightypork.rpw.utils.SpringUtilities;
+import net.mightypork.rpw.utils.files.DesktopApi;
+import net.mightypork.rpw.utils.files.FileUtils;
 
+import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
-import org.jdesktop.swingx.JXTitledSeparator;
 
 
 public class DialogProjectProperties extends RpwDialog {
@@ -39,6 +44,7 @@ public class DialogProjectProperties extends RpwDialog {
 	private JButton btnIconImport;
 	private JButton btnIconDefault;
 	private JButton btnIconRefresh;
+	private JXTextField nameField;
 
 
 	private void redrawIcon() {
@@ -53,7 +59,6 @@ public class DialogProjectProperties extends RpwDialog {
 
 		iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
 
-
 		createDialog();
 	}
 
@@ -64,77 +69,83 @@ public class DialogProjectProperties extends RpwDialog {
 		Project proj = Projects.getActive();
 
 		//@formatter:off
-		Box hb;
-		Box vb, vb2;
-		vb = Box.createVerticalBox();
+		HBox hb;
+		VBox vbox, vb2;
+		JLabel l;
+		vbox = new VBox();
 		
-		vb.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-
-		vb.add(new JXTitledSeparator("Properties"));
-		vb.add(Box.createVerticalStrut(5));
-
-		hb = Box.createHorizontalBox();
-			hb.add(new JLabel("Title:"));
-			hb.add(Box.createHorizontalStrut(5));
-			String name = proj.getProjectName();
-			hb.add(titleField = new JXTextField());
-			titleField.setText(name);
-		vb.add(hb);
-
-		vb.add(Box.createVerticalStrut(8));
-
-		vb.add(new JXTitledSeparator("Icon"));
-		vb.add(Box.createVerticalStrut(5));
-
-		hb = Box.createHorizontalBox();
-
-			imageView = new JLabel(getProjectIcon());
-			hb.add(imageView);
-	
-			hb.add(Box.createHorizontalStrut(8));
-	
-			vb2 = Box.createVerticalBox();
-			
-				vb2.add(btnIconEdit = new JButton("Edit", Icons.MENU_EDIT));
-				btnIconEdit.setHorizontalAlignment(SwingConstants.LEFT);
-				GuiUtils.forceSize(btnIconEdit, 115, 25);			
+		vbox.windowPadding();
 		
-				vb2.add(Box.createVerticalStrut(3));
-				
-				vb2.add(btnIconImport = new JButton("Import", Icons.MENU_IMPORT_BOX));
-				btnIconImport.setHorizontalAlignment(SwingConstants.LEFT);
-				GuiUtils.forceSize(btnIconImport, 115, 25);
+		vbox.heading("Project details");
+
+		vbox.titsep("Properties");
+		vbox.gap();
 		
-				vb2.add(Box.createVerticalStrut(3));
-				
-				vb2.add(btnIconDefault = new JButton("Default", Icons.MENU_DELETE));
-				btnIconDefault.setHorizontalAlignment(SwingConstants.LEFT);
-				GuiUtils.forceSize(btnIconDefault, 115, 25);
-							
-				vb2.add(Box.createVerticalStrut(10));
-				
-				vb2.add(btnIconRefresh = new JButton("Refresh", Icons.MENU_RELOAD));
-				btnIconRefresh.setHorizontalAlignment(SwingConstants.LEFT);
-				GuiUtils.forceSize(btnIconRefresh, 115, 25);
-				
-				vb2.add(Box.createVerticalGlue());
-	
-			hb.add(vb2);
-
-		vb.add(hb);
-
-
-		vb.add(Box.createVerticalStrut(8));
 		
-		hb = Box.createHorizontalBox();
-			hb.add(Box.createHorizontalGlue());
+		JPanel p = new JPanel(new SpringLayout());
+
+		l = new JXLabel("Title:", SwingConstants.TRAILING);
+		p.add(l);
+		titleField = Gui.textField(Projects.getActive().getProjectTitle(), "Resource pack title", "Title shown in Minecraft");
+		l.setLabelFor(titleField);
+		p.add(titleField);
+
+		l = new JXLabel("Name:", SwingConstants.TRAILING);
+		p.add(l);
+		nameField = Gui.textField(Projects.getActive().getDirName(), "Project folder name", "Name of the project folder");
+		nameField.setEditable(false);
+		l.setLabelFor(nameField);
+		p.add(nameField);
+
+		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
+		
+		vbox.add(p);
+				
+		vbox.gap();
+
+		hb = new HBox();
+			hb.glue();
+			hb.add(l = new JLabel("<html>To rename a project, use the \"Open\" dialog.</html>"));
+			l.setFont(l.getFont().deriveFont(10));
+			l.setForeground(Color.GRAY);
+			hb.glue();
+		vbox.add(hb);
+		
+		vbox.gapl();
+
+		vbox.titsep("Icon");
+		vbox.gap();
+		
+
+		imageView = new JLabel(getProjectIcon());
+		imageView.setPreferredSize(new Dimension(160, 128));
+		imageView.setHorizontalAlignment(SwingConstants.CENTER);
+		imageView.setAlignmentX(0.5f);
+					
+		btnIconEdit = Gui.sidebarButton("Edit", "Open in image editor", Icons.MENU_EDIT);
+		btnIconImport = Gui.sidebarButton("Import", "Import replacement icon", Icons.MENU_IMPORT_BOX);
+		btnIconDefault = Gui.sidebarButton("Default", "Reset to RPW default icon", Icons.MENU_DELETE);
+		btnIconRefresh = Gui.sidebarButton("Refresh", "Reload preview", Icons.MENU_RELOAD);
+		
+		ManagerLayout ml = new ManagerLayout(4);
+		ml.setMainComponent(imageView);
+		ml.setTopButtons(btnIconEdit, btnIconImport, btnIconDefault);
+		ml.setBottomButtons(btnIconRefresh);
+		ml.build();
+		vbox.add(ml);
+		
+		vbox.gapl();
+		
+		//@formatter:off
+		hb = new HBox();
+			hb.glue();
 	
 			buttonOK = new JButton("OK", Icons.MENU_YES);
 			hb.add(buttonOK);
-		vb.add(hb);
+		vbox.add(hb);
 		//@formatter:on
 
-		return vb;
+		return vbox;
 	}
 
 
@@ -173,9 +184,9 @@ public class DialogProjectProperties extends RpwDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			String name = titleField.getText().trim();
+			String title = titleField.getText().trim();
 
-			Projects.getActive().setProjectTitle(name);
+			Projects.getActive().setProjectTitle(title);
 
 			closeDialog();
 		}

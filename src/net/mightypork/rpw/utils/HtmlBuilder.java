@@ -4,6 +4,7 @@ package net.mightypork.rpw.utils;
 import java.io.InputStream;
 
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 import org.markdown4j.CodeBlockEmitter;
 import org.markdown4j.ExtDecorator;

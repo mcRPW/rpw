@@ -9,50 +9,42 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.*;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config.FilePath;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.helpers.CharInputListener;
 import net.mightypork.rpw.gui.helpers.FileChooser;
-import net.mightypork.rpw.gui.helpers.TextInputValidator;
-import net.mightypork.rpw.gui.widgets.SimpleStringList;
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.SpringUtilities;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 import org.jdesktop.swingx.JXLabel;
-import org.jdesktop.swingx.JXTextField;
-import org.jdesktop.swingx.JXTitledSeparator;
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 
 public class DialogNewProject extends RpwDialog {
 
 	private List<String> options;
 
-	private JXTextField field;
+	private JTextField nameField;
+	private JTextField titleField;
 	private JButton buttonOK;
 	private JButton buttonCancel;
-	private SimpleStringList list;
 
 	private JXLabel importUrl;
 
 	private JButton buttonPickFile;
 
-	private boolean projectFromPack;	
-	private File selectedFile;
+	private boolean projectFromPack;
+	private File selectedFile = null;
 	private FileChooser fc;
 
 
@@ -69,104 +61,80 @@ public class DialogNewProject extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Box hb;
+		HBox hb;
 		JXLabel label;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		
+		VBox vbox = new VBox();
+		vbox.windowPadding();
 
-		vb.add(new JXTitledSeparator("Pack to import"));
-		
-		if(projectFromPack) {
-			vb.add(Box.createVerticalStrut(4));
-			hb = Box.createHorizontalBox();
-				importUrl = new JXLabel("Select pack file");
-				importUrl.setToolTipText("Imported pack ZIP file");
-				importUrl.setForeground(new Color(0x111111));
-				importUrl.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-				importUrl.setHorizontalAlignment(SwingConstants.RIGHT);
-				importUrl.setMaximumSize(new Dimension(300, 25));
-		
-				buttonPickFile = new JButton(Icons.MENU_OPEN);
-				buttonPickFile.requestFocusInWindow();
-		
-				hb.add(buttonPickFile);
-				hb.add(Box.createHorizontalStrut(5));
-				hb.add(importUrl);
-				hb.add(Box.createHorizontalGlue());
-		
-				hb.setBorder(new CompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(3, 3, 3, 3)));
-			vb.add(hb);
-			vb.add(Box.createVerticalStrut(8));
+		vbox.titsep("Pack to import");
+		vbox.gap();
+
+		if (projectFromPack) {
+			vbox.gap();
+			hb = new HBox();
+			hb.etchbdr();
+
+			importUrl = new JXLabel();
+			importUrl.setToolTipText("Imported pack ZIP file");
+			importUrl.setForeground(new Color(0x111111));
+			importUrl.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+			importUrl.setHorizontalAlignment(SwingConstants.LEFT);
+			importUrl.setPreferredSize(new Dimension(200, 25));
+
+			buttonPickFile = new JButton(Icons.MENU_OPEN);
+			buttonPickFile.requestFocusInWindow();
+
+			hb.add(buttonPickFile);
+			hb.gap();
+			hb.add(importUrl);
+			hb.glue();
+
+			vbox.add(hb);
+			vbox.gap();
 		}
-
-		vb.add(new JXTitledSeparator("Your Projects"));
-		vb.add(Box.createVerticalStrut(4));
 
 		options = Projects.getProjectNames();
 
-		vb.add(list = new SimpleStringList(options, true));
-		list.getList().addListSelectionListener(new ListSelectionListener() {
+		vbox.gapl();
+		vbox.titsep("Project settings");
+		vbox.gap();
 
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
+		JPanel p = new JPanel(new SpringLayout());
 
-				String s = list.getSelectedValue();
-				if (s != null) field.setText(s);
-			}
-		});
+		label = new JXLabel("Name:", SwingConstants.TRAILING);
+		p.add(label);
+		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
+		label.setLabelFor(nameField);
+		p.add(nameField);
 
-		vb.add(Box.createVerticalStrut(10));
+		PromptSupport.setPrompt("Project folder name", nameField);
 
-		//@formatter:off
-		hb = Box.createHorizontalBox();
-			label = new JXLabel("Name:");
-			hb.add(label);
-			hb.add(Box.createHorizontalStrut(5));
-	
-			field = new JXTextField();
-			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(3,3,3,3));
-			field.setBorder(bdr);
-			field.requestFocusInWindow();
-			
-			CharInputListener listener = new CharInputListener() {
-				
-				@Override
-				public void onCharTyped(char c) {
-				
-					String s = (field.getText() + c).trim();
-					
-					boolean ok = true;
-					ok &= (s.length() > 0);
-					ok &= !options.contains(s);
-					
-					buttonOK.setEnabled(ok);	
-				}
-			};
-			
-			field.addKeyListener(TextInputValidator.filenames(listener));
-			
-			
-			hb.add(field);
-		vb.add(hb);
-		
-		vb.add(Box.createVerticalStrut(8));
-		
-		hb = Box.createHorizontalBox();
-			hb.add(Box.createHorizontalGlue());
-	
-			buttonOK = new JButton("Create", Icons.MENU_NEW);
-			buttonOK.setEnabled(false);
-			hb.add(buttonOK);
-	
-			hb.add(Box.createHorizontalStrut(5));
-	
-			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-			hb.add(buttonCancel);			
-		vb.add(hb);
+		label = new JXLabel("Title:", SwingConstants.TRAILING);
+		p.add(label);
+		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
+		label.setLabelFor(titleField);
+		p.add(titleField);
+
+		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
+
+		vbox.add(p);
+		vbox.gapl();
+
+		hb = new HBox();
+		hb.glue();
+
+		buttonOK = new JButton("Create", Icons.MENU_NEW);
+		hb.add(buttonOK);
+
+		hb.gap();
+
+		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+		hb.add(buttonCancel);
+		hb.glue();
+		vbox.add(hb);
 		//@formatter:on
 
-		return vb;
+		return vbox;
 	}
 
 
@@ -189,7 +157,7 @@ public class DialogNewProject extends RpwDialog {
 
 		buttonOK.addActionListener(createListener);
 		buttonCancel.addActionListener(closeListener);
-		if(projectFromPack) buttonPickFile.addActionListener(pickFileListener);
+		if (projectFromPack) buttonPickFile.addActionListener(pickFileListener);
 	}
 
 	private ActionListener createListener = new ActionListener() {
@@ -197,9 +165,15 @@ public class DialogNewProject extends RpwDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			String name = field.getText().trim();
+			String name = nameField.getText();
+			if (name == null) name = "";
+
+			System.out.println(name);
+
+			name = name.trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid name", "Missing project name!");
+				return;
 			}
 
 			if (options.contains(name)) {
@@ -210,17 +184,18 @@ public class DialogNewProject extends RpwDialog {
 
 				Alerts.loading(true);
 				Projects.openNewProject(name);
-				
-				if(projectFromPack) {
+
+				if (projectFromPack) {
 					// TODO import selected resource pack
 				}
-				
+
 				Tasks.taskOnProjectChanged();
 				Alerts.loading(false);
 			}
 
 		}
 	};
+
 
 	private ActionListener pickFileListener = new ActionListener() {
 
@@ -238,16 +213,14 @@ public class DialogNewProject extends RpwDialog {
 					selectedFile = f;
 
 					String path = f.getPath();
-					int length = 27;
+					int length = 24;
 					path = Utils.cropStringAtStart(path, length);
 
 					importUrl.setText(path);
 
 					try {
 						String[] parts = FileUtils.getFilenameParts(f);
-						field.setText(parts[0]);
-
-						buttonOK.setEnabled(!options.contains(parts[0]));
+						nameField.setText(parts[0]);
 					} catch (Throwable t) {}
 				}
 			}

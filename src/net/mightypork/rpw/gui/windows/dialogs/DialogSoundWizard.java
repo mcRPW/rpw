@@ -29,11 +29,14 @@ import javax.swing.tree.TreePath;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
+import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.SoundFileTreeDisplay;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
@@ -44,9 +47,8 @@ import net.mightypork.rpw.tree.filesystem.AbstractFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.DirectoryFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.FileFsTreeNode;
 import net.mightypork.rpw.utils.AlphanumComparator;
-import net.mightypork.rpw.utils.GuiUtils;
-import net.mightypork.rpw.utils.OsUtils;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.OsUtils;
 
 import org.jdesktop.swingx.JXTextField;
 import org.jdesktop.swingx.JXTitledSeparator;
@@ -86,34 +88,35 @@ public class DialogSoundWizard extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Box hbMain, hb, vbMain;
+		HBox hbMain, hb;
+		VBox vbMain;
 
-		vbMain = Box.createVerticalBox();
+		vbMain = new VBox();
 
-		vbMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		vbMain.padding(5, 5, 5, 5);
 
-		vbMain.add(GuiUtils.createDialogHeading("Sound Wizard"));
+		vbMain.heading("Sound Wizard");
 
-		hbMain = Box.createHorizontalBox();
-		hbMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		hbMain = new HBox();
+		hbMain.padding(5, 5, 5, 5);
 
 		// box with keys and editing current key
-		hb = Box.createHorizontalBox();
+		hb = new HBox();
 
 		//@formatter:off
 		hb.setBorder(
 				BorderFactory.createCompoundBorder(
 						BorderFactory.createTitledBorder("Sound Entries"),
-						BorderFactory.createEmptyBorder(5, 10, 5, 5)
+						BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL, Gui.GAP, Gui.GAP)
 				)
 		);
 		//@formatter:on
 
 		hb.add(createLeftPanel());
 
-		hb.add(Box.createHorizontalStrut(10));
+		hb.gapl();
 		hb.add(new JSeparator(SwingConstants.VERTICAL));
-		hb.add(Box.createHorizontalStrut(5));
+		hb.gap();
 
 		hb.add(createMiddlePanel());
 
@@ -124,9 +127,9 @@ public class DialogSoundWizard extends RpwDialog {
 
 
 		// buttons row		
-		hb = Box.createHorizontalBox();
-		hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-		hb.add(Box.createHorizontalGlue());
+		hb = new HBox();
+		hb.padding(0, 5, 5, 5);
+		hb.glue();
 		hb.add(buttonOK = new JButton("Close", Icons.MENU_EXIT));
 		vbMain.add(hb);
 
@@ -150,13 +153,13 @@ public class DialogSoundWizard extends RpwDialog {
 
 	private Component createRightPanel() {
 
-		Box vb = Box.createVerticalBox();
+		VBox vb = new VBox();
 
 		//@formatter:off
 		vb.setBorder(
 				BorderFactory.createCompoundBorder(
 						BorderFactory.createTitledBorder("All Audio Files"),
-						BorderFactory.createEmptyBorder(5, 10, 5, 10)
+						BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL, Gui.GAP, Gui.GAPL)
 				)
 		);
 		//@formatter:on
@@ -168,14 +171,14 @@ public class DialogSoundWizard extends RpwDialog {
 
 		vb.add(c);
 
-		vb.add(Box.createVerticalStrut(5));
+		vb.gap();
 
 		JLabel label;
 		vb.add(label = new JLabel("<html><center>Drag to <i>Selected Files</i> to select.<br>Right-click for options.</center></html>"));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setAlignmentX(0.5f);
 
-		vb.add(Box.createVerticalGlue());
+		vb.glue();
 
 		return vb;
 	}
@@ -189,63 +192,59 @@ public class DialogSoundWizard extends RpwDialog {
 
 		// box for editing a key
 
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		VBox vb = new VBox();
+		vb.padding(0, Gui.GAP, 0, Gui.GAP);
 
 		// box for key edit field
-		Box hb = Box.createHorizontalBox();
+		HBox hb = new HBox();
 
 		//@formatter:off
 		
-		hb.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		hb.padding(0, 0, Gui.GAP, 0);
 			
 			hb.add(label = new JLabel("Name:"));
-			GuiUtils.setMinPrefSize(label, 70, 25);
+			Gui.setMinPrefSize(label, 70, 25);
 			label.setHorizontalAlignment(SwingConstants.RIGHT);
 			middlePanelComponents.add(label);
 			
-			hb.add(Box.createHorizontalStrut(5));
+			hb.gap();
 			
-			hb.add(fieldKey = new JXTextField());
-			fieldKey.setBorder(BorderFactory.createCompoundBorder(
-					fieldKey.getBorder(),
-					BorderFactory.createEmptyBorder(3,3,3,3)
-			));
+			hb.add(fieldKey = Gui.textField());
 			fieldKey.addKeyListener(TextInputValidator.identifiers());
 			
 			fieldKey.setDragEnabled(false);						
 			fieldKey.setTransferHandler(new TransferHandler() {}); // disable dnd
 			middlePanelComponents.add(fieldKey);
 			
-			GuiUtils.setMinPrefSize(fieldKey, 200, 25);
+			Gui.setMinPrefSize(fieldKey, 200, 25);
 			
 		vb.add(hb);
 		
 		
 		// box for category field
-		hb = Box.createHorizontalBox();
-		hb.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+		hb = new HBox();
+		hb.padding(Gui.GAP, 0, Gui.GAP, 0);
 			
 			hb.add(label = new JLabel("Category:"));
-			GuiUtils.setMinPrefSize(label, 70, 25);
+			Gui.setMinPrefSize(label, 70, 25);
 			label.setHorizontalAlignment(SwingConstants.RIGHT);
 			middlePanelComponents.add(label);
 			
-			hb.add(Box.createHorizontalStrut(5));
+			hb.gap();
 			
 			hb.add(fieldCategory = new JComboBox(Const.SOUND_CATEGORIES));
 			//fieldCategory.setEditable(true); // No, causes error in MC
 			middlePanelComponents.add(fieldCategory);
 			
-			GuiUtils.setMinPrefSize(fieldCategory, 200, 25);
+			Gui.setMinPrefSize(fieldCategory, 200, 25);
 			
 		vb.add(hb);
 		
-		vb.add(Box.createVerticalStrut(10));
+		vb.gapl();
 		JXTitledSeparator sep;
-		vb.add(sep = new JXTitledSeparator("Selected files"));
+		sep = vb.titsep("Selected files");
 		middlePanelComponents.add(sep);
-		vb.add(Box.createVerticalStrut(10));
+		vb.gapl();
 		
 		fileList = new SimpleStringList();
 		fileList.setPreferredSize(new Dimension(300, 300));
@@ -253,14 +252,14 @@ public class DialogSoundWizard extends RpwDialog {
 		vb.add(fileList);
 		middlePanelComponents.add(fileList);		
 
-		vb.add(Box.createVerticalStrut(5));
+		vb.gap();
 		
 		// box with buttons under the list
-		hb = Box.createHorizontalBox();
-		hb.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
-		hb.add(Box.createHorizontalGlue());
+		hb = new HBox();
+		hb.padding(Gui.GAP, 0, Gui.GAP, 0);
+		hb.glue();
 		hb.add(buttonSave = new JButton("Save", Icons.MENU_SAVE));
-		hb.add(Box.createHorizontalStrut(5));
+		hb.gap();
 		hb.add(buttonDiscard = new JButton("Discard", Icons.MENU_CANCEL));
 		
 		middlePanelComponents.add(buttonSave);	
@@ -294,21 +293,22 @@ public class DialogSoundWizard extends RpwDialog {
 	private Component createLeftPanel() {
 
 		// box for the list of keys
-		Box vb = Box.createVerticalBox();
+		VBox vb = new VBox();
 
 		keyList = new SimpleStringList();
 		keyList.setPreferredSize(new Dimension(300, 400));
 
 		vb.add(keyList);
-		vb.add(Box.createVerticalStrut(5));
+		vb.gap();
 
 		// box with buttons under the list
-		Box hb = Box.createHorizontalBox();
-		hb.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+		HBox hb = new HBox();
+		hb.padding(Gui.GAP, 0, Gui.GAP, 0);
 		hb.add(buttonNewKey = new JButton("New", Icons.MENU_NEW));
-		hb.add(Box.createHorizontalStrut(5));
+		hb.gap();
 		hb.add(buttonDeleteKey = new JButton("Delete", Icons.MENU_DELETE));
-		hb.add(Box.createHorizontalGlue());
+		hb.glue();
+		;
 
 		vb.add(hb);
 
@@ -455,6 +455,11 @@ public class DialogSoundWizard extends RpwDialog {
 				keyList.removeItem(key);
 
 				soundMap.remove(key);
+
+				if (key.equals(editedKey)) {
+					clearChange();
+					enableMiddlePanel(false);
+				}
 
 				Projects.markChange();
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.swing.tree.TreeNode;
 
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 
 /**

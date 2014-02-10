@@ -10,10 +10,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.help.VersionUtils;
-import net.mightypork.rpw.utils.GuiUtils;
 
 
 public class DialogChangelog extends RpwDialog {
@@ -36,7 +36,7 @@ public class DialogChangelog extends RpwDialog {
 		Box vb = Box.createVerticalBox();
 		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		vb.add(GuiUtils.createDialogHeading("What's new in RPW"));
+		vb.add(Gui.createDialogHeading("What's new in RPW"));
 
 		String text = VersionUtils.buildChangelogHtml();
 

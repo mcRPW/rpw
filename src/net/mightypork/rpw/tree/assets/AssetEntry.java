@@ -1,8 +1,8 @@
 package net.mightypork.rpw.tree.assets;
 
 
-import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 
 /**

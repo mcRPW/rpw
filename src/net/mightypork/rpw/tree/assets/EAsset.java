@@ -3,7 +3,7 @@ package net.mightypork.rpw.tree.assets;
 
 import java.io.File;
 
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 
 /**

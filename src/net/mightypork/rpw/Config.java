@@ -1,8 +1,8 @@
 package net.mightypork.rpw;
 
 
-import net.mightypork.rpw.utils.OsUtils;
-import net.mightypork.rpw.utils.PropertyManager;
+import net.mightypork.rpw.utils.files.OsUtils;
+import net.mightypork.rpw.utils.files.PropertyManager;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -223,7 +223,7 @@ public class Config {
 	 */
 	public static void save() {
 
-		Log.f3("Saving configuration file.");
+		//Log.f3("Saving configuration file.");
 
 		mgr.setValue(PK_FANCY_GROUPS, FANCY_TREE);
 		mgr.setValue(PK_SHOW_FONT, SHOW_FONT);
@@ -255,7 +255,7 @@ public class Config {
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_PACK, FILECHOOSER_PATH_IMPORT_PACK);
 		mgr.setValue(PK_FILECHOOSER_PATH_EXPORT, FILECHOOSER_PATH_EXPORT);
 		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
-		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL);
+		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL); // LAST_RUN_VERSION field stays unchanged until restart.
 
 		mgr.apply();
 

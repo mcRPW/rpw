@@ -15,8 +15,8 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.OsUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 

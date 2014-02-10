@@ -1,4 +1,4 @@
-package net.mightypork.rpw.utils;
+package net.mightypork.rpw.utils.files;
 
 
 import java.io.*;
@@ -13,6 +13,7 @@ import net.mightypork.rpw.struct.FileObject;
 import net.mightypork.rpw.struct.FileObjectIndex;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
@@ -611,5 +612,11 @@ public class FileUtils {
 	public static String getBasename(String name) {
 
 		return Utils.toLastChar(Utils.fromLastChar(name, '/'), '.');
+	}
+
+
+	public static String getFilename(String name) {
+
+		return Utils.fromLastChar(name, '/');
 	}
 }

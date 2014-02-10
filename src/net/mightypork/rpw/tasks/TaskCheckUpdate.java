@@ -6,8 +6,8 @@ import java.util.Scanner;
 
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.windows.messages.DialogUpdateNotify;
-import net.mightypork.rpw.utils.GuiUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -59,7 +59,7 @@ public class TaskCheckUpdate {
 						return;
 					}
 
-					GuiUtils.open(new DialogUpdateNotify(v, msg));
+					Gui.open(new DialogUpdateNotify(v, msg));
 
 				} catch (Throwable t) {
 					Log.e("Could not download update info file.");

@@ -5,19 +5,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.CharInputListener;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
+import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
@@ -25,7 +25,6 @@ import net.mightypork.rpw.tasks.Tasks;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
-import org.jdesktop.swingx.JXTitledSeparator;
 
 
 public class DialogSaveAs extends RpwDialog {
@@ -41,7 +40,7 @@ public class DialogSaveAs extends RpwDialog {
 
 	public DialogSaveAs() {
 
-		super(App.getFrame(), "Save Project As");
+		super(App.getFrame(), "Save As...");
 
 		createDialog();
 	}
@@ -50,11 +49,14 @@ public class DialogSaveAs extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		HBox hb;
+		VBox vb = new VBox();
+		vb.windowPadding();
 
-		vb.add(new JXTitledSeparator("Your Projects"));
+		vb.heading("Save Project As...");
+
+		vb.titsep("Your Projects");
+		vb.gap();
 
 		options = Projects.getProjectNames();
 
@@ -69,17 +71,15 @@ public class DialogSaveAs extends RpwDialog {
 			}
 		});
 
-		vb.add(Box.createVerticalStrut(10));
+		vb.gapl();
 
 		//@formatter:off
-		hb = Box.createHorizontalBox();
+		hb = new HBox();
 			JXLabel label = new JXLabel("Name:");
 			hb.add(label);
-			hb.add(Box.createHorizontalStrut(5));
+			hb.gap();
 	
-			field = new JXTextField();
-			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(3,3,3,3));
-			field.setBorder(bdr);
+			field = Gui.textField();
 			
 			CharInputListener listener = new CharInputListener() {
 				
@@ -98,22 +98,20 @@ public class DialogSaveAs extends RpwDialog {
 			
 			field.addKeyListener(TextInputValidator.filenames(listener));
 			
-			
 			hb.add(field);
 		vb.add(hb);
 
 		
-		vb.add(Box.createVerticalStrut(8));
-
+		vb.gapl();
 		
-		hb = Box.createHorizontalBox();
-			hb.add(Box.createHorizontalGlue());
+		hb = new HBox();
+			hb.glue();
 	
 			buttonOK = new JButton("Save", Icons.MENU_SAVE_AS);
 			buttonOK.setEnabled(false);
 			hb.add(buttonOK);
 	
-			hb.add(Box.createHorizontalStrut(5));
+			hb.gap();
 	
 			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
 			hb.add(buttonCancel);

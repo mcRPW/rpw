@@ -27,7 +27,7 @@ import net.coobird.thumbnailator.tasks.io.BufferedImageSource;
 import net.coobird.thumbnailator.tasks.io.ImageSink;
 import net.coobird.thumbnailator.tasks.io.ImageSource;
 import net.mightypork.rpw.Paths;
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 

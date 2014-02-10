@@ -14,6 +14,7 @@ import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.WindowMain;
 import net.mightypork.rpw.gui.windows.dialogs.*;
@@ -31,10 +32,9 @@ import net.mightypork.rpw.tree.assets.processors.SaveToProjectNodeProcessor;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
-import net.mightypork.rpw.utils.DesktopApi;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.GuiUtils;
-import net.mightypork.rpw.utils.OsUtils;
+import net.mightypork.rpw.utils.files.DesktopApi;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -161,13 +161,13 @@ public class Tasks {
 
 	public static void taskDialogAbout() {
 
-		GuiUtils.open(new DialogAbout());
+		Gui.open(new DialogAbout());
 	}
 
 
 	public static void taskDialogExportToMc() {
 
-		GuiUtils.open(new DialogExportToMc());
+		Gui.open(new DialogExportToMc());
 	}
 
 
@@ -182,13 +182,13 @@ public class Tasks {
 
 	public static void taskDialogLog() {
 
-		GuiUtils.open(new DialogRuntimeLog());
+		Gui.open(new DialogRuntimeLog());
 	}
 
 
 	public static void taskDialogImportPack() {
 
-		GuiUtils.open(new DialogImportPack());
+		Gui.open(new DialogImportPack());
 	}
 
 
@@ -317,7 +317,7 @@ public class Tasks {
 
 		if (Projects.isProjectOpen()) {
 
-			Log.f3("Checking active project.");
+			Log.f2("Checking project for unsaved changes.");
 
 			Alerts.loading(true);
 			needsSave = Projects.getActive().needsSave();
@@ -650,14 +650,7 @@ public class Tasks {
 
 	public static void taskOpenProject() {
 
-		taskAskToSaveIfChanged(new Runnable() {
-
-			@Override
-			public void run() {
-
-				taskDialogOpenProject();
-			}
-		});
+		taskDialogManageProjects();
 	}
 
 
@@ -726,49 +719,43 @@ public class Tasks {
 
 	public static void taskDialogProjectProperties() {
 
-		GuiUtils.open(new DialogProjectProperties());
+		Gui.open(new DialogProjectProperties());
 	}
 
 
 	public static void taskDialogProjectSummary() {
 
-		GuiUtils.open(new DialogProjectSummary());
+		Gui.open(new DialogProjectSummary());
 	}
 
 
 	public static void taskDialogManageLibrary() {
 
-		GuiUtils.open(new DialogManageLibrary());
+		Gui.open(new DialogManageLibrary());
 	}
 
 
 	public static void taskDialogManageProjects() {
 
-		GuiUtils.open(new DialogManageProjects());
-	}
-
-
-	private static void taskDialogOpenProject() {
-
-		GuiUtils.open(new DialogOpenProject());
+		Gui.open(new DialogOpenProject());
 	}
 
 
 	public static void taskDialogNewProject() {
 
-		GuiUtils.open(new DialogNewProject(true /* FALSE!! */));
+		Gui.open(new DialogNewProject(true /* FALSE!! */));
 	}
 
 
 	public static void taskDialogSaveAs() {
 
-		GuiUtils.open(new DialogSaveAs());
+		Gui.open(new DialogSaveAs());
 	}
 
 
 	public static void taskDialogSettings() {
 
-		GuiUtils.open(new DialogConfigureEditors());
+		Gui.open(new DialogConfigureEditors());
 	}
 
 
@@ -783,7 +770,7 @@ public class Tasks {
 		String title = Const.WINDOW_TITLE;
 
 		if (Projects.getActive() != null) {
-			title = Projects.getActive().getProjectName() + "  \u2022  " + title;
+			title = Projects.getActive().getProjectTitle() + "  \u2022  " + title;
 		}
 
 		App.getFrame().setTitle(title);
@@ -806,13 +793,23 @@ public class Tasks {
 	public static void taskDialogManageMcPacks() {
 
 
-		GuiUtils.open(new DialogManageMcPacks());
+		Gui.open(new DialogManageMcPacks());
 	}
 
 
 	public static void taskOpenProjectFolder() {
 
-		DesktopApi.open(Projects.getActive().getProjectDirectory());
+		if (!DesktopApi.open(Projects.getActive().getProjectDirectory())) {
+			//@formatter:off
+			Alerts.error(
+					App.getFrame(),
+					"Could not open directory, your\n" +
+					"platform is not supported.\n" +
+					"\n" +
+					"Check log file for details."
+			);
+			//@formatter:on
+		}
 
 	}
 
@@ -854,7 +851,7 @@ public class Tasks {
 
 		if (Config.LAST_RUN_VERSION != Const.VERSION_SERIAL) {
 
-			GuiUtils.open(new DialogChangelog());
+			Gui.open(new DialogChangelog());
 		}
 	}
 }

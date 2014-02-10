@@ -8,27 +8,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.widgets.ManagerLayout;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.OsUtils;
-
-import org.jdesktop.swingx.JXTitledSeparator;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
 
 
 public class DialogManageMcPacks extends RpwDialog {
 
-	private List<String> options;
+	private List<String> mcPacks;
 
 	private SimpleStringList list;
 
@@ -58,7 +57,7 @@ public class DialogManageMcPacks extends RpwDialog {
 
 	private void reloadOptions() {
 
-		list.setItems(options = getOptions());
+		list.setItems(mcPacks = getOptions());
 	}
 
 
@@ -73,17 +72,18 @@ public class DialogManageMcPacks extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		VBox vbox = new VBox();
 
-		vb.add(new JXTitledSeparator("Installed Packs"));
+		vbox.windowPadding();
+		vbox.heading("Manage MC resource packs");
 
-		options = getOptions();
+		vbox.titsep("Installed Packs");
+		vbox.gap();
 
-		vb.add(list = new SimpleStringList(options, true));
+		mcPacks = getOptions();
+
+		list = new SimpleStringList(mcPacks, true);
 		list.setMultiSelect(true);
-
 		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -95,23 +95,21 @@ public class DialogManageMcPacks extends RpwDialog {
 			}
 		});
 
-		vb.add(Box.createVerticalStrut(10));
+		// buttons
+		buttonDelete = Gui.sidebarButton("Delete", "Delete pack from library", Icons.MENU_DELETE);
+		buttonDelete.setEnabled(false);
 
-		//@formatter:off		
-		hb = Box.createHorizontalBox();
+		buttonClose = Gui.sidebarButton("Close", "Close dialog", Icons.MENU_EXIT);
 
-			hb.add(buttonDelete = new JButton(Icons.MENU_DELETE));
-			buttonDelete.setToolTipText("Delete");
-			buttonDelete.setEnabled(false);
-			
-			hb.add(Box.createHorizontalGlue());
-			
-			hb.add(buttonClose = new JButton(Icons.MENU_EXIT));
-			buttonClose.setToolTipText("Close");
-		vb.add(hb);
-		//@formatter:on
 
-		return vb;
+		ManagerLayout ml = new ManagerLayout();
+		ml.setMainComponent(list);
+		ml.setTopButtons(buttonDelete);
+		ml.setBottomButtons(buttonClose);
+		ml.build();
+		vbox.add(ml);
+
+		return vbox;
 
 	}
 

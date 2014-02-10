@@ -17,8 +17,8 @@ import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.tree.assets.processors.CopyToProjectProcessor;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
-import net.mightypork.rpw.utils.DesktopApi;
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.files.DesktopApi;
+import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 

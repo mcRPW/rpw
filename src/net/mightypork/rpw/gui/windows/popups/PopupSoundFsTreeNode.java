@@ -23,8 +23,8 @@ import net.mightypork.rpw.tasks.TaskImportCustomSounds;
 import net.mightypork.rpw.tree.filesystem.AbstractFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.DirectoryFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.FileFsTreeNode;
-import net.mightypork.rpw.utils.DesktopApi;
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.files.DesktopApi;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 
 public class PopupSoundFsTreeNode {

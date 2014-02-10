@@ -5,18 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
-import net.mightypork.rpw.utils.DesktopApi;
-import net.mightypork.rpw.utils.GuiUtils;
+import net.mightypork.rpw.utils.files.DesktopApi;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -37,30 +37,29 @@ public class DialogAbout extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		HBox hb;
+		VBox vb = new VBox();
+		vb.windowPadding();
 
-		vb.add(GuiUtils.createDialogHeading(Const.APP_NAME + " v" + Const.VERSION));
+		vb.heading(Const.APP_NAME + " v" + Const.VERSION);
 
 		JLabel image = new JLabel(Icons.ABOUT);
 		image.setAlignmentX(0.5f);
 		vb.add(image);
+		vb.gapl();
 
-		//@formatter:off		
-		hb = Box.createHorizontalBox();
+		//@formatter:off
+		hb = new HBox();
 
-			hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-			hb.add(Box.createHorizontalGlue());
-	
-			hb.add(buttonTwitter = new JButton("@MightyPork", Icons.MENU_TWITTER));
-			
-			hb.add(Box.createHorizontalStrut(5));
-			
-			hb.add(buttonOK = new JButton("Close", Icons.MENU_YES));
-			
-			hb.add(Box.createHorizontalGlue());	
+			hb.padding(0, Gui.GAP, Gui.GAP, Gui.GAP);
 			hb.setAlignmentX(0.5f);
+			
+			hb.glue();
+			hb.add(buttonTwitter = new JButton("@MightyPork", Icons.MENU_TWITTER));
+			hb.gap();
+			hb.add(buttonOK = new JButton("Close", Icons.MENU_YES));
+			hb.glue();
+			
 		vb.add(hb);
 		//@formatter:on
 

@@ -3,6 +3,7 @@ package net.mightypork.rpw.tasks;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,14 +14,16 @@ import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
-import net.mightypork.rpw.utils.OsUtils;
-import net.mightypork.rpw.utils.SimpleConfig;
+import net.mightypork.rpw.utils.UpdateHelper;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.OsUtils;
+import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TaskLoadVanillaStructure {
 
+	@SuppressWarnings("null")
 	public static void run() {
 
 		Flags.VANILLA_STRUCTURE_LOAD_OK = false;
@@ -34,23 +37,50 @@ public class TaskLoadVanillaStructure {
 
 		File structureFile = OsUtils.getAppDir(Paths.FILE_VANILLA_STRUCTURE);
 		if (!structureFile.exists()) {
-			return; // success = false
+			return; // success == false
 		}
 
 		try {
 			Map<String, String> saveMap = SimpleConfig.mapFromFile(structureFile);
+			
+			
+			// fix changes introduced in 3.8.4
+			Map<String, String> fixedMap = null;
+			boolean fixing = UpdateHelper.needFixLibraryKeys();
+			
+			if(fixing) {
+				Log.f2("Library file is outdated.");
+				fixedMap = new HashMap<String, String>(saveMap.size());
+			}
 
 			for (Entry<String, String> e : saveMap.entrySet()) {
 
 				try {
-					AssetEntry ae = new AssetEntry(e.getKey(), EAsset.valueOf(e.getValue()));
 
+					String k1 = e.getKey();
+					String v = e.getValue();
+
+					String k = k1;
+					
+					if(fixing) {
+						k = UpdateHelper.fixLibraryKey(k1);
+						fixedMap.put(k, v);
+					}
+
+					EAsset type = EAsset.valueOf(v);
+					AssetEntry ae = new AssetEntry(k, type);
 					assets.put(e.getKey(), ae);
 
 					if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("+ " + ae);
+					
 				} catch (IllegalArgumentException iae) {
 					Log.w("Unknown asset type " + e.getValue() + " - skipping entry.");
 				}
+			}
+			
+			if(fixing) {
+				Log.f2("Saving updated library file.");
+				SimpleConfig.mapToFile(structureFile, fixedMap, false);
 			}
 
 		} catch (IOException e) {

@@ -1,4 +1,4 @@
-package net.mightypork.rpw.utils;
+package net.mightypork.rpw.utils.files;
 
 
 import java.awt.Desktop;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.mightypork.rpw.Config;
-import net.mightypork.rpw.utils.OsUtils.EnumOS;
+import net.mightypork.rpw.utils.files.OsUtils.EnumOS;
 import net.mightypork.rpw.utils.logging.Log;
 
 

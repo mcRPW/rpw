@@ -11,8 +11,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -21,13 +19,14 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
 import net.mightypork.rpw.gui.helpers.TextEditListener;
+import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.SimpleConfig;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -45,18 +44,19 @@ public class DialogEditText extends DialogEditorBase {
 	private String dlgTitle;
 	private String dlgText;
 	private boolean dlgFormattingCodes;
+	private String dlgHeading;
 
 
 	public DialogEditText(final AssetTreeLeaf node) throws IOException {
 
 		this();
 
-		String path = Utils.fromLastChar(node.getAssetEntry().getPath(), '/');
+		dlgHeading = Utils.fromLastChar(node.getAssetEntry().getPath(), '/');
 
 		InputStream in = Projects.getActive().getAssetStream(node.getAssetKey());
 		String text = FileUtils.streamToString(in);
 
-		create(path, text, node.getAssetType(), true, new TextEditListener() {
+		create(dlgHeading, text, node.getAssetType(), true, new TextEditListener() {
 
 			@Override
 			public void onDialogClosed(String text) {
@@ -220,7 +220,7 @@ public class DialogEditText extends DialogEditorBase {
 
 
 	@Override
-	protected void buildButtons(Box buttons) {
+	protected void buildButtons(HBox buttons) {
 
 		btnFormatCodes = new JButton("Formatting codes", Icons.MENU_GENERATE);
 		btnFormatCodes.setVisible(dlgFormattingCodes);
@@ -228,15 +228,15 @@ public class DialogEditText extends DialogEditorBase {
 		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
 		btnSave = new JButton("Save", Icons.MENU_YES);
 
-		buttons.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		//buttons.padding(0, 10, 10, 10);
 
 		if (type == EAsset.TEXT || type == EAsset.LANG) {
 			buttons.add(btnFormatCodes);
 		}
 
-		buttons.add(Box.createHorizontalGlue());
+		buttons.glue();
 		buttons.add(btnSave);
-		buttons.add(Box.createHorizontalStrut(5));
+		buttons.gap();
 		buttons.add(btnCancel);
 
 		formatCodesPopup = buildCodesPopup();
@@ -270,6 +270,13 @@ public class DialogEditText extends DialogEditorBase {
 			default:
 				configureTextareaPlain(ta);
 		}
+	}
+
+
+	@Override
+	protected String getFileName() {
+
+		return dlgHeading;
 	}
 
 }

@@ -73,7 +73,7 @@ public class SimpleStringList extends JScrollPane {
 		}
 
 		setViewportView(list);
-		setPreferredSize(new Dimension(250, 200));
+		setPreferredSize(new Dimension(250, 220));
 
 		setBorder(BorderFactory.createEtchedBorder());
 	}

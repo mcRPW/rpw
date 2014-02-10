@@ -11,9 +11,9 @@ import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.OsUtils;
-import net.mightypork.rpw.utils.SimpleConfig;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
+import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
 
 

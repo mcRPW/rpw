@@ -1,4 +1,4 @@
-package net.mightypork.rpw.utils;
+package net.mightypork.rpw.utils.files;
 
 
 import java.io.*;

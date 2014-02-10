@@ -7,7 +7,7 @@ import java.util.Enumeration;
 import javax.swing.tree.TreeNode;
 
 import net.mightypork.rpw.tree.assets.EAsset;
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 
 /**

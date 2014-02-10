@@ -9,38 +9,33 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.helpers.CharInputListener;
 import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
-import net.mightypork.rpw.gui.widgets.SimpleStringList;
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.tree.assets.EAsset;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.OsUtils;
 import net.mightypork.rpw.utils.Utils;
-import net.mightypork.rpw.utils.ZipUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
+import net.mightypork.rpw.utils.files.ZipUtils;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
-import org.jdesktop.swingx.JXTitledSeparator;
 
 
 public class DialogImportPack extends RpwDialog {
@@ -57,12 +52,10 @@ public class DialogImportPack extends RpwDialog {
 	private FileChooser fc;
 	private File selectedFile;
 
-	private SimpleStringList list;
-
 
 	public DialogImportPack() {
 
-		super(App.getFrame(), "Import ResourcePack");
+		super(App.getFrame(), "Import");
 
 		createDialog();
 	}
@@ -71,99 +64,62 @@ public class DialogImportPack extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		HBox hb;
+		VBox vb = new VBox();
+		vb.windowPadding();
 
-		vb.add(new JXTitledSeparator("File to import"));
+		vb.heading("Import resource pack");
+
+		vb.titsep("File to import");
+		vb.gap();
 
 		//@formatter:off
-		hb = Box.createHorizontalBox();
+		hb = new HBox();
 			importUrl = new JXLabel(" ");
 			importUrl.setToolTipText("Imported ZIP file");
 			importUrl.setForeground(new Color(0x111111));
 			importUrl.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-			importUrl.setHorizontalAlignment(SwingConstants.RIGHT);
+			importUrl.setHorizontalAlignment(SwingConstants.LEFT);
 			importUrl.setMaximumSize(new Dimension(300, 25));
 	
 			buttonPickFile = new JButton(Icons.MENU_OPEN);
 			buttonPickFile.requestFocusInWindow();
 	
 			hb.add(buttonPickFile);
-			hb.add(Box.createHorizontalStrut(5));
+			hb.gap();
 			hb.add(importUrl);
-			hb.add(Box.createHorizontalGlue());
+			hb.glue();
 	
-			hb.setBorder(new CompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+			hb.etchbdr();
 		vb.add(hb);
 		//@formatter:on
 
-		vb.add(Box.createVerticalStrut(8));
+		vb.gap();
 
 		options = Sources.getResourcepackNames();
-
-		vb.add(list = new SimpleStringList(options, true));
-		list.getList().addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-
-				String s = list.getSelectedValue();
-				if (s != null) {
-					field.setText(s);
-					buttonOK.setEnabled(false);
-				}
-
-			}
-		});
 
 		vb.add(Box.createVerticalStrut(10));
 
 		//@formatter:off
-		hb = Box.createHorizontalBox();
-			JXLabel label = new JXLabel("Name:");
-			hb.add(label);
-			hb.add(Box.createHorizontalStrut(5));
+		hb = new HBox();
+			hb.add(new JXLabel("Name:"));
+			hb.gap();
 	
-			field = new JXTextField();
-			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(3,3,3,3));
-			field.setBorder(bdr);
-			
-			CharInputListener listener = new CharInputListener() {
-				
-				@Override
-				public void onCharTyped(char c) {
-				
-					String s = (field.getText() + c).trim();
-					
-					boolean ok = true;
-					ok &= (s.length() > 0);
-					ok &= !options.contains(s);
-					ok &= selectedFile != null;
-					
-					buttonOK.setEnabled(ok);	
-				}
-			};
-			
-			field.addKeyListener(TextInputValidator.filenames(listener));
-			
+			field = Gui.textField("","Pack name","Name used in RPW");
+						
+			field.addKeyListener(TextInputValidator.filenames(null));
 			
 			hb.add(field);
 		vb.add(hb);
 
 		
-		vb.add(Box.createVerticalStrut(8));
-
+		vb.gapl();
 		
-		hb = Box.createHorizontalBox();
-			hb.add(Box.createHorizontalGlue());
-	
+		hb = new HBox();
+			hb.glue();	
 			buttonOK = new JButton("Import", Icons.MENU_YES);
-			buttonOK.setEnabled(false);
-			hb.add(buttonOK);
-	
-			hb.add(Box.createHorizontalStrut(5));
-	
+			hb.add(buttonOK);	
+			hb.gap();	
 			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
 			hb.add(buttonCancel);
 		vb.add(hb);
@@ -201,9 +157,20 @@ public class DialogImportPack extends RpwDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
+			if (selectedFile == null) {
+				Alerts.error(DialogImportPack.this, "No file selected", "Select file to import!");
+				return;
+			}
+
+			if (!selectedFile.exists()) {
+				Alerts.error(DialogImportPack.this, "Invalid file", "The selected file does not exist!");
+				return;
+			}
+
 			String name = field.getText().trim();
 			if (name.length() == 0) {
 				Alerts.error(DialogImportPack.this, "Invalid name", "Missing source name!");
+				return;
 			}
 
 			if (options.contains(name)) {
@@ -260,16 +227,17 @@ public class DialogImportPack extends RpwDialog {
 					selectedFile = f;
 
 					String path = f.getPath();
-					int length = 28;
+					int length = 26;
 					path = Utils.cropStringAtStart(path, length);
 
 					importUrl.setText(path);
 
 					try {
 						String[] parts = FileUtils.getFilenameParts(f);
-						field.setText(parts[0]);
+						if (field.getText().trim().length() == 0) {
+							field.setText(parts[0]);
+						}
 
-						buttonOK.setEnabled(!options.contains(parts[0]));
 					} catch (Throwable t) {}
 				}
 			}

@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.tasks.sequences.SequenceReloadVanilla;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.OsUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
 
 
 public class TaskReloadVanilla {

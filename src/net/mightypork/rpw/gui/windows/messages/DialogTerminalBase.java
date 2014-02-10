@@ -9,8 +9,9 @@ import java.awt.Insets;
 
 import javax.swing.*;
 
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
-import net.mightypork.rpw.utils.GuiUtils;
 
 
 public abstract class DialogTerminalBase extends RpwDialog {
@@ -40,12 +41,11 @@ public abstract class DialogTerminalBase extends RpwDialog {
 	@Override
 	protected final JComponent buildGui() {
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		HBox hb;
+		VBox vb = new VBox();
+		vb.windowPadding();
 
-		vb.add(GuiUtils.createDialogHeading(getHeadingText()));
-
+		vb.heading(getHeadingText());
 
 		textArea = new JTextArea(getLogText(), 25, 80);
 		textArea.setFont(new Font(Font.MONOSPACED, 0, 14));
@@ -58,12 +58,7 @@ public abstract class DialogTerminalBase extends RpwDialog {
 		JScrollPane sp = new JScrollPane(textArea);
 
 		//@formatter:off
-		sp.setBorder(
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createEmptyBorder(10, 10, 10, 10),
-						BorderFactory.createEtchedBorder()
-				)
-		);
+		sp.setBorder(BorderFactory.createEtchedBorder());
 		//@formatter:on
 
 		sp.setWheelScrollingEnabled(true);
@@ -74,13 +69,14 @@ public abstract class DialogTerminalBase extends RpwDialog {
 
 		vb.add(sp);
 
+		vb.gapl();
+
 		if (hasButtons()) {
 
 			//@formatter:off		
-			hb = Box.createHorizontalBox();
-	
-				hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-				hb.add(Box.createHorizontalGlue());
+			hb = new HBox();
+			
+				hb.glue();
 				
 				int i=0;
 				for(JButton btn : makeButtons()) {
@@ -92,8 +88,9 @@ public abstract class DialogTerminalBase extends RpwDialog {
 						// http://stackoverflow.com/a/7515903/2180189
 						JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
 						Dimension size = new Dimension(
-						separator.getPreferredSize().width,
-					    separator.getMaximumSize().height);
+								separator.getPreferredSize().width,
+								separator.getMaximumSize().height
+						);
 						separator.setMaximumSize(size);
 						
 						hb.add(separator);
@@ -104,8 +101,7 @@ public abstract class DialogTerminalBase extends RpwDialog {
 					i++;
 				}
 				
-				hb.add(Box.createHorizontalGlue());	
-				hb.setAlignmentX(0.5f);
+				hb.glue();
 			vb.add(hb);
 			//@formatter:on
 

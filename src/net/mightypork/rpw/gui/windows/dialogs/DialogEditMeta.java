@@ -8,15 +8,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
+import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
-import net.mightypork.rpw.utils.FileUtils;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -32,6 +36,7 @@ public class DialogEditMeta extends DialogEditorBase {
 	private JButton btnCheck;
 	private JPopupMenu presetsPopup;
 	protected AssetTreeLeaf editedNode;
+	private String dlgHeading;
 
 
 	public DialogEditMeta(AssetTreeLeaf node) {
@@ -47,7 +52,9 @@ public class DialogEditMeta extends DialogEditorBase {
 
 		String path = Utils.fromLastChar(editedNode.getAssetEntry().getPath(), '/');
 
-		return path + ".mcmeta - RPW McMeta editor";
+		dlgHeading = path + ".mcmeta";
+
+		return path + " - RPW McMeta editor";
 	}
 
 
@@ -67,20 +74,20 @@ public class DialogEditMeta extends DialogEditorBase {
 
 
 	@Override
-	protected void buildButtons(Box buttons) {
+	protected void buildButtons(HBox buttons) {
 
 		btnPresets = new JButton("Templates", Icons.MENU_GENERATE);
 		btnCheck = new JButton("Check JSON", Icons.MENU_INFO);
 		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
 		btnSave = new JButton("Save", Icons.MENU_YES);
 
-		buttons.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		buttons.padding(0, 10, 10, 10);
 		buttons.add(btnPresets);
-		buttons.add(Box.createHorizontalStrut(5));
+		buttons.gap();
 		buttons.add(btnCheck);
-		buttons.add(Box.createHorizontalGlue());
+		buttons.glue();
 		buttons.add(btnSave);
-		buttons.add(Box.createHorizontalStrut(5));
+		buttons.gap();
 		buttons.add(btnCancel);
 
 		presetsPopup = buildPresetsPopup();
@@ -269,6 +276,13 @@ public class DialogEditMeta extends DialogEditorBase {
 	protected void configureTextarea(RSyntaxTextArea ta) {
 
 		configureTextareaJSON(ta);
+	}
+
+
+	@Override
+	protected String getFileName() {
+
+		return dlgHeading;
 	}
 
 }

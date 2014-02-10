@@ -13,8 +13,8 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.helpers.WindowCloseListener;
-import net.mightypork.rpw.utils.GuiUtils;
 
 
 public abstract class RpwDialog extends JDialog {
@@ -123,7 +123,7 @@ public abstract class RpwDialog extends JDialog {
 
 		pack();
 
-		GuiUtils.centerWindow(this, getParent());
+		Gui.centerWindow(this, getParent());
 		addActions();
 
 		getRootPane().registerKeyboardAction(closeListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);

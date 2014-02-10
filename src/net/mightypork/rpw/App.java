@@ -20,7 +20,7 @@ import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.TaskDevel;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.HtmlBuilder;
-import net.mightypork.rpw.utils.OsUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;

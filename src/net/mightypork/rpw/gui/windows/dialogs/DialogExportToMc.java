@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.border.Border;
@@ -19,28 +18,134 @@ import javax.swing.event.ListSelectionListener;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.helpers.CharInputListener;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
+import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.OsUtils;
-import net.mightypork.rpw.utils.SimpleConfig;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
+import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
-import org.jdesktop.swingx.JXTitledSeparator;
 
 
 public class DialogExportToMc extends RpwDialog {
 
-	private List<String> options;
+	private List<String> installedPackNames;
 
 	private JXTextField field;
+	private JButton buttonOK;
+	private SimpleStringList list;
+	private JButton buttonCancel;
+
+
+	public DialogExportToMc() {
+
+		super(App.getFrame(), "Export");
+
+		createDialog();
+	}
+
+
+	@Override
+	protected JComponent buildGui() {
+
+		HBox hb;
+		VBox vb = new VBox();
+		vb.windowPadding();
+
+		vb.heading("Export to Minecraft");
+
+		installedPackNames = getOptions();
+
+		vb.titsep("Installed ResourcePacks");
+		vb.gap();
+
+		vb.add(list = new SimpleStringList(installedPackNames, true));
+		list.getList().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				String s = list.getSelectedValue();
+				if (s != null) field.setText(s);
+			}
+		});
+
+		vb.gapl();
+
+		vb.titsep("Export options");
+		vb.gap();
+
+		//@formatter:off
+		hb = new HBox();
+			hb.add(new JXLabel("Pack name:"));
+			hb.gap();
+	
+			field = new JXTextField();
+			field.setText(Projects.getActive().getDirName());
+			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(3,3,3,3));
+			field.setBorder(bdr);
+						
+			field.addKeyListener(TextInputValidator.filenames(null));
+			
+			
+			hb.add(field);
+		vb.add(hb);
+
+		
+		vb.gapl();
+
+		
+		hb = new HBox();			
+			hb.glue();
+			buttonOK = new JButton("Export", Icons.MENU_EXPORT);
+			hb.add(buttonOK);	
+			hb.gap();	
+			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+			hb.add(buttonCancel);
+		vb.add(hb);
+		//@formatter:on
+
+
+		return vb;
+	}
+
+
+	@Override
+	protected void addActions() {
+
+		buttonCancel.addActionListener(closeListener);
+
+		buttonOK.addActionListener(exportListener);
+	}
+
+
+	private List<String> getOptions() {
+
+		List<File> aList = FileUtils.listDirectory(OsUtils.getMcDir("resourcepacks"));
+		List<String> options = new ArrayList<String>();
+
+		for (File f : aList) {
+			if (f.isDirectory()) continue;
+			String[] parts = FileUtils.getFilenameParts(f);
+
+			if (parts[1].equalsIgnoreCase("zip")) {
+				options.add(parts[0]);
+			}
+		}
+
+		Collections.sort(options);
+
+		return options;
+	}
+
 
 	private ActionListener exportListener = new ActionListener() {
 
@@ -52,7 +157,7 @@ public class DialogExportToMc extends RpwDialog {
 				Alerts.error(self(), "Invalid name", "Missing file name!");
 			}
 
-			if (options.contains(name)) {
+			if (installedPackNames.contains(name)) {
 
 				//@formatter:off
 				boolean overwrite = Alerts.askYesNo(
@@ -130,128 +235,4 @@ public class DialogExportToMc extends RpwDialog {
 			}
 		}
 	};
-
-
-	private JButton buttonOK;
-
-
-	private SimpleStringList list;
-
-	private JButton buttonCancel;
-
-
-	public DialogExportToMc() {
-
-		super(App.getFrame(), "Export To Minecraft");
-
-		createDialog();
-	}
-
-
-	@Override
-	protected JComponent buildGui() {
-
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-		vb.add(new JXTitledSeparator("Installed ResourcePacks"));
-
-		options = getOptions();
-
-		vb.add(list = new SimpleStringList(options, true));
-		list.getList().addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-
-				String s = list.getSelectedValue();
-				if (s != null) field.setText(s);
-				buttonOK.setEnabled(true);
-			}
-		});
-
-		vb.add(Box.createVerticalStrut(10));
-
-		//@formatter:off
-		hb = Box.createHorizontalBox();
-			JXLabel label = new JXLabel("Name:");
-			hb.add(label);
-			hb.add(Box.createHorizontalStrut(5));
-	
-			field = new JXTextField();
-			field.setText(Projects.getActive().getDirName());
-			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(3,3,3,3));
-			field.setBorder(bdr);
-			
-			CharInputListener listener = new CharInputListener() {
-				
-				@Override
-				public void onCharTyped(char c) {
-				
-					String s = (field.getText() + c).trim();
-					
-					boolean ok = true;
-					ok &= (s.length() > 0);
-					
-					buttonOK.setEnabled(ok);	
-				}
-			};
-			
-			field.addKeyListener(TextInputValidator.filenames(listener));
-			
-			
-			hb.add(field);
-		vb.add(hb);
-
-		
-		vb.add(Box.createVerticalStrut(8));
-
-		
-		hb = Box.createHorizontalBox();
-			hb.add(Box.createHorizontalGlue());
-	
-			buttonOK = new JButton("Export", Icons.MENU_EXPORT);
-			buttonOK.setEnabled(true);
-			hb.add(buttonOK);
-	
-			hb.add(Box.createHorizontalStrut(5));
-	
-			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-			hb.add(buttonCancel);
-		vb.add(hb);
-		//@formatter:on
-
-
-		return vb;
-	}
-
-
-	@Override
-	protected void addActions() {
-
-		buttonCancel.addActionListener(closeListener);
-
-		buttonOK.addActionListener(exportListener);
-	}
-
-
-	private List<String> getOptions() {
-
-		List<File> aList = FileUtils.listDirectory(OsUtils.getMcDir("resourcepacks"));
-		List<String> options = new ArrayList<String>();
-
-		for (File f : aList) {
-			if (f.isDirectory()) continue;
-			String[] parts = FileUtils.getFilenameParts(f);
-
-			if (parts[1].equalsIgnoreCase("zip")) {
-				options.add(parts[0]);
-			}
-		}
-
-		Collections.sort(options);
-
-		return options;
-	}
 }

@@ -11,13 +11,13 @@ import java.io.InputStream;
 
 import javax.swing.*;
 import javax.swing.Box.Filler;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
-import net.mightypork.rpw.App;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
-import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
@@ -26,10 +26,8 @@ import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeGroup;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
-import net.mightypork.rpw.utils.DesktopApi;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.GuiUtils;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
@@ -77,11 +75,13 @@ public class SidePanel {
 
 	private TitledBorder previewAudioBorder;
 
+	private Border previewBorder;
+
 
 	public SidePanel() {
 
 		panel = new JXPanel();
-		panel.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
+		panel.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL, Gui.GAP, Gui.GAPL));
 
 		panel.setPreferredSize(new Dimension(320, 700));
 		panel.setMinimumSize(new Dimension(320, 300));
@@ -105,49 +105,53 @@ public class SidePanel {
 
 	private Box createPreviewBox() {
 
+		previewBorder = new CompoundBorder(BorderFactory.createLineBorder(new Color(0x666666)), BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
 		//@formatter:off
-		Box vb = Box.createVerticalBox();
+		VBox vbox, vb2;
+		
+		vbox = new VBox();
 		JXTitledSeparator s = new JXTitledSeparator("Selected Item Preview");
 		s.setAlignmentX(0);
-		vb.add(s);
+		vbox.add(s);
 		
 		Filler f = (Filler) Box.createRigidArea(new Dimension(305, 1));
 		f.setAlignmentX(0);
-		vb.add(f);
+		vbox.add(f);
 
-		Box hb;
+		HBox hb;
 
 		previewPanel = new JPanel(previewCardLayout = new CardLayout());
 		previewPanel.setAlignmentX(0);
 		previewCardLayout.setVgap(0);
 		
 		
-		Box panelImage = Box.createVerticalBox();
-			panelImage.setAlignmentX(0);
+		vb2 = new VBox();
+			vb2.setAlignmentX(0);
 						
-			panelImage.add(Box.createRigidArea(new Dimension(0, 5)));	
+			vb2.gap();
 			
-			hb = Box.createHorizontalBox();
+			hb = new HBox();
 				hb.setAlignmentX(0);
 				
 				btnEditI = new JButton("Edit", Icons.MENU_EDIT);
 				btnMetaI = new JButton("Meta", Icons.MENU_EDIT);
-				btnReplaceI = new JButton("Import", Icons.MENU_IMPORT_BOX);
+				btnReplaceI = new JButton("Replace", Icons.MENU_IMPORT_BOX);
 		
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 				hb.add(btnEditI);
-				hb.add(Box.createHorizontalStrut(5));
+				hb.gap();
 				hb.add(btnMetaI);
-				hb.add(Box.createHorizontalStrut(5));
+				hb.gap();
 				hb.add(btnReplaceI);
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 						
-			panelImage.add(hb);
-			panelImage.add(Box.createRigidArea(new Dimension(0, 5)));	
+			vb2.add(hb);
+			vb2.gap();
 			
-			hb = Box.createHorizontalBox();
+			hb = new HBox();
 				hb.setAlignmentX(0);
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 				
 				JPanel p = new JPanel();
 				previewImageBg = new JPanelWithBackground(Icons.TRANSPARENT.getImage());				
@@ -157,10 +161,7 @@ public class SidePanel {
 		
 				p.setBorder(
 						previewImageBorder = BorderFactory.createTitledBorder(
-								new CompoundBorder(
-										BorderFactory.createLineBorder(new Color(0x666666)),
-										BorderFactory.createEmptyBorder(5, 5, 5, 5)
-								),
+								previewBorder,
 								"%Texture%"
 						)
 				);
@@ -178,44 +179,41 @@ public class SidePanel {
 				previewImageBg.setBackground(new Color(0x333333));
 				p.add(previewImageBg);
 				
-//				p.setMinimumSize(new Dimension(290, 300));
-//				p.setPreferredSize(new Dimension(290, 300));
-				
-				GuiUtils.forceSize(p, 290, 300);
+				Gui.forceSize(p, 290, 300);
 		
 				hb.add(p);
 				
-				hb.add(Box.createHorizontalGlue());
-			panelImage.add(hb);
-			panelImage.add(Box.createVerticalGlue());
+				hb.glue();
+			vb2.add(hb);
+			vb2.glue();
 			
-		previewPanel.add(panelImage, IMAGE);
+		previewPanel.add(vb2, IMAGE);
 		
 		
-		Box panelText = Box.createVerticalBox();
-			panelText.setAlignmentX(0);
+		vb2 = new VBox();
+			vb2.setAlignmentX(0);
 
-			panelText.add(Box.createRigidArea(new Dimension(0, 5)));	
+			vb2.gap();
 			
-			hb = Box.createHorizontalBox();
+			hb = new HBox();
 				hb.setAlignmentX(0);
 				
 				btnEditT = new JButton("Edit text", Icons.MENU_EDIT);
-				btnReplaceT = new JButton("Replace", Icons.MENU_OPEN);
+				btnReplaceT = new JButton("Replace", Icons.MENU_IMPORT_BOX);
 		
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 				hb.add(btnEditT);
-				hb.add(Box.createHorizontalStrut(5));
+				hb.gap();
 				hb.add(btnReplaceT);
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 					
-			panelText.add(hb);
-			panelText.add(Box.createRigidArea(new Dimension(0, 5)));	
+			vb2.add(hb);
+			vb2.gap();
 						
 			
-			hb = Box.createHorizontalBox();
+			hb = new HBox();
 				hb.setAlignmentX(0);
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 				
 				JScrollPane sp = new JScrollPane();
 				
@@ -228,14 +226,11 @@ public class SidePanel {
 				
 				sp.setViewportView(previewText);
 				
-				GuiUtils.forceSize(sp, 290, 300);
+				Gui.forceSize(sp, 290, 300);
 							
 				sp.setBorder(
 						previewTextBorder = BorderFactory.createTitledBorder(
-								new CompoundBorder(
-										BorderFactory.createLineBorder(new Color(0x666666)),
-										BorderFactory.createEmptyBorder(5, 5, 5, 5)
-								),
+								previewBorder,
 								"%Text%"
 						)
 				);
@@ -244,89 +239,84 @@ public class SidePanel {
 				
 				hb.add(sp);
 				
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 				
-			panelText.add(hb);			
+			vb2.add(hb);			
 
-			panelText.add(Box.createVerticalGlue());
-		previewPanel.add(panelText, TEXT);
+			vb2.glue();
+		previewPanel.add(vb2, TEXT);
 
 		
 		
 		
-		Box panelAudio = Box.createVerticalBox();
-			panelAudio.setAlignmentX(0);
+		vb2 = new VBox();
+			vb2.setAlignmentX(0);
 						
-			panelAudio.add(Box.createRigidArea(new Dimension(0, 5)));			
+			vb2.gap();	
 			
-			hb = Box.createHorizontalBox();
+			hb = new HBox();
 				hb.setAlignmentX(0);
 				
 				btnEditA = new JButton("Edit", Icons.MENU_EDIT);
-				btnReplaceA = new JButton("Replace", Icons.MENU_OPEN);
+				btnReplaceA = new JButton("Replace", Icons.MENU_IMPORT_BOX);
 		
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 				hb.add(btnEditA);
-				hb.add(Box.createHorizontalStrut(5));
+				hb.gap();
 				hb.add(btnReplaceA);
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 					
-			panelAudio.add(hb);
-			panelAudio.add(Box.createRigidArea(new Dimension(0, 5)));	
+			vb2.add(hb);
+			vb2.gap();
 			
-			hb = Box.createHorizontalBox();
+			hb = new HBox();
 				hb.setAlignmentX(0);
-				hb.add(Box.createHorizontalGlue());
+				hb.glue();
 				JLabel imageIcon;
 				hb.add(imageIcon = new JLabel(Icons.AUDIO));		
-				GuiUtils.forceSize(imageIcon, 290, 300);
+				Gui.forceSize(imageIcon, 290, 300);
 				imageIcon.setHorizontalAlignment(SwingConstants.CENTER);
 				imageIcon.setVerticalAlignment(SwingConstants.CENTER);
 				
 				imageIcon.setBorder(
 						previewAudioBorder = BorderFactory.createTitledBorder(
-								new CompoundBorder(
-										BorderFactory.createLineBorder(new Color(0x666666)),
-										BorderFactory.createEmptyBorder(5, 5, 5, 5)
-								),
+								previewBorder,
 								"%Audio%"
 						)
 				);
 		
-				hb.add(Box.createHorizontalGlue());
-			panelAudio.add(hb);
+				hb.glue();
+			vb2.add(hb);
 			
-			panelAudio.add(Box.createVerticalGlue());
-		previewPanel.add(panelAudio, AUDIO);
+			vb2.glue();
+		previewPanel.add(vb2, AUDIO);
 		
 		
-		vb.add(previewPanel);
+		vbox.add(previewPanel);
 
 		//@formatter:on
 
-		return vb;
+		return vbox;
 	}
 
 
 	private Box createProjectInfoBox() {
 
 		//@formatter:off
-		Box vb = Box.createVerticalBox();
+		VBox vb = new VBox();
 		Filler f = (Filler) Box.createRigidArea(new Dimension(305, 1));
 		f.setAlignmentX(0);
 		vb.add(f);
 		
-		JXTitledSeparator s = new JXTitledSeparator("Project Info");
-		s.setAlignmentX(0);
-		vb.add(s);
+		vb.titsep("Project Info").setAlignmentX(0);
 
-		Box hb;
+		HBox hb;
 
-		hb = Box.createHorizontalBox();
+		hb = new HBox();
 
 			buttonEditProps = new JButton(Icons.MENU_SETUP);
 			hb.add(buttonEditProps);
-			hb.add(Box.createHorizontalStrut(5));
+			hb.gap();
 	
 			projectName = new JXLabel(" ");
 			projectName.setToolTipText("Project name");
@@ -336,14 +326,13 @@ public class SidePanel {
 			projectName.setAlignmentX(0);
 			hb.add(projectName);
 	
-			hb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			hb.add(Box.createHorizontalGlue());
+			hb.padding(5, 5, 5, 5);
+			hb.glue();
 			hb.setAlignmentX(0);
-
 		vb.add(hb);
 
-		hb = Box.createHorizontalBox();
-			hb.add(Box.createHorizontalGlue());
+		hb = new HBox();
+			hb.glue();
 			hb.add(projectIconLabel = new JXLabel());
 	
 			//@formatter:off
@@ -356,29 +345,28 @@ public class SidePanel {
 							"Project Icon"
 					)
 			);	
-			//@formatter:on
 
-		projectIconLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			projectIconLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		hb.add(Box.createHorizontalGlue());
-		hb.setAlignmentX(0);
+			hb.glue();
+			hb.setAlignmentX(0);
 		vb.add(hb);
 
-		hb = Box.createHorizontalBox();
-		buttonOpenBase = new JButton(Icons.MENU_OPEN);
-		hb.add(buttonOpenBase);
-		hb.add(Box.createHorizontalStrut(5));
-
-		projectBase = new JXLabel("Open in file manager...");
-		projectBase.setForeground(new Color(0x333333));
-		projectBase.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-		hb.add(projectBase);
-
-		hb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		hb.add(Box.createHorizontalGlue());
-		hb.setAlignmentX(0);
+		hb = new HBox();
+			buttonOpenBase = new JButton(Icons.MENU_OPEN);
+			hb.add(buttonOpenBase);
+			hb.gap();
+	
+			projectBase = new JXLabel("Open in file manager...");
+			projectBase.setForeground(new Color(0x333333));
+			projectBase.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+			hb.add(projectBase);
+	
+			hb.padding(5, 5, 5, 5);
+			hb.glue();
+			hb.setAlignmentX(0);
 		vb.add(hb);
-		vb.add(Box.createVerticalGlue());
+		vb.glue();
 		//@formatter:on
 
 		return vb;
@@ -391,15 +379,10 @@ public class SidePanel {
 
 		if (p != null) {
 
-			String name = p.getProjectName();
+			String name = p.getProjectTitle();
 			int length_name = (panel.getWidth() - 75) / 11;
 			name = Utils.cropStringAtEnd(name, length_name);
 			projectName.setText(name);
-
-			/*String path = p.getProjectDirectory().getPath();
-			int length = (panel.getWidth() - 90) / 7;
-			path = Utils.cropStringAtStart(path, length);
-			projectBase.setText(path);*/
 
 			File iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
 
@@ -407,8 +390,6 @@ public class SidePanel {
 			projectIconLabel.setIcon(ic);
 
 			infoBox.setVisible(true);
-			//previewBox.setVisible(true);
-			//updatePreview(null);
 
 		} else {
 			infoBox.setVisible(false);
@@ -437,7 +418,7 @@ public class SidePanel {
 			String source = leaf.resolveAssetSource();
 
 			String path = leaf.getAssetEntry().getPath();
-			String fname = FileUtils.getBasename(path);
+			String fname = FileUtils.getFilename(path);
 
 			displayedLeaf = leaf;
 
@@ -530,19 +511,7 @@ public class SidePanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				Project p = Projects.getActive();
-
-				if (!DesktopApi.open(p.getProjectDirectory())) {
-					//@formatter:off
-					Alerts.error(
-							App.getFrame(),
-							"Could not open directory, your\n" +
-							"platform is not supported.\n" +
-							"\n" +
-							"Check log file for details."
-					);
-					//@formatter:on
-				}
+				Tasks.taskOpenProjectFolder();
 			}
 		});
 

@@ -15,12 +15,12 @@ import javax.swing.KeyStroke;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.GuiUtils;
 
 
 public class MenuMain {
@@ -31,7 +31,6 @@ public class MenuMain {
 	private JMenuItem itemProjectOpen;
 	private JMenuItem itemProjectSave;
 	private JMenuItem itemProjectSaveAs;
-	private JMenuItem itemProjectManage;
 	private JMenuItem itemProjectManageMcPacks;
 	private JMenuItem itemProjectSetup;
 	private JMenuItem itemProjectSummary;
@@ -153,13 +152,6 @@ public class MenuMain {
 			item = itemProjectSetup = new JMenuItem("Project properties", KeyEvent.VK_P);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
 			item.setIcon(Icons.MENU_SETUP);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
-			item = itemProjectManage = new JMenuItem("Manage projects", KeyEvent.VK_G);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_MANAGE);
 			menu.add(item);
 			
 			menu.addSeparator();
@@ -336,19 +328,19 @@ public class MenuMain {
 			
 			item = new JMenuItem("RPW on GitHub");
 			item.setIcon(Icons.MENU_GITHUB);
-			item.addActionListener(GuiUtils.openUrlListener);
+			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_GITHUB_WEB);
 			menu.add(item);	
 			
 			item = new JMenuItem("RPW on Planet Minecraft");
 			item.setIcon(Icons.MENU_PMC);
-			item.addActionListener(GuiUtils.openUrlListener);
+			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
 			menu.add(item);	
 			
 			item = new JMenuItem("RPW on Minecraft Forum");
 			item.setIcon(Icons.MENU_MCF);
-			item.addActionListener(GuiUtils.openUrlListener);
+			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
 			menu.add(item);	
 			
@@ -356,7 +348,7 @@ public class MenuMain {
 			
 			item = new JMenuItem("Download latest version");
 			item.setIcon(Icons.MENU_DOWNLOAD);
-			item.addActionListener(GuiUtils.openUrlListener);
+			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
 			menu.add(item);
 			
@@ -364,7 +356,7 @@ public class MenuMain {
 			
 			item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
 			item.setIcon(Icons.MENU_DONATE);
-			item.addActionListener(GuiUtils.openUrlListener);
+			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_DONATE);
 			menu.add(item);
 			
@@ -494,15 +486,6 @@ public class MenuMain {
 			public void actionPerformed(ActionEvent e) {
 
 				Tasks.taskCloseProject();
-			}
-		});
-
-		itemProjectManage.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				Tasks.taskDialogManageProjects();
 			}
 		});
 

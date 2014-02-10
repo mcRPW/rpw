@@ -22,8 +22,8 @@ import net.mightypork.rpw.tree.assets.TreeBuilder;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
-import net.mightypork.rpw.utils.FileUtils;
-import net.mightypork.rpw.utils.ZipBuilder;
+import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.ZipBuilder;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -166,7 +166,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 		// json mcmeta
 		if (Config.LOG_EXPORT_FILES) Log.f3("- pack.mcmeta");
-		String desc = project.getProjectName();
+		String desc = project.getProjectTitle();
 
 		PackInfoMap pim = new PackInfoMap();
 		pim.setPackInfo(new PackInfo(1, desc));
@@ -196,7 +196,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 		Alerts.loading(true);
 
-		Log.f1("Exporting project \"" + project.getProjectName() + "\" to " + target);
+		Log.f1("Exporting project \"" + project.getProjectTitle() + "\" to " + target);
 
 	}
 
@@ -213,7 +213,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 		}
 
 		if (!success) {
-			Log.f1("Exporting project \"" + project.getProjectName() + "\" - FAILED.");
+			Log.f1("Exporting project \"" + project.getProjectTitle() + "\" - FAILED.");
 			// cleanup
 			target.delete();
 
@@ -230,9 +230,10 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 		if (successRunnable != null) successRunnable.run();
 
-		Log.f1("Exporting project \"" + project.getProjectName() + "\" to " + target + " - done.");
+		Log.f1("Exporting project \"" + project.getProjectTitle() + "\" to " + target + " - done.");
 
 		Alerts.info(App.getFrame(), "Export successful.");
+		closeMonitor();
 	}
 
 

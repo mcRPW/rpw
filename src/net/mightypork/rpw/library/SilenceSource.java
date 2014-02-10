@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
-import net.mightypork.rpw.utils.FileUtils;
+import net.mightypork.rpw.utils.files.FileUtils;
 
 
 public class SilenceSource implements ISource {

@@ -9,7 +9,7 @@ import java.util.Map;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.tasks.TaskLoadVanillaStructure;
 import net.mightypork.rpw.tree.assets.AssetEntry;
-import net.mightypork.rpw.utils.OsUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
 
 
 /**

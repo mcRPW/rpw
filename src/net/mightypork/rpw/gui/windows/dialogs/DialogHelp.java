@@ -9,12 +9,11 @@ import javax.swing.*;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.help.HelpPage;
 import net.mightypork.rpw.help.HelpStore;
-import net.mightypork.rpw.utils.GuiUtils;
-
-import org.jdesktop.swingx.JXTitledSeparator;
 
 
 public class DialogHelp extends RpwDialog {
@@ -36,15 +35,14 @@ public class DialogHelp extends RpwDialog {
 		setResizable(true);
 		setPreferredSize(new Dimension(900, 600));
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		HBox hb;
+		VBox vb = new VBox();
+		vb.windowPadding();
 
-		vb.add(GuiUtils.createDialogHeading("RPW Guide Book"));
+		vb.heading("RPW Guide Book");
 
-		vb.add(Box.createVerticalStrut(10));
-		vb.add(new JXTitledSeparator("Help Topics"));
-		vb.add(Box.createVerticalStrut(10));
+		vb.titsep("Help Topics");
+		vb.gap();
 
 		JTabbedPane tabPane = new JTabbedPane(SwingConstants.LEFT);
 		tabPane.setAlignmentX(0.5f);
@@ -89,20 +87,15 @@ public class DialogHelp extends RpwDialog {
 
 		vb.add(tabPane);
 
-		vb.add(Box.createVerticalStrut(10));
-		vb.add(new JSeparator(SwingConstants.HORIZONTAL));
-		vb.add(Box.createVerticalStrut(10));
+		vb.gapl();
 
 		//@formatter:off		
-		hb = Box.createHorizontalBox();
+		hb = new HBox();
 
-			hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-			hb.add(Box.createHorizontalGlue());
+			hb.glue();
 			
 			hb.add(buttonOK = new JButton("Close", Icons.MENU_EXIT));
 			
-			//hb.add(Box.createHorizontalGlue());	
-			hb.setAlignmentX(0.5f);
 		vb.add(hb);
 		//@formatter:on
 
