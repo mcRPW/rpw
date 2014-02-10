@@ -24,12 +24,11 @@ public class PropertyManager {
 	 * have their own inline comments.
 	 * 
 	 * @author MightyPork
-	 * @copy (c) 2012
 	 */
 	private static class SortedProperties extends Properties {
 
 		/** A table of hex digits */
-		private static final char[] hexDigit_custom = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+		private static final char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 
 		/**
@@ -38,13 +37,13 @@ public class PropertyManager {
 		 * @param nibble
 		 * @return hex char.
 		 */
-		private static char toHex_custom(int nibble) {
+		private static char toHex(int nibble) {
 
-			return hexDigit_custom[(nibble & 0xF)];
+			return hexChars[(nibble & 0xF)];
 		}
 
 
-		private static void writeComments_custom(BufferedWriter bw, String comm) throws IOException {
+		private static void writeComments(BufferedWriter bw, String comm) throws IOException {
 
 			String comments = comm.replace("\n\n", "\n \n");
 
@@ -63,18 +62,16 @@ public class PropertyManager {
 
 
 					if (c > '\u00ff') {
-						uu[2] = toHex_custom((c >> 12) & 0xf);
-						uu[3] = toHex_custom((c >> 8) & 0xf);
-						uu[4] = toHex_custom((c >> 4) & 0xf);
-						uu[5] = toHex_custom(c & 0xf);
+						uu[2] = toHex((c >> 12) & 0xf);
+						uu[3] = toHex((c >> 8) & 0xf);
+						uu[4] = toHex((c >> 4) & 0xf);
+						uu[5] = toHex(c & 0xf);
 						bw.write(new String(uu));
 					} else {
 						bw.newLine();
 						if (c == '\r' && current != len - 1 && comments.charAt(current + 1) == '\n') {
 							current++;
 						}
-						// if (current == len - 1 || (comments.charAt(current + 1) != '#' && comments.charAt(current + 1) != '!'))
-						// bw.write("#");
 					}
 					last = current + 1;
 				}
@@ -90,6 +87,7 @@ public class PropertyManager {
 
 		/** Option: put empty line before each comment. */
 		public boolean cfgEmptyLineBeforeComment = true;
+
 		/**
 		 * Option: Separate sections by newline<br>
 		 * Section = string before first dot in key.
@@ -98,6 +96,7 @@ public class PropertyManager {
 
 		private boolean firstEntry = true;
 
+		/** Comments for individual keys */
 		private Hashtable<String, String> keyComments = new Hashtable<String, String>();
 
 		private String lastSectionBeginning = "";
@@ -117,7 +116,7 @@ public class PropertyManager {
 		}
 
 
-		private String saveConvert_custom(String theString, boolean escapeSpace, boolean escapeUnicode) {
+		private String saveConvert(String theString, boolean escapeSpace, boolean escapeUnicode) {
 
 			int len = theString.length();
 			int bufLen = len * 2;
@@ -127,7 +126,9 @@ public class PropertyManager {
 			StringBuffer outBuffer = new StringBuffer(bufLen);
 
 			for (int x = 0; x < len; x++) {
+
 				char aChar = theString.charAt(x);
+
 				// Handle common case first, selecting largest block that
 				// avoids the specials below
 				if ((aChar > 61) && (aChar < 127)) {
@@ -139,6 +140,7 @@ public class PropertyManager {
 					outBuffer.append(aChar);
 					continue;
 				}
+
 				switch (aChar) {
 					case ' ':
 						if (x == 0 || escapeSpace) {
@@ -146,22 +148,27 @@ public class PropertyManager {
 						}
 						outBuffer.append(' ');
 						break;
+
 					case '\t':
 						outBuffer.append('\\');
 						outBuffer.append('t');
 						break;
+
 					case '\n':
 						outBuffer.append('\\');
 						outBuffer.append('n');
 						break;
+
 					case '\r':
 						outBuffer.append('\\');
 						outBuffer.append('r');
 						break;
+
 					case '\f':
 						outBuffer.append('\\');
 						outBuffer.append('f');
 						break;
+
 					case '=': // Fall through
 					case ':': // Fall through
 					case '#': // Fall through
@@ -169,19 +176,21 @@ public class PropertyManager {
 						outBuffer.append('\\');
 						outBuffer.append(aChar);
 						break;
+
 					default:
 						if (((aChar < 0x0020) || (aChar > 0x007e)) & escapeUnicode) {
 							outBuffer.append('\\');
 							outBuffer.append('u');
-							outBuffer.append(toHex_custom((aChar >> 12) & 0xF));
-							outBuffer.append(toHex_custom((aChar >> 8) & 0xF));
-							outBuffer.append(toHex_custom((aChar >> 4) & 0xF));
-							outBuffer.append(toHex_custom(aChar & 0xF));
+							outBuffer.append(toHex((aChar >> 12) & 0xF));
+							outBuffer.append(toHex((aChar >> 8) & 0xF));
+							outBuffer.append(toHex((aChar >> 4) & 0xF));
+							outBuffer.append(toHex(aChar & 0xF));
 						} else {
 							outBuffer.append(aChar);
 						}
 				}
 			}
+
 			return outBuffer.toString();
 		}
 
@@ -198,19 +207,18 @@ public class PropertyManager {
 		}
 
 
+		@SuppressWarnings("rawtypes")
 		@Override
 		public void store(OutputStream out, String comments) throws IOException {
 
-			store_custom(new BufferedWriter(new OutputStreamWriter(out, "UTF-8")), comments, false);
-		}
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
 
-
-		@SuppressWarnings("rawtypes")
-		private void store_custom(BufferedWriter bw, String comments, boolean escUnicode) throws IOException {
+			boolean escUnicode = false;
 
 			if (comments != null) {
-				writeComments_custom(bw, comments);
+				writeComments(bw, comments);
 			}
+
 			synchronized (this) {
 				for (Enumeration e = keys(); e.hasMoreElements();) {
 
@@ -218,8 +226,8 @@ public class PropertyManager {
 
 					String key = (String) e.nextElement();
 					String val = (String) get(key);
-					key = saveConvert_custom(key, true, escUnicode);
-					val = saveConvert_custom(val, false, escUnicode);
+					key = saveConvert(key, true, escUnicode);
+					val = saveConvert(val, false, escUnicode);
 
 					if (cfgSeparateSectionsByEmptyLine && !lastSectionBeginning.equals(key.split("[.]")[0])) {
 
@@ -337,19 +345,22 @@ public class PropertyManager {
 	 * Property entry in Property manager.
 	 * 
 	 * @author MightyPork
-	 * @copy (c) 2012
 	 */
 	private class Property {
 
-		public boolean bool = false;
 		public String entryComment;
+
+		public String name;
+
+		public boolean bool = false;
 		public boolean defbool = false;
+
+		public double num = -1;
 		public double defnum = -1;
 
 		public String defstr = "";
-		public String name;
-		public double num = -1;
 		public String str = "";
+
 		public PropertyType type;
 
 
@@ -455,11 +466,15 @@ public class PropertyManager {
 		 */
 		public boolean isValid() {
 
-			if (type == PropertyType.STRING) {
-				return str != null;
-			}
-			if (type == PropertyType.BOOLEAN || type == PropertyType.INT || type == PropertyType.DOUBLE) {
-				return true;
+			switch (type) {
+				case STRING:
+					return str != null;
+
+				case BOOLEAN:
+				case INT:
+				case DOUBLE:
+					return true;
+
 			}
 			return false;
 		}
@@ -473,45 +488,56 @@ public class PropertyManager {
 		 */
 		public boolean parse(String string) {
 
-			if (type == PropertyType.INT) {
-				if (string == null) {
-					num = defnum;
-					return false;
-				}
-				try {
-					num = Integer.parseInt(string.trim());
-				} catch (NumberFormatException e) {
-					num = defnum;
-				}
-			}
+			switch (type) {
+				case INT:
 
-			if (type == PropertyType.DOUBLE) {
-				if (string == null) {
-					num = defnum;
-					return false;
-				}
-				try {
-					num = Double.parseDouble(string.trim());
-				} catch (NumberFormatException e) {
-					num = defnum;
-				}
-			}
+					if (string == null) {
+						num = defnum;
+						return false;
+					}
 
-			if (type == PropertyType.STRING) {
-				if (string == null) {
-					str = defstr;
-					return false;
-				}
-				this.str = string;
-			}
+					try {
+						num = Integer.parseInt(string.trim());
+					} catch (NumberFormatException e) {
+						num = defnum;
+					}
 
-			if (type == PropertyType.BOOLEAN) {
-				if (string == null) {
-					bool = defbool;
-					return false;
-				}
-				String string2 = string.toLowerCase();
-				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled") || string2.equals("enable");
+					break;
+
+				case DOUBLE:
+
+					if (string == null) {
+						num = defnum;
+						return false;
+					}
+
+					try {
+						num = Double.parseDouble(string.trim());
+					} catch (NumberFormatException e) {
+						num = defnum;
+					}
+
+					break;
+
+				case STRING:
+
+					if (string == null) {
+						str = defstr;
+						return false;
+					}
+
+					str = string;
+					break;
+
+				case BOOLEAN:
+
+					if (string == null) {
+						bool = defbool;
+						return false;
+					}
+
+					String string2 = string.toLowerCase();
+					bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled") || string2.equals("enable");
 			}
 
 			return true;
@@ -531,17 +557,19 @@ public class PropertyManager {
 					num = defnum;
 				}
 			}
-			if (type == PropertyType.INT) {
-				return Integer.toString((int) num);
-			}
-			if (type == PropertyType.DOUBLE) {
-				return Calc.floatToString((float) num);
-			}
-			if (type == PropertyType.STRING) {
-				return str;
-			}
-			if (type == PropertyType.BOOLEAN) {
-				return bool ? "True" : "False";
+
+			switch (type) {
+				case INT:
+					return Integer.toString((int) num);
+
+				case DOUBLE:
+					return Calc.floatToString((float) num);
+
+				case STRING:
+					return str;
+
+				case BOOLEAN:
+					return bool ? "True" : "False";
 			}
 			return null;
 		}
@@ -561,42 +589,28 @@ public class PropertyManager {
 	}
 
 	/**
-	 * Property type enum.
-	 * 
-	 * @author MightyPork
-	 * @copy (c) 2012
+	 * Property types
 	 */
 	private enum PropertyType {
 		BOOLEAN, INT, STRING, DOUBLE;
 	}
 
-	/**
-	 * Option to put newline before inline comments
-	 */
+	/** put newline before entry comments */
 	private boolean cfgNewlineBeforeComments = true;
 	/** Disable entry validation */
 	private boolean cfgNoValidate = true;
-
-	/**
-	 * Option to put newline between sections.<br>
-	 * Sections are detected by text before first dot in identifier.
-	 */
+	/** Put newline between sections. */
 	private boolean cfgSeparateSections = true;
-
+	/** Force save, even if nothing changed (used to save changed comments) */
 	private boolean cfgForceSave;
 
-	private String comment = "";
+	private File file;
+	private String fileComment = "";
 
 	private TreeMap<String, Property> entries;
-
-
-	private File file;
-
 	private TreeMap<String, String> keyRename;
-
-	private SortedProperties pr = new SortedProperties();
-
 	private TreeMap<String, String> setValues;
+	private SortedProperties pr = new SortedProperties();
 
 
 	/**
@@ -611,7 +625,7 @@ public class PropertyManager {
 		this.entries = new TreeMap<String, Property>();
 		this.setValues = new TreeMap<String, String>();
 		this.keyRename = new TreeMap<String, String>();
-		this.comment = comment;
+		this.fileComment = comment;
 	}
 
 
@@ -690,7 +704,7 @@ public class PropertyManager {
 		// save if needed
 		if (needsSave || cfgForceSave) {
 			try {
-				pr.store(new FileOutputStream(file), comment);
+				pr.store(new FileOutputStream(file), fileComment);
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
@@ -698,18 +712,6 @@ public class PropertyManager {
 
 		setValues.clear();
 		keyRename.clear();
-	}
-
-
-	/**
-	 * Get boolean property
-	 * 
-	 * @param n key
-	 * @return the boolean found, or false
-	 */
-	public Boolean bool(String n) {
-
-		return getBoolean(n);
 	}
 
 
@@ -746,18 +748,6 @@ public class PropertyManager {
 	public void enableValidation(boolean validate) {
 
 		this.cfgNoValidate = !validate;
-	}
-
-
-	/**
-	 * Get boolean property
-	 * 
-	 * @param n key
-	 * @return the boolean found, or false
-	 */
-	public Boolean flag(String n) {
-
-		return getBoolean(n);
 	}
 
 
@@ -799,18 +789,6 @@ public class PropertyManager {
 	 * @param n key
 	 * @return the int found, or null
 	 */
-	public Integer getInt(String n) {
-
-		return getInteger(n);
-	}
-
-
-	/**
-	 * Get numeric property
-	 * 
-	 * @param n key
-	 * @return the int found, or null
-	 */
 	public Integer getInteger(String n) {
 
 		try {
@@ -838,18 +816,6 @@ public class PropertyManager {
 
 
 	/**
-	 * Get numeric property
-	 * 
-	 * @param n key
-	 * @return the int found, or null
-	 */
-	public Integer getNum(String n) {
-
-		return getInteger(n);
-	}
-
-
-	/**
 	 * Get string property
 	 * 
 	 * @param n key
@@ -862,34 +828,6 @@ public class PropertyManager {
 		} catch (Throwable t) {
 			return null;
 		}
-	}
-
-
-	/**
-	 * Get numeric property
-	 * 
-	 * @param n key
-	 * @return the int found, or null
-	 */
-	public Integer integer(String n) {
-
-		try {
-			return get(n).getInteger();
-		} catch (Throwable t) {
-			return -1;
-		}
-	}
-
-
-	/**
-	 * Get numeric property
-	 * 
-	 * @param n key
-	 * @return the int found, or null
-	 */
-	public Integer num(String n) {
-
-		return getInteger(n);
 	}
 
 
@@ -1027,35 +965,4 @@ public class PropertyManager {
 		return;
 	}
 
-
-	/**
-	 * Get string property
-	 * 
-	 * @param n key
-	 * @return the string found, or null
-	 */
-	public String str(String n) {
-
-		try {
-			return get(n).getString();
-		} catch (Throwable t) {
-			return null;
-		}
-	}
-
-
-	/**
-	 * Get string property
-	 * 
-	 * @param n key
-	 * @return the string found, or null
-	 */
-	public String string(String n) {
-
-		try {
-			return get(n).getString();
-		} catch (Throwable t) {
-			return null;
-		}
-	}
 }
