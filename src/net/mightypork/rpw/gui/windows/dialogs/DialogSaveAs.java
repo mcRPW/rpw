@@ -13,7 +13,6 @@ import javax.swing.event.ListSelectionListener;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.helpers.CharInputListener;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
@@ -80,23 +79,8 @@ public class DialogSaveAs extends RpwDialog {
 			hb.gap();
 	
 			field = Gui.textField();
-			
-			CharInputListener listener = new CharInputListener() {
-				
-				@Override
-				public void onCharTyped(char c) {
-				
-					String s = (field.getText() + c).trim();
-					
-					boolean ok = true;
-					ok &= (s.length() > 0);
-					ok &= !options.contains(s);
-					
-					buttonOK.setEnabled(ok);	
-				}
-			};
-			
-			field.addKeyListener(TextInputValidator.filenames(listener));
+						
+			field.addKeyListener(TextInputValidator.filenames());
 			
 			hb.add(field);
 		vb.add(hb);
@@ -108,7 +92,6 @@ public class DialogSaveAs extends RpwDialog {
 			hb.glue();
 	
 			buttonOK = new JButton("Save", Icons.MENU_SAVE_AS);
-			buttonOK.setEnabled(false);
 			hb.add(buttonOK);
 	
 			hb.gap();

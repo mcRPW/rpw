@@ -60,9 +60,9 @@ public class DialogOpenProject extends RpwDialog {
 		VBox vbox = new VBox();
 
 		vbox.windowPadding();
-		vbox.heading("Open Project");
+		vbox.heading("My Projects");
 
-		vbox.titsep("Your projects");
+		vbox.titsep("RPW projects");
 		vbox.gap();
 
 		options = Projects.getProjectNames();

@@ -93,14 +93,14 @@ public class MenuMain {
 		
 			JMenuItem item;
 		
-			item = itemProjectNew = new JMenuItem("New blank project", KeyEvent.VK_N);
+			item = itemProjectNew = new JMenuItem("Create new project", KeyEvent.VK_N);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_NEW);
-			menu.add(item);		
+			menu.add(item);	
 			
 			menu.addSeparator();			
 			
-			item = itemProjectOpen = new JMenuItem("Open project...", KeyEvent.VK_L);
+			item = itemProjectOpen = new JMenuItem("My projects", KeyEvent.VK_L);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_OPEN);
 			menu.add(item);

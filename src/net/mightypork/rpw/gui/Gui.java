@@ -22,7 +22,7 @@ public class Gui {
 
 	public static final int PADDING_TEXTFIELD = 3;
 	public static final int GAP = 6;
-	public static final int GAPL = 12;
+	public static final int GAPL = 14;
 	public static final int WINDOW_PADDING = 12;
 	private static final int ETCHBDR_PADDING = 3;
 	public static final Color HEADING_COLOR = new Color(0x045A80);

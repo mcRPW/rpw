@@ -93,7 +93,7 @@ public class DialogExportToMc extends RpwDialog {
 			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(3,3,3,3));
 			field.setBorder(bdr);
 						
-			field.addKeyListener(TextInputValidator.filenames(null));
+			field.addKeyListener(TextInputValidator.filenames());
 			
 			
 			hb.add(field);

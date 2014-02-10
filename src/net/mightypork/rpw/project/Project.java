@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,7 +37,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 	private PropertyManager props;
 
-	private File workDirBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP, true);
+	private File workDirBase;
 	private File privateCopiesBase;
 	private File extraIncludesBase;
 	private File customSoundsBase;
@@ -61,6 +60,8 @@ public class Project extends Source implements NodeSourceProvider {
 		File f = getRealProjectBase();
 		f.mkdirs();
 
+		workDirBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP + "-" + identifier, true);
+
 		init();
 	}
 
@@ -78,18 +79,30 @@ public class Project extends Source implements NodeSourceProvider {
 
 		copyFromBasedirToTmp();
 
+		reload();
+	}
+
+
+	/**
+	 * Load from workdir (discard changes not flushed to disk)
+	 */
+	public void reload() {
+
 		fileConfig = new File(workDirBase, Paths.FILENAME_PROJECT_CONFIG);
 
 		props = new PropertyManager(fileConfig, "Project '" + dirName + "' config file");
 		props.cfgNewlineBeforeComments(false);
 		props.cfgSeparateSections(false);
 
-		props.putString("name", projectTitle);
+		props.putString("title", projectTitle);
 		props.putInteger("version", Const.VERSION_SERIAL);
+
+		props.renameKey("name", "title"); // change 3.8.3 -> 3.8.4
+
 		props.apply();
 
-		projectTitle = props.getString("name");
-		lastRpwVersion = props.getInt("version");
+		projectTitle = props.getString("title");
+		lastRpwVersion = props.getInteger("version");
 
 		privateCopiesBase = new File(workDirBase, Paths.DIRNAME_PROJECT_PRIVATE);
 		extraIncludesBase = new File(workDirBase, Paths.DIRNAME_PROJECT_INCLUDE);
@@ -106,14 +119,14 @@ public class Project extends Source implements NodeSourceProvider {
 			if (fileSourcesFiles.exists() && fileSourcesGroups.exists()) {
 				files = SimpleConfig.mapFromFile(fileSourcesFiles);
 				groups = SimpleConfig.mapFromFile(fileSourcesGroups);
-				
-				if(UpdateHelper.needFixProjectKeys(lastRpwVersion)) {
+
+				if (UpdateHelper.needFixProjectKeys(lastRpwVersion)) {
 					Map<String, String> files_fixed = new HashMap<String, String>(files.size());
-					
-					for(Entry<String,String> e : files.entrySet()) {
-						files_fixed.put(UpdateHelper.fixLibraryKey(e.getKey()), e.getValue());
+
+					for (Entry<String, String> e : files.entrySet()) {
+						files_fixed.put(UpdateHelper.fixProjectKey(e.getKey()), e.getValue());
 					}
-					
+
 					files = files_fixed;
 				}
 			}

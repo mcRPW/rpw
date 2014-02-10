@@ -42,13 +42,13 @@ public class TaskLoadVanillaStructure {
 
 		try {
 			Map<String, String> saveMap = SimpleConfig.mapFromFile(structureFile);
-			
-			
+
+
 			// fix changes introduced in 3.8.4
 			Map<String, String> fixedMap = null;
 			boolean fixing = UpdateHelper.needFixLibraryKeys();
-			
-			if(fixing) {
+
+			if (fixing) {
 				Log.f2("Library file is outdated.");
 				fixedMap = new HashMap<String, String>(saveMap.size());
 			}
@@ -61,8 +61,8 @@ public class TaskLoadVanillaStructure {
 					String v = e.getValue();
 
 					String k = k1;
-					
-					if(fixing) {
+
+					if (fixing) {
 						k = UpdateHelper.fixLibraryKey(k1);
 						fixedMap.put(k, v);
 					}
@@ -72,13 +72,13 @@ public class TaskLoadVanillaStructure {
 					assets.put(e.getKey(), ae);
 
 					if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("+ " + ae);
-					
+
 				} catch (IllegalArgumentException iae) {
 					Log.w("Unknown asset type " + e.getValue() + " - skipping entry.");
 				}
 			}
-			
-			if(fixing) {
+
+			if (fixing) {
 				Log.f2("Saving updated library file.");
 				SimpleConfig.mapToFile(structureFile, fixedMap, false);
 			}

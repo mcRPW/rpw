@@ -104,11 +104,10 @@ public class DialogProjectProperties extends RpwDialog {
 		vbox.gap();
 
 		hb = new HBox();
-			hb.glue();
-			hb.add(l = new JLabel("<html>To rename a project, use the \"Open\" dialog.</html>"));
-			l.setFont(l.getFont().deriveFont(10));
+			hb.add(l = new JLabel("<html><center>To rename a project, use the<br>\"My Projects\" dialog.</center></html>"));
+			l.setFont(l.getFont().deriveFont(11));
+			l.setHorizontalAlignment(SwingConstants.CENTER);
 			l.setForeground(Color.GRAY);
-			hb.glue();
 		vbox.add(hb);
 		
 		vbox.gapl();

@@ -107,7 +107,7 @@ public class DialogImportPack extends RpwDialog {
 	
 			field = Gui.textField("","Pack name","Name used in RPW");
 						
-			field.addKeyListener(TextInputValidator.filenames(null));
+			field.addKeyListener(TextInputValidator.filenames());
 			
 			hb.add(field);
 		vb.add(hb);

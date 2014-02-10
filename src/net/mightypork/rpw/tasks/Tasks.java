@@ -333,7 +333,7 @@ public class Tasks {
 					App.getFrame(),
 					"Unsaved Changes", 
 					"There are some unsaved changes\n" + 
-					"in the project.\n" +
+					"in the current project.\n" +
 					"\n" +
 					"Save it now?\n"
 			);
@@ -637,14 +637,8 @@ public class Tasks {
 
 	public static void taskNewProject() {
 
-		taskAskToSaveIfChanged(new Runnable() {
+		taskDialogNewProject();
 
-			@Override
-			public void run() {
-
-				taskDialogNewProject();
-			}
-		});
 	}
 
 
@@ -688,6 +682,8 @@ public class Tasks {
 
 
 	public static void taskSaveProjectAs(String name) {
+
+		Log.f1("Saving project '" + Projects.getActive().getDirName() + "' as '" + name + "'");
 
 		Project newProject = new Project(name);
 
@@ -743,7 +739,7 @@ public class Tasks {
 
 	public static void taskDialogNewProject() {
 
-		Gui.open(new DialogNewProject(true /* FALSE!! */));
+		Gui.open(new DialogNewProject());
 	}
 
 
