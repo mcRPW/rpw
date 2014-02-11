@@ -1,17 +1,15 @@
 package net.mightypork.rpw.gui.windows.messages;
 
 
+import java.awt.EventQueue;
 import java.util.logging.Level;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
+import javax.swing.*;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.tasks.sequences.ProgressListener;
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.logging.LogMonitor;
 

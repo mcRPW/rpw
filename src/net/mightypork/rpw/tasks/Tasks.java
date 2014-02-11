@@ -27,6 +27,7 @@ import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.sequences.SequenceExportProject;
+import net.mightypork.rpw.tasks.sequences.SequencePopulateProjectFromPack;
 import net.mightypork.rpw.tree.assets.processors.RenameSourceProcessor;
 import net.mightypork.rpw.tree.assets.processors.SaveToProjectNodeProcessor;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
@@ -241,7 +242,7 @@ public class Tasks {
 
 	public static void taskDialogExportProject() {
 
-		if (Projects.getActive() == null) return;
+		if (!Projects.isOpen()) return;
 
 		TaskExportProject.showDialog();
 
@@ -315,7 +316,7 @@ public class Tasks {
 
 		boolean needsSave = false;
 
-		if (Projects.isProjectOpen()) {
+		if (Projects.isOpen()) {
 
 			Log.f2("Checking project for unsaved changes.");
 
@@ -624,7 +625,7 @@ public class Tasks {
 			@Override
 			public void run() {
 
-				Config.CLOSED_WITH_PROJECT_OPEN = Projects.isProjectOpen();
+				Config.CLOSED_WITH_PROJECT_OPEN = Projects.isOpen();
 				Flags.GOING_FOR_HALT = true;
 				Config.save();
 				App.inst.deinit();
@@ -686,13 +687,13 @@ public class Tasks {
 		Log.f1("Saving project '" + Projects.getActive().getName() + "' as '" + name + "'");
 
 		taskStoreProjectChanges(); // save current project to TMP
-		
-		Project newProject = new Project(name); // build new project
+
+		Project newProject = new Project(name);
 
 		// copy old project TMP to new project TMP
 		File currentDir = Projects.getActive().getProjectDirectory();
 		File targetDir = newProject.getProjectDirectory();
-		
+
 		try {
 			FileUtils.copyDirectory(currentDir, targetDir);
 		} catch (IOException e) {
@@ -701,14 +702,12 @@ public class Tasks {
 			return;
 		}
 
-		newProject.reload(); // load ALL from new project TMP
-		newProject.setTitle(title); // set a title
+		newProject.reload(); // load from new project TMP
+		newProject.setTitle(title); // set a new title
 
-		// old project is discarded
 		// mark new project as active
 		Projects.setActive(newProject);
-		
-		// rebuild tree, titlebar etc
+
 		taskOnProjectChanged();
 	}
 
@@ -772,7 +771,7 @@ public class Tasks {
 
 		String title = Const.WINDOW_TITLE;
 
-		if (Projects.getActive() != null) {
+		if (Projects.isOpen()) {
 			title = Projects.getActive().getName() + "  \u2022  " + title;
 		}
 
@@ -802,7 +801,7 @@ public class Tasks {
 
 	public static void taskOpenProjectFolder() {
 
-		if (!DesktopApi.open(Projects.getActive().getProjectDirectory())) {
+		if (Projects.isOpen() && !DesktopApi.open(Projects.getActive().getProjectDirectory())) {
 			//@formatter:off
 			Alerts.error(
 					App.getFrame(),
@@ -840,7 +839,7 @@ public class Tasks {
 
 	public static void taskOpenSoundWizard() {
 
-		if (!Projects.isProjectOpen()) return;
+		if (!Projects.isOpen()) return;
 
 		Alerts.loading(true);
 		DialogSoundWizard dlg = new DialogSoundWizard();
@@ -856,5 +855,29 @@ public class Tasks {
 
 			Gui.open(new DialogChangelog());
 		}
+	}
+
+
+	public static int taskPopulateProjectFromPack(final File pack, final Runnable after) {
+		
+		final int task = Tasks.startTask();
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+
+				// -- task begin --
+
+				(new SequencePopulateProjectFromPack(pack, after)).run();
+
+				Tasks.stopTask(task);
+
+				// -- task end --
+			}
+		}).start();
+
+		return task;
+		
 	}
 }

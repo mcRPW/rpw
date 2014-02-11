@@ -38,6 +38,7 @@ public class TreeBuilder {
 
 	/**
 	 * Build complete tree (override settings)
+	 * 
 	 * @param project project to build from
 	 * @return tree root
 	 */

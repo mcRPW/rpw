@@ -85,7 +85,7 @@ public class DialogAbout extends RpwDialog {
 				}
 			}
 		});
-		
+
 		setEnterButton(buttonOK);
 	}
 }

@@ -19,35 +19,42 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class Projects {
 
-	public static Project active = null;
+	private static Project active = null;
 
 
-	public static String getName() {
+	public static Project getActive() {
 
-		if (!isProjectOpen()) return null;
-		return getActive().getName();
+		return active;
 	}
 
 
-	public static String getTitle() {
+	public static boolean isOpen() {
 
-		if (!isProjectOpen()) return null;
-		return getActive().getTitle();
+		return active != null;
 	}
 
 
+	/**
+	 * Mark project change
+	 */
 	public static void markChange() {
 
 		Flags.PROJECT_EDITED = true;
 	}
 
 
+	/**
+	 * @return true if change was marked
+	 */
 	public static boolean isChanged() {
 
-		return isProjectOpen() && Flags.PROJECT_EDITED;
+		return isOpen() && Flags.PROJECT_EDITED;
 	}
 
 
+	/**
+	 * Reset change flag
+	 */
 	public static void clearChangeFlag() {
 
 		Flags.PROJECT_EDITED = false;
@@ -86,7 +93,7 @@ public class Projects {
 		Tasks.taskTreeRebuild();
 		openProject(name);
 		Tasks.taskStoreProjectChanges();
-		saveProject();
+		//saveProject(); don't save yet
 
 	}
 
@@ -113,18 +120,6 @@ public class Projects {
 		Flags.PROJECT_CHANGED = (active != null);
 
 		active = null;
-	}
-
-
-	public static Project getActive() {
-
-		return active;
-	}
-
-
-	public static boolean isProjectOpen() {
-
-		return active != null;
 	}
 
 

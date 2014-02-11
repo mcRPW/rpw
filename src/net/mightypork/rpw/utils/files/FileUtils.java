@@ -44,6 +44,8 @@ public class FileUtils {
 	 */
 	public static void copyDirectory(File source, File target, FileFilter filter, List<File> filesCopied) throws IOException {
 
+		if(!source.exists()) return;
+		
 		if (source.isDirectory()) {
 
 			if (!target.exists()) {
@@ -532,8 +534,7 @@ public class FileUtils {
 				if (s.startsWith("assets")) {
 					String s2 = FileUtils.escapeFilename(s);
 					String[] parts = FileUtils.getFilenameParts(s2);
-					String key = parts[0].replace('\\', '.');
-					key = key.replace('/', '.');
+					String key = parts[0].replace('\\', '.').replace('/', '.');
 					String ext = parts[1];
 					EAsset type = EAsset.forExtension(ext);
 

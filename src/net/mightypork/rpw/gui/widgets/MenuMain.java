@@ -762,7 +762,7 @@ public class MenuMain {
 
 	public void updateEnabledItems() {
 
-		boolean open = (Projects.getActive() != null);
+		boolean open = Projects.isOpen();
 
 		itemProjectExport.setEnabled(open);
 		itemProjectSave.setEnabled(open);

@@ -232,7 +232,7 @@ public class DialogConfigureEditors extends RpwDialog {
 	protected void addActions() {
 
 		setEnterButton(btnOK);
-		
+
 		btnOK.addActionListener(saveListener);
 		btnCancel.addActionListener(closeListener);
 

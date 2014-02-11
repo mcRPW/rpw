@@ -17,7 +17,7 @@ import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.struct.PackInfo;
-import net.mightypork.rpw.struct.PackInfoMap;
+import net.mightypork.rpw.struct.PackMcmeta;
 import net.mightypork.rpw.tree.assets.TreeBuilder;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
@@ -55,7 +55,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 	@Override
 	public int getStepCount() {
 
-		return 5;
+		return 6;
 	}
 
 
@@ -67,8 +67,9 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 			case 0: return "Preparing zip builder.";
 			case 1: return "Exporting included extra files.";
 			case 2: return "Exporting custom sounds.";
-			case 3: return "Exporting configuration files.";
-			case 4: return "Exporting project assets.";
+			case 3: return "Exporting custom languages.";
+			case 4: return "Exporting configuration files.";
+			case 5: return "Exporting project assets.";
 		}
 		//@formatter:on
 
@@ -86,8 +87,9 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 				case 0: return stepPrepareOutput();
 				case 1: return stepAddIncludedExtras();
 				case 2: return stepAddCustomSounds();
-				case 3: return stepAddConfigFiles();
-				case 4: return stepExportProjectAssets();
+				case 3: return stepAddCustomLanguages();
+				case 4: return stepAddConfigFiles();
+				case 5: return stepExportProjectAssets();
 			}
 			//@formatter:on
 
@@ -135,12 +137,23 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 	}
 
 
+	private boolean stepAddCustomLanguages() throws IOException {
+
+		Log.f2("Adding custom language files.");
+
+		File dir = project.getCustomLangDirectory();
+		addDirectoryToZip(dir, "assets/minecraft/lang");
+
+		return true;
+	}
+
+
 	private boolean stepAddConfigFiles() throws IOException {
 
 		if (Config.LOG_EXPORT_FILES) Log.f2("Adding configuration files.");
 
 		// pack.png
-		if (Config.LOG_EXPORT_FILES) Log.f3("- pack.png");
+		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.png");
 		InputStream in = null;
 		try {
 			File f = new File(project.getProjectDirectory(), "pack.png");
@@ -156,19 +169,19 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 		}
 
 
-		if (Config.LOG_EXPORT_FILES) Log.f3("- readme.txt");
+		if (Config.LOG_EXPORT_FILES) Log.f3("+ readme.txt");
 		zb.addResource("readme.txt", "/data/export/pack-readme.txt");
 
 
-		if (Config.LOG_EXPORT_FILES) Log.f3("- assets/minecraft/sounds.json");
+		if (Config.LOG_EXPORT_FILES) Log.f3("+ assets/minecraft/sounds.json");
 		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
 
 
 		// json mcmeta
-		if (Config.LOG_EXPORT_FILES) Log.f3("- pack.mcmeta");
+		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");
 		String desc = project.getTitle();
 
-		PackInfoMap pim = new PackInfoMap();
+		PackMcmeta pim = new PackMcmeta();
 		pim.setPackInfo(new PackInfo(1, desc));
 
 		zb.addString("pack.mcmeta", pim.toJson());
@@ -256,7 +269,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 			in.close();
 
-			if (Config.LOG_EXPORT_FILES) Log.f3("* " + path);
+			if (Config.LOG_EXPORT_FILES) Log.f3("+ " + path);
 		}
 
 	}

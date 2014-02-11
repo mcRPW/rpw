@@ -105,7 +105,7 @@ public class Sources {
 			}
 
 			if (MagicSources.isProject(source)) {
-				return Projects.isProjectOpen() && Projects.getActive().doesProvideAsset(asset.getKey());
+				return Projects.isOpen() && Projects.getActive().doesProvideAsset(asset.getKey());
 			}
 		}
 
@@ -129,7 +129,7 @@ public class Sources {
 			}
 
 			if (MagicSources.isProject(source)) {
-				return Projects.isProjectOpen() && Projects.getActive().doesProvideAssetMeta(asset.getKey());
+				return Projects.isOpen() && Projects.getActive().doesProvideAssetMeta(asset.getKey());
 			}
 		}
 

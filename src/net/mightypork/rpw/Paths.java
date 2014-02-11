@@ -15,11 +15,11 @@ public class Paths {
 	public static final String DIRNAME_PROJECT_INCLUDE = "included_files";
 	public static final String DIRNAME_PROJECT_SOUNDS = "custom_sounds";
 	public static final String DIRNAME_PROJECT_LANGUAGES = "custom_languages";
-	public static final String FILENAME_PROJECT_FILES = "sources_files.dat";
-	public static final String FILENAME_PROJECT_GROUPS = "sources_groups.dat";
-	public static final String FILENAME_PROJECT_SOUNDS = "sounds.json";
-	public static final String FILENAME_PROJECT_LANGUAGES = "languages.json";
 	public static final String FILENAME_PROJECT_CONFIG = "properties.cfg";
+	public static final String FILENAME_PROJECT_FILES = "sources_files.cfg";
+	public static final String FILENAME_PROJECT_GROUPS = "sources_groups.cfg";
+	public static final String FILENAME_PROJECT_SOUNDS = "sounds.json";
+	public static final String FILENAME_PROJECT_LANGS = "languages.json";
 
 	public static final String FILENAME_LOG = "Runtime.log";
 
@@ -57,7 +57,7 @@ public class Paths {
 	public static final String URL_UPDATE_WEB = URL_PLANETMINECRAFT_WEB;
 	public static final String URL_GITHUB_WEB = "https://github.com/MightyPork/rpw/";
 	public static final String URL_GITHUB_BUGS = "https://github.com/MightyPork/rpw/issues/new";
-	
+
 	public static final String URL_LATEST_DOWNLOAD = "https://dl.dropboxusercontent.com/u/64454818/RPW/RPW-LATEST.jar";
 
 

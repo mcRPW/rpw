@@ -381,7 +381,7 @@ public class DialogSoundWizard extends RpwDialog {
 
 	@Override
 	protected void addActions() {
-		
+
 		setEnterButton(buttonOK);
 
 

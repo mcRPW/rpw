@@ -50,7 +50,7 @@ public class DialogExportToMc extends RpwDialog {
 		super(App.getFrame(), "Export");
 
 		installedPackNames = getOptions();
-		
+
 		createDialog();
 	}
 
@@ -121,7 +121,7 @@ public class DialogExportToMc extends RpwDialog {
 
 	@Override
 	protected void addActions() {
-		
+
 		setEnterButton(buttonOK);
 
 		buttonCancel.addActionListener(closeListener);

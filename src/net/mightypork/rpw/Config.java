@@ -261,7 +261,7 @@ public class Config {
 		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
 		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL); // LAST_RUN_VERSION field stays unchanged until restart.
 		mgr.setValue(PK_LIBRARY_VERSION, LIBRARY_VERSION);
-		
+
 		mgr.apply();
 
 		if (App.getMenu() != null) {

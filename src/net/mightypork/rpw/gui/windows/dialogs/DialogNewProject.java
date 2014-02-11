@@ -31,7 +31,6 @@ import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
 
 import org.jdesktop.swingx.JXLabel;
-import org.jdesktop.swingx.prompt.PromptSupport;
 
 
 public class DialogNewProject extends RpwDialog {
@@ -53,12 +52,13 @@ public class DialogNewProject extends RpwDialog {
 
 
 	private List<JComponent> respackGroup = new ArrayList<JComponent>();
+	private List<JComponent> blankGroup = new ArrayList<JComponent>();
 
 
 	public DialogNewProject() {
 
 		super(App.getFrame(), "New Project");
-		
+
 		projectNames = Projects.getProjectNames();
 
 		createDialog();
@@ -89,7 +89,7 @@ public class DialogNewProject extends RpwDialog {
 		vbox.gap();
 		
 		hb = new HBox();	
-			hb.add(radioResourcePack = new JRadioButton("Project from resource / texture pack"));
+			hb.add(radioResourcePack = new JRadioButton("Project from resource pack"));
 			radioResourcePack.setForeground(Gui.SUBHEADING_COLOR);
 			hb.glue();
 		vbox.add(hb);
@@ -146,9 +146,13 @@ public class DialogNewProject extends RpwDialog {
 		label.setLabelFor(titleField);
 		p.add(titleField);
 
+		blankGroup.add(label);
+		blankGroup.add(titleField);
+
 		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
 
 		vbox.add(p);
+		vbox.add(Gui.commentLine("<html><center>Project created from existing pack<br>will keep the original title.</center></html>"));
 		vbox.gapl();
 
 		hb = new HBox();
@@ -173,6 +177,10 @@ public class DialogNewProject extends RpwDialog {
 
 		for (JComponent j : respackGroup) {
 			j.setEnabled(enable);
+		}
+
+		for (JComponent j : blankGroup) {
+			j.setEnabled(!enable);
 		}
 	}
 
@@ -242,7 +250,7 @@ public class DialogNewProject extends RpwDialog {
 				return;
 			}
 
-			if (title.length() == 0) {
+			if (!usePackFile && title.length() == 0) {
 				Alerts.error(self(), "Invalid title", "Missing project title!");
 				return;
 			}
@@ -257,28 +265,39 @@ public class DialogNewProject extends RpwDialog {
 			} else {
 
 				final String projname = name;
-				final String projtitle = title;
-				if (Projects.isProjectOpen()) {
-					Tasks.taskAskToSaveIfChanged(new Runnable() {
 
-						@Override
-						public void run() {
+				// pack project starts with name = title, title is replaced during import.
+				final String projtitle = usePackFile ? name : title;
 
-							// OK name
-							closeDialog();
 
-							Alerts.loading(true);
-							Projects.openNewProject(projname);
-							Projects.getActive().setTitle(projtitle);
+				Tasks.taskAskToSaveIfChanged(new Runnable() {
 
-							// TODO load from file if requested?
+					@Override
+					public void run() {
 
-							Tasks.taskOnProjectChanged();
-							Alerts.loading(false);
+						// OK name
+						closeDialog();
+
+						Alerts.loading(true);
+						Projects.openNewProject(projname);
+						Projects.getActive().setTitle(projtitle);
+						Tasks.taskOnProjectChanged();
+						Alerts.loading(false);
+
+						if (usePackFile) {
+							Tasks.taskPopulateProjectFromPack(selectedFile, new Runnable() {
+
+								@Override
+								public void run() {
+
+									Tasks.taskOnProjectPropertiesChanged();
+									Tasks.taskTreeRebuild();
+								}
+							});
 						}
-					});
 
-				}
+					}
+				});
 
 			}
 
@@ -312,10 +331,6 @@ public class DialogNewProject extends RpwDialog {
 
 						if (nameField.getText().trim().length() == 0) {
 							nameField.setText(parts[0]);
-						}
-
-						if (titleField.getText().trim().length() == 0) {
-							titleField.setText(parts[0]);
 						}
 					} catch (Throwable t) {}
 				}

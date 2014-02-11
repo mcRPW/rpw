@@ -16,6 +16,7 @@ import javax.swing.KeyStroke;
 
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.helpers.WindowCloseListener;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public abstract class RpwDialog extends JDialog {
@@ -146,13 +147,15 @@ public abstract class RpwDialog extends JDialog {
 	protected void initGui() {
 
 	}
-	
-	
+
+
 	/**
 	 * Set button pressed on ENTER press
+	 * 
 	 * @param button btn
 	 */
 	protected void setEnterButton(JButton button) {
+
 		getRootPane().setDefaultButton(button);
 	}
 
@@ -161,7 +164,8 @@ public abstract class RpwDialog extends JDialog {
 	public void setVisible(boolean b) {
 
 		onShown();
-		
+		Log.f3("Dialog open: " + getTitle());
+
 		super.setVisible(b);
 
 	}
@@ -197,6 +201,8 @@ public abstract class RpwDialog extends JDialog {
 	 * Called after onClose - run the hooks
 	 */
 	private void afterOnClose() {
+		
+		Log.f3("Dialog closed: " + getTitle());
 
 		for (Runnable hook : closeHooks) {
 			hook.run();

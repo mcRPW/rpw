@@ -9,12 +9,22 @@ import java.util.zip.ZipOutputStream;
 import net.mightypork.rpw.utils.logging.Log;
 
 
+/**
+ * Class for building a zip file
+ * 
+ * @author MightyPork
+ */
 public class ZipBuilder {
 
 	private ZipOutputStream out;
 	private HashSet<String> included = new HashSet<String>();
 
 
+	/**
+	 * @param target target zip file
+	 * @throws FileNotFoundException if the file is directory or cannot be
+	 *             created
+	 */
 	public ZipBuilder(File target) throws FileNotFoundException {
 
 		target.getParentFile().mkdirs();
@@ -24,6 +34,13 @@ public class ZipBuilder {
 	}
 
 
+	/**
+	 * Add stream to a path
+	 * 
+	 * @param path path
+	 * @param in stream
+	 * @throws IOException
+	 */
 	public void addStream(String path, InputStream in) throws IOException {
 
 		path = preparePath(path);
@@ -33,21 +50,24 @@ public class ZipBuilder {
 		}
 		included.add(path);
 
-		//System.out.println("Adding path: " + path);
-
 		out.putNextEntry(new ZipEntry(path));
 
 		FileUtils.copyStreamNoCloseOut(in, out);
 	}
 
 
+	/**
+	 * Add string as a file
+	 * 
+	 * @param path path
+	 * @param text text to write
+	 * @throws IOException
+	 */
 	public void addString(String path, String text) throws IOException {
 
 		path = preparePath(path);
 		if (included.contains(path)) return; // ignore
 		included.add(path);
-
-		//System.out.println("Adding path: " + path);
 
 		out.putNextEntry(new ZipEntry(path));
 
@@ -56,13 +76,18 @@ public class ZipBuilder {
 	}
 
 
+	/**
+	 * Add resource obtained via FileUtils.getResource()
+	 * 
+	 * @param path path
+	 * @param resPath resource path
+	 * @throws IOException
+	 */
 	public void addResource(String path, String resPath) throws IOException {
 
 		path = preparePath(path);
 		if (included.contains(path)) return; // ignore
 		included.add(path);
-
-		//System.out.println("Adding path: " + path);
 
 		out.putNextEntry(new ZipEntry(path));
 
@@ -71,6 +96,12 @@ public class ZipBuilder {
 	}
 
 
+	/**
+	 * Normalize path
+	 * 
+	 * @param path original path
+	 * @return normalized path
+	 */
 	private String preparePath(String path) {
 
 		path = path.replace("\\", "/");
@@ -81,6 +112,11 @@ public class ZipBuilder {
 	}
 
 
+	/**
+	 * Close the zip stream
+	 * 
+	 * @throws IOException
+	 */
 	public void close() throws IOException {
 
 		out.close();

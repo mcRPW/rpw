@@ -38,6 +38,8 @@ public class DialogManageLibrary extends RpwDialog {
 	private JButton buttonRename;
 	private JButton buttonImport;
 
+	private boolean changedAnything;
+
 
 	private void reloadOptions() {
 
@@ -48,7 +50,7 @@ public class DialogManageLibrary extends RpwDialog {
 	public DialogManageLibrary() {
 
 		super(App.getFrame(), "Manage Library");
-		
+
 		packNames = Sources.getResourcepackNames();
 
 		createDialog();
@@ -108,7 +110,7 @@ public class DialogManageLibrary extends RpwDialog {
 	@Override
 	public void onClose() {
 
-		Tasks.taskReloadSources(null);
+		if(changedAnything) Tasks.taskReloadSources(null);
 	}
 
 
@@ -171,6 +173,7 @@ public class DialogManageLibrary extends RpwDialog {
 
 			Tasks.taskTreeSourceRename(oldName, newName);
 
+			changedAnything = true;
 			reloadOptions();
 		}
 	};
@@ -205,6 +208,7 @@ public class DialogManageLibrary extends RpwDialog {
 				Tasks.taskDeleteResourcepack(s);
 			}
 
+			changedAnything = true;
 			reloadOptions();
 		}
 	};
@@ -220,6 +224,7 @@ public class DialogManageLibrary extends RpwDialog {
 				@Override
 				public void run() {
 
+					changedAnything = true;
 					reloadOptions();
 				}
 			});

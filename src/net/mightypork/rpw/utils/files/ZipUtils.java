@@ -10,66 +10,38 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 
+/**
+ * Utilities for manipulating zip files
+ * 
+ * @author MightyPork
+ */
 public class ZipUtils {
 
 	private static final int BUFFER_SIZE = 2048;
 
 
-	public static List<String> extractZip(File zipFile, File outputDir, StringFilter filter) throws ZipException, IOException {
+	/**
+	 * Extract zip file to target directory
+	 * 
+	 * @param file zip file
+	 * @param outputDir target directory
+	 * @param filter string filter (will be used to test entry names (paths))
+	 * @return list of entries extracted (paths)
+	 * @throws IOException
+	 */
+	public static List<String> extractZip(File file, File outputDir, StringFilter filter) throws IOException {
 
 		ZipFile zip = null;
-		ArrayList<String> files = new ArrayList<String>();
-
 		try {
 
-			outputDir.mkdirs();
+			zip = new ZipFile(file);
 
-			zip = new ZipFile(zipFile);
-
-			Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
-
-			// process each entry
-			while (zipFileEntries.hasMoreElements()) {
-
-				ZipEntry entry = zipFileEntries.nextElement();
-
-
-				// parse filename and path
-				String entryPath = entry.getName();
-				File destFile = new File(outputDir, entryPath);
-				File destinationParent = destFile.getParentFile();
-
-				if (entry.isDirectory() || (filter != null && !filter.accept(entryPath))) continue;
-
-
-				// make sure directories exist
-				destinationParent.mkdirs();
-
-				if (!entry.isDirectory()) {
-					BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
-
-					byte data[] = new byte[BUFFER_SIZE];
-
-					FileOutputStream fos = new FileOutputStream(destFile);
-					BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE);
-
-					int b;
-					while ((b = is.read(data, 0, BUFFER_SIZE)) != -1) {
-						dest.write(data, 0, b);
-					}
-					dest.flush();
-					dest.close();
-					is.close();
-
-					files.add(entryPath);
-				}
-			}
+			return extractZip(zip, outputDir, filter);
 
 		} finally {
 			try {
@@ -78,39 +50,143 @@ public class ZipUtils {
 				// doesnt matter
 			}
 		}
+	}
+
+
+	/**
+	 * Extract zip file to target directory
+	 * 
+	 * @param zipFile open zip file
+	 * @param outputDir target directory
+	 * @param filter string filter (will be used to test entry names (paths))
+	 * @return list of entries extracted (paths)
+	 * @throws IOException
+	 */
+	public static List<String> extractZip(ZipFile zip, File outputDir, StringFilter filter) throws IOException {
+
+		ArrayList<String> files = new ArrayList<String>();
+
+		outputDir.mkdirs();
+
+		Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
+
+		// process each entry
+		while (zipFileEntries.hasMoreElements()) {
+
+			ZipEntry entry = zipFileEntries.nextElement();
+
+
+			// parse filename and path
+			String entryPath = entry.getName();
+			File destFile = new File(outputDir, entryPath);
+			File destinationParent = destFile.getParentFile();
+
+			if (entry.isDirectory() || (filter != null && !filter.accept(entryPath))) continue;
+
+			// make sure directories exist
+			destinationParent.mkdirs();
+
+			if (!entry.isDirectory()) {
+				extractZipEntry(zip, entry, destFile);
+				files.add(entryPath);
+			}
+		}
 
 		return files;
 	}
 
 
-	public static List<String> listZip(File zipFile) throws ZipException, IOException {
-
-		ArrayList<String> files = new ArrayList<String>();
+	/**
+	 * Read zip entries and add their paths to a list
+	 * 
+	 * @param zipFile open zip file
+	 * @return list of entry names
+	 * @throws IOException on error
+	 */
+	public static List<String> listZip(File zipFile) throws IOException {
 
 		ZipFile zip = null;
-
 		try {
 			zip = new ZipFile(zipFile);
-
-			Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
-
-			// process each entry
-			while (zipFileEntries.hasMoreElements()) {
-				ZipEntry entry = zipFileEntries.nextElement();
-
-				if (!entry.isDirectory()) {
-					files.add(entry.getName());
-				}
-			}
-
+			return listZip(zip);
 		} finally {
 			try {
 				if (zip != null) zip.close();
 			} catch (IOException e) {
-				// zero fucks given
+				//
+			}
+		}
+	}
+
+
+	/**
+	 * Read zip entries and add their paths to a list
+	 * 
+	 * @param zip open zip file
+	 * @return list of entry names
+	 * @throws IOException on error
+	 */
+	public static List<String> listZip(ZipFile zip) throws IOException {
+
+		ArrayList<String> files = new ArrayList<String>();
+
+		Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
+
+		// process each entry
+		while (zipFileEntries.hasMoreElements()) {
+			ZipEntry entry = zipFileEntries.nextElement();
+
+			if (!entry.isDirectory()) {
+				files.add(entry.getName());
 			}
 		}
 
 		return files;
+	}
+
+
+	/**
+	 * Extract one zip entry to target file
+	 * 
+	 * @param zip open zip file
+	 * @param entry entry from the zip file
+	 * @param destFile destination file ((NOT directory!)
+	 * @throws IOException on error
+	 */
+	public static void extractZipEntry(ZipFile zip, ZipEntry entry, File destFile) throws IOException {
+
+		BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
+
+		destFile.getParentFile().mkdirs();
+
+		byte data[] = new byte[BUFFER_SIZE];
+
+		FileOutputStream fos = new FileOutputStream(destFile);
+		BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE);
+
+		int b;
+		while ((b = is.read(data, 0, BUFFER_SIZE)) != -1) {
+			dest.write(data, 0, b);
+		}
+		dest.flush();
+		dest.close();
+		is.close();
+	}
+
+
+	/**
+	 * Load zip entry to String
+	 * 
+	 * @param zip open zip file
+	 * @param entry entry from the zip file
+	 * @return loaded string
+	 * @throws IOException on error
+	 */
+	public static String zipEntryToString(ZipFile zip, ZipEntry entry) throws IOException {
+
+		BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
+		String s = FileUtils.streamToString(is);
+		is.close();
+		return s;
 	}
 }

@@ -17,7 +17,7 @@ public class TaskExportProject {
 
 	public static void showDialog() {
 
-		if (Projects.getActive() == null) return;
+		if (!Projects.isOpen()) return;
 
 		Project project = Projects.getActive();
 

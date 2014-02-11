@@ -4,7 +4,6 @@ package net.mightypork.rpw.gui.windows.messages;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -36,7 +35,7 @@ public class DialogChangelog extends RpwDialog {
 
 		HBox hb;
 		VBox vbox = new VBox();
-		
+
 		vbox.windowPadding();
 
 		vbox.heading("What's new in RPW");
@@ -46,7 +45,7 @@ public class DialogChangelog extends RpwDialog {
 		JLabel content = new JLabel(text);
 		content.setAlignmentX(0.5f);
 		content.setMinimumSize(new Dimension(200, 100));
-		content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL*2, Gui.GAP, Gui.GAPL*2));
+		content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL * 2, Gui.GAP, Gui.GAPL * 2));
 		vbox.add(content);
 
 		//@formatter:off		

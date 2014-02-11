@@ -11,22 +11,25 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
-public class PackInfoMap extends HashMap<String, PackInfo> {
+public class PackMcmeta {
 
 	private static Gson gson = Config.PRETTY_JSON ? Const.PRETTY_GSON : Const.UGLY_GSON;
 	private static Type type = null;
+	
+	public PackInfo pack = null;
+	public LangEntryMap language = new LangEntryMap();
 
 
 	public static Type getType() {
 
 		if (type == null) {
-			type = new TypeToken<PackInfoMap>() {}.getType();
+			type = new TypeToken<PackMcmeta>() {}.getType();
 		}
 		return type;
 	}
 
 
-	public static PackInfoMap fromJson(String json) {
+	public static PackMcmeta fromJson(String json) {
 
 		return gson.fromJson(json, getType());
 	}
@@ -40,12 +43,12 @@ public class PackInfoMap extends HashMap<String, PackInfo> {
 
 	public PackInfo getPackInfo() {
 
-		return get("pack");
+		return pack;
 	}
 
 
 	public void setPackInfo(PackInfo packInfo) {
 
-		put("pack", packInfo);
+		pack = packInfo;
 	}
 }

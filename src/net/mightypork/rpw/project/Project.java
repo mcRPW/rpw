@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.mightypork.rpw.App;
@@ -17,6 +15,7 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Source;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.struct.LangEntryMap;
 import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.UpdateHelper;
@@ -34,6 +33,7 @@ public class Project extends Source implements NodeSourceProvider {
 	private Map<String, String> files = new LinkedHashMap<String, String>();
 	private Map<String, String> groups = new LinkedHashMap<String, String>();
 	private SoundEntryMap sounds = new SoundEntryMap();
+	private LangEntryMap langs = new LangEntryMap();
 
 	private PropertyManager props;
 
@@ -46,8 +46,7 @@ public class Project extends Source implements NodeSourceProvider {
 	private File fileSourcesFiles;
 	private File fileSourcesGroups;
 	private File fileSounds;
-	@SuppressWarnings("unused")
-	private File fileLanguages;
+	private File fileLangs;
 	private File fileConfig;
 
 	private String projectName;
@@ -63,7 +62,6 @@ public class Project extends Source implements NodeSourceProvider {
 		projectTitle = identifier; // by default
 
 		File f = getRealProjectBase();
-		f.mkdirs();
 
 		tmpBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP + "-" + identifier, true);
 
@@ -73,7 +71,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 	private File getRealProjectBase() {
 
-		return OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + projectName, true);
+		return OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + projectName, false);
 	}
 
 
@@ -97,6 +95,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 		fileConfig = new File(tmpBase, Paths.FILENAME_PROJECT_CONFIG);
 
+
 		props = new PropertyManager(fileConfig, "Project '" + projectName + "' config file");
 		props.cfgNewlineBeforeComments(false);
 		props.cfgSeparateSections(false);
@@ -107,6 +106,7 @@ public class Project extends Source implements NodeSourceProvider {
 		props.renameKey("name", "title"); // change 3.8.3 -> 3.8.4
 
 		props.apply();
+
 
 		projectTitle = props.getString("title");
 		lastRpwVersion = props.getInteger("version");
@@ -119,7 +119,10 @@ public class Project extends Source implements NodeSourceProvider {
 		fileSourcesFiles = new File(tmpBase, Paths.FILENAME_PROJECT_FILES);
 		fileSourcesGroups = new File(tmpBase, Paths.FILENAME_PROJECT_GROUPS);
 		fileSounds = new File(tmpBase, Paths.FILENAME_PROJECT_SOUNDS);
-		fileLanguages = new File(tmpBase, Paths.FILENAME_PROJECT_LANGUAGES);
+		fileLangs = new File(tmpBase, Paths.FILENAME_PROJECT_LANGS);
+
+		updateProjectStructure();
+
 
 		installDefaultIcon(false);
 		installReadme(true);
@@ -145,6 +148,10 @@ public class Project extends Source implements NodeSourceProvider {
 				sounds = SoundEntryMap.fromJson(FileUtils.fileToString(fileSounds));
 			}
 
+			if (fileLangs.exists()) {
+				langs = LangEntryMap.fromJson(FileUtils.fileToString(fileLangs));
+			}
+
 			privateCopiesBase.mkdirs();
 			extraIncludesBase.mkdirs();
 			customSoundsBase.mkdirs();
@@ -163,6 +170,28 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 
 
+	private void updateProjectStructure() {
+
+		List<File[]> oldnew = new ArrayList<File[]>();
+
+		// changed in 3.8.4 to "cfg"
+		oldnew.add(new File[] { new File(tmpBase, "sources_files.dat"), fileSourcesFiles });
+		oldnew.add(new File[] { new File(tmpBase, "sources_groups.dat"), fileSourcesGroups });
+
+		for (File[] ff : oldnew) {
+			if (ff[0].exists()) {
+				try {
+					FileUtils.copyFile(ff[0], ff[1]);
+					FileUtils.delete(ff[0], false);
+				} catch (IOException e) {
+					Log.e(e);
+				}
+			}
+		}
+
+	}
+
+
 	public String getLogPrefix() {
 
 		return "Project '" + projectName + "': ";
@@ -174,6 +203,7 @@ public class Project extends Source implements NodeSourceProvider {
 		SimpleConfig.mapToFile(fileSourcesFiles, files, false);
 		SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
 		FileUtils.stringToFile(fileSounds, sounds.toJson());
+		FileUtils.stringToFile(fileLangs, langs.toJson());
 
 		saveProperties();
 	}
@@ -244,6 +274,9 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 
 
+	/**
+	 * Save project properties (title and RPW version)
+	 */
 	public void saveProperties() {
 
 		Log.f3(getLogPrefix() + "Saving properties to TMP");
@@ -262,9 +295,9 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 
 
-	public void setSourceForFile(String groupKey, String source) {
+	public void setSourceForFile(String fileKey, String source) {
 
-		files.put(groupKey, source);
+		files.put(fileKey, source);
 	}
 
 
@@ -394,6 +427,12 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 
 
+	public File getCustomLangDirectory() {
+
+		return customLanguagesBase;
+	}
+
+
 	public String getName() {
 
 		return projectName;
@@ -403,6 +442,25 @@ public class Project extends Source implements NodeSourceProvider {
 	public SoundEntryMap getSoundsMap() {
 
 		return sounds;
+	}
+
+
+	public LangEntryMap getLangMap() {
+
+		return langs;
+
+	}
+
+
+	public void setSoundMap(SoundEntryMap soundmap) {
+
+		this.sounds = soundmap;
+	}
+
+
+	public void setLangMap(LangEntryMap langmap) {
+
+		this.langs = langmap;
 	}
 
 }

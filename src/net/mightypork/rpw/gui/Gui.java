@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
+import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.files.DesktopApi;
 import net.mightypork.rpw.utils.logging.Log;
@@ -186,5 +187,17 @@ public class Gui {
 		jb.setIconTextGap(Gui.GAP);
 
 		return jb;
+	}
+
+
+	public static JComponent commentLine(String text) {
+
+		HBox hb = new HBox();
+		JLabel l;
+		hb.add(l = new JLabel(text));
+		l.setFont(l.getFont().deriveFont(11));
+		l.setHorizontalAlignment(SwingConstants.CENTER);
+		l.setForeground(Color.GRAY);
+		return hb;
 	}
 }

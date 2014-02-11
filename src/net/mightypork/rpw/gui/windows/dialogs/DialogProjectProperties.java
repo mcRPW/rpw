@@ -1,7 +1,6 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +19,6 @@ import net.mightypork.rpw.gui.widgets.ManagerLayout;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
-import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.SpringUtilities;
@@ -101,12 +99,7 @@ public class DialogProjectProperties extends RpwDialog {
 				
 		vbox.gap();
 
-		hb = new HBox();
-			hb.add(l = new JLabel("Use \"My Projects\" dialog to rename project."));
-			l.setFont(l.getFont().deriveFont(11));
-			l.setHorizontalAlignment(SwingConstants.CENTER);
-			l.setForeground(Color.GRAY);
-		vbox.add(hb);
+		vbox.add(Gui.commentLine("Use \"My Projects\" dialog to rename project."));
 		
 		vbox.gapl();
 
@@ -144,12 +137,13 @@ public class DialogProjectProperties extends RpwDialog {
 
 		return vbox;
 	}
-	
+
+
 	@Override
 	protected void onShown() {
-		System.out.println("yolo");
-		titleField.setText(Projects.getTitle());
-		nameField.setText(Projects.getName());
+
+		titleField.setText(Projects.getActive().getTitle());
+		nameField.setText(Projects.getActive().getName());
 	}
 
 
@@ -177,7 +171,7 @@ public class DialogProjectProperties extends RpwDialog {
 	protected void addActions() {
 
 		setEnterButton(buttonOK);
-		
+
 		btnIconEdit.addActionListener(imgEditListener);
 		btnIconImport.addActionListener(imgImportListener);
 		btnIconDefault.addActionListener(imgDefaultListener);

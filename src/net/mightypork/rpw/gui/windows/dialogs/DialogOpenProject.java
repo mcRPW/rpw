@@ -51,7 +51,7 @@ public class DialogOpenProject extends RpwDialog {
 		super(App.getFrame(), "Manage Projects");
 
 		projectNames = Projects.getProjectNames();
-		
+
 		createDialog();
 	}
 
@@ -132,7 +132,7 @@ public class DialogOpenProject extends RpwDialog {
 				return;
 			}
 
-			if (Projects.getActive() != null && Projects.getActive().getName().equals(projname)) {
+			if (Projects.isOpen() && Projects.getActive().getName().equals(projname)) {
 
 				boolean agree = Alerts.askOkCancel(self(), "Project is open", "RPW can't RENAME an open project.\n\nDo you want to close it?");
 
@@ -204,7 +204,7 @@ public class DialogOpenProject extends RpwDialog {
 
 			if (!yes) return;
 
-			if (Projects.getActive() != null) {
+			if (Projects.isOpen()) {
 				String openProjectDirname = Projects.getActive().getName();
 
 				boolean isOpen = false;

@@ -5,6 +5,8 @@ public class PackInfo {
 
 	public int pack_format;
 	public String description;
+	
+	public PackInfo() {}
 
 
 	public PackInfo(int format, String desc) {

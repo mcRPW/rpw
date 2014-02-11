@@ -10,8 +10,6 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
@@ -28,7 +26,6 @@ import net.mightypork.rpw.utils.SpringUtilities;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
-import org.jdesktop.swingx.prompt.PromptSupport;
 
 
 public class DialogSaveAs extends RpwDialog {
@@ -49,7 +46,7 @@ public class DialogSaveAs extends RpwDialog {
 		super(App.getFrame(), "Save As...");
 
 		projectNames = Projects.getProjectNames();
-		
+
 		createDialog();
 	}
 
@@ -81,7 +78,7 @@ public class DialogSaveAs extends RpwDialog {
 		vb.gapl();
 		
 		*/
-		
+
 		vb.titsep("New project settings");
 		vb.gap();
 
@@ -103,19 +100,19 @@ public class DialogSaveAs extends RpwDialog {
 		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
 
 		vb.add(p);
-		
+
 		vb.gapl();
-		
+
 		hb = new HBox();
-			hb.glue();
-	
-			buttonOK = new JButton("Save", Icons.MENU_SAVE_AS);
-			hb.add(buttonOK);
-	
-			hb.gap();
-	
-			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-			hb.add(buttonCancel);
+		hb.glue();
+
+		buttonOK = new JButton("Save", Icons.MENU_SAVE_AS);
+		hb.add(buttonOK);
+
+		hb.gap();
+
+		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+		hb.add(buttonCancel);
 		vb.add(hb);
 		//@formatter:on
 
@@ -132,7 +129,7 @@ public class DialogSaveAs extends RpwDialog {
 
 	@Override
 	protected void addActions() {
-		
+
 		setEnterButton(buttonOK);
 
 		buttonOK.addActionListener(saveListener);
@@ -150,7 +147,7 @@ public class DialogSaveAs extends RpwDialog {
 				Alerts.error(self(), "Invalid name", "Missing project name!");
 				return;
 			}
-			
+
 			String title = titleField.getText().trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid title", "Missing project title!");

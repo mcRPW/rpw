@@ -4,7 +4,6 @@ package net.mightypork.rpw.gui.windows.dialogs;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,18 +119,18 @@ public class DialogManageMcPacks extends RpwDialog {
 	@Override
 	protected void addActions() {
 
-		
+
 		list.addKeyListener(new KeyPressListener() {
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
-			
-				if(e.getKeyCode() == KeyEvent.VK_DELETE) {
+
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					deleteListener.actionPerformed(null);
 				}
 			}
 		});
-		
+
 		setEnterButton(buttonClose);
 		buttonClose.addActionListener(closeListener);
 		buttonDelete.addActionListener(deleteListener);

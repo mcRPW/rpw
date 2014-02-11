@@ -1,83 +1,64 @@
 
-  ___  __  __  ____    ___   ____  _____   _     _   _  _____  _ 
- |_ _||  \/  ||  _ \  / _ \ |  _ \|_   _| / \   | \ | ||_   _|| |
-  | | | |\/| || |_) || | | || |_) | | |  / _ \  |  \| |  | |  | |
-  | | | |  | ||  __/ | |_| ||  _ <  | | / ___ \ | |\  |  | |  |_|
- |___||_|  |_||_|     \___/ |_| \_\ |_|/_/   \_\|_| \_|  |_|  (_)
-                                                                 
+   ___  __  __  ____    ___   ____  _____   _     _   _  _____  _ 
+  |_ _||  \/  ||  _ \  / _ \ |  _ \|_   _| / \   | \ | ||_   _|| |
+   | | | |\/| || |_) || | | || |_) | | |  / _ \  |  \| |  | |  | |
+   | | | |  | ||  __/ | |_| ||  _ <  | | / ___ \ | |\  |  | |  |_|
+  |___||_|  |_||_|     \___/ |_| \_\ |_|/_/   \_\|_| \_|  |_|  (_)
+
+        +------------------------------------------------+
+        |  Messing with stuff here is AT YOUR OWN RISK!  |
+        +------------------------------------------------+
 
 
-## Where is this file? ##
+ ########################
+ # Where is this file?  #
+ ########################
 
-
-".mcRPW/tmp/workdir-PROJECTNAME/..."
+  ".mcRPW/tmp/workdir-PROJECTNAME/..."
   
-   - then it's a temporary folder.
+    -> then it's a temporary folder.
 
-     Edit ONLY when the project is open in RPW, and then Save it.
-     Otherwise, your changes will be lost.
+       Edit ONLY when the project is open in RPW, and then Save it.
+       Otherwise, your changes will be lost.
 
 
-".mcRPW/projects/PROJECTNAME/..."
+  ".mcRPW/projects/PROJECTNAME/..."
 
-  - then it's a project folder.
+    -> then it's a project folder.
      
-     DO NOT EDIT if the project is open in RPW.
-     Otherwise, your changes will be lost upon Save.
+       DO NOT EDIT if the project is open in RPW.
+       Otherwise, your changes will be lost upon Save.
 
 
 
-
-## Stuff in this folder ##
-
-
-custom_sounds/
-
-   - directory for custom sounds. Copy OGG files here and you'll
-     see them in the Sound Wizard in RPW.
-
-
-included_files/
-
-   - anything in this folder will be added to the resource pack
-     when exporting. Add files here to force them to be included.
-
-
-project_files/
-
-   - files that are in RPW marked as "PROJ" are stored here.
-     This includes changed textures, text and JSON files etc.
-
-
-custom_languages/
-
-   - custom languages are stored here.
-     Use RPW to work with those.
-
-
-pack.png
-
-   - resource pack icon shown in Minecraft.
-     To refresh it in RPW, use the "Project properties" dialog.
+ ########################
+ # Stuff in this folder #
+ ########################
+    
+    |
+    +- custom_languages/   custom language files
+    |
+    +- custom_sounds/      custom sounds (put your ogg's here)
+    |
+    +- included_files/     YOUR extra files included when exporting
+    |
+    +- project_files/      project files that replace Vanilla ones
+    |
+    |
+    +- languages.json      custom languages config files
+    |
+    +- pack.png            pack icon shown in Minecraft
+    |
+    +- properties.cfg      project config file
+    |
+    +- README.txt          this info file
+    |
+    +- sounds.json         custom sounds config file
+    |
+    +- sources_files.cfg   tree leaves config file
+    |
+    +- sources_groups.cfg  tree groups config file
+ 
 
 
-properties.cfg
-
-   - RPW's config file for this project.
-     DO NOT EDIT
-
-
-sounds.json
-
-   - here RPW keeps information about custom sounds.
-     DO NOT EDIT
-
-
-source_files.dat
-source_groups.dat
-
-   - here RPW keeps information about assigned sources.
-     This information is shown in the "Assigned" table column.
-     DO NOT EDIT
-
-~~~ end of file ~~~
+ End of file.

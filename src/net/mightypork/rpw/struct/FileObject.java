@@ -14,7 +14,6 @@ public class FileObject {
 
 	public FileObject() {
 
-		// implicit constructor for GSON
 	}
 
 
