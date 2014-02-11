@@ -779,7 +779,7 @@ public class Tasks {
 
 	public static void taskUpdateTitlebar() {
 
-		App.getFrame().setTitle(App.getWindowTitle());
+		App.setTitle(App.getWindowTitle());
 	}
 
 

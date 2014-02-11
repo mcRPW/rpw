@@ -238,4 +238,12 @@ public class App {
 		wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  Created by MightyPork";
 		return wt;
 	}
+
+
+	public static void setTitle(String windowTitle) {
+
+		if (inst == null || inst.window == null) return;
+
+		inst.window.frame.setTitle(windowTitle);
+	}
 }
