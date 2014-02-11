@@ -112,8 +112,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 	private boolean stepAddIncludedExtras() {
 
-		Log.f2("Adding included extra files.");
-
 		try {
 			File dir = project.getExtrasDirectory();
 			addDirectoryToZip(dir, "");
@@ -128,8 +126,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 	private boolean stepAddCustomSounds() throws IOException {
 
-		Log.f2("Adding custom sound files.");
-
 		File dir = project.getCustomSoundsDirectory();
 		addDirectoryToZip(dir, "assets/minecraft/sounds");
 
@@ -139,8 +135,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 	private boolean stepAddCustomLanguages() throws IOException {
 
-		Log.f2("Adding custom language files.");
-
 		File dir = project.getCustomLangDirectory();
 		addDirectoryToZip(dir, "assets/minecraft/lang");
 
@@ -149,8 +143,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 
 	private boolean stepAddConfigFiles() throws IOException {
-
-		if (Config.LOG_EXPORT_FILES) Log.f2("Adding configuration files.");
 
 		// pack.png
 		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.png");
@@ -226,7 +218,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 		}
 
 		if (!success) {
-			Log.f1("Exporting project \"" + project.getTitle() + "\" - FAILED.");
+			Log.w("Exporting project \"" + project.getTitle() + "\" - FAILED.");
 			// cleanup
 			target.delete();
 
@@ -246,7 +238,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target + " - done.");
 
 		Alerts.info(App.getFrame(), "Export successful.");
-		closeMonitor();
 	}
 
 
@@ -340,7 +331,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 						try {
 							data = Sources.getAssetMetaStream(srcName, leaf.getAssetKey());
 							if (data == null) {
-								Log.w("null meta stream");
+								Log.e("null meta stream");
 								break;
 							}
 

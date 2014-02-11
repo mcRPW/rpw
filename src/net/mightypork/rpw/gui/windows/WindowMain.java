@@ -11,7 +11,6 @@ import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
 import net.mightypork.rpw.App;
-import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.WindowCloseListener;
 import net.mightypork.rpw.gui.widgets.MenuMain;
@@ -32,7 +31,7 @@ public class WindowMain {
 
 	public WindowMain() {
 
-		frame = new JXFrame(Const.WINDOW_TITLE);
+		frame = new JXFrame(App.getWindowTitle());
 		frame.setIconImage(Icons.WINDOW.getImage());
 
 		App.inst.menu = menu = new MenuMain();

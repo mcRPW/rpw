@@ -9,10 +9,10 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.HtmlBuilder;
-
-import org.jdesktop.swingx.JXTitledSeparator;
 
 
 public class DialogUpdateNotify extends RpwDialog {
@@ -36,32 +36,28 @@ public class DialogUpdateNotify extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		HBox hb;
+		VBox vb = new VBox();
+		vb.windowPadding();
 
-		vb.add(Gui.createDialogHeading("RPW update v" + version + " available!"));
+		vb.heading("RPW update v" + version + " available!");
 
 		String text = HtmlBuilder.markdownToHtmlBase(textMd);
 
 		JLabel content = new JLabel(text);
 		content.setAlignmentX(0.5f);
 		content.setMinimumSize(new Dimension(200, 100));
-		content.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
+		content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL * 2, Gui.GAP, Gui.GAPL * 2));
 		vb.add(content);
 
-		JXTitledSeparator jxt;
+		vb.gapl();
+		vb.gap();
+		vb.titsep("Get it!").setHorizontalAlignment(SwingConstants.CENTER);
+		vb.gap();
 
-		vb.add(Box.createVerticalStrut(5));
-		vb.add(jxt = new JXTitledSeparator("Get it!"));
-		jxt.setHorizontalAlignment(SwingConstants.CENTER);
+		hb = new HBox();
 
-		vb.add(Box.createVerticalStrut(5));
-
-		hb = Box.createHorizontalBox();
-
-		hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-		hb.add(Box.createHorizontalGlue());
+		hb.glue();
 
 		JButton btn;
 
@@ -70,37 +66,37 @@ public class DialogUpdateNotify extends RpwDialog {
 		btn.addActionListener(Gui.openUrlListener);
 		btn.addActionListener(closeListener);
 
-		hb.add(Box.createHorizontalStrut(5));
+		hb.gap();
 
 		hb.add(btn = new JButton("MC Forum", Icons.MENU_MCF));
 		btn.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
 		btn.addActionListener(Gui.openUrlListener);
 		btn.addActionListener(closeListener);
 
-		hb.add(Box.createHorizontalStrut(5));
+		hb.gap();
 
 		hb.add(btn = new JButton("Direct", Icons.MENU_DOWNLOAD));
 		btn.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
 		btn.addActionListener(closeListener);
 		btn.addActionListener(Gui.openUrlListener);
 
-		hb.add(Box.createHorizontalGlue());
+		hb.glue();
 
 		vb.add(hb);
 
-		vb.add(Box.createVerticalStrut(5));
+		vb.gap();
 		vb.add(new JSeparator());
-		vb.add(Box.createVerticalStrut(20));
+		vb.gapl();
+		vb.gap();
 
 		//@formatter:off		
-		hb = Box.createHorizontalBox();
+		hb = new HBox();
 
-			hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-			hb.add(Box.createHorizontalGlue());
+			hb.glue();
 
 			hb.add(buttonOK = new JButton("Close", Icons.MENU_EXIT));
 			
-			hb.add(Box.createHorizontalGlue());	
+			hb.glue();
 			hb.setAlignmentX(0.5f);
 		vb.add(hb);
 		//@formatter:on

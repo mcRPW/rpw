@@ -65,9 +65,9 @@ public class Config {
 
 	// opts
 	public static final boolean def_FANCY_GROUPS = true;
-	public static final boolean def_SHOW_FONT = false;
+	public static final boolean def_SHOW_FONT = true;
 	public static final boolean def_SHOW_OBSOLETE_DIRS = false;
-	public static final boolean def_SHOW_LANG = false;
+	public static final boolean def_SHOW_LANG = true;
 	public static final boolean def_PREVIEW_HOVER = false;
 	public static final boolean def_SHOW_HIDDEN_IN_FILEPICKER = true;
 	public static final boolean def_CLOSED_WITH_PROJECT_OPEN = false;
@@ -329,6 +329,6 @@ public class Config {
 
 	public static final boolean LOG_EXPORT_FILES = true;
 
-	public static final boolean LOG_EXTRACTED_ASSETS = false;
+	public static final boolean LOG_EXTRACTED_ASSETS = true;
 
 }

@@ -201,7 +201,7 @@ public abstract class RpwDialog extends JDialog {
 	 * Called after onClose - run the hooks
 	 */
 	private void afterOnClose() {
-		
+
 		Log.f3("Dialog closed: " + getTitle());
 
 		for (Runnable hook : closeHooks) {

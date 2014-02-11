@@ -19,6 +19,7 @@ import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.Utils;
@@ -116,7 +117,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 			case 1: return "Cleaning output directory.";
 			case 2:	return "Getting files from jar.";
 			case 3:	return "Getting files from the assets directory.";
-			case 4:	return "Getting files from installed mods.";
+			case 4:	return "Checking for installed mods.";
 			case 5:	return "Saving structure data to file.";
 			default: return null;
 		}
@@ -130,8 +131,6 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	 * @return success
 	 */
 	private boolean stepCheckVersionCompatibility() {
-
-		Log.f2("Checking basic version compatibility.");
 
 		File jsonFile = new File(OsUtils.getMcDir("versions/" + version), version + ".json");
 
@@ -206,8 +205,6 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	 */
 	private boolean stepLoadFromJar() {
 
-		Log.f2("Extracting Minecraft jar file");
-
 		File zipFile = new File(OsUtils.getMcDir("versions/" + version), version + ".jar");
 
 		assets = FileUtils.loadAssetsFromZip(zipFile, outDir);
@@ -232,12 +229,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	 */
 	private boolean stepLoadFromAssetsDir() {
 
-		Log.f2("Preparing to copy files from assets folder");
-
 		File source = null;
-
-
-		Log.f3("Checking assets folder...");
 
 		boolean useObjectRegistry = true; // files straight in the assets folder
 
@@ -292,8 +284,9 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 			Log.f3(list.size() + " files extracted from assets storage.");
 
 			for (File f : list) {
-				String path = f.getAbsolutePath();
-				path = path.replace(target.getAbsolutePath(), "assets/minecraft");
+				String p = f.getAbsolutePath();
+
+				String path = p.replace(target.getAbsolutePath(), "assets/minecraft");
 
 				path = FileUtils.escapeFilename(path);
 				String[] parts = FileUtils.getFilenameParts(path);
@@ -306,6 +299,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 				EAsset type = EAsset.forExtension(ext);
 
 				if (!type.isAsset()) {
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("SKIPPED " + p);
 					continue;
 				}
 
@@ -338,8 +332,6 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 		FileSuffixFilter fsf = new FileSuffixFilter("jar", "zip");
 
-
-		Log.f2("Checking for installed mods");
 		// check what mod files are installed
 		for (File f : list) {
 			if (f.exists() && fsf.accept(f)) {
@@ -424,8 +416,6 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	 */
 	private boolean stepSaveStructure() {
 
-		Log.f2("Saving structure to file");
-
 		assets = Utils.sortByKeys(assets);
 
 		Sources.vanilla.setAssets(assets);
@@ -483,8 +473,10 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 		Log.f1("Extracting Minecraft assets - done.");
 		Flags.VANILLA_STRUCTURE_LOAD_OK = true;
 
-		Config.LIBRARY_VERSION = version + " : " + assetsVersion;
+		Config.LIBRARY_VERSION = version + "+" + assetsVersion + (modsLoaded ? "m" : "");
 		Config.save();
+
+		Tasks.taskUpdateTitlebar(); // update titlebar
 
 		if (Config.FANCY_TREE && modsLoaded) {
 			//@formatter:off
@@ -506,6 +498,5 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 		}
 
 		Alerts.info(App.getFrame(), "Minecraft assets reloaded.");
-		closeMonitor();
 	}
 }

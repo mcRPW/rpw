@@ -16,7 +16,6 @@ import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.HBox;
-import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
@@ -34,7 +33,7 @@ public class DialogSaveAs extends RpwDialog {
 
 	private JXTextField nameField;
 	private JButton buttonOK;
-	private SimpleStringList list;
+	//private SimpleStringList list;
 
 	private JButton buttonCancel;
 

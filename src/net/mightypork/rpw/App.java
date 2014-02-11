@@ -80,6 +80,7 @@ public class App {
 
 		Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
+
 		Log.f1("Init started...");
 		OsUtils.initDirs();
 		Config.init();
@@ -88,6 +89,7 @@ public class App {
 		TaskDevel.run();
 
 		Log.f3("Last run version: " + VersionUtils.getVersionString(Config.LAST_RUN_VERSION) + " (#" + Config.LAST_RUN_VERSION + ")");
+		Log.i("Using library version: " + Config.LIBRARY_VERSION);
 
 		HtmlBuilder.init();
 
@@ -226,5 +228,14 @@ public class App {
 
 		inst.window.setWaiting(state);
 
+	}
+
+
+	public static String getWindowTitle() {
+
+		String wt = "";
+		if (Projects.isOpen()) wt += Projects.getActive().getName() + "  \u2022  ";
+		wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  Created by MightyPork";
+		return wt;
 	}
 }

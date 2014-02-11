@@ -2,7 +2,6 @@ package net.mightypork.rpw.struct;
 
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
@@ -15,7 +14,7 @@ public class PackMcmeta {
 
 	private static Gson gson = Config.PRETTY_JSON ? Const.PRETTY_GSON : Const.UGLY_GSON;
 	private static Type type = null;
-	
+
 	public PackInfo pack = null;
 	public LangEntryMap language = new LangEntryMap();
 

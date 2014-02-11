@@ -15,7 +15,6 @@ public class Const {
 	public static final int VERSION_MAJOR = VersionUtils.getVersionMajor(VERSION_SERIAL);
 
 	public static final String APP_NAME = "ResourcePack Workbench";
-	public static final String WINDOW_TITLE = APP_NAME + " \u2022 v" + VERSION + "  \u2022  Crafted by MightyPork";
 
 	//@formatter:off
 	public static final String[] SOUND_CATEGORIES = new String[] {

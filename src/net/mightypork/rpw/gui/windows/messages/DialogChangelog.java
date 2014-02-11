@@ -48,6 +48,8 @@ public class DialogChangelog extends RpwDialog {
 		content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL * 2, Gui.GAP, Gui.GAPL * 2));
 		vbox.add(content);
 
+		vbox.gapl();
+
 		//@formatter:off		
 		hb = new HBox();
 

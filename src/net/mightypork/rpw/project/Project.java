@@ -61,8 +61,6 @@ public class Project extends Source implements NodeSourceProvider {
 
 		projectTitle = identifier; // by default
 
-		File f = getRealProjectBase();
-
 		tmpBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP + "-" + identifier, true);
 
 		init();
@@ -227,6 +225,12 @@ public class Project extends Source implements NodeSourceProvider {
 	 * Save project to real basedir
 	 */
 	public void save() {
+
+		try {
+			saveToTmp();
+		} catch (IOException e) {
+			Log.e(e);
+		}
 
 		copyFromTmpToBasedir();
 	}

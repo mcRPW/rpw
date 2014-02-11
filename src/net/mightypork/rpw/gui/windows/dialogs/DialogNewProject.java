@@ -281,8 +281,13 @@ public class DialogNewProject extends RpwDialog {
 						Alerts.loading(true);
 						Projects.openNewProject(projname);
 						Projects.getActive().setTitle(projtitle);
-						Tasks.taskOnProjectChanged();
-						Alerts.loading(false);
+
+						Tasks.taskStoreProjectChanges();
+
+						Projects.getActive().save();
+
+						Projects.markProjectAsRecent(Projects.getActive().getName());
+
 
 						if (usePackFile) {
 							Tasks.taskPopulateProjectFromPack(selectedFile, new Runnable() {
@@ -290,10 +295,15 @@ public class DialogNewProject extends RpwDialog {
 								@Override
 								public void run() {
 
-									Tasks.taskOnProjectPropertiesChanged();
-									Tasks.taskTreeRebuild();
+									Projects.getActive().save();
+
+									Tasks.taskOnProjectChanged();
+									Alerts.loading(false);
 								}
 							});
+						} else {
+							Tasks.taskOnProjectChanged();
+							Alerts.loading(false);
 						}
 
 					}

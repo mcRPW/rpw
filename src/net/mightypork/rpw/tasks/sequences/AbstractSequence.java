@@ -1,6 +1,9 @@
 package net.mightypork.rpw.tasks.sequences;
 
 
+import net.mightypork.rpw.utils.logging.Log;
+
+
 /**
  * A command sequence
  * 
@@ -65,7 +68,10 @@ public abstract class AbstractSequence {
 	public void run() {
 
 		for (int i = 0; i < getStepCount(); i++) {
-			if (!run(i)) break; // interrupted from within
+			if (!run(i)) {
+				Log.w("Sequence failed at step #" + i + ": " + getStepName(i));
+				break; // interrupted from within
+			}
 		}
 	}
 

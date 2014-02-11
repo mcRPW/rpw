@@ -228,7 +228,10 @@ public class Tasks {
 
 		AssetTreeProcessor proc = new SaveToProjectNodeProcessor(proj);
 		AssetTreeNode root = App.getTreeDisplay().treeModel.getRoot();
-		root.processThisAndChildren(proc);
+
+		if (root != null) {
+			root.processThisAndChildren(proc);
+		}
 
 		try {
 			proj.saveToTmp();
@@ -769,14 +772,14 @@ public class Tasks {
 
 	public static void taskOnProjectPropertiesChanged() {
 
-		String title = Const.WINDOW_TITLE;
-
-		if (Projects.isOpen()) {
-			title = Projects.getActive().getName() + "  \u2022  " + title;
-		}
-
-		App.getFrame().setTitle(title);
+		taskUpdateTitlebar();
 		App.getSidePanel().updateProjectInfo();
+	}
+
+
+	public static void taskUpdateTitlebar() {
+
+		App.getFrame().setTitle(App.getWindowTitle());
 	}
 
 
@@ -859,7 +862,7 @@ public class Tasks {
 
 
 	public static int taskPopulateProjectFromPack(final File pack, final Runnable after) {
-		
+
 		final int task = Tasks.startTask();
 
 		new Thread(new Runnable() {
@@ -878,6 +881,6 @@ public class Tasks {
 		}).start();
 
 		return task;
-		
+
 	}
 }

@@ -23,7 +23,7 @@ public class VersionUtils {
 
 		int from = Const.VERSION_MAJOR;
 
-		for (int i = Math.max(Config.LAST_RUN_VERSION, from); i <= Const.VERSION_SERIAL; i++) {
+		for (int i = Math.max(Const.VERSION_SERIAL - 2, Math.max(Config.LAST_RUN_VERSION, from) + 1); i <= Const.VERSION_SERIAL; i++) {
 			String chl = getChangelogForVersion(i);
 			if (chl == null) continue;
 
@@ -55,7 +55,8 @@ public class VersionUtils {
 
 	public static String buildChangelogHtml() {
 
-		return HtmlBuilder.markdownToHtmlBase(buildChangelogMd());
+		String md = buildChangelogMd();
+		return HtmlBuilder.markdownToHtmlBase(md);
 	}
 
 

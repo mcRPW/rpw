@@ -44,8 +44,8 @@ public class FileUtils {
 	 */
 	public static void copyDirectory(File source, File target, FileFilter filter, List<File> filesCopied) throws IOException {
 
-		if(!source.exists()) return;
-		
+		if (!source.exists()) return;
+
 		if (source.isDirectory()) {
 
 			if (!target.exists()) {
@@ -538,8 +538,9 @@ public class FileUtils {
 					String ext = parts[1];
 					EAsset type = EAsset.forExtension(ext);
 
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ " + s);
+
 					if (!type.isAsset()) {
-						if (Config.LOG_EXTRACTED_ASSETS) Log.f3("Skipping: " + s2);
 						continue;
 					}
 
@@ -547,7 +548,6 @@ public class FileUtils {
 
 					assets.put(key, ae);
 
-					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ " + ae.toString());
 				}
 			}
 

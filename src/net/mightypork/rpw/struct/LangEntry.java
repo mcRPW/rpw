@@ -7,7 +7,11 @@ public class LangEntry {
 	public String name;
 	public boolean bidirectional;
 
-	public LangEntry() {}
+
+	public LangEntry() {
+
+	}
+
 
 	public LangEntry(String region, String name, boolean bidirectional) {
 

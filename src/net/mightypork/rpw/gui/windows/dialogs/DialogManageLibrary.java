@@ -110,7 +110,7 @@ public class DialogManageLibrary extends RpwDialog {
 	@Override
 	public void onClose() {
 
-		if(changedAnything) Tasks.taskReloadSources(null);
+		if (changedAnything) Tasks.taskReloadSources(null);
 	}
 
 

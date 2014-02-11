@@ -56,7 +56,7 @@ public class ZipUtils {
 	/**
 	 * Extract zip file to target directory
 	 * 
-	 * @param zipFile open zip file
+	 * @param zip open zip file
 	 * @param outputDir target directory
 	 * @param filter string filter (will be used to test entry names (paths))
 	 * @return list of entries extracted (paths)

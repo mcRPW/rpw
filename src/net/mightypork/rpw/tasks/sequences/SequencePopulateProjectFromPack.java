@@ -7,13 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
-import net.mightypork.rpw.library.VanillaPack;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.struct.LangEntry;
@@ -22,10 +22,10 @@ import net.mightypork.rpw.struct.SoundEntry;
 import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.ZipUtils;
 import net.mightypork.rpw.utils.logging.Log;
-import net.mightypork.rpw.utils.validation.StringFilter;
 
 
 /**
@@ -69,9 +69,9 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 		//@formatter:off
 		switch (step) {
 			case 0: return "Listing pack file";
-			case 1: return "Adding custom languages";
-			case 2: return "Adding custom sounds";
-			case 3: return "Adding project files";
+			case 1: return "Loading custom languages";
+			case 2: return "Loading custom sounds";
+			case 3: return "Loading project files";
 		}
 		//@formatter:on
 
@@ -88,7 +88,6 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 			case 1: return stepMcmetaAndLanguages();
 			case 2: return stepCustomSounds();
 			case 3: return stepOtherAssets();
-
 		}
 		//@formatter:on
 
@@ -121,7 +120,8 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 			if (ze_icon != null) {
 				target = new File(project.getProjectDirectory(), "pack.png");
 				ZipUtils.extractZipEntry(zip, ze_icon, target);
-				Log.f3("Extracted pack icon.");
+				if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ pack.png");
+				alreadyExtracted.add("pack.png");
 			}
 
 
@@ -130,6 +130,8 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 			if (ze_mcmeta != null) {
 				String json_mcmeta = ZipUtils.zipEntryToString(zip, ze_mcmeta);
 				PackMcmeta mcmeta = PackMcmeta.fromJson(json_mcmeta);
+
+				alreadyExtracted.add("pack.mcmeta");
 
 				if (mcmeta.pack != null) {
 					String title = mcmeta.pack.description;
@@ -168,7 +170,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 								// mark as extracted
 								alreadyExtracted.add(entryname);
 
-								Log.f3("Extracted file: " + entryname);
+								if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ LANG " + entryname);
 							}
 						}
 					}
@@ -179,7 +181,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 			Log.e(e);
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 
@@ -190,11 +192,14 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 		try {
 
 			// get title and custom languages
-			ZipEntry ze_sounds = zip.getEntry("assets/minecraft/sounds.json");
+			String sndfile = "assets/minecraft/sounds.json";
+			ZipEntry ze_sounds = zip.getEntry(sndfile);
 
 			if (ze_sounds != null) {
 				String json_sounds = ZipUtils.zipEntryToString(zip, ze_sounds);
 				SoundEntryMap soundmap = SoundEntryMap.fromJson(json_sounds);
+
+				alreadyExtracted.add(sndfile); // don't extract again
 
 				project.setSoundMap(soundmap); // add to the project
 
@@ -228,7 +233,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 								// mark as extracted
 								alreadyExtracted.add(entryname);
 
-								Log.f3("Extracted file: " + entryname);
+								if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ SOUND " + entryname);
 							}
 
 						}
@@ -240,7 +245,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 			Log.e(e);
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 
@@ -250,14 +255,25 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 
 		try {
 
-			for (String s : zipEntries) {
+			for (String sorig : zipEntries) {
+
+				String s = sorig;
 
 				if (alreadyExtracted.contains(s)) continue;
 
 
 				ZipEntry ze = zip.getEntry(s);
 
-				if (ze == null) continue; // won't happen
+				if (ze == null) continue; // garbage
+
+				alreadyExtracted.add(s);
+
+				boolean mcmeta = false;
+
+				if (s.endsWith(".mcmeta")) {
+					mcmeta = true;
+					s = Utils.toLastDot(s);
+				}
 
 				String s2 = FileUtils.escapeFilename(s);
 				String[] parts = FileUtils.getFilenameParts(s2);
@@ -267,11 +283,12 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 
 					// override for vanilla
 
-					target = new File(project.getProjectDirectory(), s);
+					target = new File(project.getAssetsDirectory(), sorig);
 
 					ZipUtils.extractZipEntry(zip, ze, target);
-					project.setSourceForFile(key, MagicSources.PROJECT);
-					alreadyExtracted.add(s);
+					if (!mcmeta) project.setSourceForFile(key, MagicSources.PROJECT);
+
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ PROJ " + (mcmeta ? "M " : "") + s);
 
 				} else {
 
@@ -279,7 +296,8 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 
 					target = new File(project.getExtrasDirectory(), s);
 					ZipUtils.extractZipEntry(zip, ze, target);
-					alreadyExtracted.add(s);
+
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ EXTRA " + s);
 				}
 			}
 
@@ -287,7 +305,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 			Log.e(e);
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 
@@ -320,6 +338,8 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 		}
 
 		after.run();
+
+		Alerts.info(App.getFrame(), "Import successful.");
 	}
 
 }
