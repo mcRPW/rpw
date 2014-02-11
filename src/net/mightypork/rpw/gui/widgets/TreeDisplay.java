@@ -5,13 +5,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.Enumeration;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JTree;
-import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreeNode;
