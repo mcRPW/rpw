@@ -5,9 +5,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.Enumeration;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreeNode;
@@ -173,6 +177,33 @@ public class TreeDisplay {
 		// assign custom icons
 		treeTable.setCollapsedIcon(Icons.TREE_OPEN);
 		treeTable.setExpandedIcon(Icons.TREE_CLOSE);
+
+//		class IconTreeUI extends BasicTreeUI {
+//
+//			private Icon collapseIcon = null;
+//			private Icon expandIcon = null;
+//
+//
+//			@Override
+//			public Icon getCollapsedIcon() {
+//
+//				if (collapseIcon == null) {
+//					collapseIcon = Icons.TREE_OPEN;
+//				}
+//				return collapseIcon;
+//			}
+//
+//
+//			@Override
+//			public Icon getExpandedIcon() {
+//
+//				if (expandIcon == null) {
+//					expandIcon = Icons.TREE_CLOSE;
+//				}
+//				return expandIcon;
+//			}
+//		}
+		
 	}
 
 

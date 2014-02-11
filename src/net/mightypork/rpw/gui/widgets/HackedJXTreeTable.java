@@ -6,6 +6,8 @@ import java.awt.Component;
 
 import javax.swing.table.TableCellRenderer;
 
+import net.mightypork.rpw.gui.Icons;
+
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.TreeTableModel;
 
@@ -41,5 +43,17 @@ public class HackedJXTreeTable extends JXTreeTable {
 			bg = null;
 		}
 		return returnComp;
+	}
+	
+	@Override
+	public void updateUI() {
+		super.updateUI();
+		
+		// hack for weird UI glitch with close open icons
+		try {
+			setCollapsedIcon(Icons.TREE_OPEN);
+			setExpandedIcon(Icons.TREE_CLOSE);
+		} catch(NullPointerException e) {
+		}
 	}
 }
