@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.help.VersionUtils;
 
@@ -32,34 +34,34 @@ public class DialogChangelog extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Box hb;
-		Box vb = Box.createVerticalBox();
-		vb.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		HBox hb;
+		VBox vbox = new VBox();
+		
+		vbox.windowPadding();
 
-		vb.add(Gui.createDialogHeading("What's new in RPW"));
+		vbox.heading("What's new in RPW");
 
 		String text = VersionUtils.buildChangelogHtml();
 
 		JLabel content = new JLabel(text);
 		content.setAlignmentX(0.5f);
 		content.setMinimumSize(new Dimension(200, 100));
-		content.setBorder(BorderFactory.createEmptyBorder(5, 30, 10, 30));
-		vb.add(content);
+		content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL*2, Gui.GAP, Gui.GAPL*2));
+		vbox.add(content);
 
 		//@formatter:off		
-		hb = Box.createHorizontalBox();
+		hb = new HBox();
 
-			hb.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-			hb.add(Box.createHorizontalGlue());
+			hb.glue();
 				
 			hb.add(buttonOK = new JButton("Close", Icons.MENU_YES));
 			
-			hb.add(Box.createHorizontalGlue());	
+			hb.glue();
 			hb.setAlignmentX(0.5f);
-		vb.add(hb);
+		vbox.add(hb);
 		//@formatter:on
 
-		return vb;
+		return vbox;
 	}
 
 
@@ -67,6 +69,8 @@ public class DialogChangelog extends RpwDialog {
 	protected void addActions() {
 
 		buttonOK.addActionListener(closeListener);
+
+		setEnterButton(buttonOK);
 	}
 
 }

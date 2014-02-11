@@ -54,6 +54,8 @@ public class Paths {
 	public static final String URL_MINECRAFTFORUM_WEB = "http://www.minecraftforum.net/topic/1897669-tool-resourcepack-workbench-v1-the-ultimate-composition-tool/";
 	public static final String URL_UPDATE_WEB = URL_PLANETMINECRAFT_WEB;
 	public static final String URL_GITHUB_WEB = "https://github.com/MightyPork/rpw/";
+	public static final String URL_GITHUB_BUGS = "https://github.com/MightyPork/rpw/issues/new";
+	
 	public static final String URL_LATEST_DOWNLOAD = "https://dl.dropboxusercontent.com/u/64454818/RPW/RPW-LATEST.jar";
 
 

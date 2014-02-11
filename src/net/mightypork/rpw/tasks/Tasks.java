@@ -230,7 +230,7 @@ public class Tasks {
 		root.processThisAndChildren(proc);
 
 		try {
-			proj.flushToDisk();
+			proj.saveToTmp();
 		} catch (IOException e) {
 			Log.e(e);
 		}
@@ -479,7 +479,7 @@ public class Tasks {
 
 	public static void taskDeleteEmptyDirsFromProject() {
 
-		FileUtils.deleteEmptyDirs(Projects.getActive().getAssetsBaseDirectory());
+		FileUtils.deleteEmptyDirs(Projects.getActive().getAssetsDirectory());
 	}
 
 
@@ -681,15 +681,18 @@ public class Tasks {
 	}
 
 
-	public static void taskSaveProjectAs(String name) {
+	public static void taskSaveProjectAs(String name, String title) {
 
-		Log.f1("Saving project '" + Projects.getActive().getDirName() + "' as '" + name + "'");
+		Log.f1("Saving project '" + Projects.getActive().getName() + "' as '" + name + "'");
 
-		Project newProject = new Project(name);
+		taskStoreProjectChanges(); // save current project to TMP
+		
+		Project newProject = new Project(name); // build new project
 
+		// copy old project TMP to new project TMP
 		File currentDir = Projects.getActive().getProjectDirectory();
 		File targetDir = newProject.getProjectDirectory();
-
+		
 		try {
 			FileUtils.copyDirectory(currentDir, targetDir);
 		} catch (IOException e) {
@@ -698,10 +701,14 @@ public class Tasks {
 			return;
 		}
 
-		// property file was copied over, must re-build it
-		newProject.saveProperties();
+		newProject.reload(); // load ALL from new project TMP
+		newProject.setTitle(title); // set a title
 
+		// old project is discarded
+		// mark new project as active
 		Projects.setActive(newProject);
+		
+		// rebuild tree, titlebar etc
 		taskOnProjectChanged();
 	}
 
@@ -766,7 +773,7 @@ public class Tasks {
 		String title = Const.WINDOW_TITLE;
 
 		if (Projects.getActive() != null) {
-			title = Projects.getActive().getProjectTitle() + "  \u2022  " + title;
+			title = Projects.getActive().getName() + "  \u2022  " + title;
 		}
 
 		App.getFrame().setTitle(title);

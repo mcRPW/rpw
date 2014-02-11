@@ -84,7 +84,7 @@ public class VanillaPack extends Source {
 
 
 	@Override
-	public File getAssetsBaseDirectory() {
+	public File getAssetsDirectory() {
 
 		return OsUtils.getAppDir(Paths.DIR_VANILLA);
 	}

@@ -41,6 +41,7 @@ public class VBox extends RpwBox {
 	 * Add titled separator
 	 * 
 	 * @param string title text
+	 * @return titled separator (for further tweaks)
 	 */
 	public JXTitledSeparator titsep(String string) {
 

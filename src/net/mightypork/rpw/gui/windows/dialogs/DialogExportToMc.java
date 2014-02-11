@@ -49,6 +49,8 @@ public class DialogExportToMc extends RpwDialog {
 
 		super(App.getFrame(), "Export");
 
+		installedPackNames = getOptions();
+		
 		createDialog();
 	}
 
@@ -62,7 +64,6 @@ public class DialogExportToMc extends RpwDialog {
 
 		vb.heading("Export to Minecraft");
 
-		installedPackNames = getOptions();
 
 		vb.titsep("Installed ResourcePacks");
 		vb.gap();
@@ -89,7 +90,7 @@ public class DialogExportToMc extends RpwDialog {
 			hb.gap();
 	
 			field = new JXTextField();
-			field.setText(Projects.getActive().getDirName());
+			field.setText(Projects.getActive().getName());
 			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(3,3,3,3));
 			field.setBorder(bdr);
 						
@@ -120,6 +121,8 @@ public class DialogExportToMc extends RpwDialog {
 
 	@Override
 	protected void addActions() {
+		
+		setEnterButton(buttonOK);
 
 		buttonCancel.addActionListener(closeListener);
 

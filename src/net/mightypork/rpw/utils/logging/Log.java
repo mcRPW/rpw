@@ -407,7 +407,7 @@ public class Log {
 				trail = "[ - ] ";
 			}
 			if (level == Level.FINEST) {
-				trail = "[   ]   ";
+				trail = "[   ] ";
 			}
 			if (level == Level.INFO) {
 				trail = "[ i ] ";

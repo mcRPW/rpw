@@ -379,7 +379,7 @@ public class SidePanel {
 
 		if (p != null) {
 
-			String name = p.getProjectTitle();
+			String name = p.getTitle();
 			int length_name = (panel.getWidth() - 75) / 11;
 			name = Utils.cropStringAtEnd(name, length_name);
 			projectName.setText(name);

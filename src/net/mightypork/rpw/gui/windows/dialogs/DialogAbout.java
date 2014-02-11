@@ -58,6 +58,7 @@ public class DialogAbout extends RpwDialog {
 			hb.add(buttonTwitter = new JButton("@MightyPork", Icons.MENU_TWITTER));
 			hb.gap();
 			hb.add(buttonOK = new JButton("Close", Icons.MENU_YES));
+			buttonOK.requestFocusInWindow();
 			hb.glue();
 			
 		vb.add(hb);
@@ -84,5 +85,7 @@ public class DialogAbout extends RpwDialog {
 				}
 			}
 		});
+		
+		setEnterButton(buttonOK);
 	}
 }

@@ -482,6 +482,9 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 		Log.f1("Extracting Minecraft assets - done.");
 		Flags.VANILLA_STRUCTURE_LOAD_OK = true;
+		
+		Config.LIBRARY_VERSION = version + " : " + assetsVersion;
+		Config.save();
 
 		if (Config.FANCY_TREE && modsLoaded) {
 			//@formatter:off

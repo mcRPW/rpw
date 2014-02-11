@@ -63,7 +63,7 @@ public abstract class Source implements ISource {
 
 		String path = asset.getPath();
 
-		File file = new File(getAssetsBaseDirectory(), path);
+		File file = new File(getAssetsDirectory(), path);
 
 		if (!file.exists()) return null;
 
@@ -93,7 +93,7 @@ public abstract class Source implements ISource {
 	 * @return base directory file
 	 */
 	@Override
-	public abstract File getAssetsBaseDirectory();
+	public abstract File getAssetsDirectory();
 
 
 	@Override

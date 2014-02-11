@@ -51,7 +51,7 @@ public class CopyToProjectProcessor implements AssetTreeProcessor {
 
 		} else if (node instanceof AssetTreeLeaf) {
 
-			File targetBase = Projects.getActive().getAssetsBaseDirectory();
+			File targetBase = Projects.getActive().getAssetsDirectory();
 
 			AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 			String source = leaf.resolveAssetSource();

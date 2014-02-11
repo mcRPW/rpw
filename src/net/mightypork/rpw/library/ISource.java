@@ -70,6 +70,6 @@ public interface ISource {
 	 * 
 	 * @return base directory file
 	 */
-	public File getAssetsBaseDirectory();
+	public File getAssetsDirectory();
 
 }

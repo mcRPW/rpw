@@ -288,6 +288,8 @@ public class OsUtils {
 
 		OsUtils.getAppDir(); // init app dir
 		OsUtils.getAppDir(Paths.DIR_LIBRARY, true);
+		OsUtils.getAppDir(Paths.DIR_LOGS, true);
+		OsUtils.getAppDir(Paths.DIR_CONFIG, true);
 		OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS, true);
 
 
@@ -299,6 +301,11 @@ public class OsUtils {
 		}
 
 		OsUtils.getAppDir("projects", true);
+		
+		// clear old TMP
+		FileUtils.delete(OsUtils.getAppDir(Paths.DIR_TMP, true), true);
+		
+		OsUtils.getAppDir(Paths.DIR_TMP, true); // create TMP
 	}
 
 }

@@ -3,6 +3,8 @@ package net.mightypork.rpw.gui.windows.dialogs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +18,7 @@ import javax.swing.event.ListSelectionListener;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.helpers.KeyPressListener;
 import net.mightypork.rpw.gui.widgets.ManagerLayout;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.VBox;
@@ -65,6 +68,8 @@ public class DialogManageMcPacks extends RpwDialog {
 
 		super(App.getFrame(), "Manage packs in MC");
 
+		mcPacks = getOptions();
+
 		createDialog();
 	}
 
@@ -79,8 +84,6 @@ public class DialogManageMcPacks extends RpwDialog {
 
 		vbox.titsep("Installed Packs");
 		vbox.gap();
-
-		mcPacks = getOptions();
 
 		list = new SimpleStringList(mcPacks, true);
 		list.setMultiSelect(true);
@@ -117,6 +120,19 @@ public class DialogManageMcPacks extends RpwDialog {
 	@Override
 	protected void addActions() {
 
+		
+		list.addKeyListener(new KeyPressListener() {
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+			
+				if(e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteListener.actionPerformed(null);
+				}
+			}
+		});
+		
+		setEnterButton(buttonClose);
 		buttonClose.addActionListener(closeListener);
 		buttonDelete.addActionListener(deleteListener);
 	}

@@ -140,7 +140,7 @@ public class TaskModifyAsset {
 						proc.process(node);
 					}
 
-					File projbase = Projects.getActive().getAssetsBaseDirectory();
+					File projbase = Projects.getActive().getAssetsDirectory();
 
 					File metafile = new File(projbase, node.getAssetEntry().getPath() + ".mcmeta");
 

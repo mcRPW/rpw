@@ -37,7 +37,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 	private PropertyManager props;
 
-	private File workDirBase;
+	private File tmpBase;
 	private File privateCopiesBase;
 	private File extraIncludesBase;
 	private File customSoundsBase;
@@ -45,22 +45,23 @@ public class Project extends Source implements NodeSourceProvider {
 	private File fileSourcesGroups;
 	private File fileSounds;
 	private File fileConfig;
-	private String dirName;
-
+	
+	private String projectName;
 	private String projectTitle;
+	
 	private Integer lastRpwVersion;
 
 
 	public Project(String identifier) {
 
-		dirName = identifier;
+		projectName = identifier;
 
 		projectTitle = identifier; // by default
 
 		File f = getRealProjectBase();
 		f.mkdirs();
 
-		workDirBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP + "-" + identifier, true);
+		tmpBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP + "-" + identifier, true);
 
 		init();
 	}
@@ -68,7 +69,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 	private File getRealProjectBase() {
 
-		return OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + dirName, true);
+		return OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + projectName, true);
 	}
 
 
@@ -88,9 +89,11 @@ public class Project extends Source implements NodeSourceProvider {
 	 */
 	public void reload() {
 
-		fileConfig = new File(workDirBase, Paths.FILENAME_PROJECT_CONFIG);
+		Log.f2(getLogPrefix()+" Loading from TMP");
 
-		props = new PropertyManager(fileConfig, "Project '" + dirName + "' config file");
+		fileConfig = new File(tmpBase, Paths.FILENAME_PROJECT_CONFIG);
+
+		props = new PropertyManager(fileConfig, "Project '" + projectName + "' config file");
 		props.cfgNewlineBeforeComments(false);
 		props.cfgSeparateSections(false);
 
@@ -104,15 +107,15 @@ public class Project extends Source implements NodeSourceProvider {
 		projectTitle = props.getString("title");
 		lastRpwVersion = props.getInteger("version");
 
-		privateCopiesBase = new File(workDirBase, Paths.DIRNAME_PROJECT_PRIVATE);
-		extraIncludesBase = new File(workDirBase, Paths.DIRNAME_PROJECT_INCLUDE);
-		customSoundsBase = new File(workDirBase, Paths.DIRNAME_PROJECT_SOUNDS);
+		privateCopiesBase = new File(tmpBase, Paths.DIRNAME_PROJECT_PRIVATE);
+		extraIncludesBase = new File(tmpBase, Paths.DIRNAME_PROJECT_INCLUDE);
+		customSoundsBase = new File(tmpBase, Paths.DIRNAME_PROJECT_SOUNDS);
 
-		fileSourcesFiles = new File(workDirBase, Paths.FILENAME_PROJECT_FILES);
-		fileSourcesGroups = new File(workDirBase, Paths.FILENAME_PROJECT_GROUPS);
-		fileSounds = new File(workDirBase, Paths.FILENAME_PROJECT_SOUNDS);
+		fileSourcesFiles = new File(tmpBase, Paths.FILENAME_PROJECT_FILES);
+		fileSourcesGroups = new File(tmpBase, Paths.FILENAME_PROJECT_GROUPS);
+		fileSounds = new File(tmpBase, Paths.FILENAME_PROJECT_SOUNDS);
 
-		copyInDefaultIcon(false);
+		installDefaultIcon(false);
 
 		try {
 
@@ -142,7 +145,7 @@ public class Project extends Source implements NodeSourceProvider {
 			File tmpFile = new File(extraIncludesBase, "assets/minecraft");
 			tmpFile.mkdirs();
 
-			flushToDisk();
+			saveToTmp();
 
 		} catch (IOException e) {
 			Log.w(getLogPrefix() + "Project data files could not be loaded.");
@@ -153,13 +156,11 @@ public class Project extends Source implements NodeSourceProvider {
 
 	public String getLogPrefix() {
 
-		return "Project '" + dirName + "': ";
+		return "Project '" + projectName + "': ";
 	}
 
 
-	public void flushToDisk() throws IOException {
-
-		Log.f2(getLogPrefix() + "Saving tree data to TMP");
+	public void saveToTmp() throws IOException {
 
 		SimpleConfig.mapToFile(fileSourcesFiles, files, false);
 		SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
@@ -194,16 +195,16 @@ public class Project extends Source implements NodeSourceProvider {
 
 	private void copyFromBasedirToTmp() {
 
-		// delete backup
-		FileUtils.delete(workDirBase, true);
+		// delete (if any) workdir in tmp
+		FileUtils.delete(tmpBase, true);
 
 		try {
 
 			Log.f2(getLogPrefix() + "Copying BASE->TMP");
 
-			FileUtils.copyDirectory(getRealProjectBase(), workDirBase);
+			FileUtils.copyDirectory(getRealProjectBase(), tmpBase);
 
-			Log.f2(getLogPrefix() + "Copying BASE->TMP - done.");
+			Log.f2(getLogPrefix() + "Copying - done.");
 
 		} catch (IOException e) {
 			Alerts.error(App.getFrame(), "Error", "An error occured while\nopening the project.");
@@ -223,9 +224,9 @@ public class Project extends Source implements NodeSourceProvider {
 
 			Log.f2(getLogPrefix() + "Copying TMP->BASE");
 
-			FileUtils.copyDirectory(workDirBase, realBase);
+			FileUtils.copyDirectory(tmpBase, realBase);
 
-			Log.f2(getLogPrefix() + "Copying TMP->BASE - done.");
+			Log.f2(getLogPrefix() + "Copying - done.");
 
 		} catch (IOException e) {
 			Alerts.error(App.getFrame(), "Error Saving Project", "Failed to save project.\nThe project may have been corrupted.");
@@ -235,11 +236,13 @@ public class Project extends Source implements NodeSourceProvider {
 
 
 	public void saveProperties() {
+		
+		Log.f3(getLogPrefix()+" Saving properties to TMP");
 
 		// all properties
 		props.cfgForceSave(true);
 		props.setValue("version", Const.VERSION_SERIAL);
-		props.setValue("name", projectTitle);
+		props.setValue("title", projectTitle);
 		props.apply();
 	}
 
@@ -256,22 +259,22 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 
 
-	public void setProjectTitle(String title) {
+	public void setTitle(String title) {
 
 		projectTitle = title;
 		Projects.markChange();
 	}
 
 
-	public String getProjectTitle() {
+	public String getTitle() {
 
 		return projectTitle;
 	}
 
 
-	public void copyInDefaultIcon(boolean force) {
+	public void installDefaultIcon(boolean force) {
 
-		File img = new File(workDirBase, "pack.png");
+		File img = new File(tmpBase, "pack.png");
 		try {
 			if (img.exists() && !force) {
 				return;
@@ -332,7 +335,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 	// ISource
 	@Override
-	public File getAssetsBaseDirectory() {
+	public File getAssetsDirectory() {
 
 		return privateCopiesBase;
 	}
@@ -351,7 +354,7 @@ public class Project extends Source implements NodeSourceProvider {
 	 */
 	public File getProjectDirectory() {
 
-		return workDirBase;
+		return tmpBase;
 	}
 
 
@@ -361,9 +364,9 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 
 
-	public String getDirName() {
+	public String getName() {
 
-		return dirName;
+		return projectName;
 	}
 
 

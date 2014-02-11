@@ -44,7 +44,7 @@ public class SilenceSource implements ISource {
 
 
 	@Override
-	public File getAssetsBaseDirectory() {
+	public File getAssetsDirectory() {
 
 		return null;
 	}

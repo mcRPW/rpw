@@ -231,6 +231,8 @@ public class DialogConfigureEditors extends RpwDialog {
 	@Override
 	protected void addActions() {
 
+		setEnterButton(btnOK);
+		
 		btnOK.addActionListener(saveListener);
 		btnCancel.addActionListener(closeListener);
 

@@ -57,7 +57,7 @@ public class DeleteFromProjectProcessor implements AssetTreeProcessor {
 
 			String path = leaf.getAssetEntry().getPath();
 
-			File base = Projects.getActive().getAssetsBaseDirectory();
+			File base = Projects.getActive().getAssetsDirectory();
 			File target = new File(base, path);
 			File targetMeta = new File(base, path + ".mcmeta");
 

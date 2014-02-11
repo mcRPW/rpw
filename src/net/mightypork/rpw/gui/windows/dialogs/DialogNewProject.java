@@ -36,7 +36,7 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 
 public class DialogNewProject extends RpwDialog {
 
-	private List<String> options;
+	private List<String> projectNames;
 
 	private JTextField nameField;
 	private JTextField titleField;
@@ -58,6 +58,8 @@ public class DialogNewProject extends RpwDialog {
 	public DialogNewProject() {
 
 		super(App.getFrame(), "New Project");
+		
+		projectNames = Projects.getProjectNames();
 
 		createDialog();
 	}
@@ -80,6 +82,7 @@ public class DialogNewProject extends RpwDialog {
 		hb = new HBox();	
 			hb.add(radioBlank = new JRadioButton("Blank project"));
 			radioBlank.setForeground(Gui.SUBHEADING_COLOR);
+			radioBlank.setSelected(true);
 			hb.glue();
 		vbox.add(hb);
 		
@@ -124,8 +127,6 @@ public class DialogNewProject extends RpwDialog {
 		
 		//@formatter:on
 
-		options = Projects.getProjectNames();
-
 		vbox.gapl();
 		vbox.titsep("Project settings");
 		vbox.gap();
@@ -138,8 +139,6 @@ public class DialogNewProject extends RpwDialog {
 		nameField.addKeyListener(TextInputValidator.filenames());
 		label.setLabelFor(nameField);
 		p.add(nameField);
-
-		PromptSupport.setPrompt("Project folder name", nameField);
 
 		label = new JXLabel("Title:", SwingConstants.TRAILING);
 		p.add(label);
@@ -253,7 +252,7 @@ public class DialogNewProject extends RpwDialog {
 				return;
 			}
 
-			if (options.contains(name)) {
+			if (projectNames.contains(name)) {
 				Alerts.error(self(), "Name already used", "Project named \"" + name + "\" already exists!");
 			} else {
 
@@ -270,7 +269,7 @@ public class DialogNewProject extends RpwDialog {
 
 							Alerts.loading(true);
 							Projects.openNewProject(projname);
-							Projects.getActive().setProjectTitle(projtitle);
+							Projects.getActive().setTitle(projtitle);
 
 							// TODO load from file if requested?
 

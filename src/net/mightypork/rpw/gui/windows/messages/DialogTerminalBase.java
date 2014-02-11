@@ -50,7 +50,7 @@ public abstract class DialogTerminalBase extends RpwDialog {
 		textArea = new JTextArea(getLogText(), 25, 80);
 		textArea.setFont(new Font(Font.MONOSPACED, 0, 14));
 		textArea.setMargin(new Insets(10, 10, 10, 10));
-		textArea.setEditable(true);
+		textArea.setEditable(false);
 		textArea.setLineWrap(false);
 		textArea.setBackground(Color.BLACK);
 		textArea.setForeground(Color.LIGHT_GRAY);
@@ -93,7 +93,9 @@ public abstract class DialogTerminalBase extends RpwDialog {
 						);
 						separator.setMaximumSize(size);
 						
+						hb.gapl();
 						hb.add(separator);
+						hb.gapl();
 						
 					} else {
 						hb.add(btn);

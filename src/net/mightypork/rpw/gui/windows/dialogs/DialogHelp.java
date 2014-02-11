@@ -106,6 +106,7 @@ public class DialogHelp extends RpwDialog {
 	@Override
 	protected void addActions() {
 
+		setEnterButton(buttonOK);
 		buttonOK.addActionListener(closeListener);
 	}
 

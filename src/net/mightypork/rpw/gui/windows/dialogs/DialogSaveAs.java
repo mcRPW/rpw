@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -21,26 +24,32 @@ import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.utils.SpringUtilities;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 
 public class DialogSaveAs extends RpwDialog {
 
-	private List<String> options;
+	private List<String> projectNames;
 
-	private JXTextField field;
+	private JXTextField nameField;
 	private JButton buttonOK;
 	private SimpleStringList list;
 
 	private JButton buttonCancel;
+
+	private JXTextField titleField;
 
 
 	public DialogSaveAs() {
 
 		super(App.getFrame(), "Save As...");
 
+		projectNames = Projects.getProjectNames();
+		
 		createDialog();
 	}
 
@@ -49,42 +58,51 @@ public class DialogSaveAs extends RpwDialog {
 	protected JComponent buildGui() {
 
 		HBox hb;
+		JXLabel l;
 		VBox vb = new VBox();
 		vb.windowPadding();
 
 		vb.heading("Save Project As...");
 
-		vb.titsep("Your Projects");
+		/*vb.titsep("Your Projects");
 		vb.gap();
 
-		options = Projects.getProjectNames();
-
-		vb.add(list = new SimpleStringList(options, true));
+		vb.add(list = new SimpleStringList(projectNames, true));
 		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 
 				String s = list.getSelectedValue();
-				if (s != null) field.setText(s);
+				if (s != null && nameField.getText().length() == 0) nameField.setText(s);
 			}
 		});
 
 		vb.gapl();
+		
+		*/
+		
+		vb.titsep("New project settings");
+		vb.gap();
 
-		//@formatter:off
-		hb = new HBox();
-			JXLabel label = new JXLabel("Name:");
-			hb.add(label);
-			hb.gap();
-	
-			field = Gui.textField();
-						
-			field.addKeyListener(TextInputValidator.filenames());
-			
-			hb.add(field);
-		vb.add(hb);
+		JPanel p = new JPanel(new SpringLayout());
 
+		l = new JXLabel("Name:", SwingConstants.TRAILING);
+		p.add(l);
+		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
+		nameField.addKeyListener(TextInputValidator.filenames());
+		l.setLabelFor(nameField);
+		p.add(nameField);
+
+		l = new JXLabel("Title:", SwingConstants.TRAILING);
+		p.add(l);
+		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
+		l.setLabelFor(titleField);
+		p.add(titleField);
+
+		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
+
+		vb.add(p);
 		
 		vb.gapl();
 		
@@ -114,6 +132,8 @@ public class DialogSaveAs extends RpwDialog {
 
 	@Override
 	protected void addActions() {
+		
+		setEnterButton(buttonOK);
 
 		buttonOK.addActionListener(saveListener);
 		buttonCancel.addActionListener(closeListener);
@@ -125,16 +145,24 @@ public class DialogSaveAs extends RpwDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			String name = field.getText().trim();
+			String name = nameField.getText().trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid name", "Missing project name!");
+				return;
+			}
+			
+			String title = titleField.getText().trim();
+			if (name.length() == 0) {
+				Alerts.error(self(), "Invalid title", "Missing project title!");
+				return;
 			}
 
-			if (options.contains(name)) {
+			if (projectNames.contains(name)) {
 				Alerts.error(self(), "Invalid name", "Project named \"" + name + "\" already exists!");
+				return;
 			} else {
 				// OK name				
-				Tasks.taskSaveProjectAs(name);
+				Tasks.taskSaveProjectAs(name, title);
 				closeDialog();
 			}
 

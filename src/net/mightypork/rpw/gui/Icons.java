@@ -62,6 +62,7 @@ public class Icons {
 	public static ImageIcon MENU_RENAME;
 	public static ImageIcon MENU_DELETE;
 	public static ImageIcon MENU_LOG;
+	public static ImageIcon MENU_BUG;
 	public static ImageIcon MENU_RECENT;
 	public static ImageIcon MENU_VANILLA;
 	public static ImageIcon MENU_INHERIT;
@@ -151,7 +152,8 @@ public class Icons {
 		MENU_RENAME = loadImage(imgPath + "menu/rename.png");
 		MENU_YES = loadImage(imgPath + "menu/yes.png");
 		MENU_TWITTER = loadImage(imgPath + "menu/twitter.png");
-		MENU_LOG = loadImage(imgPath + "menu/bug.png");
+		MENU_BUG = loadImage(imgPath + "menu/bug.png");
+		MENU_LOG = loadImage(imgPath + "menu/bug_warning.png");
 		MENU_RECENT = loadImage(imgPath + "menu/time.png");
 		MENU_IMPORT_BOX = loadImage(imgPath + "menu/import-box.png");
 		MENU_EXPORT_BOX = loadImage(imgPath + "menu/export-box.png");

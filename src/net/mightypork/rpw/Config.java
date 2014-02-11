@@ -72,6 +72,7 @@ public class Config {
 	public static final boolean def_SHOW_HIDDEN_IN_FILEPICKER = true;
 	public static final boolean def_CLOSED_WITH_PROJECT_OPEN = false;
 	public static final int def_LAST_RUN_VERSION = 0;
+	public static final String def_LIBRARY_VERSION = "UNKNOWN";
 	public static final boolean def_USE_INTERNAL_META_EDITOR = true;
 	public static final boolean def_USE_INTERNAL_TEXT_EDITOR = true;
 	public static final boolean def_WARNING_ORPHANED_NODES = true;
@@ -89,6 +90,7 @@ public class Config {
 	public static boolean PRETTY_JSON;
 	public static boolean CLOSED_WITH_PROJECT_OPEN;
 	public static int LAST_RUN_VERSION;
+	public static String LIBRARY_VERSION;
 	public static boolean SHOW_LOG_TERMINAL;
 
 
@@ -159,6 +161,7 @@ public class Config {
 	public static final String PK_FILECHOOSER_PATH_EXPORT = "status.path.exportPack";
 	private static final String PK_CLOSED_WITH_PROJECT_OPEN = "status.closedWithProjectOpen";
 	private static final String PK_LAST_RUN_VERSION = "status.lastRunVersion";
+	private static final String PK_LIBRARY_VERSION = "status.libraryVersion";
 
 
 	/**
@@ -208,6 +211,7 @@ public class Config {
 
 		mgr.putBoolean(PK_CLOSED_WITH_PROJECT_OPEN, def_CLOSED_WITH_PROJECT_OPEN);
 		mgr.putInteger(PK_LAST_RUN_VERSION, def_LAST_RUN_VERSION);
+		mgr.putString(PK_LIBRARY_VERSION, def_LIBRARY_VERSION);
 
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_FILE, def_FILECHOOSER_PATH_IMPORT_FILE);
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_SOUND, def_FILECHOOSER_PATH_IMPORT_SOUND);
@@ -256,7 +260,8 @@ public class Config {
 		mgr.setValue(PK_FILECHOOSER_PATH_EXPORT, FILECHOOSER_PATH_EXPORT);
 		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
 		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL); // LAST_RUN_VERSION field stays unchanged until restart.
-
+		mgr.setValue(PK_LIBRARY_VERSION, LIBRARY_VERSION);
+		
 		mgr.apply();
 
 		if (App.getMenu() != null) {
@@ -304,6 +309,7 @@ public class Config {
 		FILECHOOSER_PATH_EXPORT = mgr.getString(PK_FILECHOOSER_PATH_EXPORT);
 
 		LAST_RUN_VERSION = mgr.getInteger(PK_LAST_RUN_VERSION);
+		LIBRARY_VERSION = mgr.getString(PK_LIBRARY_VERSION);
 	}
 
 	// options that can't be configured via config file

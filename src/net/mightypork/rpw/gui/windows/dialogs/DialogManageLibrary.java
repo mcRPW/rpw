@@ -48,6 +48,8 @@ public class DialogManageLibrary extends RpwDialog {
 	public DialogManageLibrary() {
 
 		super(App.getFrame(), "Manage Library");
+		
+		packNames = Sources.getResourcepackNames();
 
 		createDialog();
 	}
@@ -65,7 +67,6 @@ public class DialogManageLibrary extends RpwDialog {
 		vbox.titsep("Library Resource Packs");
 		vbox.gap();
 
-		packNames = Sources.getResourcepackNames();
 
 		list = new SimpleStringList(packNames, true);
 		list.setMultiSelect(true);
@@ -114,6 +115,7 @@ public class DialogManageLibrary extends RpwDialog {
 	@Override
 	protected void addActions() {
 
+		setEnterButton(buttonClose);
 		buttonClose.addActionListener(closeListener);
 		buttonDelete.addActionListener(deleteListener);
 		buttonRename.addActionListener(renameListener);

@@ -29,7 +29,7 @@ public class FolderSource extends Source {
 
 
 	@Override
-	public File getAssetsBaseDirectory() {
+	public File getAssetsDirectory() {
 
 		return folder;
 	}

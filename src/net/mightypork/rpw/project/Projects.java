@@ -22,6 +22,20 @@ public class Projects {
 	public static Project active = null;
 
 
+	public static String getName() {
+
+		if (!isProjectOpen()) return null;
+		return getActive().getName();
+	}
+
+
+	public static String getTitle() {
+
+		if (!isProjectOpen()) return null;
+		return getActive().getTitle();
+	}
+
+
 	public static void markChange() {
 
 		Flags.PROJECT_EDITED = true;
@@ -184,7 +198,7 @@ public class Projects {
 
 		Project proj = getActive();
 		if (proj == null) return;
-		markProjectAsRecent(proj.getDirName());
+		markProjectAsRecent(proj.getName());
 	}
 
 

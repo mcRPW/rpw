@@ -22,6 +22,7 @@ import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Projects;
+import net.mightypork.rpw.tree.assets.TreeBuilder;
 import net.mightypork.rpw.tree.assets.processors.GetProjectSummaryProcessor;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 
@@ -93,7 +94,7 @@ public class DialogProjectSummary extends RpwDialog {
 	private Object[][] getData() {
 
 		GetProjectSummaryProcessor proc = new GetProjectSummaryProcessor();
-		AssetTreeNode root = App.getTreeDisplay().treeModel.getRoot();
+		AssetTreeNode root = new TreeBuilder().buildTreeForExport(Projects.getActive());
 
 		root.processThisAndChildren(proc);
 

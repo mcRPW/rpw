@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
@@ -145,14 +146,24 @@ public abstract class RpwDialog extends JDialog {
 	protected void initGui() {
 
 	}
+	
+	
+	/**
+	 * Set button pressed on ENTER press
+	 * @param button btn
+	 */
+	protected void setEnterButton(JButton button) {
+		getRootPane().setDefaultButton(button);
+	}
 
 
 	@Override
 	public void setVisible(boolean b) {
 
+		onShown();
+		
 		super.setVisible(b);
 
-		onShown();
 	}
 
 

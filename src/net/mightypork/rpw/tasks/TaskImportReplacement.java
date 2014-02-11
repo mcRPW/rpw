@@ -39,7 +39,7 @@ public class TaskImportReplacement {
 
 		try {
 
-			File target = new File(Projects.getActive().getAssetsBaseDirectory(), entry.getPath());
+			File target = new File(Projects.getActive().getAssetsDirectory(), entry.getPath());
 
 			target.getParentFile().mkdirs();
 

@@ -166,7 +166,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 		// json mcmeta
 		if (Config.LOG_EXPORT_FILES) Log.f3("- pack.mcmeta");
-		String desc = project.getProjectTitle();
+		String desc = project.getTitle();
 
 		PackInfoMap pim = new PackInfoMap();
 		pim.setPackInfo(new PackInfo(1, desc));
@@ -196,7 +196,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 		Alerts.loading(true);
 
-		Log.f1("Exporting project \"" + project.getProjectTitle() + "\" to " + target);
+		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target);
 
 	}
 
@@ -213,7 +213,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 		}
 
 		if (!success) {
-			Log.f1("Exporting project \"" + project.getProjectTitle() + "\" - FAILED.");
+			Log.f1("Exporting project \"" + project.getTitle() + "\" - FAILED.");
 			// cleanup
 			target.delete();
 
@@ -230,7 +230,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 		if (successRunnable != null) successRunnable.run();
 
-		Log.f1("Exporting project \"" + project.getProjectTitle() + "\" to " + target + " - done.");
+		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target + " - done.");
 
 		Alerts.info(App.getFrame(), "Export successful.");
 		closeMonitor();

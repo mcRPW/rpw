@@ -66,11 +66,9 @@ public class DialogProjectProperties extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		Project proj = Projects.getActive();
-
 		//@formatter:off
 		HBox hb;
-		VBox vbox, vb2;
+		VBox vbox;
 		JLabel l;
 		vbox = new VBox();
 		
@@ -86,13 +84,13 @@ public class DialogProjectProperties extends RpwDialog {
 
 		l = new JXLabel("Title:", SwingConstants.TRAILING);
 		p.add(l);
-		titleField = Gui.textField(Projects.getActive().getProjectTitle(), "Resource pack title", "Title shown in Minecraft");
+		titleField = Gui.textField("", "Resource pack title", "Title shown in Minecraft");
 		l.setLabelFor(titleField);
 		p.add(titleField);
 
 		l = new JXLabel("Name:", SwingConstants.TRAILING);
 		p.add(l);
-		nameField = Gui.textField(Projects.getActive().getDirName(), "Project folder name", "Name of the project folder");
+		nameField = Gui.textField("", "Project folder name", "Name of the project folder");
 		nameField.setEditable(false);
 		l.setLabelFor(nameField);
 		p.add(nameField);
@@ -104,7 +102,7 @@ public class DialogProjectProperties extends RpwDialog {
 		vbox.gap();
 
 		hb = new HBox();
-			hb.add(l = new JLabel("<html><center>To rename a project, use the<br>\"My Projects\" dialog.</center></html>"));
+			hb.add(l = new JLabel("Use \"My Projects\" dialog to rename project."));
 			l.setFont(l.getFont().deriveFont(11));
 			l.setHorizontalAlignment(SwingConstants.CENTER);
 			l.setForeground(Color.GRAY);
@@ -146,6 +144,13 @@ public class DialogProjectProperties extends RpwDialog {
 
 		return vbox;
 	}
+	
+	@Override
+	protected void onShown() {
+		System.out.println("yolo");
+		titleField.setText(Projects.getTitle());
+		nameField.setText(Projects.getName());
+	}
 
 
 	@Override
@@ -171,6 +176,8 @@ public class DialogProjectProperties extends RpwDialog {
 	@Override
 	protected void addActions() {
 
+		setEnterButton(buttonOK);
+		
 		btnIconEdit.addActionListener(imgEditListener);
 		btnIconImport.addActionListener(imgImportListener);
 		btnIconDefault.addActionListener(imgDefaultListener);
@@ -185,7 +192,7 @@ public class DialogProjectProperties extends RpwDialog {
 
 			String title = titleField.getText().trim();
 
-			Projects.getActive().setProjectTitle(title);
+			Projects.getActive().setTitle(title);
 
 			closeDialog();
 		}
@@ -248,7 +255,7 @@ public class DialogProjectProperties extends RpwDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			Projects.getActive().copyInDefaultIcon(true);
+			Projects.getActive().installDefaultIcon(true);
 			redrawIcon();
 		}
 	};

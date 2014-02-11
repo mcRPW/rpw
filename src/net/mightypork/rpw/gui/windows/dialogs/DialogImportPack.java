@@ -40,7 +40,7 @@ import org.jdesktop.swingx.JXTextField;
 
 public class DialogImportPack extends RpwDialog {
 
-	private List<String> options;
+	private List<String> libPackNames;
 
 	private JXTextField field;
 
@@ -56,6 +56,8 @@ public class DialogImportPack extends RpwDialog {
 	public DialogImportPack() {
 
 		super(App.getFrame(), "Import");
+
+		libPackNames = Sources.getResourcepackNames();
 
 		createDialog();
 	}
@@ -75,7 +77,7 @@ public class DialogImportPack extends RpwDialog {
 
 		//@formatter:off
 		hb = new HBox();
-			importUrl = new JXLabel(" ");
+			importUrl = new JXLabel("Select file to import...");
 			importUrl.setToolTipText("Imported ZIP file");
 			importUrl.setForeground(new Color(0x111111));
 			importUrl.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
@@ -94,11 +96,7 @@ public class DialogImportPack extends RpwDialog {
 		vb.add(hb);
 		//@formatter:on
 
-		vb.gap();
-
-		options = Sources.getResourcepackNames();
-
-		vb.add(Box.createVerticalStrut(10));
+		vb.gapl();
 
 		//@formatter:off
 		hb = new HBox();
@@ -140,6 +138,7 @@ public class DialogImportPack extends RpwDialog {
 	@Override
 	protected void addActions() {
 
+		setEnterButton(buttonOK);
 		buttonPickFile.addActionListener(pickFileListener);
 		buttonOK.addActionListener(importListener);
 		buttonCancel.addActionListener(closeListener);
@@ -173,7 +172,7 @@ public class DialogImportPack extends RpwDialog {
 				return;
 			}
 
-			if (options.contains(name)) {
+			if (libPackNames.contains(name)) {
 				Alerts.error(DialogImportPack.this, "Invalid name", "Source named \"" + name + "\" already exists!");
 			} else {
 

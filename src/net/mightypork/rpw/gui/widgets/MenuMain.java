@@ -187,55 +187,6 @@ public class MenuMain {
 		menuBar.add(menu);	
 		
 
-		menu = menuView = new JMenu("View");
-		menu.setMnemonic(KeyEvent.VK_V);
-		
-			item = itemRuntimeLog = new JMenuItem("Show runtime log", KeyEvent.VK_L);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-			item.setIcon(Icons.MENU_LOG);
-			menu.add(item);
-			
-			menu.addSeparator();
-
-			ckitem = itemOptionFancyTree = new JCheckBoxMenuItem("Use \"fancy\" tree structure");
-			ckitem.setMnemonic(KeyEvent.VK_S);
-			ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
-			menu.add(ckitem);
-			
-			menu.addSeparator();
-			
-			ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete files");
-			ckitem.setMnemonic(KeyEvent.VK_W);
-			ckitem.setToolTipText("Show assets that are no longer used by the game.");
-			menu.add(ckitem);
-						
-			ckitem = itemOptionLangFiles = new JCheckBoxMenuItem("Show translation files (*.lang)");
-			ckitem.setMnemonic(KeyEvent.VK_L);	
-			menu.add(ckitem);
-			
-			ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font textures");
-			ckitem.setMnemonic(KeyEvent.VK_F);		
-			menu.add(ckitem);
-		
-			menu.addSeparator();
-		
-			item = itemTreeCollapseAll = new JMenuItem("Collapse tree", KeyEvent.VK_C);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.TREE_CLOSE);
-			menu.add(item);
-		
-			item = itemTreeExpandAll = new JMenuItem("Expand tree", KeyEvent.VK_E);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.TREE_OPEN);
-			menu.add(item);
-						
-			item = itemTreeRefreshTree = new JMenuItem("Refresh tree display", KeyEvent.VK_T);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-			item.setIcon(Icons.MENU_RELOAD);
-			menu.add(item);			
-			
-		menuBar.add(menu);	
-
 
 		menu = menuLibrary = new JMenu("Library");
 		menu.setMnemonic(KeyEvent.VK_L);
@@ -283,6 +234,49 @@ public class MenuMain {
 		menuBar.add(menu);
 		
 
+		menu = menuView = new JMenu("View");
+		menu.setMnemonic(KeyEvent.VK_V);
+		
+			ckitem = itemOptionFancyTree = new JCheckBoxMenuItem("Use \"fancy\" tree structure");
+			ckitem.setMnemonic(KeyEvent.VK_S);
+			ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
+			menu.add(ckitem);
+			
+			menu.addSeparator();
+			
+			ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete files");
+			ckitem.setMnemonic(KeyEvent.VK_W);
+			ckitem.setToolTipText("Show assets that are no longer used by the game.");
+			menu.add(ckitem);
+						
+			ckitem = itemOptionLangFiles = new JCheckBoxMenuItem("Show translation files (*.lang)");
+			ckitem.setMnemonic(KeyEvent.VK_L);	
+			menu.add(ckitem);
+			
+			ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font textures");
+			ckitem.setMnemonic(KeyEvent.VK_F);		
+			menu.add(ckitem);
+		
+			menu.addSeparator();
+		
+			item = itemTreeCollapseAll = new JMenuItem("Collapse tree", KeyEvent.VK_C);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.TREE_CLOSE);
+			menu.add(item);
+		
+			item = itemTreeExpandAll = new JMenuItem("Expand tree", KeyEvent.VK_E);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.TREE_OPEN);
+			menu.add(item);
+						
+			item = itemTreeRefreshTree = new JMenuItem("Refresh tree display", KeyEvent.VK_T);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+			item.setIcon(Icons.MENU_RELOAD);
+			menu.add(item);			
+			
+		menuBar.add(menu);	
+		
+
 		menu = menuOptions = new JMenu("Options");
 		menu.setMnemonic(KeyEvent.VK_O);
 			
@@ -323,14 +317,22 @@ public class MenuMain {
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 			item.setIcon(Icons.MENU_HELP);
 			menu.add(item);
+
+			menu.addSeparator();
+
+			item = itemRuntimeLog = new JMenuItem("Show runtime log", KeyEvent.VK_L);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+			item.setIcon(Icons.MENU_LOG);
+			menu.add(item);
+
+			item = new JMenuItem("Report a bug");
+			item.setIcon(Icons.MENU_BUG);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, ActionEvent.CTRL_MASK));
+			item.addActionListener(Gui.openUrlListener);
+			item.setActionCommand(Paths.URL_GITHUB_BUGS);
+			menu.add(item);	
 			
 			menu.addSeparator();
-			
-			item = new JMenuItem("RPW on GitHub");
-			item.setIcon(Icons.MENU_GITHUB);
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_GITHUB_WEB);
-			menu.add(item);	
 			
 			item = new JMenuItem("RPW on Planet Minecraft");
 			item.setIcon(Icons.MENU_PMC);
@@ -342,6 +344,12 @@ public class MenuMain {
 			item.setIcon(Icons.MENU_MCF);
 			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
+			menu.add(item);
+			
+			item = new JMenuItem("RPW on GitHub");
+			item.setIcon(Icons.MENU_GITHUB);
+			item.addActionListener(Gui.openUrlListener);
+			item.setActionCommand(Paths.URL_GITHUB_WEB);
 			menu.add(item);	
 			
 			menu.addSeparator();
@@ -789,7 +797,7 @@ public class MenuMain {
 		menuRecentProjects.setEnabled(recents.size() > 1);
 
 		Project activeProj = Projects.getActive();
-		String activeName = (activeProj == null ? "" : activeProj.getDirName());
+		String activeName = (activeProj == null ? "" : activeProj.getName());
 
 		JMenuItem item;
 		for (String s : recents) {

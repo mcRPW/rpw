@@ -30,7 +30,7 @@ import net.mightypork.rpw.utils.files.OsUtils;
 
 public class DialogOpenProject extends RpwDialog {
 
-	private List<String> options;
+	private List<String> projectNames;
 
 	private SimpleStringList list;
 
@@ -42,7 +42,7 @@ public class DialogOpenProject extends RpwDialog {
 
 	private void reloadOptions() {
 
-		list.setItems(options = Projects.getProjectNames());
+		list.setItems(projectNames = Projects.getProjectNames());
 	}
 
 
@@ -50,6 +50,8 @@ public class DialogOpenProject extends RpwDialog {
 
 		super(App.getFrame(), "Manage Projects");
 
+		projectNames = Projects.getProjectNames();
+		
 		createDialog();
 	}
 
@@ -65,9 +67,7 @@ public class DialogOpenProject extends RpwDialog {
 		vbox.titsep("RPW projects");
 		vbox.gap();
 
-		options = Projects.getProjectNames();
-
-		list = new SimpleStringList(options, true);
+		list = new SimpleStringList(projectNames, true);
 		list.setMultiSelect(true);
 		list.getList().addListSelectionListener(new ListSelectionListener() {
 
@@ -132,7 +132,7 @@ public class DialogOpenProject extends RpwDialog {
 				return;
 			}
 
-			if (Projects.getActive() != null && Projects.getActive().getDirName().equals(projname)) {
+			if (Projects.getActive() != null && Projects.getActive().getName().equals(projname)) {
 
 				boolean agree = Alerts.askOkCancel(self(), "Project is open", "RPW can't RENAME an open project.\n\nDo you want to close it?");
 
@@ -164,7 +164,7 @@ public class DialogOpenProject extends RpwDialog {
 
 			if (projname.equals(newName)) return;
 
-			if (options.contains(newName)) {
+			if (projectNames.contains(newName)) {
 				Alerts.error(self(), "Name \"" + newName + "\" is already used.");
 				return;
 			}
@@ -205,7 +205,7 @@ public class DialogOpenProject extends RpwDialog {
 			if (!yes) return;
 
 			if (Projects.getActive() != null) {
-				String openProjectDirname = Projects.getActive().getDirName();
+				String openProjectDirname = Projects.getActive().getName();
 
 				boolean isOpen = false;
 				for (String s : choice) {
@@ -217,7 +217,8 @@ public class DialogOpenProject extends RpwDialog {
 
 					if (!agree) return;
 
-					Tasks.taskCloseProject();
+					Projects.closeProject();
+					Tasks.taskOnProjectChanged();
 				}
 			}
 

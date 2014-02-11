@@ -113,6 +113,8 @@ public class DialogUpdateNotify extends RpwDialog {
 	protected void addActions() {
 
 		buttonOK.addActionListener(closeListener);
+
+		setEnterButton(buttonOK);
 	}
 
 }
