@@ -41,14 +41,18 @@ public class Project extends Source implements NodeSourceProvider {
 	private File privateCopiesBase;
 	private File extraIncludesBase;
 	private File customSoundsBase;
+	private File customLanguagesBase;
+
 	private File fileSourcesFiles;
 	private File fileSourcesGroups;
 	private File fileSounds;
+	@SuppressWarnings("unused")
+	private File fileLanguages;
 	private File fileConfig;
-	
+
 	private String projectName;
 	private String projectTitle;
-	
+
 	private Integer lastRpwVersion;
 
 
@@ -89,7 +93,7 @@ public class Project extends Source implements NodeSourceProvider {
 	 */
 	public void reload() {
 
-		Log.f2(getLogPrefix()+" Loading from TMP");
+		Log.f2(getLogPrefix() + " Loading from TMP");
 
 		fileConfig = new File(tmpBase, Paths.FILENAME_PROJECT_CONFIG);
 
@@ -110,12 +114,15 @@ public class Project extends Source implements NodeSourceProvider {
 		privateCopiesBase = new File(tmpBase, Paths.DIRNAME_PROJECT_PRIVATE);
 		extraIncludesBase = new File(tmpBase, Paths.DIRNAME_PROJECT_INCLUDE);
 		customSoundsBase = new File(tmpBase, Paths.DIRNAME_PROJECT_SOUNDS);
+		customLanguagesBase = new File(tmpBase, Paths.DIRNAME_PROJECT_LANGUAGES);
 
 		fileSourcesFiles = new File(tmpBase, Paths.FILENAME_PROJECT_FILES);
 		fileSourcesGroups = new File(tmpBase, Paths.FILENAME_PROJECT_GROUPS);
 		fileSounds = new File(tmpBase, Paths.FILENAME_PROJECT_SOUNDS);
+		fileLanguages = new File(tmpBase, Paths.FILENAME_PROJECT_LANGUAGES);
 
 		installDefaultIcon(false);
+		installReadme(true);
 
 		try {
 
@@ -141,7 +148,9 @@ public class Project extends Source implements NodeSourceProvider {
 			privateCopiesBase.mkdirs();
 			extraIncludesBase.mkdirs();
 			customSoundsBase.mkdirs();
+			customLanguagesBase.mkdirs();
 
+			// just for convenience, to show how it works
 			File tmpFile = new File(extraIncludesBase, "assets/minecraft");
 			tmpFile.mkdirs();
 
@@ -236,8 +245,8 @@ public class Project extends Source implements NodeSourceProvider {
 
 
 	public void saveProperties() {
-		
-		Log.f3(getLogPrefix()+" Saving properties to TMP");
+
+		Log.f3(getLogPrefix() + "Saving properties to TMP");
 
 		// all properties
 		props.cfgForceSave(true);
@@ -280,11 +289,32 @@ public class Project extends Source implements NodeSourceProvider {
 				return;
 			}
 
+			Log.f3("Adding default pack icon");
+
 			InputStream in = FileUtils.getResource("/data/export/pack.png");
 			FileOutputStream out = new FileOutputStream(img);
 			FileUtils.copyStream(in, out);
 		} catch (IOException e) {
 			Log.e(getLogPrefix() + "Error creating pack title image.", e);
+		}
+	}
+
+
+	public void installReadme(boolean force) {
+
+		File img = new File(tmpBase, "README.txt");
+		try {
+			if (img.exists() && !force) {
+				return;
+			}
+
+			Log.f3("Adding README.txt to the pack");
+
+			InputStream in = FileUtils.getResource("/data/export/project-readme.txt");
+			FileOutputStream out = new FileOutputStream(img);
+			FileUtils.copyStream(in, out);
+		} catch (IOException e) {
+			Log.e(getLogPrefix() + "Error creating readme file.", e);
 		}
 	}
 

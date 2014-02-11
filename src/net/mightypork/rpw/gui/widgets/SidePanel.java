@@ -342,7 +342,7 @@ public class SidePanel {
 									BorderFactory.createLineBorder(new Color(0x666666)),
 									BorderFactory.createEmptyBorder(5, 5, 5, 5)
 							),
-							"Project Icon"
+							"Pack Icon"
 					)
 			);	
 

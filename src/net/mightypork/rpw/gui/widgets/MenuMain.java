@@ -31,7 +31,7 @@ public class MenuMain {
 	private JMenuItem itemProjectOpen;
 	private JMenuItem itemProjectSave;
 	private JMenuItem itemProjectSaveAs;
-	private JMenuItem itemProjectManageMcPacks;
+	private JMenuItem itemManageMcPacks;
 	private JMenuItem itemProjectSetup;
 	private JMenuItem itemProjectSummary;
 	private JMenuItem itemProjectExportMc;
@@ -143,11 +143,6 @@ public class MenuMain {
 			menu.add(item);
 			
 			menu.addSeparator();
-						
-			item = itemProjectOpenFolder = new JMenuItem("Open project folder", KeyEvent.VK_I);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_OPEN);
-			menu.add(item);
 			
 			item = itemProjectSetup = new JMenuItem("Project properties", KeyEvent.VK_P);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
@@ -177,12 +172,16 @@ public class MenuMain {
 			item.setIcon(Icons.MENU_SOUND_WIZARD);
 			menu.add(item);
 			
-			menu.addSeparator();
-			
-			item = itemProjectManageMcPacks = new JMenuItem("Manage packs in MC", KeyEvent.VK_D);
-			item.setIcon(Icons.MENU_MANAGE);
+			item = itemProjectOpenFolder = new JMenuItem("Open project folder", KeyEvent.VK_I);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.MENU_OPEN);
 			menu.add(item);
 			
+			menu.addSeparator();
+			
+			item = itemManageMcPacks = new JMenuItem("Manage packs in MC", KeyEvent.VK_D);
+			item.setIcon(Icons.MENU_MANAGE);
+			menu.add(item);
 
 		menuBar.add(menu);	
 		
@@ -497,7 +496,7 @@ public class MenuMain {
 			}
 		});
 
-		itemProjectManageMcPacks.addActionListener(new ActionListener() {
+		itemManageMcPacks.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

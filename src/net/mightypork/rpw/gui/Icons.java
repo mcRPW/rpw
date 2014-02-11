@@ -116,97 +116,98 @@ public class Icons {
 
 		String imgPath = Paths.DATA_DIR_IMAGES;
 
-		IMAGE_ERROR_16 = loadImage(imgPath + "image-error-16.png");
-		IMAGE_ERROR_32 = loadImage(imgPath + "image-error-32.png");
-		IMAGE_ERROR_64 = loadImage(imgPath + "image-error-64.png");
-		IMAGE_ERROR_128 = loadImage(imgPath + "image-error-128.png");
+		//@formatter:off
+		IMAGE_ERROR_16		= loadImage(imgPath + "image-error-16.png");
+		IMAGE_ERROR_32		= loadImage(imgPath + "image-error-32.png");
+		IMAGE_ERROR_64		= loadImage(imgPath + "image-error-64.png");
+		IMAGE_ERROR_128		= loadImage(imgPath + "image-error-128.png");
 
 
-		IMAGE_NOT_FOUND = IMAGE_ERROR_16;
+		IMAGE_NOT_FOUND 	= IMAGE_ERROR_16;
 
-		MENU_NEW = loadImage(imgPath + "menu/new.png");
-		MENU_SAVE = loadImage(imgPath + "menu/save.png");
-		MENU_SAVE_AS = loadImage(imgPath + "menu/save-as.png");
-		MENU_OPEN = loadImage(imgPath + "menu/open.png");
-		MENU_SETUP = loadImage(imgPath + "menu/config.png");
-		MENU_MANAGE = loadImage(imgPath + "menu/manage.png");
-		MENU_EXPORT = loadImage(imgPath + "menu/export.png");
-		MENU_UNDO = loadImage(imgPath + "menu/undo.png");
-		MENU_REDO = loadImage(imgPath + "menu/redo.png");
-		MENU_RELOAD = loadImage(imgPath + "menu/reload.png");
-		MENU_RELOAD2 = loadImage(imgPath + "menu/reload2.png");
-		MENU_EDIT = loadImage(imgPath + "menu/edit.png");
-		MENU_CLEAR = loadImage(imgPath + "menu/clear.png");
-		MENU_HELP = loadImage(imgPath + "menu/help.png");
-		MENU_ABOUT = loadImage(imgPath + "menu/information.png");
-		MENU_DELETE_ASSET = loadImage(imgPath + "menu/delete.png");
-		MENU_DELETE = loadImage(imgPath + "menu/delete-trash.png");
-		MENU_COPY = loadImage(imgPath + "menu/copy.png");
-		MENU_SET_TO_SOURCE = loadImage(imgPath + "menu/set-to-source.png");
-		MENU_PROJECT = loadImage(imgPath + "menu/project.png");
-		MENU_SILENCE = loadImage(imgPath + "menu/silence.png");
-		MENU_TREE = loadImage(imgPath + "menu/tree.png");
-		MENU_RECURSION = loadImage(imgPath + "menu/recursion.png");
-		MENU_CANCEL = loadImage(imgPath + "menu/close.png");
-		MENU_EXIT = loadImage(imgPath + "menu/exit.png");
-		MENU_RENAME = loadImage(imgPath + "menu/rename.png");
-		MENU_YES = loadImage(imgPath + "menu/yes.png");
-		MENU_TWITTER = loadImage(imgPath + "menu/twitter.png");
-		MENU_BUG = loadImage(imgPath + "menu/bug.png");
-		MENU_LOG = loadImage(imgPath + "menu/bug_warning.png");
-		MENU_RECENT = loadImage(imgPath + "menu/time.png");
-		MENU_IMPORT_BOX = loadImage(imgPath + "menu/import-box.png");
-		MENU_EXPORT_BOX = loadImage(imgPath + "menu/export-box.png");
-		MENU_VANILLA = loadImage(imgPath + "menu/vanilla.png");
-		MENU_INHERIT = loadImage(imgPath + "menu/inherit.png");
-		MENU_RESOLVE = loadImage(imgPath + "menu/resolve.png");
-		MENU_INFO = loadImage(imgPath + "menu/information.png");
-		MENU_GENERATE = loadImage(imgPath + "menu/lightning.png");
-		MENU_DONATE = loadImage(imgPath + "menu/heart.png");
-		MENU_GITHUB = loadImage(imgPath + "menu/github.png");
-		MENU_SOUND_WIZARD = loadImage(imgPath + "menu/wand.png");
-		MENU_PMC = loadImage(imgPath + "menu/pmc.png");
-		MENU_MCF = loadImage(imgPath + "menu/mcf.png");
-		MENU_DOWNLOAD = loadImage(imgPath + "menu/download.png");
+		MENU_NEW 			= loadImage(imgPath + "menu/new.png");
+		MENU_SAVE 			= loadImage(imgPath + "menu/save.png");
+		MENU_SAVE_AS 		= loadImage(imgPath + "menu/save-as.png");
+		MENU_OPEN 			= loadImage(imgPath + "menu/open.png");
+		MENU_SETUP 			= loadImage(imgPath + "menu/config.png");
+		MENU_MANAGE 		= loadImage(imgPath + "menu/manage.png");
+		MENU_EXPORT 		= loadImage(imgPath + "menu/export.png");
+		MENU_UNDO 			= loadImage(imgPath + "menu/undo.png");
+		MENU_REDO 			= loadImage(imgPath + "menu/redo.png");
+		MENU_RELOAD			= loadImage(imgPath + "menu/reload.png");
+		MENU_RELOAD2 		= loadImage(imgPath + "menu/reload2.png");
+		MENU_EDIT 			= loadImage(imgPath + "menu/edit.png");
+		MENU_CLEAR 			= loadImage(imgPath + "menu/clear.png");
+		MENU_HELP 			= loadImage(imgPath + "menu/help.png");
+		MENU_ABOUT 			= loadImage(imgPath + "menu/information.png");
+		MENU_DELETE_ASSET 	= loadImage(imgPath + "menu/delete.png");
+		MENU_DELETE 		= loadImage(imgPath + "menu/delete-trash.png");
+		MENU_COPY 			= loadImage(imgPath + "menu/copy.png");
+		MENU_SET_TO_SOURCE	= loadImage(imgPath + "menu/set-to-source.png");
+		MENU_PROJECT		= loadImage(imgPath + "menu/project.png");
+		MENU_SILENCE		= loadImage(imgPath + "menu/silence.png");
+		MENU_TREE			= loadImage(imgPath + "menu/tree.png");
+		MENU_RECURSION		= loadImage(imgPath + "menu/recursion.png");
+		MENU_CANCEL			= loadImage(imgPath + "menu/close.png");
+		MENU_EXIT			= loadImage(imgPath + "menu/exit.png");
+		MENU_RENAME			= loadImage(imgPath + "menu/rename.png");
+		MENU_YES			= loadImage(imgPath + "menu/yes.png");
+		MENU_TWITTER		= loadImage(imgPath + "menu/twitter.png");
+		MENU_BUG			= loadImage(imgPath + "menu/bug.png");
+		MENU_LOG			= loadImage(imgPath + "menu/script_error.png");
+		MENU_RECENT			= loadImage(imgPath + "menu/time.png");
+		MENU_IMPORT_BOX		= loadImage(imgPath + "menu/import-box.png");
+		MENU_EXPORT_BOX		= loadImage(imgPath + "menu/export-box.png");
+		MENU_VANILLA		= loadImage(imgPath + "menu/vanilla.png");
+		MENU_INHERIT 		= loadImage(imgPath + "menu/inherit.png");
+		MENU_RESOLVE 		= loadImage(imgPath + "menu/resolve.png");
+		MENU_INFO 			= loadImage(imgPath + "menu/information.png");
+		MENU_GENERATE 		= loadImage(imgPath + "menu/lightning.png");
+		MENU_DONATE 		= loadImage(imgPath + "menu/heart.png");
+		MENU_GITHUB 		= loadImage(imgPath + "menu/github.png");
+		MENU_SOUND_WIZARD	= loadImage(imgPath + "menu/sound.png");
+		MENU_PMC			= loadImage(imgPath + "menu/pmc.png");
+		MENU_MCF			= loadImage(imgPath + "menu/mcf.png");
+		MENU_DOWNLOAD		= loadImage(imgPath + "menu/download.png");
 
-		WINDOW = loadImage(imgPath + "window-icon.png");
+		WINDOW				= loadImage(imgPath + "window-icon.png");
 
-		TREE_CLOSE = loadImage(imgPath + "tree/close.png");
-		TREE_OPEN = loadImage(imgPath + "tree/open.png");
-		TREE_FOLDER = loadImage(imgPath + "tree/folder.png");
-		TREE_FILE_AUDIO = loadImage(imgPath + "tree/file-audio.png");
-		TREE_FILE_IMAGE = loadImage(imgPath + "tree/file-image.png");
-		TREE_FILE_TEXT = loadImage(imgPath + "tree/file-text.png");
-		TREE_FILE_SHADER = loadImage(imgPath + "tree/file-shader.png");
-		TREE_FILE_JSON = loadImage(imgPath + "tree/file-json.png");
-		TREE_FILE_GENERIC = loadImage(imgPath + "tree/file-unknown.png");
-
-
-		IMAGE_NOT_FOUND = IMAGE_ERROR_64;
-
-		AUDIO = loadImage(imgPath + "sound-icon.png");
+		TREE_CLOSE			= loadImage(imgPath + "tree/close.png");
+		TREE_OPEN 			= loadImage(imgPath + "tree/open.png");
+		TREE_FOLDER 		= loadImage(imgPath + "tree/folder.png");
+		TREE_FILE_AUDIO 	= loadImage(imgPath + "tree/file-audio.png");
+		TREE_FILE_IMAGE 	= loadImage(imgPath + "tree/file-image.png");
+		TREE_FILE_TEXT 		= loadImage(imgPath + "tree/file-text.png");
+		TREE_FILE_SHADER 	= loadImage(imgPath + "tree/file-shader.png");
+		TREE_FILE_JSON 		= loadImage(imgPath + "tree/file-json.png");
+		TREE_FILE_GENERIC	= loadImage(imgPath + "tree/file-unknown.png");
 
 
-		IMAGE_NOT_FOUND = IMAGE_ERROR_128;
+		IMAGE_NOT_FOUND		= IMAGE_ERROR_64;
 
-		TRANSPARENT = loadImage(imgPath + "transparent.png");
-		TRANSPARENT_FONTS = loadImage(imgPath + "transparent-fonts.png");
-
-		ABOUT = loadImage(imgPath + "about.png");
+		AUDIO 				= loadImage(imgPath + "sound-icon.png");
 
 
-		IMAGE_NOT_FOUND = IMAGE_ERROR_32;
+		IMAGE_NOT_FOUND 	= IMAGE_ERROR_128;
 
-		DIALOG_ERROR = loadImage(imgPath + "dialog/error.png");
-		DIALOG_INFORMATION = loadImage(imgPath + "dialog/information.png");
-		DIALOG_QUESTION = loadImage(imgPath + "dialog/question.png");
-		DIALOG_WARNING = loadImage(imgPath + "dialog/warning.png");
+		TRANSPARENT 		= loadImage(imgPath + "transparent.png");
+		TRANSPARENT_FONTS	= loadImage(imgPath + "transparent-fonts.png");
 
+		ABOUT				= loadImage(imgPath + "about.png");
+		
 
-		LOADING = new ImageIcon(Icons.class.getResource(imgPath + "loading.gif"));
+		IMAGE_NOT_FOUND		= IMAGE_ERROR_32;
 
+		DIALOG_ERROR		= loadImage(imgPath + "dialog/error.png");
+		DIALOG_INFORMATION	= loadImage(imgPath + "dialog/information.png");
+		DIALOG_QUESTION		= loadImage(imgPath + "dialog/question.png");
+		DIALOG_WARNING		= loadImage(imgPath + "dialog/warning.png");
 
-		IMAGE_NOT_FOUND = IMAGE_ERROR_128;
+		LOADING				= new ImageIcon(Icons.class.getResource(imgPath + "loading.gif"));
+
+		
+		IMAGE_NOT_FOUND		= IMAGE_ERROR_128;
+		//@formatter:on
 
 		Log.f2("Loading GUI icons - done.");
 	}
