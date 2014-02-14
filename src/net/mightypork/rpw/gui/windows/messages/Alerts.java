@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.utils.logging.Log;
@@ -115,34 +116,37 @@ public class Alerts {
 		if (loadingStateDisplayed == loadingState) {
 			return; // nothing to change
 		}
-
-		if (loaderFrame == null || loaderFrame.getParent() != App.getFrame()) {
-			if (loaderFrame != null) loaderFrame.dispose();
-
-			// init loader
-			loaderFrame = new JXFrame("Working..."); //App.getFrame(), 
-
-			Box b = Box.createVerticalBox();
-			b.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-			JLabel label = new JLabel(Icons.LOADING);
-
-			b.add(label);
-
-			loaderFrame.add(b);
-			loaderFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-			loaderFrame.setResizable(false);
-			loaderFrame.setAlwaysOnTop(true);
-			loaderFrame.pack();
-
-			loaderFrame.setWaitCursorVisible(true);
-			loaderFrame.setWaiting(true);
-			loaderFrame.setWaitPaneVisible(true);
-		}
-
-		if (App.getFrame() == null || !loadingState) {
-			Gui.centerWindow(loaderFrame, App.getFrame());
-			loaderFrame.setVisible(loadingState);
+		
+		if(Config.USE_LOADER_WINDOW_AS_FALLBACK) {
+	
+			if (loaderFrame == null || loaderFrame.getParent() != App.getFrame()) {
+				if (loaderFrame != null) loaderFrame.dispose();
+	
+				// init loader
+				loaderFrame = new JXFrame("Working..."); //App.getFrame(), 
+	
+				Box b = Box.createVerticalBox();
+				b.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+	
+				JLabel label = new JLabel(Icons.LOADING);
+	
+				b.add(label);
+	
+				loaderFrame.add(b);
+				loaderFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+				loaderFrame.setResizable(false);
+				loaderFrame.setAlwaysOnTop(true);
+				loaderFrame.pack();
+	
+				loaderFrame.setWaitCursorVisible(true);
+				loaderFrame.setWaiting(true);
+				loaderFrame.setWaitPaneVisible(true);
+			}
+	
+			if (App.getFrame() == null || !loadingState) {
+				Gui.centerWindow(loaderFrame, App.getFrame());
+				loaderFrame.setVisible(loadingState);
+			}
 		}
 
 		App.setWaiting(loadingState);

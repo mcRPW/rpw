@@ -55,6 +55,7 @@ public abstract class RpwDialog extends JDialog {
 			}
 		}
 	};
+	private Frame dlgParent;
 
 
 	public void setCloseable(boolean closeable) {
@@ -78,8 +79,16 @@ public abstract class RpwDialog extends JDialog {
 	public RpwDialog(Frame parent, String title) {
 
 		super(parent, title);
+		
+		this.dlgParent = parent;
+		System.out.println(parent);
+		
+		setAlwaysOnTop(parent==null); // initial load dialog
+		
 		setModal(true);
 		setResizable(false);
+		setLocationRelativeTo(parent);
+		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		addWindowListener(closeWindowListener);
@@ -125,7 +134,8 @@ public abstract class RpwDialog extends JDialog {
 
 		pack();
 
-		Gui.centerWindow(this, getParent());
+		Gui.centerWindow(this, dlgParent);
+
 		addActions();
 
 		getRootPane().registerKeyboardAction(closeListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -162,11 +172,12 @@ public abstract class RpwDialog extends JDialog {
 
 	@Override
 	public void setVisible(boolean b) {
+		
+		super.setVisible(b);
 
 		onShown();
 		Log.f3("Dialog open: " + getTitle());
 
-		super.setVisible(b);
 
 	}
 

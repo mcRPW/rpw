@@ -57,7 +57,7 @@ public class Gui {
 
 
 	public static void centerWindow(Component window, Component parent) {
-
+		
 		try {
 			if (parent == null) {
 				Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
@@ -69,7 +69,7 @@ public class Gui {
 			}
 		} catch (IllegalStateException e) {
 			// meh
-			Log.e("Failed to center window.");
+			Log.e("Failed to center window.", e);
 		}
 	}
 

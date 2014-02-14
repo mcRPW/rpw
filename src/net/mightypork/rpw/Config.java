@@ -324,7 +324,7 @@ public class Config {
 	public static final boolean LOG_FILTERS_DETAILED = false;
 	public static final boolean LOG_VANILLA_LOAD_STRUCTURE = false;
 
-	public static final boolean USE_LOADER_WINDOW = false;
+	public static final boolean USE_LOADER_WINDOW_AS_FALLBACK = false;
 	public static final boolean LOG_HELP_LOADING = false;
 
 	public static final boolean LOG_EXPORT_FILES = true;

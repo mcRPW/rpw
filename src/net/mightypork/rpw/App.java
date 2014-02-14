@@ -95,7 +95,8 @@ public class App {
 
 		Icons.init();
 
-		// preload RSyntaxTextArea (it's big and causes lag otherwise)		
+		// preload RSyntaxTextArea (it's big and causes lag otherwise)	
+		Log.f3("Initializing RSyntaxTextArea");
 		@SuppressWarnings("unused")
 		RSyntaxTextArea rsa = new RSyntaxTextArea();
 		rsa = null;

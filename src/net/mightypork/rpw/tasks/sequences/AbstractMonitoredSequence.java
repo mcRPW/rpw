@@ -26,8 +26,7 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence {
 
 		Alerts.loading(true);
 
-		if (Config.SHOW_LOG_TERMINAL && App.getFrame() != null) {
-
+		if (Config.SHOW_LOG_TERMINAL) {
 
 			dpt = new DialogProgressTerminal(getMonitorTitle(), getMonitorHeading());
 

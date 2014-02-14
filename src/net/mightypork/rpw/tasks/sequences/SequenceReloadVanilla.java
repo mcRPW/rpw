@@ -250,6 +250,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 			if (!source.exists()) {
 				Log.e("Index file not found, aborting.");
+				Log.i("TO FIX THIS, run Minecraft (v. "+version+"),\nclose it and try this again.");
 				return false;
 			}
 		}
@@ -349,7 +350,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 			String message = "RPW detected some mod files in your\n" + 
 					".minecraft/mods directory.\n" + 
 					"\n" + 
-					"Do you want to load them too?";
+					"Do you want to load them?";
 			//@formatter:on
 
 			ArrayList<JCheckBox> ckboxes = new ArrayList<JCheckBox>();
@@ -374,7 +375,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 				JOptionPane.YES_NO_OPTION, //option type
 				JOptionPane.QUESTION_MESSAGE, // message type
 				Icons.DIALOG_QUESTION, // icon
-				new String[] {"Import selected","Ignore mods"}, // options
+				new String[] {"Load selected","Ignore"}, // options
 				null // default option
 			);
 			//@formatter:on

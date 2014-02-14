@@ -16,6 +16,7 @@ import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
@@ -72,13 +73,17 @@ public class Sources {
 		vanilla = new VanillaPack();
 
 		int i = Tasks.taskLoadVanillaStructure();
-		while (Tasks.isRunning(i)) {}
+		while (Tasks.isRunning(i)) {
+			Utils.sleep(100);
+		}
 
 		if (Flags.MUST_RELOAD_VANILLA || Flags.VANILLA_STRUCTURE_LOAD_OK == false) {
 			Flags.MUST_RELOAD_VANILLA = false;
 
 			int task = Tasks.taskReloadVanillaOrDie();
-			while (Tasks.isRunning(task)) {}
+			while (Tasks.isRunning(task)) {
+				Utils.sleep(100);
+			}
 		}
 	}
 

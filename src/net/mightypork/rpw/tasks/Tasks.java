@@ -591,8 +591,8 @@ public class Tasks {
 
 			//@formatter:off
 			App.die(
-				"Application cannot run without a\n" +
-				"Vanilla resource pack. Aborting."
+				"Application cannot run without\n" +
+				"Minecraft assets. Aborting."
 			);
 			//@formatter:on
 
