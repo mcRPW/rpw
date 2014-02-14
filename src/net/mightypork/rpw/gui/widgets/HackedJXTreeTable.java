@@ -34,8 +34,9 @@ public class HackedJXTreeTable extends JXTreeTable {
 
 	@Override
 	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+
 		Component returnComp = super.prepareRenderer(renderer, row, column);
-		
+
 		Color alternateColor = Const.TABLE_ALT_COLOR;
 		Color whiteColor = Color.WHITE;
 		if (returnComp.getBackground().equals(whiteColor)) {
@@ -43,7 +44,7 @@ public class HackedJXTreeTable extends JXTreeTable {
 			returnComp.setBackground(bg);
 			bg = null;
 		}
-		
+
 		return returnComp;
 	}
 
@@ -58,6 +59,6 @@ public class HackedJXTreeTable extends JXTreeTable {
 			setCollapsedIcon(Icons.TREE_OPEN);
 			setExpandedIcon(Icons.TREE_CLOSE);
 		} catch (NullPointerException e) {}
-			
+
 	}
 }

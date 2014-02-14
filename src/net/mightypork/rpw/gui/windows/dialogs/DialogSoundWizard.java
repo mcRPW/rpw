@@ -166,9 +166,9 @@ public class DialogSoundWizard extends RpwDialog {
 		//@formatter:on
 
 
-		if(Config.USE_NIMBUS) Gui.useMetal();
+		if (Config.USE_NIMBUS) Gui.useMetal();
 		treeDisplay = new SoundFileTreeDisplay(null, this);
-		if(Config.USE_NIMBUS) Gui.useNimbus();
+		if (Config.USE_NIMBUS) Gui.useNimbus();
 
 		JComponent c = treeDisplay.getComponent();
 		c.setPreferredSize(new Dimension(300, 396));

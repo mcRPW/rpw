@@ -11,7 +11,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 
-import net.mightypork.rpw.Const;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
 
@@ -35,6 +34,7 @@ public class MagicAwareTableCellStringRenderer extends JLabel implements TableCe
 	private static final Color bgSource[] = { new Color(0x9DDBA3), new Color(0x90D696), new Color(0x469580) };
 
 	private static final Color bgInherit[] = { new Color(0xF0F6FF), new Color(0xE1ECFC), null };
+
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -65,9 +65,9 @@ public class MagicAwareTableCellStringRenderer extends JLabel implements TableCe
 		} else if (!MagicSources.isMagic(source)) {
 			setBackground(bgSource[index]);
 		} else {
-			if(isSelected) {
+			if (isSelected) {
 				setBackground(table.getSelectionBackground());
-			}else{
+			} else {
 				setBackground(bgInherit[index]);
 			}
 		}

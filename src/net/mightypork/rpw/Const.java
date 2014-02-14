@@ -38,12 +38,8 @@ public class Const {
 
 	public static final Color TABLE_ALT_COLOR = new Color(0xF5F9FF);//F5F9FF
 
-	public static final Object TABLE_CELL_INSETS = new javax.swing.plaf.BorderUIResource(BorderFactory.createEmptyBorder(0,1,0,1));
-	public static final Object TABLE_HEADER_INSETS = new javax.swing.plaf.BorderUIResource(BorderFactory.createEmptyBorder(2,5,2,5));
-	public static final Object TABLE_HEADER_INSETSd = new javax.swing.plaf.BorderUIResource(
-						BorderFactory.createCompoundBorder(
-								BorderFactory.createMatteBorder(0, 0, 1, 1, Color.GRAY),
-								BorderFactory.createEmptyBorder(3, 5, 3, 5)
-								)
-	);
+	public static final Object TABLE_CELL_INSETS = new javax.swing.plaf.BorderUIResource(BorderFactory.createEmptyBorder(0, 1, 0, 1));
+	public static final Object TABLE_HEADER_INSETS = new javax.swing.plaf.BorderUIResource(BorderFactory.createEmptyBorder(2, 5, 2, 5));
+	public static final Object TABLE_HEADER_INSETSd = new javax.swing.plaf.BorderUIResource(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.GRAY),
+			BorderFactory.createEmptyBorder(3, 5, 3, 5)));
 }

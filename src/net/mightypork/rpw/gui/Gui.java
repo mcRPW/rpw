@@ -202,8 +202,10 @@ public class Gui {
 		l.setForeground(Color.GRAY);
 		return hb;
 	}
-	
+
+
 	public static void useNimbus() {
+
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -219,8 +221,10 @@ public class Gui {
 			Log.e("Could not select Look&Feel: Nimbus", e);
 		}
 	}
-	
+
+
 	public static void useMetal() {
+
 		try {
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Metal".equals(info.getName())) {
