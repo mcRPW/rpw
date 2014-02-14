@@ -52,7 +52,9 @@ public class DialogNewProject extends RpwDialog {
 
 
 	private List<JComponent> respackGroup = new ArrayList<JComponent>();
-	private List<JComponent> blankGroup = new ArrayList<JComponent>();
+	private List<JComponent> titleFieldGroup = new ArrayList<JComponent>();
+
+	private JCheckBox ckKeepTitle;
 
 
 	public DialogNewProject() {
@@ -120,6 +122,15 @@ public class DialogNewProject extends RpwDialog {
 		respackGroup.add(hb);
 		respackGroup.add(respackUrlLabel);
 		respackGroup.add(respackPickButton);
+
+		hb2 = new HBox();
+			hb2.gapl();
+			hb2.add(ckKeepTitle = new JCheckBox("Keep original title", true));
+			hb2.glue();
+		vbox.add(hb2);
+		
+		respackGroup.add(hb2);
+		respackGroup.add(ckKeepTitle);
 			
 		ButtonGroup group = new ButtonGroup();
 		group.add(radioBlank);
@@ -146,13 +157,13 @@ public class DialogNewProject extends RpwDialog {
 		label.setLabelFor(titleField);
 		p.add(titleField);
 
-		blankGroup.add(label);
-		blankGroup.add(titleField);
+		titleFieldGroup.add(label);
+		titleFieldGroup.add(titleField);
 
 		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
 
 		vbox.add(p);
-		vbox.add(Gui.commentLine("<html><center>Project created from existing pack<br>will keep the original title.</center></html>"));
+		//vbox.add(Gui.commentLine("<html><center>Project created from existing pack<br>will keep the original title.</center></html>"));
 		vbox.gapl();
 
 		hb = new HBox();
@@ -178,9 +189,12 @@ public class DialogNewProject extends RpwDialog {
 		for (JComponent j : respackGroup) {
 			j.setEnabled(enable);
 		}
+	}
 
-		for (JComponent j : blankGroup) {
-			j.setEnabled(!enable);
+	private void enableTitleField(boolean enable) {
+
+		for (JComponent j : titleFieldGroup) {
+			j.setEnabled(enable);
 		}
 	}
 
@@ -206,6 +220,15 @@ public class DialogNewProject extends RpwDialog {
 		buttonOK.addActionListener(createListener);
 		buttonCancel.addActionListener(closeListener);
 		respackPickButton.addActionListener(pickFileListener);
+		
+		ckKeepTitle.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				
+				enableTitleField(e.getStateChange() == ItemEvent.DESELECTED);
+			}
+		});
 
 		radioBlank.addItemListener(new ItemListener() {
 
@@ -214,6 +237,7 @@ public class DialogNewProject extends RpwDialog {
 
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					enableFilePicker(false);
+					enableTitleField(true);
 					usePackFile = false;
 				}
 			}
@@ -226,6 +250,7 @@ public class DialogNewProject extends RpwDialog {
 
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					enableFilePicker(true);
+					enableTitleField(!ckKeepTitle.isSelected());
 					usePackFile = true;
 				}
 			}
@@ -250,7 +275,7 @@ public class DialogNewProject extends RpwDialog {
 				return;
 			}
 
-			if (!usePackFile && title.length() == 0) {
+			if (!ckKeepTitle.isSelected() && title.length() == 0) {
 				Alerts.error(self(), "Invalid title", "Missing project title!");
 				return;
 			}
@@ -267,7 +292,7 @@ public class DialogNewProject extends RpwDialog {
 				final String projname = name;
 
 				// pack project starts with name = title, title is replaced during import.
-				final String projtitle = usePackFile ? name : title;
+				final String projtitle = ckKeepTitle.isSelected() ? "" : title;
 
 
 				Tasks.taskAskToSaveIfChanged(new Runnable() {

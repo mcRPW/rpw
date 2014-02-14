@@ -135,7 +135,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 
 				if (mcmeta.pack != null) {
 					String title = mcmeta.pack.description;
-					if (title != null) {
+					if (title != null && project.getTitle().length() == 0) { // empty == keep original title
 						project.setTitle(title);
 					}
 				}
