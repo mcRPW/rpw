@@ -81,7 +81,6 @@ public abstract class RpwDialog extends JDialog {
 		super(parent, title);
 		
 		this.dlgParent = parent;
-		System.out.println(parent);
 		
 		setAlwaysOnTop(parent==null); // initial load dialog
 		

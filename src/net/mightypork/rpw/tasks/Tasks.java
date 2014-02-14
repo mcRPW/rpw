@@ -591,8 +591,8 @@ public class Tasks {
 
 			//@formatter:off
 			App.die(
-				"Application cannot run without\n" +
-				"Minecraft assets. Aborting."
+				"RPW cannot run without Minecraft assets.\n" +
+				"Aborting."
 			);
 			//@formatter:on
 

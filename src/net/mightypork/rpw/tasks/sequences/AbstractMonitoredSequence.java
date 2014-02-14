@@ -1,7 +1,6 @@
 package net.mightypork.rpw.tasks.sequences;
 
 
-import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogProgressTerminal;
