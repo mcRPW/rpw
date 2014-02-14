@@ -94,25 +94,25 @@ public class Gui {
 	}
 
 
-	public static JXTextField textField() {
+	public static JTextField textField() {
 
 		return textField(null, null, null);
 	}
 
 
-	public static JXTextField textField(String text) {
+	public static JTextField textField(String text) {
 
 		return textField(text, null, null);
 	}
 
 
-	public static JXTextField textField(String text, String placeholder) {
+	public static JTextField textField(String text, String placeholder) {
 
 		return textField(text, placeholder, placeholder);
 	}
 
 
-	public static JXTextField textField(String text, String placeholder, String tooltip) {
+	public static JTextField textField(String text, String placeholder, String tooltip) {
 
 		int padding = PADDING_TEXTFIELD;
 
@@ -213,7 +213,8 @@ public class Gui {
 					UIDefaults defaults = UIManager.getLookAndFeelDefaults();
 					defaults.put("Table.alternateRowColor", Const.TABLE_ALT_COLOR);
 					defaults.put("Table.focusCellHighlightBorder", Const.TABLE_CELL_INSETS);
-					defaults.put("TableHeader.cellBorder", Const.TABLE_HEADER_INSETSd);
+					defaults.put("TableHeader.cellBorder", Const.TABLE_HEADER_BORDERS);
+					defaults.put("nimbusOrange", new Color(0x1F87B5)); // override for progressbar
 					break;
 				}
 			}

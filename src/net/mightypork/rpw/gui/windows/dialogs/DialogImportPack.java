@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import net.mightypork.rpw.App;
@@ -34,14 +35,13 @@ import net.mightypork.rpw.utils.files.ZipUtils;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 import org.jdesktop.swingx.JXLabel;
-import org.jdesktop.swingx.JXTextField;
 
 
 public class DialogImportPack extends RpwDialog {
 
 	private List<String> libPackNames;
 
-	private JXTextField field;
+	private JTextField field;
 
 	private JButton buttonPickFile;
 	private JButton buttonOK;

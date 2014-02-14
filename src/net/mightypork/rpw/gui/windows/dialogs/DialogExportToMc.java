@@ -9,17 +9,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.border.Border;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
+import net.mightypork.rpw.Const;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.HBox;
@@ -27,27 +24,32 @@ import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
-import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.utils.SpringUtilities;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXLabel;
-import org.jdesktop.swingx.JXTextField;
+
+import com.google.gson.reflect.TypeToken;
 
 
 public class DialogExportToMc extends RpwDialog {
 
 	private List<String> installedPackNames;
 
-	private JXTextField field;
+	private JTextField field;
 	private JButton buttonOK;
 	private SimpleStringList list;
 	private JButton buttonCancel;
 
-	private JCheckBox ckSetAsDefault;
+	private JComboBox mcOptsCombo;
+
+	private static final int MC_ALONE = 0;
+	private static final int MC_ADD = 1;
+	private static final int MC_NO_CHANGE = 2;
 
 
 	public DialogExportToMc() {
@@ -90,21 +92,37 @@ public class DialogExportToMc extends RpwDialog {
 		vbox.gap();
 
 		//@formatter:off
-		hb = new HBox();
-			hb.add(new JXLabel("Pack name:"));
-			hb.gap();
-	
-			field = new JXTextField();
-			field.setText(Projects.getActive().getName());
-			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(3,3,3,3));
-			field.setBorder(bdr);
-						
-			field.addKeyListener(TextInputValidator.filenames());
-			
-			
-			hb.add(field);
-		vbox.add(hb);
-	
+		JPanel p = new JPanel(new SpringLayout());
+
+		JXLabel label;
+		label = new JXLabel("Pack name:", SwingConstants.RIGHT);
+		p.add(label);
+		field = Gui.textField("", "Output file name", "Output file name (without extension)");
+		field.addKeyListener(TextInputValidator.filenames());
+		label.setLabelFor(field);
+		p.add(field);
+
+		label = new JXLabel("In Minecraft:", SwingConstants.RIGHT);
+		p.add(label);
+		
+		
+		String[] choices = new String[3];
+		choices[MC_ALONE] = "Use this pack alone";
+		choices[MC_ADD] = "Add pack to selected (on top)";
+		choices[MC_NO_CHANGE] = "Don't change settings";
+		
+		
+		Config.CHOICE_EXPORT_TO_MC = Math.max(0, Math.min(Config.CHOICE_EXPORT_TO_MC, choices.length-1));
+		
+		mcOptsCombo = new JComboBox(choices);
+		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
+		label.setLabelFor(mcOptsCombo);
+		p.add(mcOptsCombo);
+
+		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
+
+		vbox.add(p);
+		
 		vbox.gapl();
 		
 		hb = new HBox();			
@@ -161,6 +179,7 @@ public class DialogExportToMc extends RpwDialog {
 			final String name = field.getText().trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid name", "Missing file name!");
+				return;
 			}
 
 			if (installedPackNames.contains(name)) {
@@ -188,52 +207,17 @@ public class DialogExportToMc extends RpwDialog {
 				Tasks.taskExportProject(file, new Runnable() {
 
 
-
 					@Override
 					public void run() {
-						
-						// 0 - add on top
-						// 1 - replace
+
+						// 0 - replace
+						// 1 - put on top
 						// 2 - don't change settings
-						
-						final String[] choices = {
-								"Add to selected (on top)",
-								"Select it (as the only one)",
-								"Don't touch my settings!"
-						};
-						
-						String defChoice = choices[Config.CHOICE_EXPORT_TO_MC];
 
-						//@formatter:off
-						String s = (String) JOptionPane.showInputDialog(
-								App.getFrame(),
-								"Resource pack was exported.\n"+
-								"RPW can now adjust Minecraft settings to use it.",
-								"Adjust Minecraft settings",
-								JOptionPane.QUESTION_MESSAGE,
-								Icons.DIALOG_QUESTION,
-								choices,
-								defChoice
-							);
-						//@formatter:on
-
-						if (s == null) {
-							// aborted
-							s = choices[2];
-						}
-
-						int choice = 0;
-						for (int i = 0; i < choices.length; i++) {
-							if (choices[i].equals(s)) {
-								choice = i;
-								break;
-							}
-						}
-
-						Config.CHOICE_EXPORT_TO_MC = choice;
+						int choice = Config.CHOICE_EXPORT_TO_MC = mcOptsCombo.getSelectedIndex();
 						Config.save();
 
-						if (choice == 2) return;
+						if (choice == MC_NO_CHANGE) return;
 
 
 						// TODO take action based on choice
@@ -251,27 +235,57 @@ public class DialogExportToMc extends RpwDialog {
 
 							boolean a = false, b = false;
 
-							String optA = "skin:" + name + ".zip";
-							String optB = "resourcePacks:[\"" + name + ".zip\"]";
+							String fname = name + ".zip";
+
+							String optOld = "skin:" + fname;
+
+							String optNew = "resourcePacks:[" + Const.GSON_UGLY.toJson(fname) + "]";
 
 							for (int i = 0; i < lines.size(); i++) {
 
-								// 1.7+
-								if (lines.get(i).startsWith("resourcePacks:")) {
-									b = true;
-									lines.set(i, optB);
-								}
 
 								// 1.6-
 								if (lines.get(i).startsWith("skin:")) {
 									a = true;
-									lines.set(i, optA);
+									Log.f3("Writing to MC options: " + optOld);
+									lines.set(i, optOld);
+								} else
+								// 1.7+
+								if (lines.get(i).startsWith("resourcePacks:")) {
+
+									if (choice == MC_ADD) {
+										try {
+
+											String orig = lines.get(i).substring("resourcePacks:".length());
+											orig = orig.trim();
+
+											List<String> list = Const.GSON.fromJson(orig, new TypeToken<List<String>>() {}.getType());
+
+											list.remove(fname);
+											list.add(0, fname);
+
+											String packs_new = Const.GSON_UGLY.toJson(list);
+
+											Log.f3("Writing to MC options: " + packs_new);
+
+											lines.set(i, "resourcePacks:" + packs_new);
+											b = true;
+										} catch (Exception e) {
+											Log.e(e);
+										}
+									}
+
+									if (!b || choice == MC_ALONE) {
+										lines.set(i, optNew);
+										Log.f3("Writing to MC options: " + optNew);
+										b = true;
+									}
 								}
 							}
 
 							// add the unused one (make sure both will be present when MC starts)
-							if (!b) lines.add(optB);
-							if (!a) lines.add(optA);
+							if (!b) lines.add(optNew);
+							if (!a) lines.add(optOld);
 
 							SimpleConfig.listToFile(f, lines);
 							Log.i("Minecraft config file was changed.");

@@ -124,7 +124,7 @@ public class Utils {
 
 	public static boolean isValidFilenameString(String filename) {
 
-		return filename.matches("[a-zA-Z0-9 +\\-.,_%@#$!'\"]+");
+		return filename.matches("[a-zA-Z0-9 +\\-.,_%@#!]+");
 	}
 
 

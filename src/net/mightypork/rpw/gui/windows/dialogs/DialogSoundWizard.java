@@ -51,7 +51,6 @@ import net.mightypork.rpw.utils.AlphanumComparator;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.OsUtils;
 
-import org.jdesktop.swingx.JXTextField;
 import org.jdesktop.swingx.JXTitledSeparator;
 
 
@@ -60,7 +59,7 @@ public class DialogSoundWizard extends RpwDialog {
 	private JButton buttonOK;
 	private JButton buttonNewKey;
 	private JButton buttonDeleteKey;
-	private JXTextField fieldKey;
+	private JTextField fieldKey;
 	private JComboBox fieldCategory;
 	private SimpleStringList keyList;
 	private SimpleStringList fileList;

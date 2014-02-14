@@ -1,6 +1,7 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,14 +27,13 @@ import net.mightypork.rpw.utils.files.DesktopApi;
 import net.mightypork.rpw.utils.files.FileUtils;
 
 import org.jdesktop.swingx.JXLabel;
-import org.jdesktop.swingx.JXTextField;
 
 
 public class DialogProjectProperties extends RpwDialog {
 
 
 	private FileChooser fc;
-	private JXTextField titleField;
+	private JTextField titleField;
 	private JButton buttonOK;
 	private JLabel imageView;
 
@@ -42,7 +42,7 @@ public class DialogProjectProperties extends RpwDialog {
 	private JButton btnIconImport;
 	private JButton btnIconDefault;
 	private JButton btnIconRefresh;
-	private JXTextField nameField;
+	private JTextField nameField;
 
 
 	private void redrawIcon() {
@@ -90,6 +90,8 @@ public class DialogProjectProperties extends RpwDialog {
 		p.add(l);
 		nameField = Gui.textField("", "Project folder name", "Name of the project folder");
 		nameField.setEditable(false);
+		nameField.setBackground(new Color(0xeeeeee));
+		nameField.setForeground(new Color(0x111111));
 		l.setLabelFor(nameField);
 		p.add(nameField);
 

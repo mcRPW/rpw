@@ -5,11 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
@@ -24,20 +20,19 @@ import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.SpringUtilities;
 
 import org.jdesktop.swingx.JXLabel;
-import org.jdesktop.swingx.JXTextField;
 
 
 public class DialogSaveAs extends RpwDialog {
 
 	private List<String> projectNames;
 
-	private JXTextField nameField;
+	private JTextField nameField;
 	private JButton buttonOK;
 	//private SimpleStringList list;
 
 	private JButton buttonCancel;
 
-	private JXTextField titleField;
+	private JTextField titleField;
 
 
 	public DialogSaveAs() {

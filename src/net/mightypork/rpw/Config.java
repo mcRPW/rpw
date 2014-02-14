@@ -217,6 +217,7 @@ public class Config {
 		mgr.putString(PK_FILECHOOSER_PATH_EXPORT, def_FILECHOOSER_PATH_EXPORT);
 
 		mgr.putBoolean(PK_USE_NIMBUS, def_USE_NIMBUS, "Use the Nimbus theme instead of Metal (default).");
+		mgr.putInteger(PK_CHOICE_EXPORT_TO_MC, def_CHOICE_EXPORT_TO_MC);
 
 		load(); // load what has been "put"
 	}
@@ -307,7 +308,7 @@ public class Config {
 
 		LAST_RUN_VERSION = mgr.getInteger(PK_LAST_RUN_VERSION);
 		LIBRARY_VERSION = mgr.getString(PK_LIBRARY_VERSION);
-		CHOICE_EXPORT_TO_MC = mgr.getInteger(PK_LIBRARY_VERSION);
+		CHOICE_EXPORT_TO_MC = mgr.getInteger(PK_CHOICE_EXPORT_TO_MC);
 	}
 
 	// options that can't be configured via config file
