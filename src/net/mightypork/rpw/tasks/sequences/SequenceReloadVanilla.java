@@ -19,6 +19,7 @@ import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.struct.VersionInfo;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
@@ -142,28 +143,25 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 		Log.f3("Version JSON file: " + jsonFile);
 
 		try {
-			JsonParser jp = new JsonParser();
-
-			JsonElement root = jp.parse(FileUtils.fileToString(jsonFile));
-			root.isJsonObject();
-			if (!root.isJsonObject()) throw new IllegalArgumentException();
-
-			JsonObject rootobj = root.getAsJsonObject();
-
-			if (!rootobj.has("assets")) {
+			
+			String s = FileUtils.fileToString(jsonFile);
+			
+			VersionInfo vi = VersionInfo.fromJson(s);
+			
+			if (vi.assets == null) {
 				assetsVersion = "legacy"; // legacy assets index (1.7.2 and below)
 			} else {
-				assetsVersion = rootobj.get("assets").getAsString();
+				assetsVersion = vi.assets;
 			}
 
-			if (!rootobj.has("type")) {
-				Log.e("Unsupported JSON structure, aborting.\nIf you report this, ATTACH THE VERSION JSON FILE!");
+			if (vi.type==null) {
+				Log.e("Version type not defined, aborting.\nIf you report this, ATTACH THE VERSION JSON FILE!");
 				return false;
 			} else {
-				String vtype = rootobj.get("type").getAsString();
 
-				if (!vtype.equals("release") && !vtype.equals("snapshot")) {
-					Log.e("Unsupported version type: " + vtype);
+				if (!vi.isReleaseOrSnapshot()) {
+					Log.e("Unsupported version type: " + vi.type);
+					Log.i("RPW supports only types 'release' and 'snapshot'.");
 					return false;
 				}
 			}
