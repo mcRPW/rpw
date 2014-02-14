@@ -11,6 +11,8 @@ import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.WindowCloseListener;
 import net.mightypork.rpw.gui.widgets.MenuMain;
@@ -60,8 +62,13 @@ public class WindowMain {
 
 
 	private Component buildMainPanel() {
+		
+		if(Config.USE_NIMBUS) Gui.useMetal();
 
 		treeDisplay = new TreeDisplay();
+		
+		if(Config.USE_NIMBUS) Gui.useNimbus();
+		
 		JScrollPane scrollpane = new JScrollPane(treeDisplay.treeTable);
 
 		scrollpane.setPreferredSize(new Dimension(700, 600));

@@ -31,10 +31,6 @@ import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 
 public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
@@ -143,18 +139,18 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 		Log.f3("Version JSON file: " + jsonFile);
 
 		try {
-			
+
 			String s = FileUtils.fileToString(jsonFile);
-			
+
 			VersionInfo vi = VersionInfo.fromJson(s);
-			
+
 			if (vi.assets == null) {
 				assetsVersion = "legacy"; // legacy assets index (1.7.2 and below)
 			} else {
 				assetsVersion = vi.assets;
 			}
 
-			if (vi.type==null) {
+			if (vi.type == null) {
 				Log.e("Version type not defined, aborting.\nIf you report this, ATTACH THE VERSION JSON FILE!");
 				return false;
 			} else {
@@ -248,7 +244,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 			if (!source.exists()) {
 				Log.e("Index file not found, aborting.");
-				Log.i("TO FIX THIS, run Minecraft (v. "+version+"),\nclose it and try this again.");
+				Log.i("TO FIX THIS, run Minecraft (v. " + version + "),\nclose it and try this again.");
 				return false;
 			}
 		}

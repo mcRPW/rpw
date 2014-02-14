@@ -141,7 +141,9 @@ public class DialogProgressTerminal extends DialogTerminalBase implements LogMon
 		progress.setValue((int) Math.round(((double) index / (double) (total - 1)) * 100));
 	}
 
+
 	public void stopMonitoring() {
+
 		Log.removeMonitor(monitorId);
 	}
 

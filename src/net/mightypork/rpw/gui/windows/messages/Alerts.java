@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JOptionPane;
+
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.utils.logging.Log;
@@ -106,7 +107,7 @@ public class Alerts {
 		if (loadingStateDisplayed == loadingState) {
 			return; // nothing to change
 		}
-		
+
 		App.setWaiting(loadingState);
 
 		loadingStateDisplayed = loadingState;

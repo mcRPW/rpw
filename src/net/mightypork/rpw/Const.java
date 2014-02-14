@@ -1,6 +1,10 @@
 package net.mightypork.rpw;
 
 
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
+
 import net.mightypork.rpw.help.VersionUtils;
 
 import com.google.gson.Gson;
@@ -30,7 +34,11 @@ public class Const {
 	};
 	//@formatter:on
 
-	public static final Gson PRETTY_GSON = new GsonBuilder().setPrettyPrinting().create();
-	public static final Gson UGLY_GSON = new GsonBuilder().create();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+	public static final Color TABLE_ALT_COLOR = new Color(0xF5F9FF);//F5F9FF
+
+	public static final Object TABLE_CELL_INSETS = new javax.swing.plaf.BorderUIResource(BorderFactory.createEmptyBorder(0,1,0,1));
+	public static final Object TABLE_HEADER_INSETS = new javax.swing.plaf.BorderUIResource(BorderFactory.createEmptyBorder(2,5,2,5));
 
 }

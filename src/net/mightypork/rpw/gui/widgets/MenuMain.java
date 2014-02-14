@@ -59,7 +59,7 @@ public class MenuMain {
 	private JCheckBoxMenuItem itemOptionHiddenFiles;
 	private JCheckBoxMenuItem itemOptionWarningOrphanedNodes;
 	private JCheckBoxMenuItem itemOptionObsoleteDirs;
-	private JCheckBoxMenuItem itemOptionShowLogTerminal;
+	private JCheckBoxMenuItem itemUseNimbusTheme;
 	private JMenuItem itemConfigureEditors;
 
 	private JMenuItem itemHelp;
@@ -293,8 +293,8 @@ public class MenuMain {
 			ckitem.setMnemonic(KeyEvent.VK_H);	
 			menu.add(ckitem);
 									
-			ckitem = itemOptionShowLogTerminal = new JCheckBoxMenuItem("Show log for lengthy operations");
-			ckitem.setMnemonic(KeyEvent.VK_L);	
+			ckitem = itemUseNimbusTheme = new JCheckBoxMenuItem("Use Nimbus theme (needs restart)");
+			ckitem.setMnemonic(KeyEvent.VK_N);	
 			menu.add(ckitem);
 			
 			menu.addSeparator();
@@ -700,15 +700,15 @@ public class MenuMain {
 			}
 		});
 
-		itemOptionShowLogTerminal.addActionListener(new ActionListener() {
+		itemUseNimbusTheme.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				boolean newOpt = itemOptionShowLogTerminal.isSelected();
+				boolean newOpt = itemUseNimbusTheme.isSelected();
 
-				if (Config.SHOW_LOG_TERMINAL != newOpt) {
-					Config.SHOW_LOG_TERMINAL = newOpt;
+				if (Config.USE_NIMBUS != newOpt) {
+					Config.USE_NIMBUS = newOpt;
 					Config.save();
 				}
 			}
@@ -817,6 +817,6 @@ public class MenuMain {
 		itemOptionWarningOrphanedNodes.setSelected(Config.WARNING_ORPHANED_NODES);
 		itemOptionPreviewHover.setSelected(Config.PREVIEW_HOVER);
 		itemOptionHiddenFiles.setSelected(Config.SHOW_HIDDEN_FILES);
-		itemOptionShowLogTerminal.setSelected(Config.SHOW_LOG_TERMINAL);
+		itemUseNimbusTheme.setSelected(Config.USE_NIMBUS);
 	}
 }

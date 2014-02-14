@@ -72,12 +72,12 @@ public class Config {
 	public static final boolean def_SHOW_HIDDEN_IN_FILEPICKER = true;
 	public static final boolean def_CLOSED_WITH_PROJECT_OPEN = false;
 	public static final int def_LAST_RUN_VERSION = 0;
+	public static final int def_CHOICE_EXPORT_TO_MC = 0;
 	public static final String def_LIBRARY_VERSION = "UNKNOWN";
 	public static final boolean def_USE_INTERNAL_META_EDITOR = true;
 	public static final boolean def_USE_INTERNAL_TEXT_EDITOR = true;
 	public static final boolean def_WARNING_ORPHANED_NODES = true;
-	public static final boolean def_PRETTY_JSON = true;
-	public static final boolean def_SHOW_LOG_TERMINAL = true;
+	public static final boolean def_USE_NIMBUS = true;
 	public static boolean FANCY_TREE;
 	public static boolean SHOW_FONT;
 	public static boolean SHOW_LANG;
@@ -87,11 +87,11 @@ public class Config {
 	public static boolean USE_INTERNAL_META_EDITOR;
 	public static boolean USE_INTERNAL_TEXT_EDITOR;
 	public static boolean WARNING_ORPHANED_NODES;
-	public static boolean PRETTY_JSON;
 	public static boolean CLOSED_WITH_PROJECT_OPEN;
 	public static int LAST_RUN_VERSION;
+	public static int CHOICE_EXPORT_TO_MC;
 	public static String LIBRARY_VERSION;
-	public static boolean SHOW_LOG_TERMINAL;
+	public static boolean USE_NIMBUS;
 
 
 	// filechooser paths
@@ -139,8 +139,6 @@ public class Config {
 	private static final String PK_USE_INTERNAL_META_EDITOR = "system.editor.useInternalMetaEditor";
 	private static final String PK_USE_INTERNAL_TEXT_EDITOR = "system.editor.useInternalTextEditor";
 	private static final String PK_WARNING_ORPHANED_NODES = "display.warning.orphanedNodes";
-	private static final String PK_SHOW_LOG_TERMINAL = "display.logTerminal";
-
 
 	private static final String PK_IMAGE_EDITOR = "system.editor.image.command";
 	private static final String PK_IMAGE_EDITOR_ARGS = "system.editor.image.args";
@@ -150,10 +148,11 @@ public class Config {
 	private static final String PK_TEXT_EDITOR_ARGS = "system.editor.text.args";
 	private static final String PK_USE_TEXT_EDITOR = "system.editor.text.enabled";
 
+	private static final String PK_USE_NIMBUS = "display.nimbusTheme";
+
 	private static final String PK_AUDIO_EDITOR = "system.editor.audio.command";
 	private static final String PK_AUDIO_EDITOR_ARGS = "system.editor.audio.command.args";
 	private static final String PK_USE_AUDIO_EDITOR = "system.editor.audio.enabled";
-	private static final String PK_PRETTY_JSON = "export.prettyJSON";
 
 	public static final String PK_FILECHOOSER_PATH_IMPORT_FILE = "status.path.importFile";
 	public static final String PK_FILECHOOSER_PATH_IMPORT_SOUND = "status.path.importCustomSound";
@@ -162,6 +161,7 @@ public class Config {
 	private static final String PK_CLOSED_WITH_PROJECT_OPEN = "status.closedWithProjectOpen";
 	private static final String PK_LAST_RUN_VERSION = "status.lastRunVersion";
 	private static final String PK_LIBRARY_VERSION = "status.libraryVersion";
+	private static final String PK_CHOICE_EXPORT_TO_MC = "status.exportToMcChoice";
 
 
 	/**
@@ -189,11 +189,10 @@ public class Config {
 		mgr.putBoolean(PK_SHOW_OBSOLETE_DIRS, def_SHOW_OBSOLETE_DIRS, "Show obsolete directories and groups (eg. the pre-1.7 sounds)");
 		mgr.putBoolean(PK_PREVIEW_HOVER, def_PREVIEW_HOVER, "Display preview of item under mouse");
 		mgr.putBoolean(PK_SHOW_HIDDEN_IN_FILEPICKER, def_SHOW_HIDDEN_IN_FILEPICKER, "Show hidden files in file pickers (import, export)");
-		mgr.putBoolean(PK_SHOW_LOG_TERMINAL, def_SHOW_LOG_TERMINAL, "Show terminal-like window with scrolling log for long operations");
 
 		mgr.putBoolean(PK_USE_INTERNAL_META_EDITOR, def_USE_INTERNAL_META_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_USE_INTERNAL_TEXT_EDITOR, def_USE_INTERNAL_TEXT_EDITOR, "Use internal editor, ignore configured command.");
-		mgr.putBoolean(PK_WARNING_ORPHANED_NODES, def_WARNING_ORPHANED_NODES, "Warn when some nodes could not be displayed.");
+		mgr.putBoolean(PK_WARNING_ORPHANED_NODES, def_WARNING_ORPHANED_NODES, "Warn when some assets could not be displayed.");
 
 		mgr.putString(PK_IMAGE_EDITOR, def_IMAGE_EDITOR);
 		mgr.putString(PK_IMAGE_EDITOR_ARGS, def_IMAGE_EDITOR_ARGS);
@@ -207,16 +206,17 @@ public class Config {
 		mgr.putString(PK_TEXT_EDITOR_ARGS, def_TEXT_EDITOR_ARGS);
 		mgr.putBoolean(PK_USE_TEXT_EDITOR, def_USE_TEXT_EDITOR, "Use command instead of system default.");
 
-		mgr.putBoolean(PK_PRETTY_JSON, def_PRETTY_JSON, "Use pretty formatting for output JSON.");
-
 		mgr.putBoolean(PK_CLOSED_WITH_PROJECT_OPEN, def_CLOSED_WITH_PROJECT_OPEN);
 		mgr.putInteger(PK_LAST_RUN_VERSION, def_LAST_RUN_VERSION);
 		mgr.putString(PK_LIBRARY_VERSION, def_LIBRARY_VERSION);
+		mgr.putInteger(PK_CHOICE_EXPORT_TO_MC, def_CHOICE_EXPORT_TO_MC);
 
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_FILE, def_FILECHOOSER_PATH_IMPORT_FILE);
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_SOUND, def_FILECHOOSER_PATH_IMPORT_SOUND);
 		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_PACK, def_FILECHOOSER_PATH_IMPORT_PACK);
 		mgr.putString(PK_FILECHOOSER_PATH_EXPORT, def_FILECHOOSER_PATH_EXPORT);
+
+		mgr.putBoolean(PK_USE_NIMBUS, def_USE_NIMBUS, "Use the Nimbus theme instead of Metal (default).");
 
 		load(); // load what has been "put"
 	}
@@ -227,8 +227,6 @@ public class Config {
 	 */
 	public static void save() {
 
-		//Log.f3("Saving configuration file.");
-
 		mgr.setValue(PK_FANCY_GROUPS, FANCY_TREE);
 		mgr.setValue(PK_SHOW_FONT, SHOW_FONT);
 		mgr.setValue(PK_SHOW_LANG, SHOW_LANG);
@@ -238,9 +236,6 @@ public class Config {
 		mgr.setValue(PK_USE_INTERNAL_META_EDITOR, USE_INTERNAL_META_EDITOR);
 		mgr.setValue(PK_USE_INTERNAL_TEXT_EDITOR, USE_INTERNAL_TEXT_EDITOR);
 		mgr.setValue(PK_WARNING_ORPHANED_NODES, WARNING_ORPHANED_NODES);
-
-		mgr.setValue(PK_PRETTY_JSON, PRETTY_JSON);
-		mgr.setValue(PK_SHOW_LOG_TERMINAL, SHOW_LOG_TERMINAL);
 
 		mgr.setValue(PK_IMAGE_EDITOR, IMAGE_EDITOR);
 		mgr.setValue(PK_IMAGE_EDITOR_ARGS, IMAGE_EDITOR_ARGS);
@@ -254,6 +249,8 @@ public class Config {
 		mgr.setValue(PK_TEXT_EDITOR_ARGS, TEXT_EDITOR_ARGS);
 		mgr.setValue(PK_USE_TEXT_EDITOR, USE_TEXT_EDITOR);
 
+		mgr.setValue(PK_USE_NIMBUS, USE_NIMBUS);
+
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_FILE, FILECHOOSER_PATH_IMPORT_FILE);
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_SOUND, FILECHOOSER_PATH_IMPORT_SOUND);
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_PACK, FILECHOOSER_PATH_IMPORT_PACK);
@@ -261,6 +258,7 @@ public class Config {
 		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
 		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL); // LAST_RUN_VERSION field stays unchanged until restart.
 		mgr.setValue(PK_LIBRARY_VERSION, LIBRARY_VERSION);
+		mgr.setValue(PK_CHOICE_EXPORT_TO_MC, CHOICE_EXPORT_TO_MC);
 
 		mgr.apply();
 
@@ -288,9 +286,6 @@ public class Config {
 		USE_INTERNAL_TEXT_EDITOR = mgr.getBoolean(PK_USE_INTERNAL_TEXT_EDITOR);
 		WARNING_ORPHANED_NODES = mgr.getBoolean(PK_WARNING_ORPHANED_NODES);
 
-		PRETTY_JSON = mgr.getBoolean(PK_PRETTY_JSON);
-		SHOW_LOG_TERMINAL = mgr.getBoolean(PK_SHOW_LOG_TERMINAL);
-
 		IMAGE_EDITOR = mgr.getString(PK_IMAGE_EDITOR);
 		IMAGE_EDITOR_ARGS = mgr.getString(PK_IMAGE_EDITOR_ARGS);
 		USE_IMAGE_EDITOR = mgr.getBoolean(PK_USE_IMAGE_EDITOR);
@@ -303,6 +298,8 @@ public class Config {
 		TEXT_EDITOR_ARGS = mgr.getString(PK_TEXT_EDITOR_ARGS);
 		USE_TEXT_EDITOR = mgr.getBoolean(PK_USE_TEXT_EDITOR);
 
+		USE_NIMBUS = mgr.getBoolean(PK_USE_NIMBUS);
+
 		FILECHOOSER_PATH_IMPORT_FILE = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_FILE);
 		FILECHOOSER_PATH_IMPORT_SOUND = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_SOUND);
 		FILECHOOSER_PATH_IMPORT_PACK = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_PACK);
@@ -310,6 +307,7 @@ public class Config {
 
 		LAST_RUN_VERSION = mgr.getInteger(PK_LAST_RUN_VERSION);
 		LIBRARY_VERSION = mgr.getString(PK_LIBRARY_VERSION);
+		CHOICE_EXPORT_TO_MC = mgr.getInteger(PK_LIBRARY_VERSION);
 	}
 
 	// options that can't be configured via config file

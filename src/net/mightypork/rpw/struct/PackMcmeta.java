@@ -3,16 +3,13 @@ package net.mightypork.rpw.struct;
 
 import java.lang.reflect.Type;
 
-import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
 public class PackMcmeta {
 
-	private static Gson gson = Config.PRETTY_JSON ? Const.PRETTY_GSON : Const.UGLY_GSON;
 	private static Type type = null;
 
 	public PackInfo pack = null;
@@ -30,13 +27,13 @@ public class PackMcmeta {
 
 	public static PackMcmeta fromJson(String json) {
 
-		return gson.fromJson(json, getType());
+		return Const.GSON.fromJson(json, getType());
 	}
 
 
 	public String toJson() {
 
-		return gson.toJson(this);
+		return Const.GSON.toJson(this);
 	}
 
 

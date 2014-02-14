@@ -27,6 +27,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.TreePath;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Gui;
@@ -164,7 +165,10 @@ public class DialogSoundWizard extends RpwDialog {
 		);
 		//@formatter:on
 
+
+		if(Config.USE_NIMBUS) Gui.useMetal();
 		treeDisplay = new SoundFileTreeDisplay(null, this);
+		if(Config.USE_NIMBUS) Gui.useNimbus();
 
 		JComponent c = treeDisplay.getComponent();
 		c.setPreferredSize(new Dimension(300, 396));
