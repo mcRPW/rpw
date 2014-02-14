@@ -11,12 +11,15 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.HBox;
@@ -44,6 +47,8 @@ public class DialogExportToMc extends RpwDialog {
 	private SimpleStringList list;
 	private JButton buttonCancel;
 
+	private JCheckBox ckSetAsDefault;
+
 
 	public DialogExportToMc() {
 
@@ -59,16 +64,16 @@ public class DialogExportToMc extends RpwDialog {
 	protected JComponent buildGui() {
 
 		HBox hb;
-		VBox vb = new VBox();
-		vb.windowPadding();
+		VBox vbox = new VBox();
+		vbox.windowPadding();
 
-		vb.heading("Export to Minecraft");
+		vbox.heading("Export to Minecraft");
 
 
-		vb.titsep("Installed ResourcePacks");
-		vb.gap();
+		vbox.titsep("Installed ResourcePacks");
+		vbox.gap();
 
-		vb.add(list = new SimpleStringList(installedPackNames, true));
+		vbox.add(list = new SimpleStringList(installedPackNames, true));
 		list.getList().addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -79,10 +84,10 @@ public class DialogExportToMc extends RpwDialog {
 			}
 		});
 
-		vb.gapl();
+		vbox.gapl();
 
-		vb.titsep("Export options");
-		vb.gap();
+		vbox.titsep("Export options");
+		vbox.gap();
 
 		//@formatter:off
 		hb = new HBox();
@@ -98,11 +103,9 @@ public class DialogExportToMc extends RpwDialog {
 			
 			
 			hb.add(field);
-		vb.add(hb);
-
-		
-		vb.gapl();
-
+		vbox.add(hb);
+	
+		vbox.gapl();
 		
 		hb = new HBox();			
 			hb.glue();
@@ -111,11 +114,11 @@ public class DialogExportToMc extends RpwDialog {
 			hb.gap();	
 			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
 			hb.add(buttonCancel);
-		vb.add(hb);
+		vbox.add(hb);
 		//@formatter:on
 
 
-		return vb;
+		return vbox;
 	}
 
 
@@ -184,8 +187,55 @@ public class DialogExportToMc extends RpwDialog {
 
 				Tasks.taskExportProject(file, new Runnable() {
 
+
 					@Override
 					public void run() {
+						
+						// 0 - add on top
+						// 1 - replace
+						// 2 - don't change settings
+						
+						final String[] choices = {
+								"Add to selected (on top)",
+								"Select it (as the only one)",
+								"Don't touch my settings!"
+						};
+						
+						String defChoice = choices[Config.CHOICE_EXPORT_TO_MC];
+
+						//@formatter:off
+						String s = (String) JOptionPane.showInputDialog(
+								App.getFrame(),
+								"Resource pack was exported.\n"+
+								"RPW can now adjust Minecraft settings to use it.",
+								"Adjust Minecraft settings",
+								JOptionPane.QUESTION_MESSAGE,
+								Icons.DIALOG_QUESTION,
+								choices,
+								defChoice
+							);
+						//@formatter:on
+
+						if (s == null) {
+							// aborted
+							s = choices[2];
+						}
+
+						int choice = 0;
+						for (int i = 0; i < choices.length; i++) {
+							if (choices[i].equals(s)) {
+								choice = i;
+								break;
+							}
+						}
+
+						Config.CHOICE_EXPORT_TO_MC = choice;
+						Config.save();
+
+						if (choice == 2) return;
+
+
+						// TODO take action based on choice
 
 						// set as default now.
 

@@ -191,6 +191,7 @@ public class DialogNewProject extends RpwDialog {
 		}
 	}
 
+
 	private void enableTitleField(boolean enable) {
 
 		for (JComponent j : titleFieldGroup) {
@@ -220,12 +221,12 @@ public class DialogNewProject extends RpwDialog {
 		buttonOK.addActionListener(createListener);
 		buttonCancel.addActionListener(closeListener);
 		respackPickButton.addActionListener(pickFileListener);
-		
+
 		ckKeepTitle.addItemListener(new ItemListener() {
-			
+
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				
+
 				enableTitleField(e.getStateChange() == ItemEvent.DESELECTED);
 			}
 		});

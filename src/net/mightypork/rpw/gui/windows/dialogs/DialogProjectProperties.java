@@ -185,6 +185,11 @@ public class DialogProjectProperties extends RpwDialog {
 		public void actionPerformed(ActionEvent e) {
 
 			String title = titleField.getText().trim();
+			
+			if(title.length() == 0) {
+				Alerts.error(self(), "Please, enter project title.");
+				return;
+			}
 
 			Projects.getActive().setTitle(title);
 

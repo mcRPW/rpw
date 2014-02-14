@@ -1,10 +1,16 @@
 package net.mightypork.rpw;
 
 
+import java.awt.Color;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.widgets.MenuMain;
 import net.mightypork.rpw.gui.widgets.SidePanel;
@@ -85,6 +91,9 @@ public class App {
 		OsUtils.initDirs();
 		Config.init();
 
+		if (Config.USE_NIMBUS) {
+			Gui.useNimbus();
+		}
 
 		TaskDevel.run();
 

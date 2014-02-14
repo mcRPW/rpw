@@ -7,9 +7,11 @@ import java.awt.event.ActionListener;
 import java.net.URI;
 
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
+import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.files.DesktopApi;
@@ -57,7 +59,7 @@ public class Gui {
 
 
 	public static void centerWindow(Component window, Component parent) {
-		
+
 		try {
 			if (parent == null) {
 				Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
@@ -199,5 +201,35 @@ public class Gui {
 		l.setHorizontalAlignment(SwingConstants.CENTER);
 		l.setForeground(Color.GRAY);
 		return hb;
+	}
+	
+	public static void useNimbus() {
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+					defaults.put("Table.alternateRowColor", Const.TABLE_ALT_COLOR);
+					defaults.put("Table.focusCellHighlightBorder", Const.TABLE_CELL_INSETS);
+					defaults.put("TableHeader.cellBorder", Const.TABLE_HEADER_INSETSd);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			Log.e("Could not select Look&Feel: Nimbus", e);
+		}
+	}
+	
+	public static void useMetal() {
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Metal".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (Exception e) {
+			Log.e("Could not select Look&Feel: Metal", e);
+		}
 	}
 }

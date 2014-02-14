@@ -79,15 +79,15 @@ public abstract class RpwDialog extends JDialog {
 	public RpwDialog(Frame parent, String title) {
 
 		super(parent, title);
-		
+
 		this.dlgParent = parent;
-		
-		setAlwaysOnTop(parent==null); // initial load dialog
-		
+
+		setAlwaysOnTop(parent == null); // initial load dialog
+
 		setModal(true);
 		setResizable(false);
 		setLocationRelativeTo(parent);
-		
+
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		addWindowListener(closeWindowListener);
@@ -171,10 +171,11 @@ public abstract class RpwDialog extends JDialog {
 
 	@Override
 	public void setVisible(boolean b) {
+
+		onShown();
 		
 		super.setVisible(b);
 
-		onShown();
 		Log.f3("Dialog open: " + getTitle());
 
 

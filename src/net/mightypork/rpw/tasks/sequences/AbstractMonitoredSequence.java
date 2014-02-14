@@ -1,7 +1,6 @@
 package net.mightypork.rpw.tasks.sequences;
 
 
-import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogProgressTerminal;
 import net.mightypork.rpw.utils.logging.Log;
@@ -25,13 +24,8 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence {
 
 		Alerts.loading(true);
 
-		if (Config.SHOW_LOG_TERMINAL) {
-
-			dpt = new DialogProgressTerminal(getMonitorTitle(), getMonitorHeading());
-
-			dpt.openDialog();
-
-		}
+		dpt = new DialogProgressTerminal(getMonitorTitle(), getMonitorHeading());
+		dpt.openDialog();
 
 		doBefore();
 	}
