@@ -13,6 +13,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.TableUI;
+import javax.swing.plaf.metal.MetalBorders;
+import javax.swing.plaf.metal.MetalTheme;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.TreeNode;
@@ -162,14 +164,14 @@ public class TreeDisplay {
 		};
 		//@formatter:on
 
-		JTableHeader header = treeTable.getTableHeader();
 		ColumnHeaderToolTipsMouseListener tips = new ColumnHeaderToolTipsMouseListener();
 		for (int c = 0; c < treeTable.getColumnCount(); c++) {
 			TableColumn col = treeTable.getColumnModel().getColumn(c);
 			tips.setToolTip(col, tooltips[c]);
 		}
+		
+		JTableHeader header = treeTable.getTableHeader();
 		header.addMouseMotionListener(tips);
-
 
 		adjustColumns();
 

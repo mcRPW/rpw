@@ -172,9 +172,10 @@ public abstract class RpwDialog extends JDialog {
 	@Override
 	public void setVisible(boolean b) {
 
+		onShown();
+		
 		super.setVisible(b);
 
-		onShown();
 		Log.f3("Dialog open: " + getTitle());
 
 
