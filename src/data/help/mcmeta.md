@@ -9,7 +9,7 @@ tree area.
 
 To make a texture animated, you will have to put all the animation frames in 
 the image file. If your file is *16px* wide, and you want 4 frames, then it 
-will be *4*16px* high and the frames will be placed in a column.
+will be *4×16px* high and the frames will be placed in a column.
 
 When making a water or lava animation, different rules apply, so it's best to 
 see the vanilla textures for reference.

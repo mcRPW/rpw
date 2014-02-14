@@ -49,10 +49,6 @@ public class PopupSelectedNodes {
 	private JMenuItem itemEditMeta;
 	private JMenuItem itemCollapse;
 	private JMenuItem itemExpand;
-	private JMenuItem itemCollapseChildren;
-	private JMenuItem itemExpandChildren;
-	private JMenuItem itemExpandSiblings;
-	private JMenuItem itemCollapseSiblings;
 	private JMenuItem itemImportReplacement;
 	private JMenuItem itemApplyResolved;
 	private JMenuItem itemApplyResolvedOrInherit;
@@ -172,28 +168,6 @@ public class PopupSelectedNodes {
 			item.setIcon(Icons.TREE_OPEN);
 			submenu.add(item);
 
-			if (groupsDirect == 1 && nodes.size() == 1) {
-				submenu.addSeparator();
-
-				item = itemCollapseChildren = new JMenuItem("Collapse children");
-				item.setIcon(Icons.TREE_CLOSE);
-				submenu.add(item);
-
-				item = itemExpandChildren = new JMenuItem("Expand children");
-				item.setIcon(Icons.TREE_OPEN);
-				submenu.add(item);
-
-				submenu.addSeparator();
-
-				item = itemCollapseSiblings = new JMenuItem("Collapse siblings");
-				item.setIcon(Icons.TREE_CLOSE);
-				submenu.add(item);
-
-				item = itemExpandSiblings = new JMenuItem("Expand siblings");
-				item.setIcon(Icons.TREE_OPEN);
-				submenu.add(item);
-			}
-
 			popup.add(submenu);
 		}
 
@@ -278,81 +252,6 @@ public class PopupSelectedNodes {
 				for (AssetTreeNode node : PopupSelectedNodes.this.nodes) {
 					if (node.isLeaf()) continue;
 					App.getTreeDisplay().togglePathRecursively(node, true);
-				}
-				Tasks.taskTreeRedraw();
-			}
-		});
-
-
-		// siblings
-		if (itemCollapseSiblings != null) itemCollapseSiblings.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				for (AssetTreeNode node : PopupSelectedNodes.this.nodes) {
-					if (node.isLeaf()) continue;
-
-					AssetTreeNode parent = node.getParent();
-
-					for (AssetTreeNode nodeC : parent.getChildrenList()) {
-						if (nodeC.isLeaf()) continue;
-						App.getTreeDisplay().togglePathSimple(nodeC, false);
-					}
-				}
-				Tasks.taskTreeRedraw();
-			}
-		});
-
-		if (itemExpandSiblings != null) itemExpandSiblings.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				for (AssetTreeNode node : PopupSelectedNodes.this.nodes) {
-					if (node.isLeaf()) continue;
-
-					AssetTreeNode parent = node.getParent();
-
-					for (AssetTreeNode nodeC : parent.getChildrenList()) {
-						if (nodeC.isLeaf()) continue;
-						App.getTreeDisplay().togglePathSimple(nodeC, true);
-					}
-				}
-				Tasks.taskTreeRedraw();
-			}
-		});
-
-		// children
-		if (itemCollapseChildren != null) itemCollapseChildren.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				for (AssetTreeNode node : PopupSelectedNodes.this.nodes) {
-					if (node.isLeaf()) continue;
-
-					for (AssetTreeNode nodeC : node.getChildrenList()) {
-						if (nodeC.isLeaf()) continue;
-						App.getTreeDisplay().togglePathSimple(nodeC, false);
-					}
-				}
-				Tasks.taskTreeRedraw();
-			}
-		});
-
-		if (itemExpandChildren != null) itemExpandChildren.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				for (AssetTreeNode node : PopupSelectedNodes.this.nodes) {
-					if (node.isLeaf()) continue;
-
-					for (AssetTreeNode nodeC : node.getChildrenList()) {
-						if (nodeC.isLeaf()) continue;
-						App.getTreeDisplay().togglePathSimple(nodeC, true);
-					}
 				}
 				Tasks.taskTreeRedraw();
 			}

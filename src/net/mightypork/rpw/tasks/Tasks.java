@@ -207,8 +207,6 @@ public class Tasks {
 
 	public static void taskTreeRedraw() {
 
-		Log.f3("Redrawing tree");
-
 		AssetTreeNode root = App.getTreeDisplay().treeModel.getRoot();
 		App.getTreeDisplay().treeModel.notifyNodeChanged(root);
 	}
