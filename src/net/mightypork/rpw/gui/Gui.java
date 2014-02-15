@@ -52,11 +52,51 @@ public class Gui {
 	}
 
 
-	public static void setMinPrefSize(Component c, int x, int y) {
+	public static void setPrefWidth(JComponent component, int width) {
 
-		Dimension d = new Dimension(x, y);
-		c.setMinimumSize(d);
-		c.setPreferredSize(d);
+		Dimension d = component.getPreferredSize();
+		d.width = width;
+		component.setPreferredSize(d);
+	}
+
+
+	public static void setPrefHeight(JComponent component, int height) {
+
+		Dimension d = component.getPreferredSize();
+		d.height = height;
+		component.setPreferredSize(d);
+	}
+
+
+	public static void setMinWidth(JComponent component, int width) {
+
+		Dimension d = component.getMinimumSize();
+		d.width = width;
+		component.setMinimumSize(d);
+	}
+
+
+	public static void setMinHeight(JComponent component, int height) {
+
+		Dimension d = component.getMinimumSize();
+		d.width = height;
+		component.setMinimumSize(d);
+	}
+
+
+	public static void setMaxWidth(JComponent component, int width) {
+
+		Dimension d = component.getMaximumSize();
+		d.width = width;
+		component.setMaximumSize(d);
+	}
+
+
+	public static void setMaxHeight(JComponent component, int height) {
+
+		Dimension d = component.getMaximumSize();
+		d.width = height;
+		component.setMaximumSize(d);
 	}
 
 
@@ -268,11 +308,4 @@ public class Gui {
 		return p;
 	}
 
-
-	public static void setPreferedWidth(JComponent component, int width) {
-		Dimension d = component.getPreferredSize();
-		d.width = width;
-		component.setPreferredSize(d);
-	}
-	
 }

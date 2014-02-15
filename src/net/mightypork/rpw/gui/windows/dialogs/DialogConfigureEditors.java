@@ -1,7 +1,6 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -105,7 +104,7 @@ public class DialogConfigureEditors extends RpwDialog {
 				boxI.gap();
 				
 				boxI.add(fieldCommandI = Gui.textField("", exe_placeholder, exe_tooltip));
-				Gui.setPreferedWidth(fieldCommandI, fieldW);
+				Gui.setPrefWidth(fieldCommandI, fieldW);
 				boxI.gap();
 				boxI.add(btnBrowseI = new JButton(Icons.MENU_OPEN));	
 				btnBrowseI.setToolTipText("Browse files");
@@ -115,7 +114,7 @@ public class DialogConfigureEditors extends RpwDialog {
 					labelArI.setHorizontalAlignment(SwingConstants.RIGHT);		
 				boxI.gap();
 				boxI.add(fieldArgsI = Gui.textField("", args_placeholder, args_tooltip));
-				Gui.setPreferedWidth(fieldArgsI, argsW);
+				Gui.setPrefWidth(fieldArgsI, argsW);
 				
 			section_vb.add(boxI);
 			
@@ -136,7 +135,7 @@ public class DialogConfigureEditors extends RpwDialog {
 				boxT.gap();
 				
 				boxT.add(fieldCommandT = Gui.textField("", exe_placeholder, exe_tooltip));
-				Gui.setPreferedWidth(fieldCommandT, fieldW);
+				Gui.setPrefWidth(fieldCommandT, fieldW);
 				boxT.gap();	
 				boxT.add(btnBrowseT = new JButton(Icons.MENU_OPEN));	
 				btnBrowseT.setToolTipText("Browse files");	
@@ -146,7 +145,7 @@ public class DialogConfigureEditors extends RpwDialog {
 					labelArT.setHorizontalAlignment(SwingConstants.RIGHT);		
 				boxT.gap();
 				boxT.add(fieldArgsT = Gui.textField("", args_placeholder, args_tooltip));
-				Gui.setPreferedWidth(fieldArgsT, argsW);
+				Gui.setPrefWidth(fieldArgsT, argsW);
 				
 			section_vb.add(boxT);
 	
@@ -167,7 +166,7 @@ public class DialogConfigureEditors extends RpwDialog {
 				boxA.gap();
 				
 				boxA.add(fieldCommandA = Gui.textField("", exe_placeholder, exe_tooltip));
-				Gui.setPreferedWidth(fieldCommandA, fieldW);
+				Gui.setPrefWidth(fieldCommandA, fieldW);
 				boxA.gap();	
 				boxA.add(btnBrowseA = new JButton(Icons.MENU_OPEN));
 				btnBrowseA.setToolTipText("Browse files");
@@ -177,7 +176,7 @@ public class DialogConfigureEditors extends RpwDialog {
 					labelArA.setHorizontalAlignment(SwingConstants.RIGHT);		
 				boxA.gap();
 				boxA.add(fieldArgsA = Gui.textField("", args_placeholder, args_tooltip));
-				Gui.setPreferedWidth(fieldArgsA, argsW);
+				Gui.setPrefWidth(fieldArgsA, argsW);
 				
 			section_vb.add(boxA);
 		
