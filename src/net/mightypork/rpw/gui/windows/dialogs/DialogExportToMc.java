@@ -27,6 +27,7 @@ import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
+import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
@@ -153,6 +154,11 @@ public class DialogExportToMc extends RpwDialog {
 		Collections.sort(options);
 
 		return options;
+	}
+	
+	@Override
+	protected void onShown() {
+		field.setText(Projects.getActive().getName());
 	}
 
 

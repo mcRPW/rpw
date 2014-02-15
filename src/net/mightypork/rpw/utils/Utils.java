@@ -1,8 +1,11 @@
 package net.mightypork.rpw.utils;
 
 
+import java.io.Closeable;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.zip.ZipFile;
 
 import net.mightypork.rpw.utils.logging.Log;
 
@@ -211,9 +214,23 @@ public class Utils {
 		for (Object o : something) {
 			if (o == null) continue;
 			try {
-				o.getClass().getMethod("close").invoke(o);
+				
+				if(o instanceof Closeable) {
+					((Closeable)o).close();
+					continue;
+				}
+				
+				if(o instanceof ZipFile) {
+					((ZipFile)o).close();
+					continue;
+				}
+				
+				Method m = o.getClass().getMethod("close");
+				m.setAccessible(true);
+				m.invoke(o);
+				
 			} catch (Exception e) {
-				Log.e("Could not close " + o.getClass().getSimpleName(), e);
+				Log.e("Could not close " + o.getClass().getSimpleName()+": "+ e.getMessage());
 			}
 		}
 	}
