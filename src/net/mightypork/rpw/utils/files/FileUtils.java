@@ -554,7 +554,7 @@ public class FileUtils {
 			return assets;
 
 		} catch (Exception e) {
-			Log.e("Error loading assets from zip: "+file.getName(), e);
+			Log.e("Error loading assets from zip: " + file.getName(), e);
 
 			return null; // success = false
 		}

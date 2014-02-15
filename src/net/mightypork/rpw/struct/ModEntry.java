@@ -1,6 +1,8 @@
 package net.mightypork.rpw.struct;
 
+
 import java.util.List;
+
 
 /*
 {

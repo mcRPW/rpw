@@ -82,7 +82,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	@Override
 	protected String getMonitorHeading() {
 
-		return "Importing Minecraft assets ("+version+")";
+		return "Importing Minecraft assets (" + version + ")";
 	}
 
 
@@ -329,7 +329,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	private boolean stepLoadMods() {
 
 		modsDir = OsUtils.getMcDir("mods");
-		
+
 		List<File> list = FileUtils.listDirectory(modsDir);
 
 		List<File> modFiles = new ArrayList<File>();
@@ -353,38 +353,37 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 			modCkboxes = new ArrayList<JCheckBox>();
 
 			VBox vb = new VBox();
-			
-			
-		    
+
+
 			JCheckBox ck;
 			for (File f : modFiles) {
-				
+
 				String name = f.getName();
-				
+
 				ZipFile modzf;
 				try {
 					modzf = new ZipFile(f);
-				} catch(Exception e) {
-					Log.e("Error reading mod file, skipping: "+f.getName());
+				} catch (Exception e) {
+					Log.e("Error reading mod file, skipping: " + f.getName());
 					continue;
 				}
-				
+
 				try {
-					ZipEntry ze_modinfo = modzf.getEntry("mcmod.info");		
-					if(ze_modinfo != null) {
+					ZipEntry ze_modinfo = modzf.getEntry("mcmod.info");
+					if (ze_modinfo != null) {
 						String json_modinfo = ZipUtils.zipEntryToString(modzf, ze_modinfo);
 						ModEntryList mel = ModEntryList.fromJson(json_modinfo);
 						name = mel.getModListName();
 					}
-				} catch(Exception e) {
-					Log.e("Broken mcmod.info file in "+f.getName()+"\n"+e.getMessage());
+				} catch (Exception e) {
+					Log.e("Broken mcmod.info file in " + f.getName() + "\n" + e.getMessage());
 				}
-				
-				
+
+
 				modCkboxes.add(ck = new JCheckBox(name, true));
 				ck.setActionCommand(f.getName());
 			}
-			
+
 			Collections.sort(modCkboxes, new Comparator<JCheckBox>() {
 
 				@Override
@@ -392,67 +391,67 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 					return o1.getText().compareToIgnoreCase(o2.getText());
 				}
-				
+
 			});
-			
-			for(JCheckBox c: modCkboxes) {
+
+			for (JCheckBox c : modCkboxes) {
 				vb.add(c);
 			}
-		    
-		    vb.padding(5, 5, 5, 5);
-		    
-		    JScrollPane sp = new JScrollPane(vb, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		    sp.setPreferredSize(new Dimension(350, 300));
-		    
-		    VBox vb2 = new VBox();
-		    vb2.gap();
-		    HBox hb = new HBox();
-		    hb.add(new JLabel("Select mods:"));
-		    hb.gap();
-		    
-		    JButton btnSelAll;
+
+			vb.padding(5, 5, 5, 5);
+
+			JScrollPane sp = new JScrollPane(vb, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			sp.setPreferredSize(new Dimension(350, 300));
+
+			VBox vb2 = new VBox();
+			vb2.gap();
+			HBox hb = new HBox();
+			hb.add(new JLabel("Select mods:"));
+			hb.gap();
+
+			JButton btnSelAll;
 			hb.add(btnSelAll = new JButton("All"));
-			
-		    JButton btnSelNone;
+
+			JButton btnSelNone;
 			hb.add(btnSelNone = new JButton("None"));
-			
-		    hb.glue();
-		    vb2.add(hb);
-		    vb2.gap();
-		    vb2.add(sp);
-		    
-		    btnSelAll.addActionListener(new ActionListener() {
-		    					
+
+			hb.glue();
+			vb2.add(hb);
+			vb2.gap();
+			vb2.add(sp);
+
+			btnSelAll.addActionListener(new ActionListener() {
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
-				
-					for(JCheckBox c : modCkboxes) {
+
+					for (JCheckBox c : modCkboxes) {
 						c.setSelected(true);
 					}
-					
+
 				}
 			});
-		    
-		    btnSelNone.addActionListener(new ActionListener() {
-		    					
+
+			btnSelNone.addActionListener(new ActionListener() {
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
-				
-					for(JCheckBox c : modCkboxes) {
+
+					for (JCheckBox c : modCkboxes) {
 						c.setSelected(false);
 					}
-					
+
 				}
 			});
-		    
-		    //@formatter:off
+
+			//@formatter:off
 		    Object[] params = {
 		    		"Some mods have been found.\n" + 
 		    		"RPW will include the selected mods.",
 		    		vb2
 		    }; 
 		    //@formatter:on
-		    
+
 			//@formatter:off
 			int n = JOptionPane.showOptionDialog(
 				App.getFrame(), //parent
@@ -475,7 +474,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 				Log.f2("Extracting mod assets");
 				// do the work
 				int added = 0;
-				for (JCheckBox c: modCkboxes) {
+				for (JCheckBox c : modCkboxes) {
 
 					if (!c.isSelected()) continue;
 

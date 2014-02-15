@@ -19,7 +19,6 @@ import net.mightypork.rpw.struct.LangEntryMap;
 import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.UpdateHelper;
-import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FastRecursiveDiff;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;

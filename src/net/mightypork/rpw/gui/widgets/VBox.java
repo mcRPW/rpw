@@ -53,8 +53,10 @@ public class VBox extends RpwBox {
 		return s;
 	}
 
+
 	@Override
 	public JSeparator sep() {
+
 		JSeparator sep;
 		add(sep = new JSeparator(SwingConstants.HORIZONTAL));
 		return sep;
