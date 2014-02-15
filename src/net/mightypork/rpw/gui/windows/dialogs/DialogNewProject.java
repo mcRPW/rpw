@@ -88,7 +88,7 @@ public class DialogNewProject extends RpwDialog {
 			hb.glue();
 		vbox.add(hb);
 		
-		vbox.gap();
+		vbox.gapl();
 		
 		hb = new HBox();	
 			hb.add(radioResourcePack = new JRadioButton("Project from resource pack"));
@@ -96,6 +96,7 @@ public class DialogNewProject extends RpwDialog {
 			hb.glue();
 		vbox.add(hb);
 		
+		vbox.gap();
 		hb2 = new HBox();
 			hb2.gapl();
 			hb = new HBox();
@@ -142,28 +143,15 @@ public class DialogNewProject extends RpwDialog {
 		vbox.titsep("Project settings");
 		vbox.gap();
 
-		JPanel p = new JPanel(new SpringLayout());
-
-		label = new JXLabel("Name:", SwingConstants.TRAILING);
-		p.add(label);
+		
 		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
 		nameField.addKeyListener(TextInputValidator.filenames());
-		label.setLabelFor(nameField);
-		p.add(nameField);
-
-		label = new JXLabel("Title:", SwingConstants.TRAILING);
-		p.add(label);
+		
 		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
-		label.setLabelFor(titleField);
-		p.add(titleField);
-
-		titleFieldGroup.add(label);
 		titleFieldGroup.add(titleField);
 
-		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
-
-		vbox.add(p);
-		//vbox.add(Gui.commentLine("<html><center>Project created from existing pack<br>will keep the original title.</center></html>"));
+		vbox.add(Gui.springForm(new String[] {"Name:","Title:"}, new JComponent[] {nameField, titleField}));
+		
 		vbox.gapl();
 
 		hb = new HBox();

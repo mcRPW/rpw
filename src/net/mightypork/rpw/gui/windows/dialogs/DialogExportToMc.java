@@ -91,37 +91,24 @@ public class DialogExportToMc extends RpwDialog {
 		vbox.titsep("Export options");
 		vbox.gap();
 
-		//@formatter:off
-		JPanel p = new JPanel(new SpringLayout());
 
-		JXLabel label;
-		label = new JXLabel("Pack name:", SwingConstants.RIGHT);
-		p.add(label);
+		
 		field = Gui.textField("", "Output file name", "Output file name (without extension)");
 		field.addKeyListener(TextInputValidator.filenames());
-		label.setLabelFor(field);
-		p.add(field);
-
-		label = new JXLabel("In Minecraft:", SwingConstants.RIGHT);
-		p.add(label);
-		
-		
+			
 		String[] choices = new String[3];
 		choices[MC_ALONE] = "Use this pack alone";
 		choices[MC_ADD] = "Add pack to selected (on top)";
 		choices[MC_NO_CHANGE] = "Don't change settings";
 		
-		
 		Config.CHOICE_EXPORT_TO_MC = Math.max(0, Math.min(Config.CHOICE_EXPORT_TO_MC, choices.length-1));
 		
 		mcOptsCombo = new JComboBox(choices);
-		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
-		label.setLabelFor(mcOptsCombo);
-		p.add(mcOptsCombo);
+		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);		
 
-		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
-
-		vbox.add(p);
+		vbox.add(Gui.springForm(new String[] {"Pack name:", "In Minecraft:"}, new JComponent[] {field, mcOptsCombo}));
+		
+		
 		
 		vbox.gapl();
 		

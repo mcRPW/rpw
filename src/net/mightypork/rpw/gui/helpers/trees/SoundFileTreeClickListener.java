@@ -12,6 +12,7 @@ import net.mightypork.rpw.gui.helpers.PopupTriggerListener;
 import net.mightypork.rpw.gui.windows.dialogs.DialogSoundWizard;
 import net.mightypork.rpw.gui.windows.popups.PopupSoundFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.AbstractFsTreeNode;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class SoundFileTreeClickListener extends PopupTriggerListener {
@@ -36,8 +37,28 @@ public class SoundFileTreeClickListener extends PopupTriggerListener {
 
 		TreePath[] paths = tree.getSelectionPaths();
 
-		if (paths.length == 0) paths = new TreePath[] { pathUnderMouse };
 
+		boolean clickedOnSelected = false;
+
+		if (paths != null) {
+			for (TreePath p : paths) {
+				if (p == pathUnderMouse) {
+					clickedOnSelected = true;
+					break;
+				}
+			}
+		}
+
+		if (!clickedOnSelected) {
+			tree.getSelectionModel().setSelectionPath(pathUnderMouse);
+			paths = new TreePath[] { pathUnderMouse };
+		}
+
+		if (paths == null) {
+			Log.w("Null selection for popup, cancelling.");
+			return;
+		}
+		
 		List<AbstractFsTreeNode> tmpNodeList = new ArrayList<AbstractFsTreeNode>();
 
 		for (TreePath path : paths) {

@@ -76,24 +76,13 @@ public class DialogSaveAs extends RpwDialog {
 		vb.titsep("New project settings");
 		vb.gap();
 
-		JPanel p = new JPanel(new SpringLayout());
-
-		l = new JXLabel("Name:", SwingConstants.TRAILING);
-		p.add(l);
+		
 		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
 		nameField.addKeyListener(TextInputValidator.filenames());
-		l.setLabelFor(nameField);
-		p.add(nameField);
 
-		l = new JXLabel("Title:", SwingConstants.TRAILING);
-		p.add(l);
 		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
-		l.setLabelFor(titleField);
-		p.add(titleField);
 
-		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
-
-		vb.add(p);
+		vb.add(Gui.springForm(new String[] {"Name:", "Title:"}, new JComponent[] {nameField, titleField}));
 
 		vb.gapl();
 

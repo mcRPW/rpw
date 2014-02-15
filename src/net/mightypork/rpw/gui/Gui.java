@@ -14,9 +14,11 @@ import javax.swing.border.CompoundBorder;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
+import net.mightypork.rpw.utils.SpringUtilities;
 import net.mightypork.rpw.utils.files.DesktopApi;
 import net.mightypork.rpw.utils.logging.Log;
 
+import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXTextField;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
@@ -236,5 +238,33 @@ public class Gui {
 		} catch (Exception e) {
 			Log.e("Could not select Look&Feel: Metal", e);
 		}
+	}
+
+
+	public static JPanel springForm(Object[] labels, JComponent[] fields) {
+
+		JPanel p = new JPanel(new SpringLayout());
+
+		if (labels.length != fields.length) throw new IllegalArgumentException("Nr. of labels doesn't match nr. of fields.");
+
+		for (int i = 0; i < labels.length; i++) {
+			
+			JLabel l = null;
+			
+			if(labels[i] instanceof JLabel) {
+				l = ((JLabel)labels[i]);
+				l.setHorizontalAlignment(SwingConstants.RIGHT);
+			} else {
+				l = new JXLabel(labels[i].toString(), SwingConstants.RIGHT);
+			}
+			
+			p.add(l);
+			l.setLabelFor(fields[i]);
+			p.add(fields[i]);
+		}
+
+		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
+
+		return p;
 	}
 }

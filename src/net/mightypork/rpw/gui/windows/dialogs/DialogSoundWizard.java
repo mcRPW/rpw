@@ -198,50 +198,65 @@ public class DialogSoundWizard extends RpwDialog {
 		VBox vb = new VBox();
 		vb.padding(0, Gui.GAP, 0, Gui.GAP);
 
-		// box for key edit field
-		HBox hb = new HBox();
-
-		//@formatter:off
+		JLabel l1 = new JLabel("Name:");
+		JLabel l2 = new JLabel("Category:");
+		middlePanelComponents.add(l1);
+		middlePanelComponents.add(l2);
 		
-		hb.padding(0, 0, Gui.GAP, 0);
-			
-			hb.add(label = new JLabel("Name:"));
-			Gui.setMinPrefSize(label, 70, 25);
-			label.setHorizontalAlignment(SwingConstants.RIGHT);
-			middlePanelComponents.add(label);
-			
-			hb.gap();
-			
-			hb.add(fieldKey = Gui.textField());
-			fieldKey.addKeyListener(TextInputValidator.identifiers());
-			
-			fieldKey.setDragEnabled(false);						
-			fieldKey.setTransferHandler(new TransferHandler() {}); // disable dnd
-			middlePanelComponents.add(fieldKey);
-			
-			Gui.setMinPrefSize(fieldKey, 200, 25);
-			
-		vb.add(hb);
+		
+		fieldKey = Gui.textField();
+		fieldKey.setDragEnabled(false);
+		fieldKey.addKeyListener(TextInputValidator.identifiers());
+		fieldKey.setTransferHandler(new TransferHandler() {});
+		middlePanelComponents.add(fieldKey);
+		
+		fieldCategory = new JComboBox(Const.SOUND_CATEGORIES);
+		middlePanelComponents.add(fieldCategory);
+		
+		vb.add(Gui.springForm(new Object[] {l1, l2}, new JComponent[] {fieldKey, fieldCategory}));
+		
+//		// box for key edit field
+//		HBox hb = new HBox();
+//
+//		//@formatter:off
+//		
+//		hb.padding(0, 0, Gui.GAP, 0);
+//			//TODO sizes!!
+//			hb.add();
+//			Gui.setMinPrefSize(label, 70, 25);
+//			label.setHorizontalAlignment(SwingConstants.RIGHT);
+//			middlePanelComponents.add(label);
+//			
+//			hb.gap();
+//			
+//			hb.add();
+//								
+//			 // disable dnd
+//			
+//			
+//			Gui.setMinPrefSize(fieldKey, 200, 25);
+//			
+//		vb.add(hb);
 		
 		
 		// box for category field
-		hb = new HBox();
-		hb.padding(Gui.GAP, 0, Gui.GAP, 0);
-			
-			hb.add(label = new JLabel("Category:"));
-			Gui.setMinPrefSize(label, 70, 25);
-			label.setHorizontalAlignment(SwingConstants.RIGHT);
-			middlePanelComponents.add(label);
-			
-			hb.gap();
-			
-			hb.add(fieldCategory = new JComboBox(Const.SOUND_CATEGORIES));
-			//fieldCategory.setEditable(true); // No, causes error in MC
-			middlePanelComponents.add(fieldCategory);
-			
-			Gui.setMinPrefSize(fieldCategory, 200, 25);
-			
-		vb.add(hb);
+//		hb = new HBox();
+//		hb.padding(Gui.GAP, 0, Gui.GAP, 0);
+//			
+//			hb.add(label = new JLabel("Category:"));
+//			Gui.setMinPrefSize(label, 70, 25);
+//			label.setHorizontalAlignment(SwingConstants.RIGHT);
+//			middlePanelComponents.add(label);
+//			
+//			hb.gap();
+//			
+//			hb.add();
+//			//fieldCategory.setEditable(true); // No, causes error in MC
+//			
+//			
+//			Gui.setMinPrefSize(fieldCategory, 200, 25);
+//			
+//		vb.add(hb);
 		
 		vb.gapl();
 		JXTitledSeparator sep;
@@ -258,7 +273,7 @@ public class DialogSoundWizard extends RpwDialog {
 		vb.gap();
 		
 		// box with buttons under the list
-		hb = new HBox();
+		HBox hb = new HBox();
 		hb.padding(Gui.GAP, 0, Gui.GAP, 0);
 		hb.glue();
 		hb.add(buttonSave = new JButton("Save", Icons.MENU_SAVE));

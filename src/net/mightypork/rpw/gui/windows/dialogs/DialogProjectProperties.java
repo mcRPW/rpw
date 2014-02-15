@@ -78,27 +78,15 @@ public class DialogProjectProperties extends RpwDialog {
 		vbox.gap();
 		
 		
-		JPanel p = new JPanel(new SpringLayout());
-
-		l = new JXLabel("Title:", SwingConstants.TRAILING);
-		p.add(l);
 		titleField = Gui.textField("", "Resource pack title", "Title shown in Minecraft");
-		l.setLabelFor(titleField);
-		p.add(titleField);
 
-		l = new JXLabel("Name:", SwingConstants.TRAILING);
-		p.add(l);
 		nameField = Gui.textField("", "Project folder name", "Name of the project folder");
 		nameField.setEditable(false);
-		nameField.setBackground(new Color(0xeeeeee));
-		nameField.setForeground(new Color(0x111111));
-		l.setLabelFor(nameField);
-		p.add(nameField);
-
-		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
+		nameField.setBackground(new Color(0xeeeeee));		
 		
-		vbox.add(p);
-				
+		vbox.add(Gui.springForm(new String[] {"Title:", "Name:"}, new JComponent[] {titleField, nameField}));
+		
+		
 		vbox.gap();
 
 		vbox.add(Gui.commentLine("Use \"My Projects\" dialog to rename project."));
