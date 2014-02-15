@@ -283,8 +283,6 @@ public class Project extends Source implements NodeSourceProvider {
 	 */
 	public void saveProperties() {
 
-		Log.f3(getLogPrefix() + "Saving properties to TMP");
-
 		// all properties
 		props.cfgForceSave(true);
 		props.setValue("version", Const.VERSION_SERIAL);
@@ -386,7 +384,6 @@ public class Project extends Source implements NodeSourceProvider {
 
 		if (ae == null) {
 			Log.w(getLogPrefix() + "NULL vanilla asset entry for key: " + key);
-			Utils.printStackTrace();
 			return null;
 		}
 

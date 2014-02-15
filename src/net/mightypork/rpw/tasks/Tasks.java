@@ -220,8 +220,6 @@ public class Tasks {
 
 	public static void taskStoreProjectChanges(Project proj) {
 
-		Log.f3("Writing project data to TMP");
-
 		if (proj == null) return;
 
 		AssetTreeProcessor proc = new SaveToProjectNodeProcessor(proj);

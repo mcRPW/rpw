@@ -1,31 +1,37 @@
 package net.mightypork.rpw.tasks;
 
+/*
+import java.awt.Dimension;
+import java.awt.ScrollPane;
+
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
+import net.mightypork.rpw.gui.widgets.VBox;
+*/
 
 public class TaskDevel {
 
 	public static void run() {
 
-
-//		DialogProgressTerminal dpt = new DialogProgressTerminal("Some stuffs");
-//				
-//		dpt.openDialog();
-//		
-//		
-//		for(int i=0; i<30; i++) {
-//			Utils.sleep(50);
-//			Log.f1("Heya here go stuff "+i);
-//		}		
-//
-//		dpt.closeDialog();
-
-//	    JCheckBox checkbox = new JCheckBox("abcdef");  
-//	    JCheckBox checkbox2 = new JCheckBox("sdggsdgsdgsd");  
-//	    JCheckBox checkbox3 = new JCheckBox("some long studffff");  
-//	    JCheckBox checkbox4 = new JCheckBox("moo.12");  
-//	    String message = "";  
-//	    Object[] params = {message, checkbox, checkbox2, checkbox3, checkbox4};  
-//	    int n = JOptionPane.showConfirmDialog(null, params, "Disconnect Products", JOptionPane.YES_NO_OPTION);  
-//	    boolean dontShow = checkbox.isSelected();  
-
+	    /*
+	    VBox vb = new VBox();
+	    
+	    for(int i=0; i<1000; i++) {
+	    	vb.add(new JCheckBox("CKBOX "+i));
+	    }
+	    
+	    vb.padding(5, 5, 5, 5);
+	    
+	    JScrollPane sp = new JScrollPane(vb, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+	    sp.setPreferredSize(new Dimension(250, 250));
+	    
+	    String message = "";  
+	    Object[] params = {message, sp};  
+	    int n = JOptionPane.showConfirmDialog(null, params, "JScrollPane in JOptionPane HUE HUE", JOptionPane.YES_NO_OPTION);  
+	    
+	    System.exit(0);*/
 	}
 }

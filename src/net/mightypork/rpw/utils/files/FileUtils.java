@@ -498,15 +498,15 @@ public class FileUtils {
 	/**
 	 * Load assets from a zip file to the output directory
 	 * 
-	 * @param zipFile input zip (must contain an "assets" folder)
+	 * @param file input zip (must contain an "assets" folder)
 	 * @param outDir output dir for the files
 	 * @param assets the map which to use for string assets; NULL to make a new
 	 *            map.
 	 * @return map of entries found
 	 */
-	public static Map<String, AssetEntry> loadAssetsFromZip(File zipFile, File outDir, Map<String, AssetEntry> assets) {
+	public static Map<String, AssetEntry> loadAssetsFromZip(File file, File outDir, Map<String, AssetEntry> assets) {
 
-		Log.f3("Extracting: " + zipFile);
+		Log.f3("Extracting: " + file);
 		if (assets == null) assets = new LinkedHashMap<String, AssetEntry>();
 
 		try {
@@ -528,7 +528,7 @@ public class FileUtils {
 				}
 			};
 
-			List<String> list = ZipUtils.extractZip(zipFile, outDir, filter);
+			List<String> list = ZipUtils.extractZip(file, outDir, filter);
 
 			for (String s : list) {
 				if (s.startsWith("assets")) {
@@ -554,7 +554,7 @@ public class FileUtils {
 			return assets;
 
 		} catch (Exception e) {
-			Log.e(e);
+			Log.e("Error loading assets from zip: "+file.getName(), e);
 
 			return null; // success = false
 		}

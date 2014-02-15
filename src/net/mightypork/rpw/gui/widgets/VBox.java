@@ -2,6 +2,8 @@ package net.mightypork.rpw.gui.widgets;
 
 
 import javax.swing.BoxLayout;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 import net.mightypork.rpw.gui.Gui;
 
@@ -49,6 +51,13 @@ public class VBox extends RpwBox {
 		add(s = new JXTitledSeparator(string));
 		s.setForeground(Gui.HEADING_COLOR);
 		return s;
+	}
+
+	@Override
+	public JSeparator sep() {
+		JSeparator sep;
+		add(sep = new JSeparator(SwingConstants.HORIZONTAL));
+		return sep;
 	}
 
 

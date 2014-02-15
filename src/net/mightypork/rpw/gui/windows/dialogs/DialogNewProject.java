@@ -276,7 +276,7 @@ public class DialogNewProject extends RpwDialog {
 				return;
 			}
 
-			if (!ckKeepTitle.isSelected() && title.length() == 0) {
+			if ((!usePackFile || !ckKeepTitle.isSelected()) && title.length() == 0) {
 				Alerts.error(self(), "Invalid title", "Missing project title!");
 				return;
 			}
@@ -293,7 +293,7 @@ public class DialogNewProject extends RpwDialog {
 				final String projname = name;
 
 				// pack project starts with name = title, title is replaced during import.
-				final String projtitle = ckKeepTitle.isSelected() ? "" : title;
+				final String projtitle = (usePackFile && ckKeepTitle.isSelected()) ? "" : title;
 
 
 				Tasks.taskAskToSaveIfChanged(new Runnable() {

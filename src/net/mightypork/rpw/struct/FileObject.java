@@ -17,13 +17,6 @@ public class FileObject {
 	}
 
 
-	public FileObject(String hash, int size) {
-
-		this.hash = hash;
-		this.size = size;
-	}
-
-
 	@Override
 	public String toString() {
 

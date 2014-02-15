@@ -39,6 +39,7 @@ public class Projects {
 	 */
 	public static void markChange() {
 
+		Tasks.taskStoreProjectChanges();
 		Flags.PROJECT_EDITED = true;
 	}
 

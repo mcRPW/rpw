@@ -3,6 +3,7 @@ package net.mightypork.rpw.gui.widgets;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JSeparator;
 
 import net.mightypork.rpw.gui.Gui;
 
@@ -52,4 +53,7 @@ public abstract class RpwBox extends Box {
 
 		setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
 	}
+
+
+	public abstract JSeparator sep();
 }

@@ -2,6 +2,8 @@ package net.mightypork.rpw.gui.widgets;
 
 
 import javax.swing.BoxLayout;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 import net.mightypork.rpw.gui.Gui;
 
@@ -34,4 +36,12 @@ public class HBox extends RpwBox {
 		add(Gui.hglue());
 	}
 
+
+	@Override
+	public JSeparator sep() {
+
+		JSeparator sep;
+		add(sep = new JSeparator(SwingConstants.VERTICAL));
+		return sep;
+	}
 }
