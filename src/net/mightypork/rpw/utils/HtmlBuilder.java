@@ -18,6 +18,7 @@ public class HtmlBuilder {
 
 	static String htmlBaseTop;
 	static String htmlHelpTop;
+	static String htmlChangelogTop;
 	static String htmlBottom;
 
 
@@ -30,6 +31,7 @@ public class HtmlBuilder {
 
 		htmlBaseTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_base_top.html");
 		htmlHelpTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_help_top.html");
+		htmlChangelogTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_changelog_top.html");
 		htmlBottom = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_bottom.html");
 	}
 
@@ -43,6 +45,11 @@ public class HtmlBuilder {
 	public static String markdownToHtmlHelp(String markdown) {
 
 		return markdownToHtml(markdown, htmlHelpTop);
+	}
+	
+	public static String markdownToHtmlChangelog(String markdown) {
+
+		return markdownToHtml(markdown, htmlChangelogTop);
 	}
 
 

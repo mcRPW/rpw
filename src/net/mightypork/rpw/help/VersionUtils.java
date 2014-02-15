@@ -56,7 +56,7 @@ public class VersionUtils {
 	public static String buildChangelogHtml() {
 
 		String md = buildChangelogMd();
-		return HtmlBuilder.markdownToHtmlBase(md);
+		return HtmlBuilder.markdownToHtmlChangelog(md);
 	}
 
 
