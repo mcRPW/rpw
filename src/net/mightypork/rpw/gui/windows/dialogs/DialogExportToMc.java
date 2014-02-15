@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -25,13 +28,10 @@ import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.SpringUtilities;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
-
-import org.jdesktop.swingx.JXLabel;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -92,33 +92,31 @@ public class DialogExportToMc extends RpwDialog {
 		vbox.gap();
 
 
-		
 		field = Gui.textField("", "Output file name", "Output file name (without extension)");
 		field.addKeyListener(TextInputValidator.filenames());
-			
+
 		String[] choices = new String[3];
 		choices[MC_ALONE] = "Use this pack alone";
 		choices[MC_ADD] = "Add pack to selected (on top)";
 		choices[MC_NO_CHANGE] = "Don't change settings";
-		
-		Config.CHOICE_EXPORT_TO_MC = Math.max(0, Math.min(Config.CHOICE_EXPORT_TO_MC, choices.length-1));
-		
-		mcOptsCombo = new JComboBox(choices);
-		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);		
 
-		vbox.add(Gui.springForm(new String[] {"Pack name:", "In Minecraft:"}, new JComponent[] {field, mcOptsCombo}));
-		
-		
-		
+		Config.CHOICE_EXPORT_TO_MC = Math.max(0, Math.min(Config.CHOICE_EXPORT_TO_MC, choices.length - 1));
+
+		mcOptsCombo = new JComboBox(choices);
+		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
+
+		vbox.add(Gui.springForm(new String[] { "Pack name:", "In Minecraft:" }, new JComponent[] { field, mcOptsCombo }));
+
+
 		vbox.gapl();
-		
-		hb = new HBox();			
-			hb.glue();
-			buttonOK = new JButton("Export", Icons.MENU_EXPORT);
-			hb.add(buttonOK);	
-			hb.gap();	
-			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-			hb.add(buttonCancel);
+
+		hb = new HBox();
+		hb.glue();
+		buttonOK = new JButton("Export", Icons.MENU_EXPORT);
+		hb.add(buttonOK);
+		hb.gap();
+		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+		hb.add(buttonCancel);
 		vbox.add(hb);
 		//@formatter:on
 

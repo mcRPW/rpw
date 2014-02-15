@@ -191,8 +191,6 @@ public class DialogSoundWizard extends RpwDialog {
 
 		middlePanelComponents = new ArrayList<Component>();
 
-		JLabel label;
-
 		// box for editing a key
 
 		VBox vb = new VBox();
@@ -202,19 +200,19 @@ public class DialogSoundWizard extends RpwDialog {
 		JLabel l2 = new JLabel("Category:");
 		middlePanelComponents.add(l1);
 		middlePanelComponents.add(l2);
-		
-		
+
+
 		fieldKey = Gui.textField();
 		fieldKey.setDragEnabled(false);
 		fieldKey.addKeyListener(TextInputValidator.identifiers());
 		fieldKey.setTransferHandler(new TransferHandler() {});
 		middlePanelComponents.add(fieldKey);
-		
+
 		fieldCategory = new JComboBox(Const.SOUND_CATEGORIES);
 		middlePanelComponents.add(fieldCategory);
-		
-		vb.add(Gui.springForm(new Object[] {l1, l2}, new JComponent[] {fieldKey, fieldCategory}));
-		
+
+		vb.add(Gui.springForm(new Object[] { l1, l2 }, new JComponent[] { fieldKey, fieldCategory }));
+
 //		// box for key edit field
 //		HBox hb = new HBox();
 //

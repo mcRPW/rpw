@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
@@ -17,9 +19,6 @@ import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.SpringUtilities;
-
-import org.jdesktop.swingx.JXLabel;
 
 
 public class DialogSaveAs extends RpwDialog {
@@ -49,7 +48,6 @@ public class DialogSaveAs extends RpwDialog {
 	protected JComponent buildGui() {
 
 		HBox hb;
-		JXLabel l;
 		VBox vb = new VBox();
 		vb.windowPadding();
 
@@ -76,13 +74,13 @@ public class DialogSaveAs extends RpwDialog {
 		vb.titsep("New project settings");
 		vb.gap();
 
-		
+
 		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
 		nameField.addKeyListener(TextInputValidator.filenames());
 
 		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
 
-		vb.add(Gui.springForm(new String[] {"Name:", "Title:"}, new JComponent[] {nameField, titleField}));
+		vb.add(Gui.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField }));
 
 		vb.gapl();
 

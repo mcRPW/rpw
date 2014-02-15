@@ -97,22 +97,22 @@ public class DialogImportPack extends RpwDialog {
 
 		vb.gapl();
 
-	
-		field = Gui.textField("","Pack name","Name used in RPW");
-		field.addKeyListener(TextInputValidator.filenames());
-		
-		vb.add(Gui.springForm(new String[] {"Name:"}, new JComponent[] {field}));
 
-		
+		field = Gui.textField("", "Pack name", "Name used in RPW");
+		field.addKeyListener(TextInputValidator.filenames());
+
+		vb.add(Gui.springForm(new String[] { "Name:" }, new JComponent[] { field }));
+
+
 		vb.gapl();
-		
+
 		hb = new HBox();
-			hb.glue();	
-			buttonOK = new JButton("Import", Icons.MENU_YES);
-			hb.add(buttonOK);	
-			hb.gap();	
-			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-			hb.add(buttonCancel);
+		hb.glue();
+		buttonOK = new JButton("Import", Icons.MENU_YES);
+		hb.add(buttonOK);
+		hb.gap();
+		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+		hb.add(buttonCancel);
 		vb.add(hb);
 		//@formatter:on
 

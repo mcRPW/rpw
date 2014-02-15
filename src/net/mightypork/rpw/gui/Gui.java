@@ -248,16 +248,16 @@ public class Gui {
 		if (labels.length != fields.length) throw new IllegalArgumentException("Nr. of labels doesn't match nr. of fields.");
 
 		for (int i = 0; i < labels.length; i++) {
-			
+
 			JLabel l = null;
-			
-			if(labels[i] instanceof JLabel) {
-				l = ((JLabel)labels[i]);
+
+			if (labels[i] instanceof JLabel) {
+				l = ((JLabel) labels[i]);
 				l.setHorizontalAlignment(SwingConstants.RIGHT);
 			} else {
 				l = new JXLabel(labels[i].toString(), SwingConstants.RIGHT);
 			}
-			
+
 			p.add(l);
 			l.setLabelFor(fields[i]);
 			p.add(fields[i]);

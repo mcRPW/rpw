@@ -22,11 +22,8 @@ import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.SpringUtilities;
 import net.mightypork.rpw.utils.files.DesktopApi;
 import net.mightypork.rpw.utils.files.FileUtils;
-
-import org.jdesktop.swingx.JXLabel;
 
 
 public class DialogProjectProperties extends RpwDialog {
@@ -67,7 +64,6 @@ public class DialogProjectProperties extends RpwDialog {
 		//@formatter:off
 		HBox hb;
 		VBox vbox;
-		JLabel l;
 		vbox = new VBox();
 		
 		vbox.windowPadding();

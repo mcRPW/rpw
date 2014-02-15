@@ -26,7 +26,6 @@ import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.SpringUtilities;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
 
@@ -71,7 +70,6 @@ public class DialogNewProject extends RpwDialog {
 	protected JComponent buildGui() {
 
 		HBox hb, hb2;
-		JXLabel label;
 		VBox vbox = new VBox();
 		vbox.windowPadding();
 
@@ -143,15 +141,15 @@ public class DialogNewProject extends RpwDialog {
 		vbox.titsep("Project settings");
 		vbox.gap();
 
-		
+
 		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
 		nameField.addKeyListener(TextInputValidator.filenames());
-		
+
 		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
 		titleFieldGroup.add(titleField);
 
-		vbox.add(Gui.springForm(new String[] {"Name:","Title:"}, new JComponent[] {nameField, titleField}));
-		
+		vbox.add(Gui.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField }));
+
 		vbox.gapl();
 
 		hb = new HBox();

@@ -58,7 +58,7 @@ public class SoundFileTreeClickListener extends PopupTriggerListener {
 			Log.w("Null selection for popup, cancelling.");
 			return;
 		}
-		
+
 		List<AbstractFsTreeNode> tmpNodeList = new ArrayList<AbstractFsTreeNode>();
 
 		for (TreePath path : paths) {
