@@ -2,9 +2,7 @@ package net.mightypork.rpw.tasks;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.IOException;
 
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.utils.files.FileUtils;
@@ -16,32 +14,25 @@ public class TaskCreateModConfigFiles {
 
 	public static void run() {
 
-		try {
+		File groups = OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS);
+		File filters = OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS);
 
-			File groups = OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS);
-			File filters = OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS);
-
-
-			if (!groups.exists()) {
-				InputStream in = FileUtils.getResource("/data/tree/groupsMod.txt");
-
-				OutputStream out = new FileOutputStream(groups);
-
-				FileUtils.copyStream(in, out);
+		if (!groups.exists()) {
+			try {
+				FileUtils.resourceToFile("/data/tree/groupsMod.txt", groups);
+			} catch (IOException e) {
+				Log.e(e);
 			}
-
-
-			if (!filters.exists()) {
-				InputStream in = FileUtils.getResource("/data/tree/filtersMod.txt");
-
-				OutputStream out = new FileOutputStream(filters);
-
-				FileUtils.copyStream(in, out);
-			}
-
-		} catch (Exception e) {
-			Log.e("Error while creating config files for mod assets.", e);
 		}
+
+		if (!filters.exists()) {
+			try {
+				FileUtils.resourceToFile("/data/tree/filtersMod.txt", filters);
+			} catch (IOException e) {
+				Log.e(e);
+			}
+		}
+
 	}
 
 }

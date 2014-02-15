@@ -360,23 +360,24 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 
 				String name = f.getName();
 
-				ZipFile modzf;
+				ZipFile modzf = null;
 				try {
 					modzf = new ZipFile(f);
+					try {
+						ZipEntry ze_modinfo = modzf.getEntry("mcmod.info");
+						if (ze_modinfo != null) {
+							String json_modinfo = ZipUtils.zipEntryToString(modzf, ze_modinfo);
+							ModEntryList mel = ModEntryList.fromJson(json_modinfo);
+							name = mel.getModListName();
+						}
+					} catch (Exception e) {
+						Log.e("Broken mcmod.info file in " + f.getName() + "\n" + e.getMessage());
+					}
 				} catch (Exception e) {
 					Log.e("Error reading mod file, skipping: " + f.getName());
 					continue;
-				}
-
-				try {
-					ZipEntry ze_modinfo = modzf.getEntry("mcmod.info");
-					if (ze_modinfo != null) {
-						String json_modinfo = ZipUtils.zipEntryToString(modzf, ze_modinfo);
-						ModEntryList mel = ModEntryList.fromJson(json_modinfo);
-						name = mel.getModListName();
-					}
-				} catch (Exception e) {
-					Log.e("Broken mcmod.info file in " + f.getName() + "\n" + e.getMessage());
+				} finally {
+					Utils.close(modzf);
 				}
 
 

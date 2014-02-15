@@ -27,6 +27,7 @@ import net.coobird.thumbnailator.tasks.io.BufferedImageSource;
 import net.coobird.thumbnailator.tasks.io.ImageSink;
 import net.coobird.thumbnailator.tasks.io.ImageSource;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
@@ -217,25 +218,19 @@ public class Icons {
 
 		BufferedImage bi = null;
 
-		Image i = null;
-		InputStream stream = null;
+		InputStream in = null;
 		try {
 
-			stream = FileUtils.getResource(path);
-			bi = ImageIO.read(stream);
-			i = bi;
-			return new ImageIcon(i);
+			in = FileUtils.getResource(path);
+			bi = ImageIO.read(in);
+			return new ImageIcon(bi);
 
 		} catch (Exception e) {
-			Log.e("Failed loading icon " + path, e);
+			Log.e("Failed loading image " + path, e);
 			return IMAGE_NOT_FOUND;
 		} finally {
 
-			try {
-				if (stream != null) stream.close();
-			} catch (Exception e) {
-				// don't give a fuck
-			}
+			Utils.close(in);
 		}
 
 	}
@@ -274,15 +269,27 @@ public class Icons {
 					r = new Region(Positions.TOP_LEFT, new AbsoluteSize(orig.getWidth(), orig.getWidth()));
 				}
 
-				ThumbnailParameter p = new ThumbnailParameter(size, r, true, ThumbnailParameter.ORIGINAL_FORMAT, ThumbnailParameter.DEFAULT_FORMAT_TYPE, 0, ThumbnailParameter.DEFAULT_IMAGE_TYPE,
-						null, new MyResizer(), true, false);
+				//@formatter:off
+				ThumbnailParameter p = new ThumbnailParameter(
+						size,
+						r,
+						true,
+						ThumbnailParameter.ORIGINAL_FORMAT,
+						ThumbnailParameter.DEFAULT_FORMAT_TYPE,
+						0,
+						ThumbnailParameter.DEFAULT_IMAGE_TYPE,
+						null,
+						new MyResizer(),
+						true,
+						false
+				);
+				//@formatter:on
 
 				ThumbnailTask<BufferedImage, BufferedImage> task = new SourceSinkThumbnailTask<BufferedImage, BufferedImage>(p, src, out);
 
 				Thumbnailator.createThumbnail(task);
 
-
-				i = out.getSink(); //Thumbnailator.createThumbnail(orig, size.width, size.height);
+				i = out.getSink();
 			} else {
 				i = orig;
 			}
@@ -297,11 +304,7 @@ public class Icons {
 			Log.e("Failed loading icon.", e);
 			return IMAGE_NOT_FOUND;
 		} finally {
-			try {
-				if (in != null) in.close();
-			} catch (Exception e) {
-				// don't give a fuck
-			}
+			Utils.close(in);
 		}
 	}
 

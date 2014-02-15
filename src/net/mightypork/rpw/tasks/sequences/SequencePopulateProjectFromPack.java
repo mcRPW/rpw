@@ -2,7 +2,6 @@ package net.mightypork.rpw.tasks.sequences;
 
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -329,13 +328,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 
 		Log.f1("Loading resource pack to project - done.");
 
-		if (zip != null) {
-			try {
-				zip.close();
-			} catch (IOException e) {
-				// 
-			}
-		}
+		Utils.close(zip);
 
 		after.run();
 

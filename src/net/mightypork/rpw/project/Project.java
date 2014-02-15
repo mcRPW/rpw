@@ -2,9 +2,7 @@ package net.mightypork.rpw.project;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -325,9 +323,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 			Log.f3("Adding default pack icon");
 
-			InputStream in = FileUtils.getResource("/data/export/pack.png");
-			FileOutputStream out = new FileOutputStream(img);
-			FileUtils.copyStream(in, out);
+			FileUtils.resourceToFile("/data/export/pack.png", img);
 		} catch (IOException e) {
 			Log.e(getLogPrefix() + "Error creating pack title image.", e);
 		}
@@ -344,9 +340,7 @@ public class Project extends Source implements NodeSourceProvider {
 
 			Log.f3("Adding README.txt to the pack");
 
-			InputStream in = FileUtils.getResource("/data/export/project-readme.txt");
-			FileOutputStream out = new FileOutputStream(img);
-			FileUtils.copyStream(in, out);
+			FileUtils.resourceToFile("/data/export/project-readme.txt", img);
 		} catch (IOException e) {
 			Log.e(getLogPrefix() + "Error creating readme file.", e);
 		}

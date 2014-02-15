@@ -126,8 +126,7 @@ public class DialogEditText extends DialogEditorBase {
 
 		JPopupMenu popup = new JPopupMenu();
 
-		InputStream in = FileUtils.getResource("/data/misc/colorcodes.txt");
-		String text = FileUtils.streamToString(in);
+		String text = FileUtils.resourceToString("/data/misc/colorcodes.txt");
 		Map<String, String> map = SimpleConfig.mapFromString(text);
 
 		JMenuItem item;

@@ -12,6 +12,7 @@ import java.util.zip.Adler32;
 import java.util.zip.CheckedInputStream;
 import java.util.zip.Checksum;
 
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -61,22 +62,25 @@ public class FastRecursiveDiff {
 
 	private void calcChecksum() throws NotEqualException {
 
+		FileInputStream in1, in2;
+		CheckedInputStream cin1 = null, cin2 = null;
+
 		for (Tuple<File> pair : compared) {
 
 			try {
 				ck1.reset();
 				ck2.reset();
 
-				FileInputStream inputStream1 = new FileInputStream(pair.a);
-				CheckedInputStream cinStream1 = new CheckedInputStream(inputStream1, ck1);
+				in1 = new FileInputStream(pair.a);
+				in2 = new FileInputStream(pair.b);
 
-				FileInputStream inputStream2 = new FileInputStream(pair.b);
-				CheckedInputStream cinStream2 = new CheckedInputStream(inputStream2, ck2);
+				cin1 = new CheckedInputStream(in1, ck1);
+				cin2 = new CheckedInputStream(in2, ck2);
 
 				while (true) {
 
-					int read1 = cinStream1.read(BUFFER);
-					int read2 = cinStream2.read(BUFFER);
+					int read1 = cin1.read(BUFFER);
+					int read2 = cin2.read(BUFFER);
 
 					if (read1 != read2 || ck1.getValue() != ck2.getValue()) {
 						throw new NotEqualException("Bytes differ:\n" + pair.a + "\n" + pair.b);
@@ -85,10 +89,9 @@ public class FastRecursiveDiff {
 					if (read1 == -1) break;
 				}
 
-				cinStream1.close();
-				cinStream2.close();
-
-			} catch (IOException e) {}
+			} catch (IOException e) {} finally {
+				Utils.close(cin1, cin2);
+			}
 		}
 	}
 

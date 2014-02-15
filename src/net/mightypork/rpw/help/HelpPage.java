@@ -1,9 +1,6 @@
 package net.mightypork.rpw.help;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.utils.HtmlBuilder;
 import net.mightypork.rpw.utils.files.FileUtils;
@@ -20,25 +17,13 @@ public class HelpPage {
 
 		this.name = title;
 
-		InputStream in = null;
+		String str = FileUtils.resourceToString(Paths.DATA_DIR_HELP + filename);
 
-		try {
-			in = FileUtils.getResource(Paths.DATA_DIR_HELP + filename);
-
-			if (in == null) {
-				Log.w("Missing help page " + filename);
-				content = "Page not found.";
-			} else {
-				String str = FileUtils.streamToString(in);
-				content = HtmlBuilder.markdownToHtmlHelp(str);
-			}
-
-		} finally {
-			if (in != null) try {
-				in.close();
-			} catch (IOException e) {
-				Log.e(e);
-			}
+		if (str.length() == 0) {
+			Log.w("Missing help page " + filename);
+			content = "Page not found.";
+		} else {
+			content = HtmlBuilder.markdownToHtmlHelp(str);
 		}
 	}
 

@@ -61,15 +61,13 @@ public class DialogEditMeta extends DialogEditorBase {
 	@Override
 	protected String getInitialText() {
 
-		InputStream in;
 		try {
-			in = Projects.getActive().getAssetMetaStream(editedNode.getAssetKey());
+			InputStream in = Projects.getActive().getAssetMetaStream(editedNode.getAssetKey());
+			return FileUtils.streamToString(in);
 		} catch (IOException e) {
 			Log.e(e);
 			return "";
 		}
-
-		return FileUtils.streamToString(in);
 	}
 
 
@@ -263,9 +261,7 @@ public class DialogEditMeta extends DialogEditorBase {
 
 			String res = e.getActionCommand();
 
-			InputStream in = FileUtils.getResource("/data/mcmeta/" + res);
-
-			String text = FileUtils.streamToString(in);
+			String text = FileUtils.resourceToString("/data/mcmeta/" + res);
 
 			setTextareaText(text);
 		}

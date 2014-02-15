@@ -22,6 +22,7 @@ import net.mightypork.rpw.tree.assets.TreeBuilder;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.ZipBuilder;
 import net.mightypork.rpw.utils.logging.Log;
@@ -157,7 +158,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 			zb.addStream("pack.png", in);
 
 		} finally {
-			if (in != null) in.close();
+			Utils.close(in);
 		}
 
 
@@ -254,11 +255,14 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 			String path = file.getAbsolutePath();
 			path = pathPrefix + path.replace(dir.getAbsolutePath(), "");
 
-			FileInputStream in = new FileInputStream(file);
+			FileInputStream in = null;
 
-			zb.addStream(path, in);
-
-			in.close();
+			try {
+				in = new FileInputStream(file);
+				zb.addStream(path, in);
+			} finally {
+				Utils.close(in);
+			}
 
 			if (Config.LOG_EXPORT_FILES) Log.f3("+ " + path);
 		}
@@ -289,28 +293,21 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 					try {
 
-						try {
-							data = Sources.getAssetStream(srcName, leaf.getAssetKey());
-							if (data == null) break;
+						data = Sources.getAssetStream(srcName, leaf.getAssetKey());
+						if (data == null) break;
 
-							String path = leaf.getAssetEntry().getPath();
+						String path = leaf.getAssetEntry().getPath();
+						logEntry = "+ " + path;
+						zb.addStream(path, data);
 
-							logEntry = "+ " + path;
-
-							zb.addStream(path, data);
-
-							logEntry += " <- \"" + srcName + "\"";
-
-						} finally {
-							if (data != null) {
-								data.close();
-							}
-						}
+						logEntry += " <- \"" + srcName + "\"";
 
 						fileSaved = true;
 
 					} catch (IOException e) {
 						Log.e("Error getting asset stream.", e);
+					} finally {
+						Utils.close(data);
 					}
 
 				} while (false);
@@ -328,27 +325,21 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 
 					try {
 
-						try {
-							data = Sources.getAssetMetaStream(srcName, leaf.getAssetKey());
-							if (data == null) {
-								Log.e("null meta stream");
-								break;
-							}
-
-							String path = leaf.getAssetEntry().getPath() + ".mcmeta";
-
-							zb.addStream(path, data);
-
-							logEntry += ", m: \"" + srcName + "\"";
-
-						} finally {
-							if (data != null) {
-								data.close();
-							}
+						data = Sources.getAssetMetaStream(srcName, leaf.getAssetKey());
+						if (data == null) {
+							Log.e("null meta stream");
+							break;
 						}
+
+						String path = leaf.getAssetEntry().getPath() + ".mcmeta";
+						zb.addStream(path, data);
+
+						logEntry += ", m: \"" + srcName + "\"";
 
 					} catch (IOException e) {
 						Log.e("Error getting asset meta stream.", e);
+					} finally {
+						Utils.close(data);
 					}
 
 				} while (false);

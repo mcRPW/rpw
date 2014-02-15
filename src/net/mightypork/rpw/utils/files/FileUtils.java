@@ -104,32 +104,16 @@ public class FileUtils {
 	 */
 	public static void copyFile(File source, File target) throws IOException {
 
-
-		InputStream in = new FileInputStream(source);
-		OutputStream out = new FileOutputStream(target);
-
-		copyStream(in, out);
-	}
-
-
-	/**
-	 * Copy bytes from input to output stream
-	 * 
-	 * @param in input stream
-	 * @param out output stream
-	 * @throws IOException on error
-	 */
-	public static void copyStream(InputStream in, OutputStream out) throws IOException {
+		InputStream in = null;
+		OutputStream out = null;
 
 		try {
-			byte[] buf = new byte[2048];
-			int len;
-			while ((len = in.read(buf)) > 0) {
-				out.write(buf, 0, len);
-			}
+			in = new FileInputStream(source);
+			out = new FileOutputStream(target);
+
+			copyStream(in, out);
 		} finally {
-			in.close();
-			out.close();
+			Utils.close(in, out);
 		}
 	}
 
@@ -141,16 +125,20 @@ public class FileUtils {
 	 * @param out output stream
 	 * @throws IOException on error
 	 */
-	public static void copyStreamNoCloseOut(InputStream in, OutputStream out) throws IOException {
+	public static void copyStream(InputStream in, OutputStream out) throws IOException {
 
-		try {
-			byte[] buf = new byte[2048];
-			int len;
-			while ((len = in.read(buf)) > 0) {
-				out.write(buf, 0, len);
-			}
-		} finally {
-			in.close();
+		if (in == null) {
+			throw new NullPointerException("Input stream is null");
+		}
+
+		if (out == null) {
+			throw new NullPointerException("Output stream is null");
+		}
+
+		byte[] buf = new byte[2048];
+		int len;
+		while ((len = in.read(buf)) > 0) {
+			out.write(buf, 0, len);
 		}
 	}
 
@@ -188,7 +176,9 @@ public class FileUtils {
 	 */
 	public static String fileToString(File file) throws IOException {
 
-		return streamToString(new FileInputStream(file));
+		FileInputStream fin = new FileInputStream(file);
+
+		return streamToString(fin);
 	}
 
 
@@ -286,7 +276,7 @@ public class FileUtils {
 
 
 	/**
-	 * Read entire input stream to a string.
+	 * Read entire input stream to a string, and close it.
 	 * 
 	 * @param in input stream
 	 * @return file contents
@@ -298,7 +288,7 @@ public class FileUtils {
 
 
 	/**
-	 * Read input stream to a string.
+	 * Read input stream to a string, and close it.
 	 * 
 	 * @param in input stream
 	 * @param lines max number of lines (-1 to disable limit)
@@ -331,11 +321,7 @@ public class FileUtils {
 		} catch (IOException e) {
 			Log.e(e);
 		} finally {
-			try {
-				if (br != null) br.close();
-			} catch (IOException e) {
-				// piss off
-			}
+			Utils.close(br);
 		}
 
 		return sb.toString();
@@ -619,5 +605,42 @@ public class FileUtils {
 	public static String getFilename(String name) {
 
 		return Utils.fromLastChar(name, '/');
+	}
+
+
+	/**
+	 * Copy resource to file
+	 * 
+	 * @param resname resource name
+	 * @param file out file
+	 * @throws IOException
+	 */
+	public static void resourceToFile(String resname, File file) throws IOException {
+
+		InputStream in = null;
+		OutputStream out = null;
+
+		try {
+			in = FileUtils.getResource(resname);
+			out = new FileOutputStream(file);
+
+			FileUtils.copyStream(in, out);
+		} finally {
+			Utils.close(in, out);
+		}
+
+	}
+
+
+	/**
+	 * Get resource as string, safely closing streams.
+	 * 
+	 * @param resname resource name
+	 * @return resource as string, empty string on failure
+	 */
+	public static String resourceToString(String resname) {
+
+		InputStream in = FileUtils.getResource(resname);
+		return streamToString(in);
 	}
 }

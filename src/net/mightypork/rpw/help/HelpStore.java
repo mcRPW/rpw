@@ -1,7 +1,6 @@
 package net.mightypork.rpw.help;
 
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +23,8 @@ public class HelpStore {
 
 		Log.f2("Loading help pages");
 
-		InputStream in;
-
-		in = FileUtils.getResource(Paths.DATA_DIR_HELP + "index.txt");
-		String text = FileUtils.streamToString(in);
+		String text = FileUtils.resourceToString(Paths.DATA_DIR_HELP + "index.txt");
 		Map<String, String> pageMap = SimpleConfig.mapFromString(text);
-
 
 		for (Entry<String, String> entry : pageMap.entrySet()) {
 

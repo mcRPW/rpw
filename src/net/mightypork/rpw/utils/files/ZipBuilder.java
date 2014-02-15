@@ -52,7 +52,7 @@ public class ZipBuilder {
 
 		out.putNextEntry(new ZipEntry(path));
 
-		FileUtils.copyStreamNoCloseOut(in, out);
+		FileUtils.copyStream(in, out);
 	}
 
 
@@ -72,7 +72,7 @@ public class ZipBuilder {
 		out.putNextEntry(new ZipEntry(path));
 
 		InputStream in = FileUtils.stringToStream(text);
-		FileUtils.copyStreamNoCloseOut(in, out);
+		FileUtils.copyStream(in, out);
 	}
 
 
@@ -92,7 +92,7 @@ public class ZipBuilder {
 		out.putNextEntry(new ZipEntry(path));
 
 		InputStream in = FileUtils.getResource(resPath);
-		FileUtils.copyStreamNoCloseOut(in, out);
+		FileUtils.copyStream(in, out);
 	}
 
 

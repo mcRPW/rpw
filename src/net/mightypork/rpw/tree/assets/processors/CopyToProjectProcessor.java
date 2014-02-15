@@ -17,6 +17,7 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeGroup;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
@@ -67,13 +68,14 @@ public class CopyToProjectProcessor implements AssetTreeProcessor {
 			File targetMeta = new File(targetBase, path + ".mcmeta");
 
 			// if source resolved to project, no work here.
+			InputStream in = null;
+			OutputStream out = null;
 
 			if (!MagicSources.isProject(sourceMeta)) {
 				try {
-					InputStream in;
-					OutputStream out;
 
 					in = Sources.getAssetMetaStream(sourceMeta, leaf.getAssetKey());
+
 					if (in != null) {
 						out = new FileOutputStream(targetMeta);
 						FileUtils.copyStream(in, out);
@@ -81,6 +83,8 @@ public class CopyToProjectProcessor implements AssetTreeProcessor {
 
 				} catch (Exception e) {
 					Log.e("Error copying asset meta to project folder.", e);
+				} finally {
+					Utils.close(in, out);
 				}
 			}
 
@@ -88,15 +92,17 @@ public class CopyToProjectProcessor implements AssetTreeProcessor {
 			if (!MagicSources.isProject(source)) {
 
 				try {
-					InputStream in;
-					OutputStream out;
 
 					in = Sources.getAssetStream(source, leaf.getAssetKey());
-					out = new FileOutputStream(target);
-					FileUtils.copyStream(in, out);
+					if (in != null) {
+						out = new FileOutputStream(target);
+						FileUtils.copyStream(in, out);
+					}
 
 				} catch (Exception e) {
 					Log.e("Error copying asset to project folder.", e);
+				} finally {
+					Utils.close(in, out);
 				}
 			}
 		}

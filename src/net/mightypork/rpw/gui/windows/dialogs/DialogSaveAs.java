@@ -27,10 +27,7 @@ public class DialogSaveAs extends RpwDialog {
 
 	private JTextField nameField;
 	private JButton buttonOK;
-	//private SimpleStringList list;
-
 	private JButton buttonCancel;
-
 	private JTextField titleField;
 
 
@@ -52,24 +49,6 @@ public class DialogSaveAs extends RpwDialog {
 		vb.windowPadding();
 
 		vb.heading("Save Project As...");
-
-		/*vb.titsep("Your Projects");
-		vb.gap();
-
-		vb.add(list = new SimpleStringList(projectNames, true));
-		list.getList().addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-
-				String s = list.getSelectedValue();
-				if (s != null && nameField.getText().length() == 0) nameField.setText(s);
-			}
-		});
-
-		vb.gapl();
-		
-		*/
 
 		vb.titsep("New project settings");
 		vb.gap();

@@ -150,23 +150,23 @@ public class DialogImportPack extends RpwDialog {
 		public void actionPerformed(ActionEvent e) {
 
 			if (selectedFile == null) {
-				Alerts.error(DialogImportPack.this, "No file selected", "Select file to import!");
+				Alerts.error(self(), "No file selected", "Select file to import!");
 				return;
 			}
 
 			if (!selectedFile.exists()) {
-				Alerts.error(DialogImportPack.this, "Invalid file", "The selected file does not exist!");
+				Alerts.error(self(), "Invalid file", "The selected file does not exist!");
 				return;
 			}
 
 			String name = field.getText().trim();
 			if (name.length() == 0) {
-				Alerts.error(DialogImportPack.this, "Invalid name", "Missing source name!");
+				Alerts.error(self(), "Invalid name", "Missing source name!");
 				return;
 			}
 
 			if (libPackNames.contains(name)) {
-				Alerts.error(DialogImportPack.this, "Invalid name", "Source named \"" + name + "\" already exists!");
+				Alerts.error(self(), "Invalid name", "Source named \"" + name + "\" already exists!");
 			} else {
 
 				File out = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS + "/" + name, true);
@@ -189,6 +189,13 @@ public class DialogImportPack extends RpwDialog {
 				};
 
 				try {
+
+					if (!ZipUtils.entryExists(selectedFile, "pack.mcmeta")) {
+						Alerts.error(self(), "Invalid format", "Selected ZIP file isn't\na valid resource pack!");
+						return;
+					}
+
+
 					ZipUtils.extractZip(selectedFile, out, filter);
 					closeDialog();
 					Alerts.info(App.getFrame(), "Resource Pack \"" + name + "\" was imported.");

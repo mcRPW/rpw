@@ -2,7 +2,6 @@ package net.mightypork.rpw.tree.assets.groups;
 
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +24,6 @@ public class AssetGrouperFancy extends AssetGrouper {
 		groups.clear();
 		filters.clear();
 
-		InputStream is;
 		String text;
 		Map<String, String> pairs;
 
@@ -48,10 +46,10 @@ public class AssetGrouperFancy extends AssetGrouper {
 
 
 		// vanilla groups
-		is = FileUtils.getResource("/data/tree/groupsVanilla.txt");
-		if (is == null) throw new RuntimeException("Failed to load group list.");
 
-		text = FileUtils.streamToString(is);
+		text = FileUtils.resourceToString("/data/tree/groupsVanilla.txt");
+		if (text.length() == 0) throw new RuntimeException("Failed to load group list.");
+
 		pairs = SimpleConfig.mapFromString(text);
 
 		for (Entry<String, String> pair : pairs.entrySet()) {
@@ -98,10 +96,9 @@ public class AssetGrouperFancy extends AssetGrouper {
 
 
 		// vanilla filters
-		is = FileUtils.getResource("/data/tree/filtersVanilla.txt");
-		if (is == null) throw new RuntimeException("Failed to load filter list.");
+		text = FileUtils.resourceToString("/data/tree/filtersVanilla.txt");
+		if (text.length() == 0) throw new RuntimeException("Failed to load filter list.");
 
-		text = FileUtils.streamToString(is);
 		pairs = SimpleConfig.mapFromString(text);
 
 		for (Entry<String, String> pair : pairs.entrySet()) {

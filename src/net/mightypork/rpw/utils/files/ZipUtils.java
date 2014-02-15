@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 
@@ -44,11 +45,7 @@ public class ZipUtils {
 			return extractZip(zip, outputDir, filter);
 
 		} finally {
-			try {
-				if (zip != null) zip.close();
-			} catch (IOException e) {
-				// doesnt matter
-			}
+			Utils.close(zip);
 		}
 	}
 
@@ -110,11 +107,7 @@ public class ZipUtils {
 			zip = new ZipFile(zipFile);
 			return listZip(zip);
 		} finally {
-			try {
-				if (zip != null) zip.close();
-			} catch (IOException e) {
-				//
-			}
+			Utils.close(zip);
 		}
 	}
 
@@ -155,22 +148,21 @@ public class ZipUtils {
 	 */
 	public static void extractZipEntry(ZipFile zip, ZipEntry entry, File destFile) throws IOException {
 
-		BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
-
 		destFile.getParentFile().mkdirs();
 
-		byte data[] = new byte[BUFFER_SIZE];
+		BufferedInputStream is = null;
+		FileOutputStream fos = null;
+		BufferedOutputStream dest = null;
 
-		FileOutputStream fos = new FileOutputStream(destFile);
-		BufferedOutputStream dest = new BufferedOutputStream(fos, BUFFER_SIZE);
+		try {
+			is = new BufferedInputStream(zip.getInputStream(entry));
+			fos = new FileOutputStream(destFile);
+			dest = new BufferedOutputStream(fos, BUFFER_SIZE);
 
-		int b;
-		while ((b = is.read(data, 0, BUFFER_SIZE)) != -1) {
-			dest.write(data, 0, b);
+			FileUtils.copyStream(is, dest);
+		} finally {
+			Utils.close(is, dest); // closes also fos
 		}
-		dest.flush();
-		dest.close();
-		is.close();
 	}
 
 
@@ -184,9 +176,29 @@ public class ZipUtils {
 	 */
 	public static String zipEntryToString(ZipFile zip, ZipEntry entry) throws IOException {
 
-		BufferedInputStream is = new BufferedInputStream(zip.getInputStream(entry));
-		String s = FileUtils.streamToString(is);
-		is.close();
-		return s;
+		BufferedInputStream is = null;
+		try {
+			is = new BufferedInputStream(zip.getInputStream(entry));
+			String s = FileUtils.streamToString(is);
+			return s;
+		} finally {
+			Utils.close(is);
+		}
+	}
+
+
+	public static boolean entryExists(File selectedFile, String string) {
+
+		ZipFile zf = null;
+
+		try {
+			zf = new ZipFile(selectedFile);
+			return zf.getEntry(string) != null;
+		} catch (Exception e) {
+			return false;
+		} finally {
+			Utils.close(zf);
+		}
+
 	}
 }

@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import net.mightypork.rpw.utils.Calc;
+import net.mightypork.rpw.utils.Utils;
 
 
 /**
@@ -635,15 +636,18 @@ public class PropertyManager {
 	public void apply() {
 
 		boolean needsSave = false;
+		FileInputStream fis = null;
 		try {
 
 			new File(file.getParent()).mkdirs();
-
-			pr = PropertiesLoader.loadProperties(pr, new FileInputStream(file));
+			fis = new FileInputStream(file);
+			pr = PropertiesLoader.loadProperties(pr, fis);
 
 		} catch (IOException e) {
 			needsSave = true;
 			pr = new SortedProperties();
+		} finally {
+			Utils.close(fis);
 		}
 
 		pr.cfgSeparateSectionsByEmptyLine = cfgSeparateSections;

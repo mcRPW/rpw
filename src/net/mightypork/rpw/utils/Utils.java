@@ -4,6 +4,8 @@ package net.mightypork.rpw.utils;
 import java.util.*;
 import java.util.Map.Entry;
 
+import net.mightypork.rpw.utils.logging.Log;
+
 
 /**
  * Sector's utils class
@@ -200,5 +202,19 @@ public class Utils {
 			list.add(o);
 		}
 		return list;
+	}
+
+
+	public static void close(Object... something) {
+
+		if (something == null || something.length == 0) return;
+		for (Object o : something) {
+			if (o == null) continue;
+			try {
+				o.getClass().getMethod("close").invoke(o);
+			} catch (Exception e) {
+				Log.e("Could not close " + o.getClass().getSimpleName(), e);
+			}
+		}
 	}
 }

@@ -1,8 +1,6 @@
 package net.mightypork.rpw.utils;
 
 
-import java.io.InputStream;
-
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.utils.files.FileUtils;
 
@@ -30,16 +28,9 @@ public class HtmlBuilder {
 		mdBuilder.setDecorator(new ExtDecorator());
 		mdBuilder.setCodeBlockEmitter(new CodeBlockEmitter());
 
-		InputStream in;
-
-		in = FileUtils.getResource(Paths.DATA_DIR_HTML + "html_base_top.html");
-		htmlBaseTop = FileUtils.streamToString(in);
-
-		in = FileUtils.getResource(Paths.DATA_DIR_HTML + "html_help_top.html");
-		htmlHelpTop = FileUtils.streamToString(in);
-
-		in = FileUtils.getResource(Paths.DATA_DIR_HTML + "html_bottom.html");
-		htmlBottom = FileUtils.streamToString(in);
+		htmlBaseTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_base_top.html");
+		htmlHelpTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_help_top.html");
+		htmlBottom = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_bottom.html");
 	}
 
 
