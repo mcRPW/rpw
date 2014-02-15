@@ -267,4 +267,12 @@ public class Gui {
 
 		return p;
 	}
+
+
+	public static void setPreferedWidth(JComponent component, int width) {
+		Dimension d = component.getPreferredSize();
+		d.width = width;
+		component.setPreferredSize(d);
+	}
+	
 }

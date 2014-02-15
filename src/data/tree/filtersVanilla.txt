@@ -250,8 +250,8 @@ root.image.block.rails = assets.minecraft.textures.blocks.rail_*
 
 root.image.block.clay = assets.minecraft.textures.blocks.clay | assets.minecraft.textures.blocks.hardened_clay*
 root.image.block.wool = assets.minecraft.textures.blocks.wool_*
-root.image.block.dirt = assets.minecraft.textures.blocks.sand | assets.minecraft.textures.blocks.sand_* | assets.minecraft.textures.blocks.gravel | assets.minecraft.textures.blocks.soul_sand | assets.minecraft.textures.blocks.dirt | assets.minecraft.textures.blocks.dirt_* | assets.minecraft.textures.blocks.grass_* | assets.minecraft.textures.blocks.mycelium_* | assets.minecraft.textures.blocks.farmland_* 
-root.image.block.rocks = assets.minecraft.textures.blocks.bedrock | assets.minecraft.textures.blocks.cobblestone* | assets.minecraft.textures.blocks.end_stone | assets.minecraft.textures.blocks.netherrack | assets.minecraft.textures.blocks.stone
+root.image.block.dirt = assets.minecraft.textures.blocks.red_sand | assets.minecraft.textures.blocks.sand | assets.minecraft.textures.blocks.sand_* | assets.minecraft.textures.blocks.gravel | assets.minecraft.textures.blocks.soul_sand | assets.minecraft.textures.blocks.dirt | assets.minecraft.textures.blocks.dirt_* | assets.minecraft.textures.blocks.grass_* | assets.minecraft.textures.blocks.mycelium_* | assets.minecraft.textures.blocks.farmland_* 
+root.image.block.rocks = assets.minecraft.textures.blocks.bedrock | assets.minecraft.textures.blocks.cobblestone* | assets.minecraft.textures.blocks.end_stone | assets.minecraft.textures.blocks.netherrack | assets.minecraft.textures.blocks.stone | assets.minecraft.textures.blocks.stone_andesite* | assets.minecraft.textures.blocks.stone_diorite* | assets.minecraft.textures.blocks.stone_granite*
 root.image.block.rocks.sandstone = assets.minecraft.textures.blocks.sandstone_*
 root.image.block.rocks.brick = assets.minecraft.textures.blocks.brick | assets.minecraft.textures.blocks.nether_brick | assets.minecraft.textures.blocks.stone_slab_* | assets.minecraft.textures.blocks.stonebrick*
 
