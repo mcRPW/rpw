@@ -303,7 +303,7 @@ public class Gui {
 			p.add(fields[i]);
 		}
 
-		SpringUtilities.makeCompactGrid(p, 2, 2, 0, 0, Gui.GAP, Gui.GAP);
+		SpringUtilities.makeCompactGrid(p, labels.length, 2, 0, 0, Gui.GAP, Gui.GAP);
 
 		return p;
 	}
