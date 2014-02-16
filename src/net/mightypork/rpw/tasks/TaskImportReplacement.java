@@ -18,11 +18,9 @@ public class TaskImportReplacement {
 
 	public static void run(AssetEntry entry, Runnable afterImport) {
 
-		String suff = entry.getType().getExtension();
-		String filtername = entry.getType().toString() + " (*." + suff + ")";
 		String title = "Replace " + entry.getLabel() + "." + entry.getType().getExtension();
 
-		FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_FILE, title, suff, filtername, true, false, false);
+		FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_FILE, title, entry.getType().getFilter(), true, false, false);
 
 		fc.showDialog("Import");
 		if (!fc.approved()) {

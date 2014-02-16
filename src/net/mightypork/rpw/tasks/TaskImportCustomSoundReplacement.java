@@ -18,7 +18,7 @@ public class TaskImportCustomSoundReplacement {
 	public static void run(FileFsTreeNode fileNode, Runnable afterImport) {
 
 		String title = "Import sound file into sounds/" + fileNode.getPathRelativeToRoot();
-		FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_SOUND, title, "ogg", "Sound files (*.ogg)", true, false, false);
+		FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_SOUND, title, FileChooser.OGG, true, false, false);
 
 		fc.showDialog("Open");
 

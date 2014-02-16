@@ -3,6 +3,8 @@ package net.mightypork.rpw.tree.assets;
 
 import java.io.File;
 
+import net.mightypork.rpw.gui.helpers.FileChooser;
+import net.mightypork.rpw.gui.helpers.FileChooser.FileChooserFilter;
 import net.mightypork.rpw.utils.files.FileUtils;
 
 
@@ -147,5 +149,32 @@ public enum EAsset {
 	public static EAsset forFile(String file) {
 
 		return forExtension(FileUtils.getExtension(file));
+	}
+	
+	/**
+	 * Get filter for file chooser
+	 * @return filter
+	 */
+	public FileChooserFilter getFilter() {
+		switch(this) {
+			case CFG:
+			case PROPERTIES:
+			case INI:
+			case TEXT:
+			case JSON:
+			case MCMETA:
+			case LANG:
+				return FileChooser.TXT;
+			case IMAGE:
+				return FileChooser.PNG;
+			case SOUND:
+				return FileChooser.OGG;
+			case FSH:
+				return FileChooser.FSH;
+			case VSH:
+				return FileChooser.VSH;
+			default:
+				return null;
+		}
 	}
 }

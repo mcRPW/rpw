@@ -136,7 +136,7 @@ public class DialogProjectProperties extends RpwDialog {
 	@Override
 	protected void initGui() {
 
-		fc = new FileChooser(this, FilePath.IMPORT_FILE, "Import Project Icon (128x128 PNG)", "png", "PNG images", true, false, false);
+		fc = new FileChooser(this, FilePath.IMPORT_FILE, "Import Project Icon (128x128 PNG)", FileChooser.PNG, true, false, false);
 	}
 
 

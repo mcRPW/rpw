@@ -21,7 +21,7 @@ public class TaskExportProject {
 
 		Project project = Projects.getActive();
 
-		FileChooser fc = new FileChooser(App.getFrame(), FilePath.EXPORT, "Export project", "zip", "ZIP archives", true, false, false);
+		FileChooser fc = new FileChooser(App.getFrame(), FilePath.EXPORT, "Export project", FileChooser.ZIP, true, false, false);
 
 		File dir = fc.getCurrentDirectory();
 		File file = new File(dir, project.getName() + ".zip");

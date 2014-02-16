@@ -24,9 +24,18 @@ public class FileChooser {
 	private int state;
 	private FilePath pathEnum;
 
-	public static final int CANCEL = JFileChooser.CANCEL_OPTION;
-	public static final int APPROVE = JFileChooser.APPROVE_OPTION;
-	public static final int ERROR = JFileChooser.ERROR_OPTION;
+	private static final int CANCEL = JFileChooser.CANCEL_OPTION;
+	private static final int APPROVE = JFileChooser.APPROVE_OPTION;
+	private static final int ERROR = JFileChooser.ERROR_OPTION;
+	
+	public static final FileChooserFilter ZIP = new FileChooserFilter("ZIP archives", "zip");
+	public static final FileChooserFilter ZIP_JAR = new FileChooserFilter("ZIP, JAR archives", "zip,jar");
+	public static final FileChooserFilter PNG = new FileChooserFilter("PNG images", "png");
+	public static final FileChooserFilter JPG = new FileChooserFilter("JPEG images", "jpg,jpeg");
+	public static final FileChooserFilter OGG = new FileChooserFilter("OGG sounds", "ogg");
+	public static final FileChooserFilter TXT = new FileChooserFilter("Text files", "txt,text,lang,json,properties,cfg,ini,conf");
+	public static final FileChooserFilter VSH = new FileChooserFilter("Vertex shaders", "vsh");
+	public static final FileChooserFilter FSH = new FileChooserFilter("Fragment shaders", "fsh");
 
 
 	/**
@@ -36,13 +45,12 @@ public class FileChooser {
 	 * @param pathEnum file path (used for remembering last path. Use DEFAULT
 	 *            for User's home)
 	 * @param title dialog window title
-	 * @param filterSuffixes file suffixes allowed (comma separated)
-	 * @param filterName name of the filter (ie. "Zip files")
+	 * @param filter file filter
 	 * @param files allow choosing files
 	 * @param dirs allow choosing directories
 	 * @param multi allow multiple selection
 	 */
-	public FileChooser(Component parent, FilePath pathEnum, String title, String filterSuffixes, final String filterName, boolean files, boolean dirs, boolean multi) {
+	public FileChooser(Component parent, FilePath pathEnum, String title, FileChooserFilter filter, boolean files, boolean dirs, boolean multi) {
 
 		this.parent = parent;
 		this.pathEnum = pathEnum;
@@ -51,28 +59,10 @@ public class FileChooser {
 		fc.setCurrentDirectory(new File(pathEnum.getPath()));
 		fc.setDialogTitle(title);
 
-		final String[] suffixes = filterSuffixes.split(",");
-
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.setFileFilter(new FileFilter() {
-
-			FileSuffixFilter fsf = new FileSuffixFilter(suffixes);
-
-
-			@Override
-			public String getDescription() {
-
-				return filterName;
-			}
-
-
-			@Override
-			public boolean accept(File f) {
-
-				if (f.isDirectory()) return true;
-				return fsf.accept(f);
-			}
-		});
+		if(filter != null) {
+			fc.setAcceptAllFileFilterUsed(false);
+			fc.setFileFilter(filter);
+		}
 
 		fc.setFileSelectionMode((files && dirs) ? JFileChooser.FILES_AND_DIRECTORIES : (files ? JFileChooser.FILES_ONLY : JFileChooser.DIRECTORIES_ONLY));
 		fc.setMultiSelectionEnabled(multi);
@@ -96,7 +86,7 @@ public class FileChooser {
 	 */
 	public void showOpenDialog() {
 
-		this.state = fc.showOpenDialog(parent);
+		this.state = fc.showOpenDialog(getParent());
 		rememberPath();
 	}
 
@@ -106,7 +96,7 @@ public class FileChooser {
 	 */
 	public void showSaveDialog() {
 
-		this.state = fc.showSaveDialog(parent);
+		this.state = fc.showSaveDialog(getParent());
 		rememberPath();
 	}
 
@@ -118,7 +108,7 @@ public class FileChooser {
 	 */
 	public void showDialog(String approveButtonText) {
 
-		this.state = fc.showDialog(parent, approveButtonText);
+		this.state = fc.showDialog(getParent(), approveButtonText);
 		rememberPath();
 	}
 
@@ -186,5 +176,35 @@ public class FileChooser {
 	public File getCurrentDirectory() {
 
 		return fc.getCurrentDirectory();
+	}
+	
+	protected Component getParent() {
+		return parent;
+	}
+	
+	public static class FileChooserFilter extends FileFilter {
+		
+		private FileSuffixFilter fsf;
+		private String name;
+
+		public FileChooserFilter(String name, String suffixes) {
+			this.name = name;
+			this.fsf = new FileSuffixFilter(suffixes.split(","));
+		}
+		
+
+		@Override
+		public boolean accept(File f) {
+
+			if (f.isDirectory()) return true;
+			return fsf.accept(f);			
+		}
+
+		@Override
+		public String getDescription() {
+
+			return name;
+		}
+		
 	}
 }

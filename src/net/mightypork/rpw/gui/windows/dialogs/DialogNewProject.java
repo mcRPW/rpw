@@ -1,9 +1,6 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -20,16 +17,15 @@ import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
+import net.mightypork.rpw.gui.widgets.FilepickerField;
+import net.mightypork.rpw.gui.widgets.FilepickerField.FilePickListener;
 import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
-
-import org.jdesktop.swingx.JXLabel;
 
 
 public class DialogNewProject extends RpwDialog {
@@ -40,20 +36,18 @@ public class DialogNewProject extends RpwDialog {
 	private JTextField titleField;
 	private JButton buttonOK;
 	private JButton buttonCancel;
-	private JXLabel respackUrlLabel;
-	private JButton respackPickButton;
 	private JRadioButton radioBlank;
 	private JRadioButton radioResourcePack;
 
-	private File selectedFile = null;
 	private boolean usePackFile = false;
-	private FileChooser fc;
 
 
 	private List<JComponent> respackGroup = new ArrayList<JComponent>();
 	private List<JComponent> titleFieldGroup = new ArrayList<JComponent>();
 
 	private JCheckBox ckKeepTitle;
+
+	private FilepickerField filepicker;
 
 
 	public DialogNewProject() {
@@ -95,32 +89,22 @@ public class DialogNewProject extends RpwDialog {
 		vbox.add(hb);
 		
 		vbox.gap();
-		hb2 = new HBox();
-			hb2.gapl();
-			hb = new HBox();
-				hb.etchbdr();
+		hb = new HBox();
+			hb.gapl();
+			
+			hb.add(filepicker = new FilepickerField(
+					this,
+					"Select pack file...",
+					FilePath.IMPORT_PACK,
+					"Select pack to import as project",
+					FileChooser.ZIP
+				)
+			);
+			
+		vbox.add(hb);
 		
-				respackUrlLabel = new JXLabel("Select pack file.");
-				respackUrlLabel.setToolTipText("Resource pack file.");
-				respackUrlLabel.setForeground(new Color(0x111111));
-				respackUrlLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-				respackUrlLabel.setHorizontalAlignment(SwingConstants.LEFT);
-				respackUrlLabel.setPreferredSize(new Dimension(200, 25));
-		
-				respackPickButton = new JButton(Icons.MENU_OPEN);
-				respackPickButton.requestFocusInWindow();
-		
-				hb.add(respackPickButton);
-				hb.gap();
-				hb.add(respackUrlLabel);
-				hb.glue();
-			hb2.add(hb);
-		vbox.add(hb2);
-		
-		respackGroup.add(hb2);
 		respackGroup.add(hb);
-		respackGroup.add(respackUrlLabel);
-		respackGroup.add(respackPickButton);
+		respackGroup.add(filepicker);
 
 		hb2 = new HBox();
 			hb2.gapl();
@@ -190,7 +174,9 @@ public class DialogNewProject extends RpwDialog {
 	protected void initGui() {
 
 		enableFilePicker(false);
-		fc = new FileChooser(this, FilePath.IMPORT_PACK, "Select pack to import as project", "zip", "ZIP archives (*.zip)", true, false, false);
+		
+		
+		
 	}
 
 
@@ -206,7 +192,6 @@ public class DialogNewProject extends RpwDialog {
 
 		buttonOK.addActionListener(createListener);
 		buttonCancel.addActionListener(closeListener);
-		respackPickButton.addActionListener(pickFileListener);
 
 		ckKeepTitle.addItemListener(new ItemListener() {
 
@@ -242,12 +227,32 @@ public class DialogNewProject extends RpwDialog {
 				}
 			}
 		});
+		
+		filepicker.setListener(new FilePickListener() {
+			
+			@Override
+			public void onFileSelected(File f) {
+
+				if (f.exists()) {
+					try {
+						String[] parts = FileUtils.getFilenameParts(f);
+
+						if (nameField.getText().trim().length() == 0) {
+							nameField.setText(parts[0]);
+						}
+					} catch (Throwable t) {}
+				}
+				
+			}
+		});
 	}
 
 	private ActionListener createListener = new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
+			final File file = filepicker.getFile();
 
 			String name = nameField.getText();
 			if (name == null) name = "";
@@ -267,96 +272,62 @@ public class DialogNewProject extends RpwDialog {
 				return;
 			}
 
-			if (usePackFile && (selectedFile == null || !selectedFile.exists())) {
+			if (usePackFile && (file == null || !file.exists())) {
 				Alerts.error(self(), "No file selected", "Missing pack file to import!");
 				return;
 			}
 
 			if (projectNames.contains(name)) {
 				Alerts.error(self(), "Name already used", "Project named \"" + name + "\" already exists!");
-			} else {
+				return;
+			} 
 
-				final String projname = name;
+			
+			// create the project
+		
+			final String projname = name;
 
-				// pack project starts with name = title, title is replaced during import.
-				final String projtitle = (usePackFile && ckKeepTitle.isSelected()) ? "" : title;
+			final String projtitle = (usePackFile && ckKeepTitle.isSelected()) ? "" : title;
+
+			Tasks.taskAskToSaveIfChanged(new Runnable() {
+
+				@Override
+				public void run() {
+
+					// OK name
+					closeDialog();
+
+					Alerts.loading(true);
+					Projects.openNewProject(projname);
+					Projects.getActive().setTitle(projtitle);
+
+					Tasks.taskStoreProjectChanges();
+
+					Projects.getActive().save();
+
+					Projects.markProjectAsRecent(Projects.getActive().getName());
 
 
-				Tasks.taskAskToSaveIfChanged(new Runnable() {
+					if (usePackFile) {
+						Tasks.taskPopulateProjectFromPack(file, new Runnable() {
 
-					@Override
-					public void run() {
+							@Override
+							public void run() {
 
-						// OK name
-						closeDialog();
+								Projects.getActive().save();
 
-						Alerts.loading(true);
-						Projects.openNewProject(projname);
-						Projects.getActive().setTitle(projtitle);
-
-						Tasks.taskStoreProjectChanges();
-
-						Projects.getActive().save();
-
-						Projects.markProjectAsRecent(Projects.getActive().getName());
-
-
-						if (usePackFile) {
-							Tasks.taskPopulateProjectFromPack(selectedFile, new Runnable() {
-
-								@Override
-								public void run() {
-
-									Projects.getActive().save();
-
-									Tasks.taskOnProjectChanged();
-									Alerts.loading(false);
-								}
-							});
-						} else {
-							Tasks.taskOnProjectChanged();
-							Alerts.loading(false);
-						}
-
+								Tasks.taskOnProjectChanged();
+								Alerts.loading(false);
+							}
+						});
+					} else {
+						Tasks.taskOnProjectChanged();
+						Alerts.loading(false);
 					}
-				});
 
-			}
-
-		}
-	};
-
-
-	private ActionListener pickFileListener = new ActionListener() {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			fc.showOpenDialog();
-
-			if (fc.approved()) {
-				File f = fc.getSelectedFile();
-
-				if (f == null) return;
-
-				if (f.exists()) {
-					selectedFile = f;
-
-					String path = f.getPath();
-					int length = 24;
-					path = Utils.cropStringAtStart(path, length);
-
-					respackUrlLabel.setText(path);
-
-					try {
-						String[] parts = FileUtils.getFilenameParts(f);
-
-						if (nameField.getText().trim().length() == 0) {
-							nameField.setText(parts[0]);
-						}
-					} catch (Throwable t) {}
 				}
-			}
+			});
+
 		}
 	};
 }
