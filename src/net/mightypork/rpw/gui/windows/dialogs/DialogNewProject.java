@@ -17,8 +17,8 @@ import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
-import net.mightypork.rpw.gui.widgets.FilepickerField;
-import net.mightypork.rpw.gui.widgets.FilepickerField.FilePickListener;
+import net.mightypork.rpw.gui.widgets.FileInput;
+import net.mightypork.rpw.gui.widgets.FileInput.FilePickListener;
 import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
@@ -47,7 +47,7 @@ public class DialogNewProject extends RpwDialog {
 
 	private JCheckBox ckKeepTitle;
 
-	private FilepickerField filepicker;
+	private FileInput filepicker;
 
 
 	public DialogNewProject() {
@@ -92,7 +92,7 @@ public class DialogNewProject extends RpwDialog {
 		hb = new HBox();
 			hb.gapl();
 			
-			hb.add(filepicker = new FilepickerField(
+			hb.add(filepicker = new FileInput(
 					this,
 					"Select pack file...",
 					FilePath.IMPORT_PACK,

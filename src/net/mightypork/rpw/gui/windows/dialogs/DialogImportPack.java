@@ -17,8 +17,8 @@ import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
-import net.mightypork.rpw.gui.widgets.FilepickerField;
-import net.mightypork.rpw.gui.widgets.FilepickerField.FilePickListener;
+import net.mightypork.rpw.gui.widgets.FileInput;
+import net.mightypork.rpw.gui.widgets.FileInput.FilePickListener;
 import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
@@ -41,7 +41,7 @@ public class DialogImportPack extends RpwDialog {
 	private JButton buttonOK;
 	private JButton buttonCancel;
 
-	private FilepickerField filepicker;
+	private FileInput filepicker;
 
 
 	public DialogImportPack() {
@@ -66,7 +66,7 @@ public class DialogImportPack extends RpwDialog {
 		vb.titsep("File to import");
 		vb.gap();
 
-		filepicker = new FilepickerField(this, "Select file to import...", FilePath.IMPORT_PACK, "Import resource pack", FileChooser.ZIP);
+		filepicker = new FileInput(this, "Select file to import...", FilePath.IMPORT_PACK, "Import resource pack", FileChooser.ZIP);
 		vb.add(filepicker);
 
 		vb.gapl();

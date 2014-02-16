@@ -26,7 +26,7 @@ import org.jdesktop.swingx.JXLabel;
  * 
  * @author MightyPork
  */
-public class FilepickerField extends HBox {
+public class FileInput extends HBox {
 
 	private File file;
 	private JButton buttonPickFile;
@@ -46,14 +46,14 @@ public class FilepickerField extends HBox {
 	 * @param title filechooser dialog title
 	 * @param filter file filter
 	 */
-	public FilepickerField(Component parent, String placeholder, FilePath pathEnum, String title, FileChooserFilter filter) {
+	public FileInput(Component parent, String placeholder, FilePath pathEnum, String title, FileChooserFilter filter) {
 
 		importUrl = new JXLabel(placeholder);
 		importUrl.setToolTipText(placeholder);
 		importUrl.setForeground(new Color(0x111111));
 		importUrl.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
 		importUrl.setHorizontalAlignment(SwingConstants.LEFT);
-		Gui.setMinWidth(importUrl, 250);
+		Gui.setPrefWidth(importUrl, 250);
 
 		buttonPickFile = new JButton(Icons.MENU_OPEN);
 		buttonPickFile.setToolTipText("Browse");
@@ -70,7 +70,7 @@ public class FilepickerField extends HBox {
 
 					if (f == null) return;
 
-					FilepickerField.this.file = f;
+					FileInput.this.file = f;
 					
 					String path = file.getPath();
 					int length = 26;
@@ -78,8 +78,8 @@ public class FilepickerField extends HBox {
 
 					importUrl.setText(path);
 
-					if (FilepickerField.this.filePickListener != null) {
-						FilepickerField.this.filePickListener.onFileSelected(f);
+					if (FileInput.this.filePickListener != null) {
+						FileInput.this.filePickListener.onFileSelected(f);
 					}
 				}
 

@@ -11,6 +11,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
@@ -159,8 +160,12 @@ public class Gui {
 		int padding = PADDING_TEXTFIELD;
 
 		JXTextField field = new JXTextField();
-		Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(padding, padding, padding, padding));
-		field.setBorder(bdr);
+		
+		if(!Config.USE_NIMBUS) {
+			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(padding, padding, padding, padding));
+		
+			
+		field.setBorder(bdr);}
 		if (text != null) field.setText(text);
 		if (tooltip != null) field.setToolTipText(tooltip);
 		if (placeholder != null) PromptSupport.setPrompt(placeholder, field);
