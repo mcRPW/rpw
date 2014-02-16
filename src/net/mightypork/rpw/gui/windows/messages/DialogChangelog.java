@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.help.VersionUtils;
@@ -33,7 +32,6 @@ public class DialogChangelog extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		HBox hb;
 		VBox vbox = new VBox();
 
 		vbox.windowPadding();
@@ -50,17 +48,8 @@ public class DialogChangelog extends RpwDialog {
 
 		vbox.gapl();
 
-		//@formatter:off		
-		hb = new HBox();
-
-			hb.glue();
-				
-			hb.add(buttonOK = new JButton("Close", Icons.MENU_YES));
-			
-			hb.glue();
-			hb.setAlignmentX(0.5f);
-		vbox.add(hb);
-		//@formatter:on
+		buttonOK = new JButton("Close", Icons.MENU_YES);
+		vbox.buttonRow(Gui.RIGHT, buttonOK);
 
 		return vbox;
 	}

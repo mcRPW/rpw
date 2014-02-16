@@ -22,7 +22,6 @@ import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
-import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
@@ -66,7 +65,6 @@ public class DialogExportToMc extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		HBox hb;
 		VBox vbox = new VBox();
 		vbox.windowPadding();
 
@@ -106,20 +104,14 @@ public class DialogExportToMc extends RpwDialog {
 		mcOptsCombo = new JComboBox(choices);
 		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
 
-		vbox.add(Gui.springForm(new String[] { "Pack name:", "In Minecraft:" }, new JComponent[] { field, mcOptsCombo }));
+		vbox.springForm(new String[] { "Pack name:", "In Minecraft:" }, new JComponent[] { field, mcOptsCombo });
 
 
 		vbox.gapl();
 
-		hb = new HBox();
-		hb.glue();
 		buttonOK = new JButton("Export", Icons.MENU_EXPORT);
-		hb.add(buttonOK);
-		hb.gap();
 		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-		hb.add(buttonCancel);
-		vbox.add(hb);
-		//@formatter:on
+		vbox.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
 
 
 		return vbox;

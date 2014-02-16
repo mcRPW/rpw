@@ -2,14 +2,13 @@ package net.mightypork.rpw.gui.windows.messages;
 
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Insets;
 
 import javax.swing.*;
 
-import net.mightypork.rpw.gui.widgets.HBox;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 
@@ -41,7 +40,6 @@ public abstract class DialogTerminalBase extends RpwDialog {
 	@Override
 	protected final JComponent buildGui() {
 
-		HBox hb;
 		VBox vb = new VBox();
 		vb.windowPadding();
 
@@ -69,44 +67,9 @@ public abstract class DialogTerminalBase extends RpwDialog {
 
 		vb.add(sp);
 
-		vb.gapl();
-
 		if (hasButtons()) {
-
-			//@formatter:off		
-			hb = new HBox();
-			
-				hb.glue();
-				
-				int i=0;
-				for(JButton btn : makeButtons()) {
-					if(i>0) hb.add(Box.createHorizontalStrut(5));
-					if(btn == null) {
-						
-						// BEHOLD, MAGIC
-						// ugly fix for Swing bug
-						// http://stackoverflow.com/a/7515903/2180189
-						JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-						Dimension size = new Dimension(
-								separator.getPreferredSize().width,
-								separator.getMaximumSize().height
-						);
-						separator.setMaximumSize(size);
-						
-						hb.gapl();
-						hb.add(separator);
-						hb.gapl();
-						
-					} else {
-						hb.add(btn);
-					}
-					i++;
-				}
-				
-				hb.glue();
-			vb.add(hb);
-			//@formatter:on
-
+			vb.gapl();
+			vb.buttonRow(Gui.CENTER, makeButtons());
 		}
 
 		return vb;

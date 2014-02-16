@@ -1,6 +1,7 @@
 package net.mightypork.rpw.gui.windows;
 
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -227,4 +228,11 @@ public abstract class RpwDialog extends JDialog {
 	protected void onClose() {
 
 	}
+
+
+	protected void setPreferredSize(int i, int j) {
+
+		setPreferredSize(new Dimension(i, j));
+	}
+
 }

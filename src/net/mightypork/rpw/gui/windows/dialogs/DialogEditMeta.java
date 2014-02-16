@@ -79,7 +79,6 @@ public class DialogEditMeta extends DialogEditorBase {
 		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
 		btnSave = new JButton("Save", Icons.MENU_YES);
 
-		buttons.padding(0, 10, 10, 10);
 		buttons.add(btnPresets);
 		buttons.gap();
 		buttons.add(btnCheck);

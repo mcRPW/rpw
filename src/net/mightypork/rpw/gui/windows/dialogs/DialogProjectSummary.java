@@ -1,7 +1,6 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -16,8 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.library.Sources;
@@ -47,7 +46,6 @@ public class DialogProjectSummary extends RpwDialog {
 
 		setResizable(true);
 
-		HBox hb;
 		VBox vbox = new VBox();
 		vbox.windowPadding();
 
@@ -73,13 +71,8 @@ public class DialogProjectSummary extends RpwDialog {
 
 		vbox.gapl();
 
-		hb = new HBox();
-		hb.glue();
 		btnClose = new JButton("Close", Icons.MENU_EXIT);
-		btnClose.setAlignmentX(Component.CENTER_ALIGNMENT);
-		hb.add(btnClose);
-		hb.glue();
-		vbox.add(hb);
+		vbox.buttonRow(Gui.CENTER, btnClose);
 
 		return vbox;
 	}

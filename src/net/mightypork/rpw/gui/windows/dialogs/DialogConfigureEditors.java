@@ -202,14 +202,10 @@ public class DialogConfigureEditors extends RpwDialog {
 		
 		vbox.gapl();
 	
-		hb = new HBox();
-			hb.glue();
-			hb.add(btnDefaults = new JButton("Defaults", Icons.MENU_DELETE));
-			hb.gapl();
-			hb.add(btnOK = new JButton("OK", Icons.MENU_YES));
-			hb.gap();
-			hb.add(btnCancel = new JButton("Cancel", Icons.MENU_CANCEL));
-		vbox.add(hb);
+		btnDefaults = new JButton("Defaults", Icons.MENU_DELETE);
+		btnOK = new JButton("OK", Icons.MENU_YES);
+		btnCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+		vbox.buttonRow(Gui.RIGHT, btnDefaults, null, btnOK, btnCancel);		
 		
 		//@formatter:on
 

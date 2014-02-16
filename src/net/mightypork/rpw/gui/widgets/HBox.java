@@ -1,6 +1,8 @@
 package net.mightypork.rpw.gui.widgets;
 
 
+import java.awt.Dimension;
+
 import javax.swing.BoxLayout;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -42,6 +44,13 @@ public class HBox extends RpwBox {
 
 		JSeparator sep;
 		add(sep = new JSeparator(SwingConstants.VERTICAL));
+
+		// BEHOLD, MAGIC
+		// ugly fix for Swing bug (separator with weird size)
+		// http://stackoverflow.com/a/7515903/2180189
+		Dimension size = new Dimension(sep.getPreferredSize().width, sep.getMaximumSize().height);
+		sep.setMaximumSize(size);
+
 		return sep;
 	}
 }

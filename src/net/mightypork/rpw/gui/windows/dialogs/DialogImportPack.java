@@ -19,7 +19,6 @@ import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.FileInput;
 import net.mightypork.rpw.gui.widgets.FileInput.FilePickListener;
-import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
@@ -38,7 +37,7 @@ public class DialogImportPack extends RpwDialog {
 
 	private JTextField field;
 
-	private JButton buttonOK;
+	private JButton buttonOk;
 	private JButton buttonCancel;
 
 	private FileInput filepicker;
@@ -57,7 +56,6 @@ public class DialogImportPack extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		HBox hb;
 		VBox vb = new VBox();
 		vb.windowPadding();
 
@@ -84,20 +82,13 @@ public class DialogImportPack extends RpwDialog {
 		field = Gui.textField("", "Pack name", "Name used in RPW");
 		field.addKeyListener(TextInputValidator.filenames());
 
-		vb.add(Gui.springForm(new String[] { "Name:" }, new JComponent[] { field }));
+		vb.springForm(new String[] { "Name:" }, new JComponent[] { field });
 
 		vb.gapl();
 
-		//@formatter:off
-		hb = new HBox();
-			hb.glue();
-			buttonOK = new JButton("Import", Icons.MENU_YES);
-			hb.add(buttonOK);
-			hb.gap();
-			buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-			hb.add(buttonCancel);
-		vb.add(hb);
-		//@formatter:on
+		buttonOk = new JButton("Import", Icons.MENU_YES);
+		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+		vb.buttonRow(Gui.RIGHT, buttonOk, buttonCancel);
 
 		return vb;
 	}
@@ -126,8 +117,8 @@ public class DialogImportPack extends RpwDialog {
 	@Override
 	protected void addActions() {
 
-		setEnterButton(buttonOK);
-		buttonOK.addActionListener(submitListener);
+		setEnterButton(buttonOk);
+		buttonOk.addActionListener(submitListener);
 		buttonCancel.addActionListener(closeListener);
 	}
 

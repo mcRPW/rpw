@@ -15,7 +15,6 @@ import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.FileChooser;
-import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.ManagerLayout;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
@@ -61,65 +60,57 @@ public class DialogProjectProperties extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		//@formatter:off
-		HBox hb;
 		VBox vbox;
 		vbox = new VBox();
-		
+
 		vbox.windowPadding();
-		
+
 		vbox.heading("Project details");
 
 		vbox.titsep("Properties");
 		vbox.gap();
-		
-		
+
+
+		// form
 		titleField = Gui.textField("", "Resource pack title", "Title shown in Minecraft");
 
 		nameField = Gui.textField("", "Project folder name", "Name of the project folder");
 		nameField.setEditable(false);
-		nameField.setBackground(new Color(0xeeeeee));		
-		
-		vbox.add(Gui.springForm(new String[] {"Title:", "Name:"}, new JComponent[] {titleField, nameField}));
-		
-		
-		vbox.gap();
+		nameField.setBackground(new Color(0xeeeeee));
 
+		vbox.springForm(new String[] { "Title:", "Name:" }, new JComponent[] { titleField, nameField });
+
+
+		vbox.gap();
 		vbox.add(Gui.commentLine("Use \"My Projects\" dialog to rename project."));
-		
 		vbox.gapl();
+
 
 		vbox.titsep("Icon");
 		vbox.gap();
-		
 
 		imageView = new JLabel(getProjectIcon());
 		imageView.setPreferredSize(new Dimension(160, 128));
 		imageView.setHorizontalAlignment(SwingConstants.CENTER);
 		imageView.setAlignmentX(0.5f);
-					
+
 		btnIconEdit = Gui.sidebarButton("Edit", "Open in image editor", Icons.MENU_EDIT);
 		btnIconImport = Gui.sidebarButton("Import", "Import replacement icon", Icons.MENU_IMPORT_BOX);
 		btnIconDefault = Gui.sidebarButton("Default", "Reset to RPW default icon", Icons.MENU_DELETE);
 		btnIconRefresh = Gui.sidebarButton("Refresh", "Reload preview", Icons.MENU_RELOAD);
-		
+
 		ManagerLayout ml = new ManagerLayout(4);
 		ml.setMainComponent(imageView);
 		ml.setTopButtons(btnIconEdit, btnIconImport, btnIconDefault);
 		ml.setBottomButtons(btnIconRefresh);
 		ml.build();
 		vbox.add(ml);
-		
+
+
 		vbox.gapl();
-		
-		//@formatter:off
-		hb = new HBox();
-			hb.glue();
-	
-			buttonOK = new JButton("OK", Icons.MENU_YES);
-			hb.add(buttonOK);
-		vbox.add(hb);
-		//@formatter:on
+
+		buttonOK = new JButton("OK", Icons.MENU_YES);
+		vbox.buttonRow(Gui.RIGHT, buttonOK);
 
 		return vbox;
 	}

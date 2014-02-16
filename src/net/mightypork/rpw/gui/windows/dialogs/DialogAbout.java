@@ -13,7 +13,6 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.files.DesktopApi;
@@ -37,7 +36,6 @@ public class DialogAbout extends RpwDialog {
 	@Override
 	protected JComponent buildGui() {
 
-		HBox hb;
 		VBox vb = new VBox();
 		vb.windowPadding();
 
@@ -48,21 +46,11 @@ public class DialogAbout extends RpwDialog {
 		vb.add(image);
 		vb.gapl();
 
-		//@formatter:off
-		hb = new HBox();
+		buttonTwitter = new JButton("@MightyPork", Icons.MENU_TWITTER);
+		buttonOK = new JButton("Close", Icons.MENU_YES);
 
-			hb.padding(0, Gui.GAP, Gui.GAP, Gui.GAP);
-			hb.setAlignmentX(0.5f);
-			
-			hb.glue();
-			hb.add(buttonTwitter = new JButton("@MightyPork", Icons.MENU_TWITTER));
-			hb.gap();
-			hb.add(buttonOK = new JButton("Close", Icons.MENU_YES));
-			buttonOK.requestFocusInWindow();
-			hb.glue();
-			
-		vb.add(hb);
-		//@formatter:on
+		vb.buttonRow(Gui.CENTER, buttonTwitter, buttonOK);
+		buttonOK.requestFocusInWindow();
 
 		return vb;
 	}

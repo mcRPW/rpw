@@ -227,8 +227,6 @@ public class DialogEditText extends DialogEditorBase {
 		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
 		btnSave = new JButton("Save", Icons.MENU_YES);
 
-		//buttons.padding(0, 10, 10, 10);
-
 		if (type == EAsset.TEXT || type == EAsset.LANG) {
 			buttons.add(btnFormatCodes);
 		}

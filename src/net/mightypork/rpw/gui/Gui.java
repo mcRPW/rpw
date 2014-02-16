@@ -44,6 +44,10 @@ public class Gui {
 		}
 	};
 
+	public static final int LEFT = -1;
+	public static final int CENTER = 0;
+	public static final int RIGHT = 1;
+
 
 	public static void forceSize(Component c, int x, int y) {
 
@@ -329,6 +333,54 @@ public class Gui {
 			if (c == null) c = Color.WHITE;
 			textfeld.setBackground(c);
 		}
+	}
+
+
+	/**
+	 * Create a button row
+	 * 
+	 * @param align align (Gui.LEFT, Gui.CENTER, Gui.RIGHT)
+	 * @param buttons buttons, null for separator
+	 * @return the box
+	 */
+	public static HBox buttonRow(int align, JButton... buttons) {
+
+		HBox hb = new HBox();
+
+		if (buttons == null) return hb;
+
+		if (align == RIGHT || align == CENTER) hb.glue();
+
+		for (int i = 0; i < buttons.length; i++) {
+			if (i > 0) hb.gap();
+
+			if (buttons[i] == null) {
+
+				hb.gap();
+				hb.sep();
+				hb.gap();
+
+			} else {
+				hb.add(buttons[i]);
+			}
+		}
+
+		if (align == LEFT || align == CENTER) hb.glue();
+
+		return hb;
+	}
+
+
+	public static void titledBorder(JComponent c, String title, int padding) {
+
+		//@formatter:off
+		c.setBorder(
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createTitledBorder(title),
+						BorderFactory.createEmptyBorder(padding, padding, padding, padding)
+				)
+		);
+		//@formatter:on
 	}
 
 }

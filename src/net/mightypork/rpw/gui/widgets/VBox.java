@@ -2,6 +2,8 @@ package net.mightypork.rpw.gui.widgets;
 
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
@@ -66,6 +68,22 @@ public class VBox extends RpwBox {
 	public void heading(String string) {
 
 		add(Gui.createDialogHeading(string));
+	}
+
+
+	public void buttonRow(int align, JButton... buttons) {
+
+		if (buttons == null) return;
+
+		add(Gui.buttonRow(align, buttons));
+
+	}
+
+
+	public void springForm(Object[] strings, JComponent[] jComponents) {
+
+		add(Gui.springForm(strings, jComponents));
+
 	}
 
 }

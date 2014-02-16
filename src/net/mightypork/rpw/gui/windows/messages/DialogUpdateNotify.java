@@ -89,17 +89,9 @@ public class DialogUpdateNotify extends RpwDialog {
 		vb.gapl();
 		vb.gap();
 
-		//@formatter:off		
-		hb = new HBox();
+		buttonOK = new JButton("Close", Icons.MENU_EXIT);
+		vb.buttonRow(Gui.CENTER, buttonOK);
 
-			hb.glue();
-
-			hb.add(buttonOK = new JButton("Close", Icons.MENU_EXIT));
-			
-			hb.glue();
-			hb.setAlignmentX(0.5f);
-		vb.add(hb);
-		//@formatter:on
 
 		return vb;
 	}

@@ -73,6 +73,7 @@ public class DialogNewProject extends RpwDialog {
 		vbox.gap();
 
 		//@formatter:off
+		
 		hb = new HBox();	
 			hb.add(radioBlank = new JRadioButton("Blank project"));
 			radioBlank.setForeground(Gui.SUBHEADING_COLOR);
@@ -133,23 +134,14 @@ public class DialogNewProject extends RpwDialog {
 		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
 		titleFieldGroup.add(titleField);
 
-		vbox.add(Gui.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField }));
+		vbox.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField });
 
 		vbox.gapl();
 
-		hb = new HBox();
-		hb.glue();
 
 		buttonOK = new JButton("Create", Icons.MENU_NEW);
-		hb.add(buttonOK);
-
-		hb.gap();
-
 		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-		hb.add(buttonCancel);
-		hb.glue();
-		vbox.add(hb);
-		//@formatter:on
+		vbox.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
 
 		return vbox;
 	}

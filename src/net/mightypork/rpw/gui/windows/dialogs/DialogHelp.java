@@ -2,14 +2,13 @@ package net.mightypork.rpw.gui.windows.dialogs;
 
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.*;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
-import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.help.HelpPage;
@@ -33,9 +32,8 @@ public class DialogHelp extends RpwDialog {
 	protected JComponent buildGui() {
 
 		setResizable(true);
-		setPreferredSize(new Dimension(900, 600));
+		setPreferredSize(900, 600);
 
-		HBox hb;
 		VBox vb = new VBox();
 		vb.windowPadding();
 
@@ -58,14 +56,14 @@ public class DialogHelp extends RpwDialog {
 			panel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			panel.setAlignmentY(0);
 
-			JTextPane page = new JTextPane();//new JLabel();
+			JTextPane page = new JTextPane();
 			page.setBackground(Color.WHITE);
 			page.setOpaque(true);
 			page.setAlignmentY(0);
 			page.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 			page.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
-			page.setContentType("text/html"); // let the text pane know this is what you want
-			page.setEditable(false); // as before
+			page.setContentType("text/html");
+			page.setEditable(false);
 
 			page.setText(hp.getContent());
 			panel.setViewportView(page);
@@ -89,15 +87,9 @@ public class DialogHelp extends RpwDialog {
 
 		vb.gapl();
 
-		//@formatter:off		
-		hb = new HBox();
+		buttonOK = new JButton("Close", Icons.MENU_EXIT);
+		vb.buttonRow(Gui.RIGHT, buttonOK);
 
-			hb.glue();
-			
-			hb.add(buttonOK = new JButton("Close", Icons.MENU_EXIT));
-			
-		vb.add(hb);
-		//@formatter:on
 
 		return vb;
 	}

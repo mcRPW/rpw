@@ -146,7 +146,7 @@ public class DialogCrash extends DialogTerminalBase {
 					clipboard.setContents(selection, selection);
 					Alerts.info(App.getFrame(), "Text copied to clipboard.");
 				} catch (Exception e) {
-					Alerts.error(App.getFrame(), "Sorry, it didn't work.\nCheck runtime log for details.");
+					Alerts.error(App.getFrame(), "Sorry, it didn't work.\nTry Ctrl+A and Ctrl+C instead.");
 					Log.e("Error copying to clipboard", e);
 				}
 
