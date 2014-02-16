@@ -155,9 +155,11 @@ public class DialogExportToMc extends RpwDialog {
 
 		return options;
 	}
-	
+
+
 	@Override
 	protected void onShown() {
+
 		field.setText(Projects.getActive().getName());
 	}
 

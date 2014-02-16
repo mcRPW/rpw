@@ -33,6 +33,7 @@ public class Gui {
 	private static final int ETCHBDR_PADDING = 3;
 	public static final Color HEADING_COLOR = new Color(0x045A80);
 	public static final Color SUBHEADING_COLOR = new Color(0x00294F);
+	public static final Color READONLYBG_COLOR = new Color(0xeeeeee);
 
 	public static final ActionListener openUrlListener = new ActionListener() {
 
@@ -160,12 +161,13 @@ public class Gui {
 		int padding = PADDING_TEXTFIELD;
 
 		JXTextField field = new JXTextField();
-		
-		if(!Config.USE_NIMBUS) {
+
+		if (!Config.USE_NIMBUS) {
 			Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(padding, padding, padding, padding));
-		
-			
-		field.setBorder(bdr);}
+
+
+			field.setBorder(bdr);
+		}
 		if (text != null) field.setText(text);
 		if (tooltip != null) field.setToolTipText(tooltip);
 		if (placeholder != null) PromptSupport.setPrompt(placeholder, field);
@@ -311,6 +313,22 @@ public class Gui {
 		SpringUtilities.makeCompactGrid(p, labels.length, 2, 0, 0, Gui.GAP, Gui.GAP);
 
 		return p;
+	}
+
+
+	public static void readonly(JTextField textfeld, boolean readonly) {
+
+		textfeld.setEditable(!readonly);
+
+		if (readonly) {
+			textfeld.putClientProperty("rpw.originalBackground", textfeld.getBackground());
+			textfeld.setBackground(READONLYBG_COLOR);
+		} else {
+			Color c = (Color) textfeld.getClientProperty("rpw.originalBackground");
+
+			if (c == null) c = Color.WHITE;
+			textfeld.setBackground(c);
+		}
 	}
 
 }

@@ -66,7 +66,17 @@ public class DialogImportPack extends RpwDialog {
 		vb.titsep("File to import");
 		vb.gap();
 
-		filepicker = new FileInput(this, "Select file to import...", FilePath.IMPORT_PACK, "Import resource pack", FileChooser.ZIP);
+		//@formatter:off
+		filepicker = new FileInput(
+				this,
+				"Select file to import...",
+				FilePath.IMPORT_PACK,
+				"Import resource pack",
+				FileChooser.ZIP,
+				true				
+		);
+		//@formatter:on
+
 		vb.add(filepicker);
 
 		vb.gapl();
@@ -97,9 +107,10 @@ public class DialogImportPack extends RpwDialog {
 	protected void initGui() {
 
 		filepicker.setListener(new FilePickListener() {
-			
+
 			@Override
 			public void onFileSelected(File file) {
+
 				try {
 					String[] parts = FileUtils.getFilenameParts(file);
 					if (field.getText().trim().length() == 0) {
@@ -131,33 +142,28 @@ public class DialogImportPack extends RpwDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
+			if (!filepicker.hasFile()) {
+				Alerts.error(self(), "Missing file", "The selected file does not exist.");
+				return;
+			}
+
 			File file = filepicker.getFile();
-
-			if (file == null) {
-				Alerts.error(self(), "No file selected", "Select file to import!");
-				return;
-			}
-
-			if (!file.exists()) {
-				Alerts.error(self(), "Invalid file", "The selected file does not exist!");
-				return;
-			}
 
 			String name = field.getText().trim();
 			if (name.length() == 0) {
-				Alerts.error(self(), "Invalid name", "Missing source name!");
+				Alerts.error(self(), "Invalid name", "The pack needs a name!");
 				return;
 			}
 
 			if (libPackNames.contains(name)) {
-				Alerts.error(self(), "Invalid name", "Source named \"" + name + "\" already exists!");
+				Alerts.error(self(), "Invalid name", "Pack named \"" + name + "\" is already in the library!");
 				return;
 			}
 
-			
+
 			// do the import
-			
+
 			File out = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS + "/" + name, true);
 
 			StringFilter filter = new StringFilter() {
@@ -187,10 +193,10 @@ public class DialogImportPack extends RpwDialog {
 
 				ZipUtils.extractZip(file, out, filter);
 				closeDialog();
-				Alerts.info(App.getFrame(), "Resource Pack \"" + name + "\" was imported.");
+				Alerts.info(App.getFrame(), "Resource pack \"" + name + "\" was imported.");
 
 			} catch (Exception exc) {
-				Alerts.error(DialogImportPack.this, "Error while extracting ResourcePack zip.");
+				Alerts.error(DialogImportPack.this, "Error while extracting the pack.");
 				FileUtils.delete(out, true); // cleanup
 			}
 

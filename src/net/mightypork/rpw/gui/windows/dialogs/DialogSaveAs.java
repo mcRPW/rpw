@@ -86,13 +86,14 @@ public class DialogSaveAs extends RpwDialog {
 		// do nothing
 	}
 
-	
+
 	@Override
 	protected void onShown() {
+
 		nameField.setText(Projects.getActive().getName());
 		titleField.setText(Projects.getActive().getTitle());
 	}
-	
+
 
 	@Override
 	protected void addActions() {

@@ -46,7 +46,8 @@ public class HtmlBuilder {
 
 		return markdownToHtml(markdown, htmlHelpTop);
 	}
-	
+
+
 	public static String markdownToHtmlChangelog(String markdown) {
 
 		return markdownToHtml(markdown, htmlChangelogTop);

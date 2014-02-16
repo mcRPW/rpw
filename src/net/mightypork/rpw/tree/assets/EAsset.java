@@ -150,13 +150,16 @@ public enum EAsset {
 
 		return forExtension(FileUtils.getExtension(file));
 	}
-	
+
+
 	/**
 	 * Get filter for file chooser
+	 * 
 	 * @return filter
 	 */
 	public FileChooserFilter getFilter() {
-		switch(this) {
+
+		switch (this) {
 			case CFG:
 			case PROPERTIES:
 			case INI:

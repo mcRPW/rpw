@@ -3,12 +3,12 @@ package net.mightypork.rpw.gui.widgets;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import net.mightypork.rpw.Config.FilePath;
@@ -16,9 +16,6 @@ import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.FileChooser.FileChooserFilter;
-import net.mightypork.rpw.utils.Utils;
-
-import org.jdesktop.swingx.JXLabel;
 
 
 /**
@@ -32,8 +29,9 @@ public class FileInput extends HBox {
 	private JButton buttonPickFile;
 
 	private FileChooser fc = null;
-	private JXLabel importUrl;
+	private JTextField importUrl;
 	private FilePickListener filePickListener;
+	private boolean mustExist;
 
 
 	/**
@@ -44,20 +42,23 @@ public class FileInput extends HBox {
 	 * @param placeholder field placeholder (shown before file is chosen)
 	 * @param pathEnum path slot (for saving to config)s
 	 * @param title filechooser dialog title
-	 * @param filter file filter
+	 * @param filter file filter (there are constants for it on FileChooser)
+	 * @param mustExist true if the file is required to exist
 	 */
-	public FileInput(Component parent, String placeholder, FilePath pathEnum, String title, FileChooserFilter filter) {
+	public FileInput(Component parent, String placeholder, FilePath pathEnum, String title, FileChooserFilter filter, boolean mustExist) {
 
-		importUrl = new JXLabel(placeholder);
-		importUrl.setToolTipText(placeholder);
-		importUrl.setForeground(new Color(0x111111));
-		importUrl.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+		this.mustExist = mustExist;
+
+		importUrl = Gui.textField("", placeholder);
+		importUrl.setEditable(false);
+		Gui.readonly(importUrl, true);
+		importUrl.setForeground(new Color(0x222222));
 		importUrl.setHorizontalAlignment(SwingConstants.LEFT);
 		Gui.setPrefWidth(importUrl, 250);
 
 		buttonPickFile = new JButton(Icons.MENU_OPEN);
 		buttonPickFile.setToolTipText("Browse");
-		
+
 		buttonPickFile.addActionListener(new ActionListener() {
 
 			@Override
@@ -70,13 +71,11 @@ public class FileInput extends HBox {
 
 					if (f == null) return;
 
-					FileInput.this.file = f;
-					
-					String path = file.getPath();
-					int length = 26;
-					path = Utils.cropStringAtStart(path, length);
+					if (FileInput.this.mustExist && !f.exists()) return; // doesn't exist
 
-					importUrl.setText(path);
+					FileInput.this.file = f;
+
+					importUrl.setText(file.getPath());
 
 					if (FileInput.this.filePickListener != null) {
 						FileInput.this.filePickListener.onFileSelected(f);
@@ -130,6 +129,12 @@ public class FileInput extends HBox {
 	public File getFile() {
 
 		return file;
+	}
+
+
+	public boolean hasFile() {
+
+		return file != null && (!mustExist || file.exists());
 	}
 
 	public static interface FilePickListener {

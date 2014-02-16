@@ -27,7 +27,7 @@ public class FileChooser {
 	private static final int CANCEL = JFileChooser.CANCEL_OPTION;
 	private static final int APPROVE = JFileChooser.APPROVE_OPTION;
 	private static final int ERROR = JFileChooser.ERROR_OPTION;
-	
+
 	public static final FileChooserFilter ZIP = new FileChooserFilter("ZIP archives", "zip");
 	public static final FileChooserFilter ZIP_JAR = new FileChooserFilter("ZIP, JAR archives", "zip,jar");
 	public static final FileChooserFilter PNG = new FileChooserFilter("PNG images", "png");
@@ -59,7 +59,7 @@ public class FileChooser {
 		fc.setCurrentDirectory(new File(pathEnum.getPath()));
 		fc.setDialogTitle(title);
 
-		if(filter != null) {
+		if (filter != null) {
 			fc.setAcceptAllFileFilterUsed(false);
 			fc.setFileFilter(filter);
 		}
@@ -177,34 +177,39 @@ public class FileChooser {
 
 		return fc.getCurrentDirectory();
 	}
-	
+
+
 	protected Component getParent() {
+
 		return parent;
 	}
-	
+
 	public static class FileChooserFilter extends FileFilter {
-		
+
 		private FileSuffixFilter fsf;
 		private String name;
 
+
 		public FileChooserFilter(String name, String suffixes) {
+
 			this.name = name;
 			this.fsf = new FileSuffixFilter(suffixes.split(","));
 		}
-		
+
 
 		@Override
 		public boolean accept(File f) {
 
 			if (f.isDirectory()) return true;
-			return fsf.accept(f);			
+			return fsf.accept(f);
 		}
+
 
 		@Override
 		public String getDescription() {
 
 			return name;
 		}
-		
+
 	}
 }

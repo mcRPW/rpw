@@ -97,7 +97,8 @@ public class DialogNewProject extends RpwDialog {
 					"Select pack file...",
 					FilePath.IMPORT_PACK,
 					"Select pack to import as project",
-					FileChooser.ZIP
+					FileChooser.ZIP,
+					true
 				)
 			);
 			
@@ -174,9 +175,8 @@ public class DialogNewProject extends RpwDialog {
 	protected void initGui() {
 
 		enableFilePicker(false);
-		
-		
-		
+
+
 	}
 
 
@@ -227,9 +227,9 @@ public class DialogNewProject extends RpwDialog {
 				}
 			}
 		});
-		
+
 		filepicker.setListener(new FilePickListener() {
-			
+
 			@Override
 			public void onFileSelected(File f) {
 
@@ -242,7 +242,7 @@ public class DialogNewProject extends RpwDialog {
 						}
 					} catch (Throwable t) {}
 				}
-				
+
 			}
 		});
 	}
@@ -251,8 +251,7 @@ public class DialogNewProject extends RpwDialog {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			final File file = filepicker.getFile();
+
 
 			String name = nameField.getText();
 			if (name == null) name = "";
@@ -272,19 +271,20 @@ public class DialogNewProject extends RpwDialog {
 				return;
 			}
 
-			if (usePackFile && (file == null || !file.exists())) {
-				Alerts.error(self(), "No file selected", "Missing pack file to import!");
+			if (usePackFile && !filepicker.hasFile()) {
+				Alerts.error(self(), "Missing file", "The selected file does not exist.");
 				return;
 			}
 
 			if (projectNames.contains(name)) {
 				Alerts.error(self(), "Name already used", "Project named \"" + name + "\" already exists!");
 				return;
-			} 
+			}
 
-			
+			final File file = filepicker.getFile();
+
 			// create the project
-		
+
 			final String projname = name;
 
 			final String projtitle = (usePackFile && ckKeepTitle.isSelected()) ? "" : title;

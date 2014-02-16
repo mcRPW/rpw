@@ -214,23 +214,23 @@ public class Utils {
 		for (Object o : something) {
 			if (o == null) continue;
 			try {
-				
-				if(o instanceof Closeable) {
-					((Closeable)o).close();
+
+				if (o instanceof Closeable) {
+					((Closeable) o).close();
 					continue;
 				}
-				
-				if(o instanceof ZipFile) {
-					((ZipFile)o).close();
+
+				if (o instanceof ZipFile) {
+					((ZipFile) o).close();
 					continue;
 				}
-				
+
 				Method m = o.getClass().getMethod("close");
 				m.setAccessible(true);
 				m.invoke(o);
-				
+
 			} catch (Exception e) {
-				Log.e("Could not close " + o.getClass().getSimpleName()+": "+ e.getMessage());
+				Log.e("Could not close " + o.getClass().getSimpleName() + ": " + e.getMessage());
 			}
 		}
 	}
