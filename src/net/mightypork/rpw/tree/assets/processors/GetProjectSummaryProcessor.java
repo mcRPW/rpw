@@ -15,42 +15,39 @@ import net.mightypork.rpw.utils.Utils;
 
 
 public class GetProjectSummaryProcessor implements AssetTreeProcessor {
-
-	private Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
-
-	private Map<String, String> summary = new LinkedHashMap<String, String>();
-
-
+	
+	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
+	
+	private final Map<String, String> summary = new LinkedHashMap<String, String>();
+	
+	
 	public GetProjectSummaryProcessor() {
-
 	}
-
-
+	
+	
 	@Override
-	public void process(AssetTreeNode node) {
-
+	public void process(AssetTreeNode node)
+	{
 		if (processed.contains(node)) return; // no double-processing
 		processed.add(node);
-
+		
 		if (node instanceof AssetTreeGroup) {
-
 			return; // we want leafs
-
+			
 		} else if (node instanceof AssetTreeLeaf) {
-
-			AssetTreeLeaf leaf = (AssetTreeLeaf) node;
-
-			String src = leaf.resolveAssetSource();
-
+			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+			
+			final String src = leaf.resolveAssetSource();
+			
 			if (!MagicSources.isVanilla(src) && !MagicSources.isInherit(src)) {
 				summary.put(leaf.getAssetKey(), src);
 			}
 		}
 	}
-
-
-	public Map<String, String> getSummary() {
-
+	
+	
+	public Map<String, String> getSummary()
+	{
 		return Utils.sortByKeys(summary);
 	}
 }

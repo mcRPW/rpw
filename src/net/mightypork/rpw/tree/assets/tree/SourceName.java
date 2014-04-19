@@ -2,20 +2,19 @@ package net.mightypork.rpw.tree.assets.tree;
 
 
 public class SourceName {
-
-	private String s;
-
-
+	
+	private final String s;
+	
+	
 	public SourceName(String s) {
-
 		this.s = s;
 	}
-
-
+	
+	
 	@Override
-	public String toString() {
-
+	public String toString()
+	{
 		return s;
 	}
-
+	
 }

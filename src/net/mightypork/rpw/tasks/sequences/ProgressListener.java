@@ -7,7 +7,7 @@ package net.mightypork.rpw.tasks.sequences;
  * @author MightyPork
  */
 public interface ProgressListener {
-
+	
 	/**
 	 * Called before step is executed
 	 * 

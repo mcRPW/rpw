@@ -7,31 +7,30 @@ import net.mightypork.rpw.tree.assets.AssetEntry;
 
 
 public class FolderSource extends Source {
-
-	private File folder;
-
-
+	
+	private final File folder;
+	
+	
 	public FolderSource(File base) {
-
 		folder = base;
 	}
-
-
+	
+	
 	@Override
-	public File getAssetFile(String key) {
-
-		AssetEntry ae = Sources.vanilla.getAssetForKey(key);
-		File file = new File(folder, ae.getPath());
-
+	public File getAssetFile(String key)
+	{
+		final AssetEntry ae = Sources.vanilla.getAssetForKey(key);
+		final File file = new File(folder, ae.getPath());
+		
 		if (!file.exists()) return null;
 		return file;
 	}
-
-
+	
+	
 	@Override
-	public File getAssetsDirectory() {
-
+	public File getAssetsDirectory()
+	{
 		return folder;
 	}
-
+	
 }

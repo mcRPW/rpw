@@ -11,46 +11,46 @@ import java.awt.event.MouseListener;
  * @author MightyPork
  */
 public abstract class PopupTriggerListener implements MouseListener {
-
+	
 	@Override
-	public final void mouseClicked(MouseEvent e) {
-
+	public final void mouseClicked(MouseEvent e)
+	{
 		if (e.isPopupTrigger()) {
 			onPopupTrigger(e);
 		}
 	}
-
-
+	
+	
 	public abstract void onPopupTrigger(MouseEvent e);
-
-
+	
+	
 	@Override
-	public final void mousePressed(MouseEvent e) {
-
+	public final void mousePressed(MouseEvent e)
+	{
 		if (e.isPopupTrigger()) {
 			onPopupTrigger(e);
 		}
 	}
-
-
+	
+	
 	@Override
-	public final void mouseReleased(MouseEvent e) {
-
+	public final void mouseReleased(MouseEvent e)
+	{
 		if (e.isPopupTrigger()) {
 			onPopupTrigger(e);
 		}
 	}
-
-
+	
+	
 	@Override
-	public final void mouseEntered(MouseEvent e) {
-
+	public final void mouseEntered(MouseEvent e)
+	{
 	}
-
-
+	
+	
 	@Override
-	public final void mouseExited(MouseEvent e) {
-
+	public final void mouseExited(MouseEvent e)
+	{
 	}
-
+	
 }

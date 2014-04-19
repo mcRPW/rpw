@@ -21,78 +21,74 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TreeBuilder {
-
+	
 	public static GroupFilter DELETE_FONT = new GroupFilter(null, "assets.minecraft.textures.font.unicode_*");
-
-	private Map<String, AssetTreeGroup> groups = new HashMap<String, AssetTreeGroup>();
+	
+	private final Map<String, AssetTreeGroup> groups = new HashMap<String, AssetTreeGroup>();
 	private AssetTreeGroup rootGroup = null;
-
+	
 	private boolean fullTree = false;
 	private boolean ignoreOrphans = false;
-
-
+	
+	
 	public TreeBuilder() {
-
 	}
-
-
+	
+	
 	/**
 	 * Build complete tree (override settings)
 	 * 
 	 * @param project project to build from
 	 * @return tree root
 	 */
-	public AssetTreeGroup buildTreeForExport(NodeSourceProvider project) {
-
+	public AssetTreeGroup buildTreeForExport(NodeSourceProvider project)
+	{
 		this.fullTree = true;
 		this.ignoreOrphans = true;
-
+		
 		return buildTree(project);
 	}
-
-
-	public AssetTreeGroup buildTree(NodeSourceProvider project) {
-
+	
+	
+	public AssetTreeGroup buildTree(NodeSourceProvider project)
+	{
 		groups.clear();
 		rootGroup = new AssetTreeGroup(null, null, MagicSources.VANILLA);
-
-		AssetGrouper grouper = (Config.FANCY_TREE ? new AssetGrouperFancy() : new AssetGrouperRaw());
-
+		
+		final AssetGrouper grouper = (Config.FANCY_TREE ? new AssetGrouperFancy() : new AssetGrouperRaw());
+		
 		// build group structure
-		for (GroupInfo gi : grouper.groups) {
-			String groupKey = gi.getKey();
-			String label = gi.getLabel();
-			String source = project.getSourceForGroup(groupKey);
-			String parent = gi.getParent();
-
-			AssetTreeGroup group = new AssetTreeGroup(groupKey, label, source);
-
+		for (final GroupInfo gi : grouper.groups) {
+			final String groupKey = gi.getKey();
+			final String label = gi.getLabel();
+			final String source = project.getSourceForGroup(groupKey);
+			final String parent = gi.getParent();
+			
+			final AssetTreeGroup group = new AssetTreeGroup(groupKey, label, source);
+			
 			if (parent == null) {
 				rootGroup.addChild(group);
 			} else {
-				AssetTreeGroup parentGroup = groups.get(parent);
-
+				final AssetTreeGroup parentGroup = groups.get(parent);
+				
 				if (parentGroup == null) {
 					Log.w("Missing parent group for group " + groupKey + "\n\t" + parent);
 				} else {
 					parentGroup.addChild(group);
 				}
 			}
-
+			
 			groups.put(groupKey, group);
 		}
-
-
+		
 		boolean orphans = false;
-
-		for (AssetEntry ae : Sources.vanilla.getAssetEntries()) {
-
+		
+		for (final AssetEntry ae : Sources.vanilla.getAssetEntries()) {
 			if (!fullTree) {
-
 				if (!Config.SHOW_FONT) {
 					if (DELETE_FONT.matches(ae)) continue; // skip fonts				
 				}
-
+				
 				if (!Config.SHOW_OBSOLETE_DIRS) {
 					boolean del = false;
 					if (ae.getKey().startsWith("assets.minecraft.sound") && !ae.getKey().startsWith("assets.minecraft.sounds")) del = true; // sound dir
@@ -103,51 +99,51 @@ public class TreeBuilder {
 						continue;
 					}
 				}
-
+				
 				if (!Config.SHOW_LANG) {
 					if (ae.getType() == EAsset.LANG) continue; // skip lang files				
 				}
-
+				
 			}
-
+			
 			boolean success = false;
-			for (GroupFilter gf : grouper.filters) {
+			for (final GroupFilter gf : grouper.filters) {
 				if (gf.matches(ae)) {
 					if (gf.getGroupKey() == null) {
 						// "delete" filter
 						success = true;
 						break;
 					}
-
-					AssetTreeGroup group = groups.get(gf.getGroupKey());
-
-					String source = project.getSourceForFile(ae.getKey());
-
+					
+					final AssetTreeGroup group = groups.get(gf.getGroupKey());
+					
+					final String source = project.getSourceForFile(ae.getKey());
+					
 					if (group == null) {
 						Log.w("Missing parent group for file " + ae + "\n\t" + gf.getGroupKey());
 					} else {
 						group.addChild(new AssetTreeLeaf(ae, source));
 						success = true;
 					}
-
+					
 					break;
 				}
 			}
-
+			
 			if (success == false) {
 				Log.e("Orphaned file " + ae);
 				orphans = true;
 			}
-
+			
 		}
-
+		
 		if (rootGroup == null) {
 			Log.e("MISSING ROOT GROUP!");
 		}
-
+		
 		if (!ignoreOrphans && Config.FANCY_TREE && orphans && Config.WARNING_ORPHANED_NODES) {
 			//@formatter:off
-			boolean yeah = Alerts.askYesNo(
+			final boolean yeah = Alerts.askYesNo(
 					App.getFrame(),
 					"Orphaned nodes",
 					"Some asset files could not be shown, because\n" +
@@ -159,17 +155,16 @@ public class TreeBuilder {
 					"Disable Fancy Tree now?\n"
 			);
 			//@formatter:on
-
+			
 			if (yeah) {
 				Config.FANCY_TREE = false;
 				Config.save();
 				return buildTree(project); // RISC: Recursion
 			}
 		}
-
+		
 		return rootGroup;
-
+		
 	}
-
-
+	
 }

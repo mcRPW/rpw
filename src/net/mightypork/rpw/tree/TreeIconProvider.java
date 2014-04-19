@@ -9,18 +9,18 @@ import org.jdesktop.swingx.renderer.IconValue;
 
 
 public class TreeIconProvider implements IconValue {
-
+	
 	@Override
-	public Icon getIcon(Object object) {
-
+	public Icon getIcon(Object object)
+	{
 		if (!(object instanceof IFileTreeNode)) return null;
-
-		IFileTreeNode node = (IFileTreeNode) object;
-
+		
+		final IFileTreeNode node = (IFileTreeNode) object;
+		
 		if (node.isDirectory()) {
 			return Icons.TREE_FOLDER;
 		}
-
+		
 		if (node.isFile()) {
 			// from most specific to general
 			if (node.isImage()) return Icons.TREE_FILE_IMAGE;
@@ -29,8 +29,8 @@ public class TreeIconProvider implements IconValue {
 			if (node.isText()) return Icons.TREE_FILE_TEXT;
 			return Icons.TREE_FILE_GENERIC;
 		}
-
+		
 		return null;
 	}
-
+	
 }

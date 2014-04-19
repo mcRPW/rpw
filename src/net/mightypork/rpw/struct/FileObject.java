@@ -7,19 +7,18 @@ package net.mightypork.rpw.struct;
  * @author MightyPork
  */
 public class FileObject {
-
+	
 	public String hash;
 	public int size;
-
-
+	
+	
 	public FileObject() {
-
 	}
-
-
+	
+	
 	@Override
-	public String toString() {
-
+	public String toString()
+	{
 		return "Obj[hash: " + hash + ", size: " + size + "]";
 	}
 }

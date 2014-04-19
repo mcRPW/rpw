@@ -11,56 +11,56 @@ import net.mightypork.rpw.utils.files.FileUtils;
 
 
 public class SilenceSource implements ISource {
-
+	
 	@Override
-	public boolean doesProvideAsset(String key) {
-
-		AssetEntry ae = Sources.vanilla.getAssetForKey(key);
+	public boolean doesProvideAsset(String key)
+	{
+		final AssetEntry ae = Sources.vanilla.getAssetForKey(key);
 		return ae.getType() == EAsset.SOUND;
 	}
-
-
+	
+	
 	@Override
-	public InputStream getAssetStream(String key) throws IOException {
-
+	public InputStream getAssetStream(String key) throws IOException
+	{
 		if (!doesProvideAsset(key)) return null;
-
+		
 		return FileUtils.getResource("/data/export/silence.ogg");
 	}
-
-
+	
+	
 	@Override
-	public File getAssetFile(String key) {
-
+	public File getAssetFile(String key)
+	{
 		return null;
 	}
-
-
+	
+	
 	@Override
-	public File getAssetMetaFile(String key) {
-
+	public File getAssetMetaFile(String key)
+	{
 		return null;
 	}
-
-
+	
+	
 	@Override
-	public File getAssetsDirectory() {
-
+	public File getAssetsDirectory()
+	{
 		return null;
 	}
-
-
+	
+	
 	@Override
-	public InputStream getAssetMetaStream(String key) throws IOException {
-
+	public InputStream getAssetMetaStream(String key) throws IOException
+	{
 		return null;
 	}
-
-
+	
+	
 	@Override
-	public boolean doesProvideAssetMeta(String key) {
-
+	public boolean doesProvideAssetMeta(String key)
+	{
 		return false;
 	}
-
+	
 }

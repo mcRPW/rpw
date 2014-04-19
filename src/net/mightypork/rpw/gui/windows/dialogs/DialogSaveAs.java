@@ -21,97 +21,93 @@ import net.mightypork.rpw.tasks.Tasks;
 
 
 public class DialogSaveAs extends RpwDialog {
-
-	private List<String> projectNames;
-
+	
+	private final List<String> projectNames;
+	
 	private JTextField nameField;
 	private JButton buttonOK;
 	private JButton buttonCancel;
 	private JTextField titleField;
-
-
+	
+	
 	public DialogSaveAs() {
-
 		super(App.getFrame(), "Save As...");
-
+		
 		projectNames = Projects.getProjectNames();
-
+		
 		createDialog();
 	}
-
-
+	
+	
 	@Override
-	protected JComponent buildGui() {
-
-		VBox vb = new VBox();
+	protected JComponent buildGui()
+	{
+		final VBox vb = new VBox();
 		vb.windowPadding();
-
+		
 		vb.heading("Save Project As...");
-
+		
 		vb.titsep("New project settings");
 		vb.gap();
-
-
+		
 		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
 		nameField.addKeyListener(TextInputValidator.filenames());
-
+		
 		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
-
+		
 		vb.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField });
-
+		
 		vb.gapl();
-
-
+		
 		buttonOK = new JButton("Save", Icons.MENU_SAVE_AS);
 		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
 		vb.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
-
+		
 		return vb;
 	}
-
-
+	
+	
 	@Override
-	public void onClose() {
-
+	public void onClose()
+	{
 		// do nothing
 	}
-
-
+	
+	
 	@Override
-	protected void onShown() {
-
+	protected void onShown()
+	{
 		nameField.setText(Projects.getActive().getName());
 		titleField.setText(Projects.getActive().getTitle());
 	}
-
-
+	
+	
 	@Override
-	protected void addActions() {
-
+	protected void addActions()
+	{
 		setEnterButton(buttonOK);
-
+		
 		buttonOK.addActionListener(saveListener);
 		buttonCancel.addActionListener(closeListener);
 	}
-
-
-	private ActionListener saveListener = new ActionListener() {
-
+	
+	private final ActionListener saveListener = new ActionListener() {
+		
 		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			String name = nameField.getText().trim();
+		public void actionPerformed(ActionEvent e)
+		{
+			final String name = nameField.getText().trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid name", "Missing project name!");
 				return;
 			}
-
-			String title = titleField.getText().trim();
+			
+			final String title = titleField.getText().trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid title", "Missing project title!");
 				return;
 			}
-
+			
 			if (projectNames.contains(name)) {
 				Alerts.error(self(), "Invalid name", "Project named \"" + name + "\" already exists!");
 				return;
@@ -120,7 +116,7 @@ public class DialogSaveAs extends RpwDialog {
 				Tasks.taskSaveProjectAs(name, title);
 				closeDialog();
 			}
-
+			
 		}
 	};
 }

@@ -10,11 +10,11 @@ import net.mightypork.rpw.utils.logging.Log;
  * @author MightyPork
  */
 public abstract class AbstractSequence {
-
+	
 	/** Last executed step */
-	private int lastStep = -1;
-
-
+	private final int lastStep = -1;
+	
+	
 	/**
 	 * Perform a step
 	 * 
@@ -22,14 +22,14 @@ public abstract class AbstractSequence {
 	 * @return true if step succeeded, false on error
 	 */
 	protected abstract boolean step(int step);
-
-
+	
+	
 	/**
 	 * @return number of sequence steps
 	 */
 	public abstract int getStepCount();
-
-
+	
+	
 	/**
 	 * Get name of a step
 	 * 
@@ -37,22 +37,22 @@ public abstract class AbstractSequence {
 	 * @return name (eg. "Creating thumbnails")
 	 */
 	public abstract String getStepName(int step);
-
-
+	
+	
 	/**
 	 * Stuff to be executed before the first step
 	 */
 	protected abstract void before();
-
-
+	
+	
 	/**
 	 * Stuff to be executed before calling given step
 	 * 
 	 * @param index step ID
 	 */
 	protected abstract void beforeStep(int index);
-
-
+	
+	
 	/**
 	 * Stuff to be executed at the end of sequence
 	 * 
@@ -60,13 +60,13 @@ public abstract class AbstractSequence {
 	 *            cleanup is to be done
 	 */
 	protected abstract void after(boolean success);
-
-
+	
+	
 	/**
 	 * Run all steps
 	 */
-	public void run() {
-
+	public void run()
+	{
 		for (int i = 0; i < getStepCount(); i++) {
 			if (!run(i)) {
 				Log.w("Sequence failed at step #" + i + ": " + getStepName(i));
@@ -74,8 +74,8 @@ public abstract class AbstractSequence {
 			}
 		}
 	}
-
-
+	
+	
 	/**
 	 * Run a step, call before() and after() where appropriate.
 	 * 
@@ -83,43 +83,43 @@ public abstract class AbstractSequence {
 	 * @return true if step was executed successfully, false if the step does
 	 *         not exist or an error occurred.
 	 */
-	public boolean run(int step) {
-
-		int count = getStepCount();
-
+	public boolean run(int step)
+	{
+		final int count = getStepCount();
+		
 		if (step <= lastStep) {
 			return true; // already executed
 		}
-
+		
 		if (step < 0 || step >= count) {
 			return false;
 		}
-
+		
 		if (step == 0) before();
-
+		
 		beforeStep(step);
-		boolean success = step(step);
-
+		final boolean success = step(step);
+		
 		if (step == getStepCount() - 1 || !success) after(success);
-
+		
 		return success;
 	}
-
-
+	
+	
 	/**
 	 * Run in thread (experimental)
 	 */
-	public void runAsync() {
-
+	public void runAsync()
+	{
 		(new Thread(new Runnable() {
-
+			
 			@Override
-			public void run() {
-
+			public void run()
+			{
 				AbstractSequence.this.run();
-
+				
 			}
 		})).start();
-
+		
 	}
 }

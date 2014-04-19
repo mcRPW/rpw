@@ -14,10 +14,9 @@ import net.mightypork.rpw.gui.widgets.VBox;
 */
 
 public class TaskDevel {
-
-	public static void run() {
-
-
+	
+	public static void run()
+	{
 		/*
 		VBox vb = new VBox();
 		

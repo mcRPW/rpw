@@ -15,22 +15,21 @@ import net.mightypork.rpw.tree.assets.AssetEntry;
  * @author MightyPork
  */
 public abstract class Source implements ISource {
-
-
+	
 	@Override
-	public boolean doesProvideAsset(String key) {
-
+	public boolean doesProvideAsset(String key)
+	{
 		return getAssetFile(key) != null;
 	}
-
-
+	
+	
 	@Override
-	public boolean doesProvideAssetMeta(String key) {
-
+	public boolean doesProvideAssetMeta(String key)
+	{
 		return getAssetMetaFile(key) != null;
 	}
-
-
+	
+	
 	/**
 	 * Get provided asset as stream
 	 * 
@@ -39,15 +38,15 @@ public abstract class Source implements ISource {
 	 * @throws IOException on error
 	 */
 	@Override
-	public InputStream getAssetStream(String key) throws IOException {
-
-		File f = getAssetFile(key);
+	public InputStream getAssetStream(String key) throws IOException
+	{
+		final File f = getAssetFile(key);
 		if (f == null) return null;
-
+		
 		return new FileInputStream(f);
 	}
-
-
+	
+	
 	/**
 	 * Get provided asset as file
 	 * 
@@ -55,38 +54,38 @@ public abstract class Source implements ISource {
 	 * @return the file of the asset, or null if (not provided or not exists)
 	 */
 	@Override
-	public File getAssetFile(String key) {
-
+	public File getAssetFile(String key)
+	{
 		if (!doesProvideAsset(key)) return null;
-
-		AssetEntry asset = Sources.vanilla.getAssetForKey(key);
-
-		String path = asset.getPath();
-
-		File file = new File(getAssetsDirectory(), path);
-
+		
+		final AssetEntry asset = Sources.vanilla.getAssetForKey(key);
+		
+		final String path = asset.getPath();
+		
+		final File file = new File(getAssetsDirectory(), path);
+		
 		if (!file.exists()) return null;
-
+		
 		return file;
 	}
-
-
+	
+	
 	@Override
-	public File getAssetMetaFile(String key) {
-
-		File f = getAssetFile(key);
+	public File getAssetMetaFile(String key)
+	{
+		final File f = getAssetFile(key);
 		if (f == null) return null;
-
+		
 		String path = f.getPath();
 		path += ".mcmeta";
-
-		File metafile = new File(path);
+		
+		final File metafile = new File(path);
 		if (!metafile.exists()) return null;
-
+		
 		return metafile;
 	}
-
-
+	
+	
 	/**
 	 * Get source's base directory
 	 * 
@@ -94,20 +93,20 @@ public abstract class Source implements ISource {
 	 */
 	@Override
 	public abstract File getAssetsDirectory();
-
-
+	
+	
 	@Override
-	public InputStream getAssetMetaStream(String key) throws IOException {
-
+	public InputStream getAssetMetaStream(String key) throws IOException
+	{
 		File f = getAssetFile(key);
 		if (f == null) return null;
-
+		
 		String p = f.getPath();
 		p += ".mcmeta";
 		f = new File(p);
-
+		
 		if (!f.exists()) return null;
-
+		
 		return new FileInputStream(f);
 	}
 }

@@ -15,37 +15,36 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TaskImportReplacement {
-
-	public static void run(AssetEntry entry, Runnable afterImport) {
-
-		String title = "Replace " + entry.getLabel() + "." + entry.getType().getExtension();
-
-		FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_FILE, title, entry.getType().getFilter(), true, false, false);
-
+	
+	public static void run(AssetEntry entry, Runnable afterImport)
+	{
+		final String title = "Replace " + entry.getLabel() + "." + entry.getType().getExtension();
+		
+		final FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_FILE, title, entry.getType().getFilter(), true, false, false);
+		
 		fc.showDialog("Import");
 		if (!fc.approved()) {
 			return;
 		}
-
-		File f = fc.getSelectedFile();
-
+		
+		final File f = fc.getSelectedFile();
+		
 		if (f == null || !f.exists()) {
 			Log.w("Problem accessing file:\n" + f);
 			Alerts.error(App.getFrame(), "That's not a valid file.");
 			return;
 		}
-
+		
 		try {
-
-			File target = new File(Projects.getActive().getAssetsDirectory(), entry.getPath());
-
+			final File target = new File(Projects.getActive().getAssetsDirectory(), entry.getPath());
+			
 			target.getParentFile().mkdirs();
-
+			
 			FileUtils.copyFile(f, target);
-
+			
 			afterImport.run();
-
-		} catch (IOException e) {
+			
+		} catch (final IOException e) {
 			Log.e(e);
 			Alerts.error(App.getFrame(), "Something went wrong during import.");
 		}

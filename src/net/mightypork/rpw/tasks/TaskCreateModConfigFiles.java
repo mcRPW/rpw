@@ -11,28 +11,28 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TaskCreateModConfigFiles {
-
-	public static void run() {
-
-		File groups = OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS);
-		File filters = OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS);
-
+	
+	public static void run()
+	{
+		final File groups = OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS);
+		final File filters = OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS);
+		
 		if (!groups.exists()) {
 			try {
 				FileUtils.resourceToFile("/data/tree/groupsMod.txt", groups);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				Log.e(e);
 			}
 		}
-
+		
 		if (!filters.exists()) {
 			try {
 				FileUtils.resourceToFile("/data/tree/filtersMod.txt", filters);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				Log.e(e);
 			}
 		}
-
+		
 	}
-
+	
 }

@@ -8,29 +8,27 @@ import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 
 
 public class AssetTreeModel extends AbstractTreeTableModel {
-
-
+	
 	public AssetTreeModel(AssetTreeNode root) {
-
 		super(root);
 	}
-
-
+	
+	
 	@Override
-	public int getColumnCount() {
-
+	public int getColumnCount()
+	{
 		return 5;
 	}
-
-
+	
+	
 	@Override
-	public Object getValueAt(Object node, int column) {
-
+	public Object getValueAt(Object node, int column)
+	{
 		if (node == null) return null;
-
+		
 		if (node instanceof AssetTreeNode) {
-			AssetTreeNode atn = (AssetTreeNode) node;
-
+			final AssetTreeNode atn = (AssetTreeNode) node;
+			
 			switch (column) {
 				case 0:
 					return atn.getLabel();
@@ -52,60 +50,60 @@ public class AssetTreeModel extends AbstractTreeTableModel {
 					}
 			}
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	@Override
-	public Object getChild(Object parent, int index) {
-
+	public Object getChild(Object parent, int index)
+	{
 		if (parent == null) return null;
-
+		
 		if (parent instanceof AssetTreeNode) {
-			AssetTreeNode atn = (AssetTreeNode) parent;
-
+			final AssetTreeNode atn = (AssetTreeNode) parent;
+			
 			return atn.getChildAt(index);
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	@Override
-	public int getChildCount(Object parent) {
-
+	public int getChildCount(Object parent)
+	{
 		if (parent == null) return 0;
-
+		
 		if (parent instanceof AssetTreeNode) {
-			AssetTreeNode atn = (AssetTreeNode) parent;
-
+			final AssetTreeNode atn = (AssetTreeNode) parent;
+			
 			return atn.getChildCount();
 		}
-
+		
 		return 0;
 	}
-
-
+	
+	
 	@Override
-	public int getIndexOfChild(Object parent, Object child) {
-
+	public int getIndexOfChild(Object parent, Object child)
+	{
 		if (parent == null || child == null) return -1;
-
+		
 		if (parent instanceof AssetTreeNode && child instanceof AssetTreeNode) {
-			AssetTreeNode atn = (AssetTreeNode) parent;
-			AssetTreeNode childAtn = (AssetTreeNode) child;
-
+			final AssetTreeNode atn = (AssetTreeNode) parent;
+			final AssetTreeNode childAtn = (AssetTreeNode) child;
+			
 			return atn.getIndex(childAtn);
 		}
-
+		
 		return -1;
 	}
-
-
+	
+	
 	@Override
-	public Class<?> getColumnClass(int column) {
-
+	public Class<?> getColumnClass(int column)
+	{
 		switch (column) {
 			case 0:
 				return String.class;
@@ -121,11 +119,11 @@ public class AssetTreeModel extends AbstractTreeTableModel {
 				return super.getColumnClass(column);
 		}
 	}
-
-
+	
+	
 	@Override
-	public String getColumnName(int column) {
-
+	public String getColumnName(int column)
+	{
 		switch (column) {
 			case 0:
 				return "Resource File";
@@ -141,39 +139,39 @@ public class AssetTreeModel extends AbstractTreeTableModel {
 				return super.getColumnName(column);
 		}
 	}
-
-
-	public void setRoot(AssetTreeNode root) {
-
+	
+	
+	public void setRoot(AssetTreeNode root)
+	{
 		this.root = root;
-
+		
 		modelSupport.fireNewRoot();
 	}
-
-
+	
+	
 	@Override
-	public AssetTreeNode getRoot() {
-
+	public AssetTreeNode getRoot()
+	{
 		return (AssetTreeNode) this.root;
 	}
-
-
-	public void notifyNodeChanged(AssetTreeNode node) {
-
+	
+	
+	public void notifyNodeChanged(AssetTreeNode node)
+	{
 		modelSupport.firePathChanged(new TreePath(getPathToRoot(node)));
 	}
-
-
-	public TreeNode[] getPathToRoot(TreeNode aNode) {
-
+	
+	
+	public TreeNode[] getPathToRoot(TreeNode aNode)
+	{
 		return getPathToRoot(aNode, 0);
 	}
-
-
-	protected TreeNode[] getPathToRoot(TreeNode aNode, int depth) {
-
+	
+	
+	protected TreeNode[] getPathToRoot(TreeNode aNode, int depth)
+	{
 		TreeNode[] retNodes;
-
+		
 		if (aNode == null) {
 			if (depth == 0)
 				return null;

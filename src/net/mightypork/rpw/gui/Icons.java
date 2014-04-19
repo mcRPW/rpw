@@ -33,7 +33,7 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class Icons {
-
+	
 	public static ImageIcon MENU_NEW;
 	public static ImageIcon MENU_SAVE;
 	public static ImageIcon MENU_SAVE_AS;
@@ -76,7 +76,7 @@ public class Icons {
 	public static ImageIcon MENU_MCF;
 	public static ImageIcon MENU_PMC;
 	public static ImageIcon MENU_DOWNLOAD;
-
+	
 	public static ImageIcon TREE_CLOSE;
 	public static ImageIcon TREE_OPEN;
 	public static ImageIcon TREE_FOLDER;
@@ -86,7 +86,7 @@ public class Icons {
 	public static ImageIcon TREE_FILE_SHADER;
 	public static ImageIcon TREE_FILE_JSON;
 	public static ImageIcon TREE_FILE_GENERIC;
-
+	
 	public static ImageIcon LOADING;
 	public static ImageIcon MENU_YES;
 	public static ImageIcon ABOUT;
@@ -95,28 +95,26 @@ public class Icons {
 	public static ImageIcon MENU_TWITTER;
 	public static ImageIcon WINDOW;
 	public static ImageIcon AUDIO;
-
-
+	
 	public static ImageIcon DIALOG_ERROR;
 	public static ImageIcon DIALOG_INFORMATION;
 	public static ImageIcon DIALOG_QUESTION;
 	public static ImageIcon DIALOG_WARNING;
-
+	
 	private static ImageIcon IMAGE_ERROR_16;
 	private static ImageIcon IMAGE_ERROR_32;
 	private static ImageIcon IMAGE_ERROR_64;
 	private static ImageIcon IMAGE_ERROR_128;
-
-
+	
 	private static ImageIcon IMAGE_NOT_FOUND;
-
-
-	public static void init() {
-
+	
+	
+	public static void init()
+	{
 		Log.f2("Loading GUI icons");
-
-		String imgPath = Paths.DATA_DIR_IMAGES;
-
+		
+		final String imgPath = Paths.DATA_DIR_IMAGES;
+		
 		//@formatter:off
 		IMAGE_ERROR_16		= loadImage(imgPath + "image-error-16.png");
 		IMAGE_ERROR_32		= loadImage(imgPath + "image-error-32.png");
@@ -209,68 +207,61 @@ public class Icons {
 		
 		IMAGE_NOT_FOUND		= IMAGE_ERROR_128;
 		//@formatter:on
-
+		
 		Log.f2("Loading GUI icons - done.");
 	}
-
-
-	private static ImageIcon loadImage(String path) {
-
+	
+	
+	private static ImageIcon loadImage(String path)
+	{
 		BufferedImage bi = null;
-
+		
 		InputStream in = null;
 		try {
-
 			in = FileUtils.getResource(path);
 			bi = ImageIO.read(in);
 			return new ImageIcon(bi);
-
-		} catch (Exception e) {
+			
+		} catch (final Exception e) {
 			Log.e("Failed loading image " + path, e);
 			return IMAGE_NOT_FOUND;
 		} finally {
-
 			Utils.close(in);
 		}
-
+		
 	}
-
-
+	
 	private static class MyResizer extends AbstractResizer {
-
+		
 		public MyResizer() {
-
 			this(Collections.<RenderingHints.Key, Object> emptyMap());
 		}
-
-
+		
+		
 		public MyResizer(Map<RenderingHints.Key, Object> hints) {
-
 			super(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR, hints);
 		}
 	}
-
-
-	public static ImageIcon getIconFromStream(InputStream in, Dimension size) {
-
+	
+	
+	public static ImageIcon getIconFromStream(InputStream in, Dimension size)
+	{
 		Image i = null;
 		BufferedImage orig = null;
 		try {
-
 			orig = ImageIO.read(in);
 			if (size != null) {
-
-				ImageSource<BufferedImage> src = new BufferedImageSource(orig);
-				ImageSink<BufferedImage> out = new BufferedImageSink();
-
+				final ImageSource<BufferedImage> src = new BufferedImageSource(orig);
+				final ImageSink<BufferedImage> out = new BufferedImageSink();
+				
 				Region r = null;
-
+				
 				if (orig.getHeight() > orig.getWidth() * 8) {
 					r = new Region(Positions.TOP_LEFT, new AbsoluteSize(orig.getWidth(), orig.getWidth()));
 				}
-
+				
 				//@formatter:off
-				ThumbnailParameter p = new ThumbnailParameter(
+				final ThumbnailParameter p = new ThumbnailParameter(
 						size,
 						r,
 						true,
@@ -284,36 +275,36 @@ public class Icons {
 						false
 				);
 				//@formatter:on
-
-				ThumbnailTask<BufferedImage, BufferedImage> task = new SourceSinkThumbnailTask<BufferedImage, BufferedImage>(p, src, out);
-
+				
+				final ThumbnailTask<BufferedImage, BufferedImage> task = new SourceSinkThumbnailTask<BufferedImage, BufferedImage>(p, src, out);
+				
 				Thumbnailator.createThumbnail(task);
-
+				
 				i = out.getSink();
 			} else {
 				i = orig;
 			}
-
-			ImageIcon ic = new ImageIcon(i);
-
+			
+			final ImageIcon ic = new ImageIcon(i);
+			
 			ic.setDescription(orig.getWidth() + "x" + orig.getHeight());
-
+			
 			return ic;
-
-		} catch (Exception e) {
+			
+		} catch (final Exception e) {
 			Log.e("Failed loading icon.", e);
 			return IMAGE_NOT_FOUND;
 		} finally {
 			Utils.close(in);
 		}
 	}
-
-
-	public static ImageIcon getIconFromFile(File file, Dimension size) {
-
+	
+	
+	public static ImageIcon getIconFromFile(File file, Dimension size)
+	{
 		try {
 			return getIconFromStream(new FileInputStream(file), size);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Log.e("Failed loading icon " + file, e);
 			return IMAGE_NOT_FOUND;
 		}

@@ -12,59 +12,58 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class DialogRuntimeLog extends DialogTerminalBase {
-
+	
 	private JButton btnClose;
-
-
+	
+	
 	public DialogRuntimeLog() {
-
 		super(App.getFrame(), "Runtime log");
-
+		
 		createDialog();
 	}
-
-
+	
+	
 	@Override
-	protected void addActions() {
-
+	protected void addActions()
+	{
 		btnClose.addActionListener(closeListener);
 	}
-
-
+	
+	
 	@Override
-	protected String getHeadingText() {
-
+	protected String getHeadingText()
+	{
 		return "Runtime Log";
 	}
-
-
+	
+	
 	@Override
-	protected String getLogText() {
-
+	protected String getLogText()
+	{
 		String txt = "Not found.";
-
+		
 		try {
 			txt = FileUtils.fileToString(OsUtils.getAppDir(Paths.FILE_LOG));
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			Log.e("Error getting log.", e);
 		}
 		return txt;
 	}
-
-
+	
+	
 	@Override
-	protected boolean hasButtons() {
-
+	protected boolean hasButtons()
+	{
 		return true;
 	}
-
-
+	
+	
 	@Override
-	protected JButton[] makeButtons() {
-
+	protected JButton[] makeButtons()
+	{
 		btnClose = new JButton("Close", Icons.MENU_EXIT);
-
+		
 		return new JButton[] { btnClose };
 	}
-
+	
 }

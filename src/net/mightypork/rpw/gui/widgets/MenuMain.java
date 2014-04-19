@@ -24,9 +24,9 @@ import net.mightypork.rpw.tasks.Tasks;
 
 
 public class MenuMain {
-
+	
 	public JMenuBar menuBar;
-
+	
 	private JMenuItem itemProjectNew;
 	private JMenuItem itemProjectOpen;
 	private JMenuItem itemProjectSave;
@@ -40,18 +40,18 @@ public class MenuMain {
 	private JMenuItem itemProjectClose;
 	private JMenuItem itemProjectOpenFolder;
 	private JMenuItem itemCustomSounds;
-
+	
 	private JMenuItem itemLibraryManage;
 	private JMenuItem itemLibraryRefreshVanilla;
 	private JMenuItem itemLibraryManageModGroups;
 	private JMenuItem itemLibraryManageModFilters;
 	private JMenuItem itemLibraryRefreshSources;
 	private JMenuItem itemLibraryImport;
-
+	
 	private JMenuItem itemTreeCollapseAll;
 	private JMenuItem itemTreeExpandAll;
 	private JMenuItem itemTreeRefreshTree;
-
+	
 	private JCheckBoxMenuItem itemOptionFancyTree;
 	private JCheckBoxMenuItem itemOptionLangFiles;
 	private JCheckBoxMenuItem itemOptionFontFiles;
@@ -61,17 +61,16 @@ public class MenuMain {
 	private JCheckBoxMenuItem itemOptionObsoleteDirs;
 	private JCheckBoxMenuItem itemUseNimbusTheme;
 	private JMenuItem itemConfigureEditors;
-
+	
 	private JMenuItem itemHelp;
 	private JMenuItem itemRuntimeLog;
 	private JMenuItem itemAbout;
-
-
+	
 	@SuppressWarnings("unused")
 	private JMenu menuProject;
 	@SuppressWarnings("unused")
 	private JMenu menuLibrary;
-	private JMenu menuRecentProjects;
+	private final JMenu menuRecentProjects;
 	private JMenu menuView;
 	@SuppressWarnings("unused")
 	private JMenu menuOptions;
@@ -79,14 +78,13 @@ public class MenuMain {
 	private JMenu menuHelp;
 	@SuppressWarnings("unused")
 	private JMenu menuTools;
-
-
+	
+	
 	public MenuMain() {
-
 		menuBar = new JMenuBar();
 		JMenu menu, menu2;
 		JCheckBoxMenuItem ckitem;
-
+		
 		//@formatter:off
 		menu = menuProject = new JMenu("Project");
 		menu.setMnemonic(KeyEvent.VK_P);
@@ -375,308 +373,301 @@ public class MenuMain {
 		
 		menuBar.add(menu);
 		//@formatter:on
-
+		
 		addActions();
-
+		
 		updateOptionCheckboxes();
 	}
-
-
-	public void addActions() {
-
+	
+	
+	public void addActions()
+	{
 		itemProjectNew.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskNewProject();
 			}
 		});
-
+		
 		itemProjectOpen.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskOpenProject();
 			}
 		});
-
-
+		
 		itemExit.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskExit();
 			}
 		});
-
-
+		
 		itemTreeCollapseAll.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskTreeCollapse();
 			}
 		});
-
-
+		
 		itemTreeExpandAll.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskTreeExpand();
 			}
 		});
-
-
+		
 		itemLibraryRefreshVanilla.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskStoreProjectChanges();
 				Tasks.taskReloadVanilla();
 			}
 		});
-
+		
 		itemLibraryRefreshSources.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskStoreProjectChanges();
 				Tasks.taskReloadSources(new Runnable() {
-
+					
 					@Override
-					public void run() {
-
+					public void run()
+					{
 						Alerts.info(App.getFrame(), "Library reloaded.");
 					}
 				});
 			}
 		});
-
+		
 		itemProjectSave.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskSaveProject(null);
 			}
 		});
-
+		
 		itemProjectExport.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogExportProject();
 			}
 		});
-
+		
 		itemProjectExportMc.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogExportToMc();
 			}
 		});
-
+		
 		itemProjectClose.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskCloseProject();
 			}
 		});
-
+		
 		itemManageMcPacks.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogManageMcPacks();
 			}
 		});
-
+		
 		itemProjectSaveAs.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogSaveAs();
 			}
 		});
-
+		
 		itemProjectSetup.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogProjectProperties();
 			}
 		});
-
+		
 		itemProjectSummary.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogProjectSummary();
 			}
 		});
-
+		
 		itemAbout.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogAbout();
 			}
 		});
-
+		
 		itemRuntimeLog.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogLog();
 			}
 		});
-
+		
 		itemLibraryManageModFilters.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskEditModFilters();
 			}
 		});
-
-
+		
 		itemLibraryManageModGroups.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskEditModGroups();
 			}
 		});
-
+		
 		itemLibraryImport.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogImportPack();
 			}
 		});
-
+		
 		itemLibraryManage.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogManageLibrary();
 			}
 		});
-
+		
 		itemHelp.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogHelp();
 			}
 		});
-
-
+		
 		itemTreeRefreshTree.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskTreeSaveAndRebuild();
 			}
 		});
-
+		
 		itemOptionFancyTree.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				boolean newOpt = itemOptionFancyTree.isSelected();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionFancyTree.isSelected();
+				
 				if (Config.FANCY_TREE != newOpt) {
 					Config.FANCY_TREE = newOpt;
 					Config.save();
 					Tasks.taskTreeSaveAndRebuild();
 					updateEnabledItems();
 				}
-
+				
 			}
 		});
-
+		
 		itemOptionWarningOrphanedNodes.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				boolean newOpt = itemOptionWarningOrphanedNodes.isSelected();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionWarningOrphanedNodes.isSelected();
+				
 				if (Config.WARNING_ORPHANED_NODES != newOpt) {
 					Config.WARNING_ORPHANED_NODES = newOpt;
 					Config.save();
 				}
-
+				
 			}
 		});
-
+		
 		itemOptionObsoleteDirs.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				boolean newOpt = itemOptionObsoleteDirs.isSelected();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionObsoleteDirs.isSelected();
+				
 				if (Config.SHOW_OBSOLETE_DIRS != newOpt) {
 					Config.SHOW_OBSOLETE_DIRS = newOpt;
 					Config.save();
 					Tasks.taskTreeSaveAndRebuild();
 				}
-
+				
 			}
 		});
-
+		
 		itemOptionPreviewHover.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				boolean newOpt = itemOptionPreviewHover.isSelected();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionPreviewHover.isSelected();
+				
 				if (Config.PREVIEW_HOVER != newOpt) {
 					Config.PREVIEW_HOVER = newOpt;
 					Config.save();
 				}
-
+				
 			}
 		});
-
-
+		
 		itemOptionFontFiles.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				boolean newOpt = itemOptionFontFiles.isSelected();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionFontFiles.isSelected();
+				
 				if (Config.SHOW_FONT != newOpt) {
 					Config.SHOW_FONT = newOpt;
 					Config.save();
@@ -684,44 +675,42 @@ public class MenuMain {
 				}
 			}
 		});
-
-
+		
 		itemOptionHiddenFiles.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				boolean newOpt = itemOptionHiddenFiles.isSelected();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionHiddenFiles.isSelected();
+				
 				if (Config.SHOW_HIDDEN_FILES != newOpt) {
 					Config.SHOW_HIDDEN_FILES = newOpt;
 					Config.save();
 				}
 			}
 		});
-
+		
 		itemUseNimbusTheme.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				boolean newOpt = itemUseNimbusTheme.isSelected();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemUseNimbusTheme.isSelected();
+				
 				if (Config.USE_NIMBUS != newOpt) {
 					Config.USE_NIMBUS = newOpt;
 					Config.save();
 				}
 			}
 		});
-
+		
 		itemOptionLangFiles.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-
-				boolean newOpt = itemOptionLangFiles.isSelected();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionLangFiles.isSelected();
+				
 				if (Config.SHOW_LANG != newOpt) {
 					Config.SHOW_LANG = newOpt;
 					Config.save();
@@ -729,41 +718,41 @@ public class MenuMain {
 				}
 			}
 		});
-
+		
 		itemConfigureEditors.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskDialogSettings();
 			}
 		});
-
+		
 		itemProjectOpenFolder.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskOpenProjectFolder();
 			}
 		});
-
+		
 		itemCustomSounds.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				Tasks.taskOpenSoundWizard();
 			}
 		});
-
+		
 	}
-
-
-	public void updateEnabledItems() {
-
-		boolean open = Projects.isOpen();
-
+	
+	
+	public void updateEnabledItems()
+	{
+		final boolean open = Projects.isOpen();
+		
 		itemProjectExport.setEnabled(open);
 		itemProjectSave.setEnabled(open);
 		itemProjectSaveAs.setEnabled(open);
@@ -774,42 +763,42 @@ public class MenuMain {
 		menuView.setEnabled(open);
 		itemProjectOpenFolder.setEnabled(open);
 		itemCustomSounds.setEnabled(open);
-
+		
 	}
-
-	private ActionListener openRecentProjectListener = new ActionListener() {
-
+	
+	private final ActionListener openRecentProjectListener = new ActionListener() {
+		
 		@Override
-		public void actionPerformed(ActionEvent e) {
-
+		public void actionPerformed(ActionEvent e)
+		{
 			Tasks.taskOpenProject(e.getActionCommand());
 		}
 	};
-
-
-	public void updateRecentProjects() {
-
+	
+	
+	public void updateRecentProjects()
+	{
 		menuRecentProjects.removeAll();
-
-		List<String> recents = Projects.getRecentProjects();
-
+		
+		final List<String> recents = Projects.getRecentProjects();
+		
 		menuRecentProjects.setEnabled(recents.size() > 1);
-
-		Project activeProj = Projects.getActive();
-		String activeName = (activeProj == null ? "" : activeProj.getName());
-
+		
+		final Project activeProj = Projects.getActive();
+		final String activeName = (activeProj == null ? "" : activeProj.getName());
+		
 		JMenuItem item;
-		for (String s : recents) {
+		for (final String s : recents) {
 			if (s.equalsIgnoreCase(activeName)) continue; // dont show current project in the list
 			menuRecentProjects.add(item = new JMenuItem(s));
 			item.setActionCommand(s);
 			item.addActionListener(openRecentProjectListener);
 		}
 	}
-
-
-	public void updateOptionCheckboxes() {
-
+	
+	
+	public void updateOptionCheckboxes()
+	{
 		itemOptionFancyTree.setSelected(Config.FANCY_TREE);
 		itemOptionObsoleteDirs.setSelected(Config.SHOW_OBSOLETE_DIRS);
 		itemOptionLangFiles.setSelected(Config.SHOW_LANG);

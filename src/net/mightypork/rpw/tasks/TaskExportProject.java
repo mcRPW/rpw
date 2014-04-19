@@ -14,39 +14,39 @@ import net.mightypork.rpw.project.Projects;
 
 
 public class TaskExportProject {
-
-	public static void showDialog() {
-
+	
+	public static void showDialog()
+	{
 		if (!Projects.isOpen()) return;
-
-		Project project = Projects.getActive();
-
-		FileChooser fc = new FileChooser(App.getFrame(), FilePath.EXPORT, "Export project", FileChooser.ZIP, true, false, false);
-
-		File dir = fc.getCurrentDirectory();
-		File file = new File(dir, project.getName() + ".zip");
+		
+		final Project project = Projects.getActive();
+		
+		final FileChooser fc = new FileChooser(App.getFrame(), FilePath.EXPORT, "Export project", FileChooser.ZIP, true, false, false);
+		
+		final File dir = fc.getCurrentDirectory();
+		final File file = new File(dir, project.getName() + ".zip");
 		fc.setSelectedFile(file);
-
+		
 		fc.showDialog("Export");
 		if (!fc.approved()) {
 			return;
 		}
-
-		File f = fc.getSelectedFile();
-
+		
+		final File f = fc.getSelectedFile();
+		
 		if (f.exists()) {
 			//@formatter:off
-			int overwrite = Alerts.askYesNoCancel(
+			final int overwrite = Alerts.askYesNoCancel(
 					App.getFrame(),
 					"File Exists",
 					"File \"" + f.getName() + "\" already exists.\n" +
 					"Do you want to overwrite it?"
 			);
 			//@formatter:on
-
+			
 			if (overwrite != JOptionPane.YES_OPTION) return;
 		}
-
+		
 		Tasks.taskExportProject(f, null);
 	}
 }

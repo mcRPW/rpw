@@ -15,195 +15,192 @@ import org.jdesktop.swingx.JXList;
 
 
 public class SimpleStringList extends JScrollPane {
-
+	
 	public JXList list;
 	private boolean selectable;
 	private DefaultListModel model;
-
-	private ArrayList<String> items = new ArrayList<String>();
-
-
-	public void setItems(List<String> options) {
-
+	
+	private final ArrayList<String> items = new ArrayList<String>();
+	
+	
+	public void setItems(List<String> options)
+	{
 		items.clear();
 		items.addAll(options);
-
+		
 		sortAndUpdate();
 	}
-
-
+	
+	
 	public SimpleStringList() {
-
 		this(null, true);
 	}
-
-
+	
+	
 	public SimpleStringList(boolean selectable) {
-
 		this(null, selectable);
 	}
-
-
+	
+	
 	public SimpleStringList(List<String> options, boolean selectable) {
-
 		this.selectable = selectable;
-
+		
 		model = new DefaultListModel();
-
+		
 		list = new JXList(model);
-
+		
 		if (options != null) {
 			setItems(options);
 		}
-
+		
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
-
+		
 		// hide selection
 		if (!selectable) {
 			list.setCellRenderer(new DefaultListCellRenderer() {
-
+				
 				@Override
-				public Component getListCellRendererComponent(JList list, Object value, int index, boolean selected, boolean focus) {
-
+				public Component getListCellRendererComponent(JList list, Object value, int index, boolean selected, boolean focus)
+				{
 					super.getListCellRendererComponent(list, value, index, false, false);
 					return this;
 				}
 			});
 		}
-
+		
 		setViewportView(list);
 		setPreferredSize(new Dimension(250, 220));
-
+		
 		setBorder(BorderFactory.createEtchedBorder());
 	}
-
-
-	public void setMultiSelect(boolean flag) {
-
-		int multi = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
-		int single = ListSelectionModel.SINGLE_SELECTION;
-
+	
+	
+	public void setMultiSelect(boolean flag)
+	{
+		final int multi = ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
+		final int single = ListSelectionModel.SINGLE_SELECTION;
+		
 		list.setSelectionMode(flag ? multi : single);
 	}
-
-
-	public int getSelectedIndex() {
-
+	
+	
+	public int getSelectedIndex()
+	{
 		if (!selectable) return -1;
 		return list.getSelectedIndex();
 	}
-
-
-	public int[] getSelectedIndices() {
-
+	
+	
+	public int[] getSelectedIndices()
+	{
 		if (!selectable) return null;
 		return list.getSelectedIndices();
 	}
-
-
-	public String getSelectedValue() {
-
+	
+	
+	public String getSelectedValue()
+	{
 		if (!selectable) return null;
 		return (String) list.getSelectedValue();
 	}
-
-
-	public List<String> getSelectedValues() {
-
+	
+	
+	public List<String> getSelectedValues()
+	{
 		if (!selectable) return null;
-		Object[] foo = list.getSelectedValues();
-
-		List<String> selected = new ArrayList<String>();
-
-		for (Object o : foo) {
+		final Object[] foo = list.getSelectedValues();
+		
+		final List<String> selected = new ArrayList<String>();
+		
+		for (final Object o : foo) {
 			selected.add((String) o);
 		}
-
+		
 		return selected;
 	}
-
-
-	public void sortAndUpdate() {
-
+	
+	
+	public void sortAndUpdate()
+	{
 		Collections.sort(items, AlphanumComparator.instance);
-
+		
 		model.removeAllElements();
-
-		for (String item : items) {
+		
+		for (final String item : items) {
 			model.addElement(item);
 		}
-
+		
 		list.validate();
 		validate();
 	}
-
-
-	public void addItemNoSort(String item) {
-
+	
+	
+	public void addItemNoSort(String item)
+	{
 		if (!items.contains(item)) {
 			items.add(item);
 		}
 	}
-
-
-	public void addItem(String item) {
-
+	
+	
+	public void addItem(String item)
+	{
 		if (!items.contains(item)) {
 			items.add(item);
 			sortAndUpdate();
 		}
 	}
-
-
-	public void removeItemNoSort(String item) {
-
+	
+	
+	public void removeItemNoSort(String item)
+	{
 		items.remove(item);
 	}
-
-
-	public void removeItem(String item) {
-
+	
+	
+	public void removeItem(String item)
+	{
 		items.remove(item);
 		sortAndUpdate();
 	}
-
-
-	public void removeItem(int index) {
-
+	
+	
+	public void removeItem(int index)
+	{
 		items.remove(index);
 		sortAndUpdate();
 	}
-
-
-	public ArrayList<String> getItems() {
-
+	
+	
+	public ArrayList<String> getItems()
+	{
 		return items;
 	}
-
-
-	public String getItemAt(int where) {
-
+	
+	
+	public String getItemAt(int where)
+	{
 		return items.get(where);
 	}
-
-
-	public boolean contains(String data) {
-
+	
+	
+	public boolean contains(String data)
+	{
 		return items.contains(data);
 	}
-
-
-	public JXList getList() {
-
+	
+	
+	public JXList getList()
+	{
 		return list;
 	}
-
-
-	public void empty() {
-
+	
+	
+	public void empty()
+	{
 		items.clear();
 		sortAndUpdate();
 	}
-
+	
 }

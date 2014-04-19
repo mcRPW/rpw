@@ -13,22 +13,22 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class Alerts {
-
+	
 	private static boolean loadingState = false;
 	private static boolean loadingStateDisplayed = false;
 	private static Timer t = new Timer();
-
-
-	public static void error(Component c, String message) {
-
+	
+	
+	public static void error(Component c, String message)
+	{
 		error(c, "Error", message);
 	}
-
-
-	public static void error(Component c, String title, String message) {
-
+	
+	
+	public static void error(Component c, String title, String message)
+	{
 		Log.e(message);
-
+		
 		//@formatter:off
 		JOptionPane.showMessageDialog(
 				c,
@@ -39,18 +39,18 @@ public class Alerts {
 			);
 		//@formatter:on
 	}
-
-
-	public static void warning(Component c, String message) {
-
+	
+	
+	public static void warning(Component c, String message)
+	{
 		warning(c, "Warning", message);
 	}
-
-
-	public static void warning(Component c, String title, String message) {
-
+	
+	
+	public static void warning(Component c, String title, String message)
+	{
 		Log.w(message);
-
+		
 		//@formatter:off
 		JOptionPane.showMessageDialog(
 				c,
@@ -61,18 +61,18 @@ public class Alerts {
 			);
 		//@formatter:on
 	}
-
-
-	public static void info(Component c, String message) {
-
+	
+	
+	public static void info(Component c, String message)
+	{
 		info(c, "Information", message);
 	}
-
-
-	public static void info(Component c, String title, String message) {
-
+	
+	
+	public static void info(Component c, String title, String message)
+	{
 		Log.i(message);
-
+		
 		//@formatter:off
 		JOptionPane.showMessageDialog(
 				c,
@@ -83,39 +83,39 @@ public class Alerts {
 			);
 		//@formatter:on
 	}
-
-
-	public static void loading(final boolean waiting) {
-
+	
+	
+	public static void loading(final boolean waiting)
+	{
 		loadingState = waiting;
-
+		
 		if (loadingStateDisplayed == loadingState) return; // no change.
-
+			
 		t.schedule(new TimerTask() {
-
+			
 			@Override
-			public void run() {
-
+			public void run()
+			{
 				updateLoadingVisuals();
 			}
 		}, 60);
 	}
-
-
-	private static void updateLoadingVisuals() {
-
+	
+	
+	private static void updateLoadingVisuals()
+	{
 		if (loadingStateDisplayed == loadingState) {
 			return; // nothing to change
 		}
-
+		
 		App.setWaiting(loadingState);
-
+		
 		loadingStateDisplayed = loadingState;
 	}
-
-
-	public static boolean askYesNo(Component c, String title, String message) {
-
+	
+	
+	public static boolean askYesNo(Component c, String title, String message)
+	{
 		//@formatter:off
 		return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
 				c,
@@ -127,10 +127,10 @@ public class Alerts {
 		);
 		//@formatter:on
 	}
-
-
-	public static boolean askOkCancel(Component c, String title, String message) {
-
+	
+	
+	public static boolean askOkCancel(Component c, String title, String message)
+	{
 		//@formatter:off
 		return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
 				c,
@@ -142,10 +142,10 @@ public class Alerts {
 		);
 		//@formatter:on
 	}
-
-
-	public static int askYesNoCancel(Component c, String title, String message) {
-
+	
+	
+	public static int askYesNoCancel(Component c, String title, String message)
+	{
 		//@formatter:off
 		return JOptionPane.showConfirmDialog(
 				c,
@@ -157,10 +157,10 @@ public class Alerts {
 		);
 		//@formatter:on
 	}
-
-
-	public static String askForInput(Component c, String title, String message, String initial) {
-
+	
+	
+	public static String askForInput(Component c, String title, String message, String initial)
+	{
 		//@formatter:off
 		return (String) JOptionPane.showInputDialog(
 				c,
@@ -172,6 +172,6 @@ public class Alerts {
 				initial
 		);
 		//@formatter:on
-
+		
 	}
 }

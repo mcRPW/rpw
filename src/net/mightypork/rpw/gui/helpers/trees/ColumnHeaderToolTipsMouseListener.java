@@ -13,28 +13,28 @@ import javax.swing.table.TableColumnModel;
 
 
 public class ColumnHeaderToolTipsMouseListener extends MouseMotionAdapter {
-
+	
 	TableColumn curCol;
 	Map<TableColumn, String> tips = new HashMap<TableColumn, String>();
-
-
-	public void setToolTip(TableColumn col, String tooltip) {
-
+	
+	
+	public void setToolTip(TableColumn col, String tooltip)
+	{
 		if (tooltip == null) {
 			tips.remove(col);
 		} else {
 			tips.put(col, tooltip);
 		}
 	}
-
-
+	
+	
 	@Override
-	public void mouseMoved(MouseEvent evt) {
-
-		JTableHeader header = (JTableHeader) evt.getSource();
-		JTable table = header.getTable();
-		TableColumnModel colModel = table.getColumnModel();
-		int vColIndex = colModel.getColumnIndexAtX(evt.getX());
+	public void mouseMoved(MouseEvent evt)
+	{
+		final JTableHeader header = (JTableHeader) evt.getSource();
+		final JTable table = header.getTable();
+		final TableColumnModel colModel = table.getColumnModel();
+		final int vColIndex = colModel.getColumnIndexAtX(evt.getX());
 		TableColumn col = null;
 		if (vColIndex >= 0) {
 			col = colModel.getColumn(vColIndex);

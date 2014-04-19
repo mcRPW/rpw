@@ -8,17 +8,16 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class HelpPage {
-
-	private String name;
+	
+	private final String name;
 	private String content;
-
-
+	
+	
 	public HelpPage(String title, String filename) {
-
 		this.name = title;
-
-		String str = FileUtils.resourceToString(Paths.DATA_DIR_HELP + filename);
-
+		
+		final String str = FileUtils.resourceToString(Paths.DATA_DIR_HELP + filename);
+		
 		if (str.length() == 0) {
 			Log.w("Missing help page " + filename);
 			content = "Page not found.";
@@ -26,17 +25,17 @@ public class HelpPage {
 			content = HtmlBuilder.markdownToHtmlHelp(str);
 		}
 	}
-
-
-	public String getName() {
-
+	
+	
+	public String getName()
+	{
 		return name;
 	}
-
-
-	public String getContent() {
-
+	
+	
+	public String getContent()
+	{
 		return content;
 	}
-
+	
 }

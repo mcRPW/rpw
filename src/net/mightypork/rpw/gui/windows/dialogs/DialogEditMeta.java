@@ -29,7 +29,7 @@ import com.google.gson.JsonParser;
 
 
 public class DialogEditMeta extends DialogEditorBase {
-
+	
 	private JButton btnCancel;
 	private JButton btnSave;
 	private JButton btnPresets;
@@ -37,48 +37,47 @@ public class DialogEditMeta extends DialogEditorBase {
 	private JPopupMenu presetsPopup;
 	protected AssetTreeLeaf editedNode;
 	private String dlgHeading;
-
-
+	
+	
 	public DialogEditMeta(AssetTreeLeaf node) {
-
 		this.editedNode = node;
-
+		
 		createDialog();
 	}
-
-
+	
+	
 	@Override
-	protected String getTitleText() {
-
-		String path = Utils.fromLastChar(editedNode.getAssetEntry().getPath(), '/');
-
+	protected String getTitleText()
+	{
+		final String path = Utils.fromLastChar(editedNode.getAssetEntry().getPath(), '/');
+		
 		dlgHeading = path + ".mcmeta";
-
+		
 		return path + " - RPW McMeta editor";
 	}
-
-
+	
+	
 	@Override
-	protected String getInitialText() {
-
+	protected String getInitialText()
+	{
 		try {
-			InputStream in = Projects.getActive().getAssetMetaStream(editedNode.getAssetKey());
+			final InputStream in = Projects.getActive().getAssetMetaStream(editedNode.getAssetKey());
 			return FileUtils.streamToString(in);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Log.e(e);
 			return "";
 		}
 	}
-
-
+	
+	
 	@Override
-	protected void buildButtons(HBox buttons) {
-
+	protected void buildButtons(HBox buttons)
+	{
 		btnPresets = new JButton("Templates", Icons.MENU_GENERATE);
 		btnCheck = new JButton("Check JSON", Icons.MENU_INFO);
 		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
 		btnSave = new JButton("Save", Icons.MENU_YES);
-
+		
 		buttons.add(btnPresets);
 		buttons.gap();
 		buttons.add(btnCheck);
@@ -86,44 +85,44 @@ public class DialogEditMeta extends DialogEditorBase {
 		buttons.add(btnSave);
 		buttons.gap();
 		buttons.add(btnCancel);
-
+		
 		presetsPopup = buildPresetsPopup();
 		buttons.add(presetsPopup);
 	}
-
-
-	private JPopupMenu buildPresetsPopup() {
-
-		JPopupMenu popup = new JPopupMenu();
-
+	
+	
+	private JPopupMenu buildPresetsPopup()
+	{
+		final JPopupMenu popup = new JPopupMenu();
+		
 		JMenu menu2, menu3;
-
+		
 		JMenuItem item;
-
+		
 		popup.add(menu2 = new JMenu("Animation"));
-
-		int[] frames = { 8, 16, 20, 32, 64 };
-
-		for (int i : frames) {
+		
+		final int[] frames = { 8, 16, 20, 32, 64 };
+		
+		for (final int i : frames) {
 			menu2.add(menu3 = new JMenu(i + " frames"));
-
+			
 			menu3.add(item = new JMenuItem("Linear"));
 			item.setActionCommand("animation/" + i + "linear.txt");
 			item.addActionListener(loadTemplateListener);
-
+			
 			menu3.add(item = new JMenuItem("Reverse"));
 			item.setActionCommand("animation/" + i + "reverse.txt");
 			item.addActionListener(loadTemplateListener);
-
+			
 			menu3.add(item = new JMenuItem("ZigZag"));
 			item.setActionCommand("animation/" + i + "zigzag.txt");
 			item.addActionListener(loadTemplateListener);
 		}
-
+		
 		menu2.add(menu3 = new JMenu("Vanilla"));
-
+		
 		//@formatter:off
-		String[] anims = { 
+		final String[] anims = { 
 				"clock",
 				"compass",
 				"fire_layer_0",
@@ -135,149 +134,147 @@ public class DialogEditMeta extends DialogEditorBase {
 				"water_still"
 		};
 		//@formatter:on
-
-		for (String a : anims) {
+		
+		for (final String a : anims) {
 			menu3.add(item = new JMenuItem(a));
 			item.setActionCommand("animation/" + a + ".txt");
 			item.addActionListener(loadTemplateListener);
 		}
-
+		
 		menu2.addSeparator();
-
+		
 		menu2.add(item = new JMenuItem("Default"));
 		item.setActionCommand("animation/default_animation.txt");
 		item.addActionListener(loadTemplateListener);
-
-
+		
 		popup.add(menu2 = new JMenu("Texture"));
-
+		
 		menu2.add(menu3 = new JMenu("Vanilla"));
-
+		
 		//@formatter:off
-		String[] textures = {
+		final String[] textures = {
 				"enchanted_item_glint",
 				"pumpkinblur",
 				"shadow",
 				"vignette"
 		};
 		//@formatter:on
-
-		for (String t : textures) {
+		
+		for (final String t : textures) {
 			menu3.add(item = new JMenuItem(t));
 			item.setActionCommand("texture/" + t + ".txt");
 			item.addActionListener(loadTemplateListener);
 		}
-
+		
 		menu2.addSeparator();
-
+		
 		menu2.add(item = new JMenuItem("Default"));
 		item.setActionCommand("texture/default_texture.txt");
 		item.addActionListener(loadTemplateListener);
-
+		
 		menu2.addSeparator();
-
+		
 		menu2.add(item = new JMenuItem("Blur"));
 		item.setActionCommand("texture/blur.txt");
 		item.addActionListener(loadTemplateListener);
-
+		
 		menu2.add(item = new JMenuItem("Clamp"));
 		item.setActionCommand("texture/clamp.txt");
 		item.addActionListener(loadTemplateListener);
-
+		
 		return popup;
 	}
-
-
+	
+	
 	@Override
-	protected void addActions() {
-
+	protected void addActions()
+	{
 		btnCancel.addActionListener(closeListener);
-
-
+		
 		btnCheck.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String text = getTextArea().getText();
-
-				JsonParser jp = new JsonParser();
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final String text = getTextArea().getText();
+				
+				final JsonParser jp = new JsonParser();
+				
 				try {
 					jp.parse(text);
 					Alerts.info(DialogEditMeta.this, "Check JSON", "Entered code is (probably) valid.");
-				} catch (Exception er) {
+				} catch (final Exception er) {
 					Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");
 				}
-
+				
 			}
 		});
-
+		
 		btnSave.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String text = getTextArea().getText();
-
-				File file = Projects.getActive().getAssetMetaFile(editedNode.getAssetKey());
-
+			public void actionPerformed(ActionEvent e)
+			{
+				final String text = getTextArea().getText();
+				
+				final File file = Projects.getActive().getAssetMetaFile(editedNode.getAssetKey());
+				
 				try {
 					FileUtils.stringToFile(file, text);
 					closeDialog();
-				} catch (IOException e1) {
+				} catch (final IOException e1) {
 					Log.e(e1);
-
+					
 					Alerts.error(self(), "Could not save file.");
-
+					
 				}
 			}
 		});
-
+		
 		btnPresets.addMouseListener(new ClickListener() {
-
+			
 			boolean first = true;
-
-
+			
+			
 			@Override
-			public void mouseClicked(MouseEvent e) {
-
+			public void mouseClicked(MouseEvent e)
+			{
 				if (first) {
 					presetsPopup.show(getButtonsBox(), 0, 0);
 					presetsPopup.setVisible(false);
 					first = false;
 				}
-
+				
 				presetsPopup.show(getButtonsBox(), btnPresets.getBounds().x, btnPresets.getBounds().y - presetsPopup.getHeight());
 			}
 		});
 	}
-
-	private ActionListener loadTemplateListener = new ActionListener() {
-
+	
+	private final ActionListener loadTemplateListener = new ActionListener() {
+		
 		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			String res = e.getActionCommand();
-
-			String text = FileUtils.resourceToString("/data/mcmeta/" + res);
-
+		public void actionPerformed(ActionEvent e)
+		{
+			final String res = e.getActionCommand();
+			
+			final String text = FileUtils.resourceToString("/data/mcmeta/" + res);
+			
 			setTextareaText(text);
 		}
 	};
-
-
+	
+	
 	@Override
-	protected void configureTextarea(RSyntaxTextArea ta) {
-
+	protected void configureTextarea(RSyntaxTextArea ta)
+	{
 		configureTextareaJSON(ta);
 	}
-
-
+	
+	
 	@Override
-	protected String getFileName() {
-
+	protected String getFileName()
+	{
 		return dlgHeading;
 	}
-
+	
 }

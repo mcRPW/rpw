@@ -13,8 +13,8 @@ import net.mightypork.rpw.utils.files.FileUtils;
  * 
  * @author MightyPork
  */
-public enum EAsset {
-
+public enum EAsset
+{
 	//@formatter:off
 	
 	/* sound */
@@ -37,23 +37,22 @@ public enum EAsset {
 	UNKNOWN("");
 	
 	//@formatter:on
-
+	
 	private EAsset(String extension) {
-
 		this.extension = extension;
 	}
-
+	
 	private String extension;
-
-
-	public String getExtension() {
-
+	
+	
+	public String getExtension()
+	{
 		return this.extension;
 	}
-
-
-	public boolean isText() {
-
+	
+	
+	public boolean isText()
+	{
 		switch (this) {
 			case TEXT:
 			case LANG:
@@ -66,99 +65,99 @@ public enum EAsset {
 				return false;
 		}
 	}
-
-
-	public boolean isImage() {
-
+	
+	
+	public boolean isImage()
+	{
 		return this == IMAGE;
 	}
-
-
-	public boolean isSound() {
-
+	
+	
+	public boolean isSound()
+	{
 		return this == SOUND;
 	}
-
-
-	public boolean isMeta() {
-
+	
+	
+	public boolean isMeta()
+	{
 		return this == MCMETA;
 	}
-
-
-	public boolean isJson() {
-
+	
+	
+	public boolean isJson()
+	{
 		return this == JSON;
 	}
-
-
-	public boolean isShader() {
-
+	
+	
+	public boolean isShader()
+	{
 		return this == VSH || this == FSH;
 	}
-
-
-	public boolean isAsset() {
-
+	
+	
+	public boolean isAsset()
+	{
 		return isText() || isImage() || isSound() || isJson();
 	}
-
-
+	
+	
 	/**
 	 * Get if type is asset or meta<br>
 	 * Used to filter out files not to be extracted from vanilla
 	 * 
 	 * @return is asset, meta or shader
 	 */
-	public boolean isAssetOrMeta() {
-
+	public boolean isAssetOrMeta()
+	{
 		// Shader is considered meta, because it has the same name
 		// as the json file, only different extension. Which is a
 		// common trait with mcmeta files.
 		//
 		// Future version may add shader editor to deal with them.
-
+		
 		return isMeta() || isAsset() || isShader();
 	}
-
-
-	public boolean isUnknown() {
-
+	
+	
+	public boolean isUnknown()
+	{
 		return this == UNKNOWN;
 	}
-
-
-	public static EAsset forExtension(String ext) {
-
-		for (EAsset a : EAsset.values()) {
+	
+	
+	public static EAsset forExtension(String ext)
+	{
+		for (final EAsset a : EAsset.values()) {
 			if (a.extension.equalsIgnoreCase(ext)) {
 				return a;
 			}
 		}
-
+		
 		return UNKNOWN;
 	}
-
-
-	public static EAsset forFile(File file) {
-
+	
+	
+	public static EAsset forFile(File file)
+	{
 		return forExtension(FileUtils.getExtension(file));
 	}
-
-
-	public static EAsset forFile(String file) {
-
+	
+	
+	public static EAsset forFile(String file)
+	{
 		return forExtension(FileUtils.getExtension(file));
 	}
-
-
+	
+	
 	/**
 	 * Get filter for file chooser
 	 * 
 	 * @return filter
 	 */
-	public FileChooserFilter getFilter() {
-
+	public FileChooserFilter getFilter()
+	{
 		switch (this) {
 			case CFG:
 			case PROPERTIES:

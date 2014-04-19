@@ -23,83 +23,76 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class CopyToProjectProcessor implements AssetTreeProcessor {
-
-	private Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
-
-	private List<String> ignoredSources = new ArrayList<String>();
-
-
+	
+	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
+	
+	private final List<String> ignoredSources = new ArrayList<String>();
+	
+	
 	public CopyToProjectProcessor() {
-
 	}
-
-
-	public void addIgnoredSource(String source) {
-
+	
+	
+	public void addIgnoredSource(String source)
+	{
 		ignoredSources.add(source);
 	}
-
-
+	
+	
 	@Override
-	public void process(AssetTreeNode node) {
-
+	public void process(AssetTreeNode node)
+	{
 		if (processed.contains(node)) return; // no double-processing
 		processed.add(node);
-
+		
 		if (node instanceof AssetTreeGroup) {
-
 			return;
-
+			
 		} else if (node instanceof AssetTreeLeaf) {
-
-			File targetBase = Projects.getActive().getAssetsDirectory();
-
-			AssetTreeLeaf leaf = (AssetTreeLeaf) node;
-			String source = leaf.resolveAssetSource();
-			String sourceMeta = leaf.resolveAssetMetaSource();
-
+			final File targetBase = Projects.getActive().getAssetsDirectory();
+			
+			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+			final String source = leaf.resolveAssetSource();
+			final String sourceMeta = leaf.resolveAssetMetaSource();
+			
 			if (ignoredSources.contains(source)) return;
-
+			
 			// prepare files
-			String path = leaf.getAssetEntry().getPath();
-			File target = new File(targetBase, path);
-			File tgDir = target.getParentFile();
+			final String path = leaf.getAssetEntry().getPath();
+			final File target = new File(targetBase, path);
+			final File tgDir = target.getParentFile();
 			tgDir.mkdirs();
-			File targetMeta = new File(targetBase, path + ".mcmeta");
-
+			final File targetMeta = new File(targetBase, path + ".mcmeta");
+			
 			// if source resolved to project, no work here.
 			InputStream in = null;
 			OutputStream out = null;
-
+			
 			if (!MagicSources.isProject(sourceMeta)) {
 				try {
-
 					in = Sources.getAssetMetaStream(sourceMeta, leaf.getAssetKey());
-
+					
 					if (in != null) {
 						out = new FileOutputStream(targetMeta);
 						FileUtils.copyStream(in, out);
 					}
-
-				} catch (Exception e) {
+					
+				} catch (final Exception e) {
 					Log.e("Error copying asset meta to project folder.", e);
 				} finally {
 					Utils.close(in, out);
 				}
 			}
-
-
+			
 			if (!MagicSources.isProject(source)) {
-
 				try {
-
 					in = Sources.getAssetStream(source, leaf.getAssetKey());
 					if (in != null) {
 						out = new FileOutputStream(target);
 						FileUtils.copyStream(in, out);
 					}
-
-				} catch (Exception e) {
+					
+				} catch (final Exception e) {
 					Log.e("Error copying asset to project folder.", e);
 				} finally {
 					Utils.close(in, out);
@@ -107,5 +100,5 @@ public class CopyToProjectProcessor implements AssetTreeProcessor {
 			}
 		}
 	}
-
+	
 }

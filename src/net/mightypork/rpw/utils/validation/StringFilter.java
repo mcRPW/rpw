@@ -7,6 +7,6 @@ package net.mightypork.rpw.utils.validation;
  * @author MightyPork
  */
 public interface StringFilter {
-
+	
 	public boolean accept(String entry);
 }

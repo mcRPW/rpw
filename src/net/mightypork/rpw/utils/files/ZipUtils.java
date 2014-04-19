@@ -22,10 +22,10 @@ import net.mightypork.rpw.utils.validation.StringFilter;
  * @author MightyPork
  */
 public class ZipUtils {
-
+	
 	private static final int BUFFER_SIZE = 2048;
-
-
+	
+	
 	/**
 	 * Extract zip file to target directory
 	 * 
@@ -35,21 +35,20 @@ public class ZipUtils {
 	 * @return list of entries extracted (paths)
 	 * @throws IOException
 	 */
-	public static List<String> extractZip(File file, File outputDir, StringFilter filter) throws IOException {
-
+	public static List<String> extractZip(File file, File outputDir, StringFilter filter) throws IOException
+	{
 		ZipFile zip = null;
 		try {
-
 			zip = new ZipFile(file);
-
+			
 			return extractZip(zip, outputDir, filter);
-
+			
 		} finally {
 			Utils.close(zip);
 		}
 	}
-
-
+	
+	
 	/**
 	 * Extract zip file to target directory
 	 * 
@@ -59,40 +58,38 @@ public class ZipUtils {
 	 * @return list of entries extracted (paths)
 	 * @throws IOException
 	 */
-	public static List<String> extractZip(ZipFile zip, File outputDir, StringFilter filter) throws IOException {
-
-		ArrayList<String> files = new ArrayList<String>();
-
+	public static List<String> extractZip(ZipFile zip, File outputDir, StringFilter filter) throws IOException
+	{
+		final ArrayList<String> files = new ArrayList<String>();
+		
 		outputDir.mkdirs();
-
-		Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
-
+		
+		final Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
+		
 		// process each entry
 		while (zipFileEntries.hasMoreElements()) {
-
-			ZipEntry entry = zipFileEntries.nextElement();
-
-
+			final ZipEntry entry = zipFileEntries.nextElement();
+			
 			// parse filename and path
-			String entryPath = entry.getName();
-			File destFile = new File(outputDir, entryPath);
-			File destinationParent = destFile.getParentFile();
-
+			final String entryPath = entry.getName();
+			final File destFile = new File(outputDir, entryPath);
+			final File destinationParent = destFile.getParentFile();
+			
 			if (entry.isDirectory() || (filter != null && !filter.accept(entryPath))) continue;
-
+			
 			// make sure directories exist
 			destinationParent.mkdirs();
-
+			
 			if (!entry.isDirectory()) {
 				extractZipEntry(zip, entry, destFile);
 				files.add(entryPath);
 			}
 		}
-
+		
 		return files;
 	}
-
-
+	
+	
 	/**
 	 * Read zip entries and add their paths to a list
 	 * 
@@ -100,8 +97,8 @@ public class ZipUtils {
 	 * @return list of entry names
 	 * @throws IOException on error
 	 */
-	public static List<String> listZip(File zipFile) throws IOException {
-
+	public static List<String> listZip(File zipFile) throws IOException
+	{
 		ZipFile zip = null;
 		try {
 			zip = new ZipFile(zipFile);
@@ -110,8 +107,8 @@ public class ZipUtils {
 			Utils.close(zip);
 		}
 	}
-
-
+	
+	
 	/**
 	 * Read zip entries and add their paths to a list
 	 * 
@@ -119,25 +116,25 @@ public class ZipUtils {
 	 * @return list of entry names
 	 * @throws IOException on error
 	 */
-	public static List<String> listZip(ZipFile zip) throws IOException {
-
-		ArrayList<String> files = new ArrayList<String>();
-
-		Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
-
+	public static List<String> listZip(ZipFile zip) throws IOException
+	{
+		final ArrayList<String> files = new ArrayList<String>();
+		
+		final Enumeration<? extends ZipEntry> zipFileEntries = zip.entries();
+		
 		// process each entry
 		while (zipFileEntries.hasMoreElements()) {
-			ZipEntry entry = zipFileEntries.nextElement();
-
+			final ZipEntry entry = zipFileEntries.nextElement();
+			
 			if (!entry.isDirectory()) {
 				files.add(entry.getName());
 			}
 		}
-
+		
 		return files;
 	}
-
-
+	
+	
 	/**
 	 * Extract one zip entry to target file
 	 * 
@@ -146,26 +143,26 @@ public class ZipUtils {
 	 * @param destFile destination file ((NOT directory!)
 	 * @throws IOException on error
 	 */
-	public static void extractZipEntry(ZipFile zip, ZipEntry entry, File destFile) throws IOException {
-
+	public static void extractZipEntry(ZipFile zip, ZipEntry entry, File destFile) throws IOException
+	{
 		destFile.getParentFile().mkdirs();
-
+		
 		BufferedInputStream is = null;
 		FileOutputStream fos = null;
 		BufferedOutputStream dest = null;
-
+		
 		try {
 			is = new BufferedInputStream(zip.getInputStream(entry));
 			fos = new FileOutputStream(destFile);
 			dest = new BufferedOutputStream(fos, BUFFER_SIZE);
-
+			
 			FileUtils.copyStream(is, dest);
 		} finally {
 			Utils.close(is, dest); // closes also fos
 		}
 	}
-
-
+	
+	
 	/**
 	 * Load zip entry to String
 	 * 
@@ -174,31 +171,31 @@ public class ZipUtils {
 	 * @return loaded string
 	 * @throws IOException on error
 	 */
-	public static String zipEntryToString(ZipFile zip, ZipEntry entry) throws IOException {
-
+	public static String zipEntryToString(ZipFile zip, ZipEntry entry) throws IOException
+	{
 		BufferedInputStream is = null;
 		try {
 			is = new BufferedInputStream(zip.getInputStream(entry));
-			String s = FileUtils.streamToString(is);
+			final String s = FileUtils.streamToString(is);
 			return s;
 		} finally {
 			Utils.close(is);
 		}
 	}
-
-
-	public static boolean entryExists(File selectedFile, String string) {
-
+	
+	
+	public static boolean entryExists(File selectedFile, String string)
+	{
 		ZipFile zf = null;
-
+		
 		try {
 			zf = new ZipFile(selectedFile);
 			return zf.getEntry(string) != null;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return false;
 		} finally {
 			Utils.close(zf);
 		}
-
+		
 	}
 }

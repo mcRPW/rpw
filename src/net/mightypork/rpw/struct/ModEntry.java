@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 public class ModEntry {
-
+	
 	public String modid;
 	public String name;
 	public String description;
@@ -31,5 +31,5 @@ public class ModEntry {
 	public String parent;
 	public List<String> screenshots;
 	public List<String> dependencies;
-
+	
 }

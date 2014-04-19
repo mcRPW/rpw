@@ -20,60 +20,59 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class DialogAbout extends RpwDialog {
-
+	
 	private JButton buttonOK;
 	private JButton buttonTwitter;
-
-
+	
+	
 	public DialogAbout() {
-
 		super(App.getFrame(), "About");
-
+		
 		createDialog();
 	}
-
-
+	
+	
 	@Override
-	protected JComponent buildGui() {
-
-		VBox vb = new VBox();
+	protected JComponent buildGui()
+	{
+		final VBox vb = new VBox();
 		vb.windowPadding();
-
+		
 		vb.heading(Const.APP_NAME + " v" + Const.VERSION);
-
-		JLabel image = new JLabel(Icons.ABOUT);
+		
+		final JLabel image = new JLabel(Icons.ABOUT);
 		image.setAlignmentX(0.5f);
 		vb.add(image);
 		vb.gapl();
-
+		
 		buttonTwitter = new JButton("@MightyPork", Icons.MENU_TWITTER);
 		buttonOK = new JButton("Close", Icons.MENU_YES);
-
+		
 		vb.buttonRow(Gui.CENTER, buttonTwitter, buttonOK);
 		buttonOK.requestFocusInWindow();
-
+		
 		return vb;
 	}
-
-
+	
+	
 	@Override
-	protected void addActions() {
-
+	protected void addActions()
+	{
 		buttonOK.addActionListener(closeListener);
-
+		
 		buttonTwitter.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-
+			public void actionPerformed(ActionEvent e)
+			{
 				try {
 					DesktopApi.browse(new URL("https://twitter.com/MightyPork").toURI());
-				} catch (Exception err) {
+				} catch (final Exception err) {
 					Log.e(err);
 				}
 			}
 		});
-
+		
 		setEnterButton(buttonOK);
 	}
 }

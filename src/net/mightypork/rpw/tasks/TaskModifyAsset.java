@@ -23,52 +23,49 @@ import net.mightypork.rpw.utils.logging.Log;
 
 
 public class TaskModifyAsset {
-
-	public static void edit(AssetTreeLeaf node, boolean editMeta) {
-
+	
+	public static void edit(AssetTreeLeaf node, boolean editMeta)
+	{
 		if (!assertIsInProject(node, editMeta)) return;
-
+		
 		if (editMeta && Config.USE_INTERNAL_META_EDITOR) {
-
-
 			Alerts.loading(true);
-			Dialog d = new DialogEditMeta(node);
+			final Dialog d = new DialogEditMeta(node);
 			Alerts.loading(false);
 			d.setVisible(true);
-
+			
 			return;
 		}
-
+		
 		if (!editMeta && Config.USE_INTERNAL_TEXT_EDITOR && node.getAssetType().isText()) {
-
 			try {
 				Alerts.loading(true);
-				Dialog d = new DialogEditText(node);
+				final Dialog d = new DialogEditText(node);
 				Alerts.loading(false);
 				d.setVisible(true);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				Log.e("Error openning text file for edit.", e);
 				Alerts.error(App.getFrame(), "Error openning text file for edit.");
 			}
-
+			
 			return;
 		}
-
+		
 		File f;
-
+		
 		// get file
 		if (editMeta) {
 			f = Projects.getActive().getAssetMetaFile(node.getAssetKey());
 		} else {
 			f = Projects.getActive().getAssetFile(node.getAssetKey());
 		}
-
+		
 		// if null, isn't available
 		if (f == null) {
 			Alerts.error(App.getFrame(), "File not accessible.");
 			return;
 		}
-
+		
 		// if meta, always text
 		if (editMeta) {
 			if (!DesktopApi.editText(f)) {
@@ -76,33 +73,33 @@ public class TaskModifyAsset {
 			}
 			return;
 		}
-
+		
 		// not meta - select by type
-
-		EAsset type = node.getAssetType();
-
+		
+		final EAsset type = node.getAssetType();
+		
 		if (type.isImage()) {
 			if (!DesktopApi.editImage(f)) {
 				alertCouldNotEdit();
 			}
 		}
-
+		
 		if (type.isText()) {
 			if (!DesktopApi.editText(f)) {
 				alertCouldNotEdit();
 			}
 		}
-
+		
 		if (type.isSound()) {
 			if (!DesktopApi.editAudio(f)) {
 				alertCouldNotEdit();
 			}
 		}
-
+		
 		return;
 	}
-
-
+	
+	
 	/**
 	 * Check if open project contains this asset or meta<br>
 	 * If not, ask user to copy it, and do so if agreed.
@@ -111,19 +108,18 @@ public class TaskModifyAsset {
 	 * @param wantMeta true = meta, false = asset
 	 * @return is in project
 	 */
-	private static boolean assertIsInProject(AssetTreeLeaf node, boolean wantMeta) {
-
-		boolean hasMeta = node.isMetaProvidedByProject();
-
-		boolean doesMetaExist = Sources.doesSourceProvideAssetMeta(node.resolveAssetMetaSource(), node.getAssetEntry());
-
-		boolean hasAsset = node.isAssetProvidedByProject();
-
+	private static boolean assertIsInProject(AssetTreeLeaf node, boolean wantMeta)
+	{
+		final boolean hasMeta = node.isMetaProvidedByProject();
+		
+		final boolean doesMetaExist = Sources.doesSourceProvideAssetMeta(node.resolveAssetMetaSource(), node.getAssetEntry());
+		
+		final boolean hasAsset = node.isAssetProvidedByProject();
+		
 		if (!(wantMeta ? hasMeta : hasAsset)) {
-
 			if (wantMeta && !doesMetaExist) {
 				//@formatter:off
-				boolean choice = Alerts.askOkCancel(
+				final boolean choice = Alerts.askOkCancel(
 						App.getFrame(),
 						"Create new McMeta",
 						"The selected asset doesn't have\n" +
@@ -132,41 +128,39 @@ public class TaskModifyAsset {
 						"Shall a new \"mcmeta\" file be created?"
 				);
 				//@formatter:on
-
+				
 				if (choice == true) {
-
 					if (!hasAsset) {
-						AssetTreeProcessor proc = new CopyToProjectProcessor();
+						final AssetTreeProcessor proc = new CopyToProjectProcessor();
 						proc.process(node);
 					}
-
-					File projbase = Projects.getActive().getAssetsDirectory();
-
-					File metafile = new File(projbase, node.getAssetEntry().getPath() + ".mcmeta");
-
-					String def = "{\n}";
-
+					
+					final File projbase = Projects.getActive().getAssetsDirectory();
+					
+					final File metafile = new File(projbase, node.getAssetEntry().getPath() + ".mcmeta");
+					
+					final String def = "{\n}";
+					
 					try {
 						FileUtils.stringToFile(metafile, def);
-					} catch (IOException e) {
+					} catch (final IOException e) {
 						Log.e(e);
 						return false;
 					}
-
+					
 					node.setLibrarySourceIfNeeded(MagicSources.PROJECT);
-
+					
 					Tasks.taskTreeRedraw();
 					App.getSidePanel().redrawPreview();
 					return true;
 				} else {
 					return false;
 				}
-
+				
 			}
-
-
+			
 			//@formatter:off
-			boolean choice = Alerts.askOkCancel(
+			final boolean choice = Alerts.askOkCancel(
 					App.getFrame(),
 					"Copy To Project",
 					"To edit a file, it must first be\n" +
@@ -175,12 +169,12 @@ public class TaskModifyAsset {
 					"Shall it be copied?"
 			);
 			//@formatter:on
-
+			
 			if (choice == true) {
-				AssetTreeProcessor proc = new CopyToProjectProcessor();
+				final AssetTreeProcessor proc = new CopyToProjectProcessor();
 				proc.process(node);
 				node.setLibrarySourceIfNeeded(MagicSources.PROJECT);
-
+				
 				Tasks.taskTreeRedraw();
 				App.getSidePanel().redrawPreview();
 				return true;
@@ -188,13 +182,13 @@ public class TaskModifyAsset {
 				return false;
 			}
 		}
-
+		
 		return true;
 	}
-
-
-	private static void alertCouldNotEdit() {
-
+	
+	
+	private static void alertCouldNotEdit()
+	{
 		//@formatter:off
 		Alerts.error(
 				App.getFrame(),
@@ -205,5 +199,5 @@ public class TaskModifyAsset {
 		);
 		//@formatter:on
 	}
-
+	
 }

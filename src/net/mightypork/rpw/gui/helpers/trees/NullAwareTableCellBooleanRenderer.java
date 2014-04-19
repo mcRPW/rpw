@@ -20,25 +20,24 @@ import javax.swing.table.TableCellRenderer;
  * @author MightyPork
  */
 public class NullAwareTableCellBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource {
-
+	
 	private final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
-
-	private DefaultTableCellRenderer cdr = new DefaultTableCellRenderer();
-
-
+	
+	private final DefaultTableCellRenderer cdr = new DefaultTableCellRenderer();
+	
+	
 	public NullAwareTableCellBooleanRenderer() {
-
 		super();
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setBorderPainted(true);
 	}
-
-
+	
+	
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+	{
 		if (value == null) return cdr.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
-
+		
 		if (isSelected) {
 			setForeground(table.getSelectionForeground());
 			setBackground(table.getSelectionBackground());
@@ -47,13 +46,13 @@ public class NullAwareTableCellBooleanRenderer extends JCheckBox implements Tabl
 			setBackground(table.getBackground());
 		}
 		setSelected((((Boolean) value).booleanValue()));
-
+		
 		if (hasFocus) {
 			setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
 		} else {
 			setBorder(noFocusBorder);
 		}
-
+		
 		return this;
 	}
 }

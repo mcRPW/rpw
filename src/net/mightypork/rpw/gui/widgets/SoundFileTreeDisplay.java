@@ -17,45 +17,42 @@ import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
 
 
 public class SoundFileTreeDisplay {
-
+	
 	public JScrollPane scrollPane;
 	public JXTree tree;
 	public FsTreeModel model;
-
-
+	
+	
 	public SoundFileTreeDisplay(DirectoryFsTreeNode root, DialogSoundWizard wizard) {
-
-
 		model = new FsTreeModel(root);
-
+		
 		tree = new JXTree(model);
 		tree.setRowHeight(20);
 		tree.setShowsRootHandles(true);
 		tree.setRootVisible(false);
-
+		
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-
+		
 		tree.setCellRenderer(new DefaultTreeRenderer(new TreeIconProvider()));
-
-
+		
 		tree.addMouseListener(new SoundFileTreeClickListener(tree, wizard));
-
+		
 		tree.setCollapsedIcon(Icons.TREE_OPEN);
 		tree.setExpandedIcon(Icons.TREE_CLOSE);
-
+		
 		scrollPane = new JScrollPane(tree);
 	}
-
-
-	public JComponent getComponent() {
-
+	
+	
+	public JComponent getComponent()
+	{
 		return scrollPane;
 	}
-
-
-	public void setRoot(DirectoryFsTreeNode root) {
-
+	
+	
+	public void setRoot(DirectoryFsTreeNode root)
+	{
 		model.setRoot(root);
 	}
-
+	
 }
