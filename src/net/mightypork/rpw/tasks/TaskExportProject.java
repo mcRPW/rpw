@@ -1,6 +1,7 @@
 package net.mightypork.rpw.tasks;
 
 
+import java.awt.EventQueue;
 import java.io.File;
 
 import javax.swing.JOptionPane;
@@ -19,34 +20,43 @@ public class TaskExportProject {
 	{
 		if (!Projects.isOpen()) return;
 		
-		final Project project = Projects.getActive();
-		
-		final FileChooser fc = new FileChooser(App.getFrame(), FilePath.EXPORT, "Export project", FileChooser.ZIP, true, false, false);
-		
-		final File dir = fc.getCurrentDirectory();
-		final File file = new File(dir, project.getName() + ".zip");
-		fc.setSelectedFile(file);
-		
-		fc.showDialog("Export");
-		if (!fc.approved()) {
-			return;
-		}
-		
-		final File f = fc.getSelectedFile();
-		
-		if (f.exists()) {
-			//@formatter:off
-			final int overwrite = Alerts.askYesNoCancel(
-					App.getFrame(),
-					"File Exists",
-					"File \"" + f.getName() + "\" already exists.\n" +
-					"Do you want to overwrite it?"
-			);
-			//@formatter:on
+		EventQueue.invokeLater(new Runnable() {
 			
-			if (overwrite != JOptionPane.YES_OPTION) return;
-		}
+			@Override
+			public void run()
+			{
+				final Project project = Projects.getActive();
+				
+				final FileChooser fc = new FileChooser(App.getFrame(), FilePath.EXPORT, "Export project", FileChooser.ZIP, true, false, false);
+				
+				final File dir = fc.getCurrentDirectory();
+				final File file = new File(dir, project.getName() + ".zip");
+				fc.setSelectedFile(file);
+				
+				fc.showDialog("Export");
+				if (!fc.approved()) {
+					return;
+				}
+				
+				final File f = fc.getSelectedFile();
+				
+				if (f.exists()) {
+					//@formatter:off
+					final int overwrite = Alerts.askYesNoCancel(
+							App.getFrame(),
+							"File Exists",
+							"File \"" + f.getName() + "\" already exists.\n" +
+							"Do you want to overwrite it?"
+					);
+					//@formatter:on
+					
+					if (overwrite != JOptionPane.YES_OPTION) return;
+				}
+				
+				Tasks.taskExportProject(f, null);
+			}
+		});
 		
-		Tasks.taskExportProject(f, null);
+		
 	}
 }

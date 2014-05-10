@@ -83,9 +83,14 @@ public class TaskReloadVanilla {
 					continue;
 				}
 				
-				final VersionInfo vi = VersionInfo.fromJson(s);
-				if (!vi.isReleaseOrSnapshot()) {
-					Log.w("- unsupported type, skipping");
+				try {
+					final VersionInfo vi = VersionInfo.fromJson(s);
+					if (!vi.isReleaseOrSnapshot()) {
+						Log.w("- unsupported type, skipping");
+						continue;
+					}
+				} catch (com.google.gson.JsonSyntaxException e) {
+					Log.w("- JSON SYNTAX ERROR, skipping.");
 					continue;
 				}
 				

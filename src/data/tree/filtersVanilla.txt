@@ -191,7 +191,6 @@ root.image.gui = assets.minecraft.textures.gui.*
 
 root.image.misc = assets.minecraft.textures.misc.* | assets.minecraft.textures.painting.* | assets.minecraft.textures.effect.*
 
-root.image.entity.misc.chest = assets.minecraft.textures.entity.chest.*
 root.image.entity.misc = assets.minecraft.textures.entity.endercrystal.* | assets.minecraft.textures.entity.arrow | assets.minecraft.textures.entity.beacon_beam | assets.minecraft.textures.entity.boat | assets.minecraft.textures.entity.end_portal | assets.minecraft.textures.entity.enchanting_table_book | assets.minecraft.textures.entity.experience_orb | assets.minecraft.textures.entity.lead_knot | assets.minecraft.textures.entity.minecart | assets.minecraft.textures.entity.sign
 
 root.image.entity.armor = assets.minecraft.textures.models.armor.*
@@ -215,7 +214,12 @@ root.image.entity.mob.wolf = assets.minecraft.textures.entity.wolf.*
 root.image.entity.mob.zombie = assets.minecraft.textures.entity.zombie.*
 root.image.entity.mob = assets.minecraft.textures.entity.silverfish | assets.minecraft.textures.entity.bat | assets.minecraft.textures.entity.blaze | assets.minecraft.textures.entity.chicken | assets.minecraft.textures.entity.iron_golem | assets.minecraft.textures.entity.snowman | assets.minecraft.textures.entity.squid | assets.minecraft.textures.entity.witch | assets.minecraft.textures.entity.zombie_pigman | assets.minecraft.textures.entity.steve
 
+# Chests moved to blocks to make it easier to find
+root.image.block.chest = assets.minecraft.textures.entity.chest.*
+
 root.image.entity = assets.minecraft.textures.entity.*
+
+
 
 root.image.block.redstone.machines = assets.minecraft.textures.blocks.mob_spawner | assets.minecraft.textures.blocks.command_block | assets.minecraft.textures.blocks.dispenser_* | assets.minecraft.textures.blocks.dropper_* | assets.minecraft.textures.blocks.hopper_* | assets.minecraft.textures.blocks.jukebox_* | assets.minecraft.textures.blocks.noteblock | assets.minecraft.textures.blocks.piston_* | assets.minecraft.textures.blocks.redstone_lamp_* | assets.minecraft.textures.blocks.tnt_*
 root.image.block.redstone.circuitry = assets.minecraft.textures.blocks.comparator_* | assets.minecraft.textures.blocks.daylight_detector_* | assets.minecraft.textures.blocks.lever | assets.minecraft.textures.blocks.redstone_dust_* | assets.minecraft.textures.blocks.redstone_torch_* | assets.minecraft.textures.blocks.repeater_* | assets.minecraft.textures.blocks.trip_wire*

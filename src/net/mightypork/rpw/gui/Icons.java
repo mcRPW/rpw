@@ -101,12 +101,12 @@ public class Icons {
 	public static ImageIcon DIALOG_QUESTION;
 	public static ImageIcon DIALOG_WARNING;
 	
-	private static ImageIcon IMAGE_ERROR_16;
-	private static ImageIcon IMAGE_ERROR_32;
-	private static ImageIcon IMAGE_ERROR_64;
-	private static ImageIcon IMAGE_ERROR_128;
+	public static ImageIcon IMAGE_ERROR_16;
+	public static ImageIcon IMAGE_ERROR_32;
+	public static ImageIcon IMAGE_ERROR_64;
+	public static ImageIcon IMAGE_ERROR_128;
 	
-	private static ImageIcon IMAGE_NOT_FOUND;
+	public static ImageIcon IMAGE_NOT_FOUND;
 	
 	
 	public static void init()

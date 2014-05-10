@@ -1,6 +1,7 @@
 package net.mightypork.rpw.tasks;
 
 
+import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,37 +17,45 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class TaskImportReplacement {
 	
-	public static void run(AssetEntry entry, Runnable afterImport)
+	public static void run(final AssetEntry entry, final Runnable afterImport)
 	{
 		final String title = "Replace " + entry.getLabel() + "." + entry.getType().getExtension();
 		
-		final FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_FILE, title, entry.getType().getFilter(), true, false, false);
-		
-		fc.showDialog("Import");
-		if (!fc.approved()) {
-			return;
-		}
-		
-		final File f = fc.getSelectedFile();
-		
-		if (f == null || !f.exists()) {
-			Log.w("Problem accessing file:\n" + f);
-			Alerts.error(App.getFrame(), "That's not a valid file.");
-			return;
-		}
-		
-		try {
-			final File target = new File(Projects.getActive().getAssetsDirectory(), entry.getPath());
+		EventQueue.invokeLater(new Runnable() {
 			
-			target.getParentFile().mkdirs();
-			
-			FileUtils.copyFile(f, target);
-			
-			afterImport.run();
-			
-		} catch (final IOException e) {
-			Log.e(e);
-			Alerts.error(App.getFrame(), "Something went wrong during import.");
-		}
+			@Override
+			public void run()
+			{
+				final FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_FILE, title, entry.getType().getFilter(), true, false, false);
+				
+				fc.showDialog("Import");
+				if (!fc.approved()) {
+					return;
+				}
+				
+				final File f = fc.getSelectedFile();
+				
+				if (f == null || !f.exists()) {
+					Log.w("Problem accessing file:\n" + f);
+					Alerts.error(App.getFrame(), "That's not a valid file.");
+					return;
+				}
+				
+				try {
+					final File target = new File(Projects.getActive().getAssetsDirectory(), entry.getPath());
+					
+					target.getParentFile().mkdirs();
+					
+					FileUtils.copyFile(f, target);
+					
+					afterImport.run();
+					
+				} catch (final IOException e) {
+					Log.e(e);
+					Alerts.error(App.getFrame(), "Something went wrong during import.");
+				}
+			}
+		});
+		
 	}
 }

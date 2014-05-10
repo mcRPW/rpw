@@ -168,11 +168,8 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 			
 			Log.f3("Assets version to be used: " + assetsVersion);
 			
-		} catch (final IOException e) {
+		} catch (final Exception e) {
 			Log.e("Error while parsing JSON file, aborting.", e);
-			return false;
-		} catch (final IllegalArgumentException e) {
-			Log.e("Bad JSON file structure, aborting.", e);
 			return false;
 		}
 		

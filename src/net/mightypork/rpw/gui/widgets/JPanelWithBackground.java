@@ -12,7 +12,7 @@ public class JPanelWithBackground extends JPanel {
 	private Image image;
 	
 	
-	public void setbackground(Image image)
+	public void setBackground(Image image)
 	{
 		this.image = image;
 		repaint();

@@ -28,6 +28,7 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXLabel;
 import org.jdesktop.swingx.JXPanel;
@@ -77,7 +78,8 @@ public class SidePanel {
 	private Border previewBorder;
 	
 	
-	public SidePanel() {
+	public SidePanel()
+	{
 		panel = new JXPanel();
 		panel.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL, Gui.GAP, Gui.GAPL));
 		
@@ -331,10 +333,15 @@ public class SidePanel {
 
 		hb = new HBox();
 			hb.glue();
-			hb.add(projectIconLabel = new JXLabel());
+			
+			JPanel jPanel = new JPanel();
+			
+			hb.add(jPanel);
+			
+			jPanel.add(projectIconLabel = new JXLabel());
 	
 			//@formatter:off
-			projectIconLabel.setBorder(
+			jPanel.setBorder(
 					BorderFactory.createTitledBorder(
 							new CompoundBorder(
 									BorderFactory.createLineBorder(new Color(0x666666)),
@@ -342,7 +349,10 @@ public class SidePanel {
 							),
 							"Pack Icon"
 					)
-			);	
+			);
+			
+			jPanel.setMaximumSize(new Dimension(145, 165));
+			jPanel.setPreferredSize(new Dimension(145, 165));
 
 			projectIconLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -386,6 +396,7 @@ public class SidePanel {
 			final ImageIcon ic = Icons.getIconFromFile(iconFile, new Dimension(128, 128));
 			projectIconLabel.setIcon(ic);
 			
+			
 			infoBox.setVisible(true);
 			
 		} else {
@@ -419,7 +430,7 @@ public class SidePanel {
 			
 			displayedLeaf = leaf;
 			
-			InputStream in;
+			InputStream in = null;
 			
 			final EAsset type = leaf.getAssetType();
 			
@@ -427,33 +438,43 @@ public class SidePanel {
 				// image asset
 				final String key = leaf.getAssetKey();
 				if (key.startsWith("assets.minecraft.textures.font.")) {
-					previewImageBg.setbackground(Icons.TRANSPARENT_FONTS.getImage());
+					previewImageBg.setBackground(Icons.TRANSPARENT_FONTS.getImage());
 				} else {
-					previewImageBg.setbackground(Icons.TRANSPARENT.getImage());
+					previewImageBg.setBackground(Icons.TRANSPARENT.getImage());
 				}
 				
 				try {
+					
 					in = Sources.getAssetStream(source, leaf.getAssetKey());
-				} catch (final IOException e) {
+					if (in == null) {
+						previewImage.setIcon(null);
+					} else {
+						final ImageIcon i = Icons.getIconFromStream(in, new Dimension(256, 256));
+						
+						previewImage.setIcon(i);
+						
+						final String fn = Utils.cropStringAtEnd(fname, 25);
+						
+						previewImageBorder.setTitle(fn + " (" + i.getDescription() + ")");
+					}
+					
+					final boolean metaInProj = leaf.isMetaProvidedByProject();
+					btnMetaI.setIcon(metaInProj ? Icons.MENU_EDIT : Icons.MENU_NEW);
+					
+					previewCardLayout.show(previewPanel, IMAGE);
+					
+					
+				} catch (IOException e) {
+					Log.e(e);
 					return;
+				} finally {
+					try {
+						if (in != null) in.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 				
-				if (in == null) {
-					previewImage.setIcon(null);
-				} else {
-					final ImageIcon i = Icons.getIconFromStream(in, new Dimension(256, 256));
-					
-					previewImage.setIcon(i);
-					
-					final String fn = Utils.cropStringAtEnd(fname, 25);
-					
-					previewImageBorder.setTitle(fn + " (" + i.getDescription() + ")");
-				}
-				
-				final boolean metaInProj = leaf.isMetaProvidedByProject();
-				btnMetaI.setIcon(metaInProj ? Icons.MENU_EDIT : Icons.MENU_NEW);
-				
-				previewCardLayout.show(previewPanel, IMAGE);
 				
 			} else if (type.isText()) {
 				// text asset
@@ -462,21 +483,28 @@ public class SidePanel {
 				try {
 					in = Sources.getAssetStream(leaf.resolveAssetSource(), leaf.getAssetKey());
 					text = FileUtils.streamToString(in, 100);
-				} catch (final Exception e) {
-					return;
-				}
-				
-				if (in == null) {
-					previewText.setText("");
-				} else {
-					previewText.setText(text);
+					if (in == null) {
+						previewText.setText("");
+					} else {
+						previewText.setText(text);
+						
+						previewTextBorder.setTitle(fname);
+					}
 					
-					previewTextBorder.setTitle(fname);
+					previewText.setCaretPosition(0); // scroll to top
+					
+					previewCardLayout.show(previewPanel, TEXT);
+				} catch (IOException e) {
+					Log.e(e);
+					return;
+				} finally {
+					try {
+						if (in != null) in.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 				
-				previewText.setCaretPosition(0); // scroll to top
-				
-				previewCardLayout.show(previewPanel, TEXT);
 				
 			} else if (type.isSound()) {
 				// sound asset

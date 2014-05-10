@@ -153,8 +153,9 @@ public class Project extends Source implements NodeSourceProvider {
 			
 			saveToTmp();
 			
-		} catch (final IOException e) {
+		} catch (final Exception e) {
 			Log.w(getLogPrefix() + "Project data files could not be loaded.");
+			Alerts.error(App.getFrame(), "An arror occured while loading the project.\nPlease, check the log for details.");
 		}
 		
 	}
