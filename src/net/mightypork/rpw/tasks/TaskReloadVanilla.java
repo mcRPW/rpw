@@ -83,9 +83,14 @@ public class TaskReloadVanilla {
 					continue;
 				}
 				
+				if (s == null || s.length() == 0) {
+					Log.w("- Empty or missing version file, skipping.");
+					continue;
+				}
+				
 				try {
 					final VersionInfo vi = VersionInfo.fromJson(s);
-					if (!vi.isReleaseOrSnapshot()) {
+					if (vi == null || !vi.isReleaseOrSnapshot()) {
 						Log.w("- unsupported type, skipping");
 						continue;
 					}
