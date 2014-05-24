@@ -9,7 +9,7 @@ import net.mightypork.rpw.utils.logging.Log;
 /**
  * Main Config class
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class Config {
 	

@@ -4,7 +4,7 @@ package net.mightypork.rpw.struct;
 /**
  * Entry in objects index
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class FileObject {
 	

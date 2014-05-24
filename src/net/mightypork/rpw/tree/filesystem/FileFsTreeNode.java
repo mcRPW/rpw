@@ -13,7 +13,7 @@ import net.mightypork.rpw.utils.files.FileUtils;
 /**
  * File filesystem tree node
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class FileFsTreeNode extends AbstractFsTreeNode {
 	

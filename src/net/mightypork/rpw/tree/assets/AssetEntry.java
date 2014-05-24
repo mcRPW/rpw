@@ -8,7 +8,7 @@ import net.mightypork.rpw.utils.files.FileUtils;
 /**
  * Represents a node in the assets folder, based in pack root
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class AssetEntry implements Comparable<AssetEntry> {
 	

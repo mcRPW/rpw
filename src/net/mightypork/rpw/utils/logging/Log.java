@@ -25,7 +25,7 @@ import net.mightypork.rpw.utils.files.OsUtils;
 /**
  * Static logger class.
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  * @copy (c) 2013
  */
 public class Log {
@@ -371,7 +371,7 @@ public class Log {
 	/**
 	 * PowerCraft Log file formatter.
 	 * 
-	 * @author MightyPork
+	 * @author Ondřej Hruška (MightyPork)
 	 * @copy (c) 2012
 	 */
 	private static class LogFormatter extends Formatter {

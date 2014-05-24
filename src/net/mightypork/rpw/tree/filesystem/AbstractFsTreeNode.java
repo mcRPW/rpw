@@ -13,7 +13,7 @@ import net.mightypork.rpw.utils.AlphanumComparator;
 /**
  * Abstract filesystem tree node
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public abstract class AbstractFsTreeNode implements TreeNode, Comparable<AbstractFsTreeNode>, IFileTreeNode {
 	

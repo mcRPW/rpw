@@ -19,7 +19,7 @@ import net.mightypork.rpw.utils.logging.Log;
  * lines with "=" must have "key = value" format, or a warning is logged.<br>
  * use "NULL" to create empty value.
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class SimpleConfig {
 	

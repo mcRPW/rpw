@@ -13,7 +13,7 @@ import net.mightypork.rpw.utils.logging.Log;
 /**
  * Sector's utils class
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class Utils {
 	

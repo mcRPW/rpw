@@ -6,7 +6,7 @@ package net.mightypork.rpw.utils;
 /**
  * Math helper
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class Calc {
 	

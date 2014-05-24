@@ -19,7 +19,7 @@ import net.mightypork.rpw.utils.validation.StringFilter;
 /**
  * Utilities for manipulating zip files
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class ZipUtils {
 	

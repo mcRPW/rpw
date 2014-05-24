@@ -30,7 +30,7 @@ import net.mightypork.rpw.utils.logging.Log;
 /**
  * Import pack as current project (assuming the project is newly created)
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 	

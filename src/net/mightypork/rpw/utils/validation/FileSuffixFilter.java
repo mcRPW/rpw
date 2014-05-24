@@ -8,7 +8,7 @@ import java.io.FileFilter;
 /**
  * File filter for certain suffixes
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class FileSuffixFilter implements FileFilter {
 	

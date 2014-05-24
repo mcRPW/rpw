@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 /**
  * Listens only to right-click & similar
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public abstract class PopupTriggerListener implements MouseListener {
 	

@@ -12,7 +12,7 @@ import net.mightypork.rpw.tree.assets.AssetEntry;
 /**
  * Asset provider - base
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public abstract class Source implements ISource {
 	

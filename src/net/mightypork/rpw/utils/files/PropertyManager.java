@@ -14,7 +14,7 @@ import net.mightypork.rpw.utils.Utils;
  * Methods starting with put are for filling. Most of the others are shortcuts
  * to getters.
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class PropertyManager {
 	
@@ -24,7 +24,7 @@ public class PropertyManager {
 	 * newlines can be inserted to separate categories, and individual keys can
 	 * have their own inline comments.
 	 * 
-	 * @author MightyPork
+	 * @author Ondřej Hruška (MightyPork)
 	 */
 	private static class SortedProperties extends Properties {
 		
@@ -341,7 +341,7 @@ public class PropertyManager {
 	/**
 	 * Property entry in Property manager.
 	 * 
-	 * @author MightyPork
+	 * @author Ondřej Hruška (MightyPork)
 	 */
 	private class Property {
 		

@@ -4,7 +4,7 @@ package net.mightypork.rpw.tree.assets.groups;
 /**
  * Object describing group to be created.
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class GroupInfo implements Comparable<GroupInfo> {
 	

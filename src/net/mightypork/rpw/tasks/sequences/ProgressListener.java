@@ -4,7 +4,7 @@ package net.mightypork.rpw.tasks.sequences;
 /**
  * Something that shows progress of a sequence based on steps
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public interface ProgressListener {
 	

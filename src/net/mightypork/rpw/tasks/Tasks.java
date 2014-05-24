@@ -43,7 +43,7 @@ import net.mightypork.rpw.utils.logging.Log;
  * Tasks class<br>
  * Each task returns ID, to be checked with isRunning().
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class Tasks {
 	

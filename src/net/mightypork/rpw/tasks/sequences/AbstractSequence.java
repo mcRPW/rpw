@@ -7,7 +7,7 @@ import net.mightypork.rpw.utils.logging.Log;
 /**
  * A command sequence
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public abstract class AbstractSequence {
 	

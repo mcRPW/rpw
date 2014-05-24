@@ -21,7 +21,7 @@ import net.mightypork.rpw.gui.helpers.FileChooser.FileChooserFilter;
 /**
  * File picker field with file chooser dialog
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class FileInput extends HBox {
 	

@@ -17,7 +17,7 @@ import javax.swing.table.TableCellRenderer;
 /**
  * Checkbox renderer for boolean cells, rendering null as empty cell.
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class NullAwareTableCellBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource {
 	

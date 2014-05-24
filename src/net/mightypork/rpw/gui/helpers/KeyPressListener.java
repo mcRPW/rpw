@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 
 
 /**
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public abstract class KeyPressListener implements KeyListener {
 	

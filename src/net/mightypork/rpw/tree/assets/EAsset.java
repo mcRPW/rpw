@@ -11,7 +11,7 @@ import net.mightypork.rpw.utils.files.FileUtils;
 /**
  * Enum of asset filetypes
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public enum EAsset
 {

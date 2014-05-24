@@ -15,7 +15,7 @@ import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 /**
  * RPW wrapper for JFileChooser
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class FileChooser {
 	

@@ -15,7 +15,7 @@ import net.mightypork.rpw.utils.files.OsUtils;
 /**
  * Storage for information about vanilla pack
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class VanillaPack extends Source {
 	

@@ -12,7 +12,7 @@ import net.mightypork.rpw.utils.logging.Log;
 /**
  * Class for building a zip file
  * 
- * @author MightyPork
+ * @author Ondřej Hruška (MightyPork)
  */
 public class ZipBuilder {
 	
