@@ -358,10 +358,10 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 							name = mel.getModListName();
 						}
 					} catch (final Exception e) {
-						Log.e("Broken mcmod.info file in " + f.getName() + "\n" + e.getMessage());
+						Log.e("Broken mcmod.info file in " + f.getName(), e);
 					}
 				} catch (final Exception e) {
-					Log.e("Error reading mod file, skipping: " + f.getName());
+					Log.e("Error reading mod file, skipping: " + f.getName(), e);
 					continue;
 				} finally {
 					Utils.close(modzf);
