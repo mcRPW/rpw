@@ -46,7 +46,8 @@ public class DialogOpenProject extends RpwDialog {
 	}
 	
 	
-	public DialogOpenProject() {
+	public DialogOpenProject()
+	{
 		super(App.getFrame(), "Manage Projects");
 		
 		projectNames = Projects.getProjectNames();

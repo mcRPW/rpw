@@ -12,7 +12,8 @@ import net.mightypork.rpw.gui.Gui;
 
 public class HBox extends RpwBox {
 	
-	public HBox() {
+	public HBox()
+	{
 		super(BoxLayout.X_AXIS);
 	}
 	

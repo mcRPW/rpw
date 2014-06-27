@@ -31,7 +31,8 @@ public class TreeBuilder {
 	private boolean ignoreOrphans = false;
 	
 	
-	public TreeBuilder() {
+	public TreeBuilder()
+	{
 	}
 	
 	

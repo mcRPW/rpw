@@ -6,7 +6,8 @@ public class SourceName {
 	private final String s;
 	
 	
-	public SourceName(String s) {
+	public SourceName(String s)
+	{
 		this.s = s;
 	}
 	

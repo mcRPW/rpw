@@ -20,7 +20,8 @@ public class CountNodesOfTypeProcessor implements AssetTreeProcessor {
 	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 	
 	
-	public CountNodesOfTypeProcessor(EAsset type) {
+	public CountNodesOfTypeProcessor(EAsset type)
+	{
 		this.type = type;
 	}
 	

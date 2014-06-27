@@ -7,11 +7,13 @@ public class PackInfo {
 	public String description;
 	
 	
-	public PackInfo() {
+	public PackInfo()
+	{
 	}
 	
 	
-	public PackInfo(int format, String desc) {
+	public PackInfo(int format, String desc)
+	{
 		this.pack_format = format;
 		this.description = desc;
 	}

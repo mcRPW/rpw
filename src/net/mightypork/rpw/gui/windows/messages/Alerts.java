@@ -90,7 +90,7 @@ public class Alerts {
 		loadingState = waiting;
 		
 		if (loadingStateDisplayed == loadingState) return; // no change.
-			
+		
 		t.schedule(new TimerTask() {
 			
 			@Override

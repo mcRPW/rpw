@@ -159,7 +159,7 @@ public class Projects {
 		for (final String proj : list) {
 			if (recentProjects.contains(proj)) continue; // already added to list
 			if (!allValidProjects.contains(proj)) continue; // not a valid project
-				
+			
 			recentProjects.add(proj);
 		}
 		

@@ -19,7 +19,8 @@ public class JPanelWithBackground extends JPanel {
 	}
 	
 	
-	public JPanelWithBackground(Image image) {
+	public JPanelWithBackground(Image image)
+	{
 		this.image = image;
 		repaint();
 	}

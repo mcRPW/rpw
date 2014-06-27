@@ -20,7 +20,8 @@ public class SoundFileTreeClickListener extends PopupTriggerListener {
 	private final DialogSoundWizard wizard;
 	
 	
-	public SoundFileTreeClickListener(JTree tree, DialogSoundWizard wizard) {
+	public SoundFileTreeClickListener(JTree tree, DialogSoundWizard wizard)
+	{
 		this.tree = tree;
 		this.wizard = wizard;
 	}

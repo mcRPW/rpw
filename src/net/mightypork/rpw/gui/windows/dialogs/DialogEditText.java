@@ -47,7 +47,8 @@ public class DialogEditText extends DialogEditorBase {
 	private String dlgHeading;
 	
 	
-	public DialogEditText(final AssetTreeLeaf node) throws IOException {
+	public DialogEditText(final AssetTreeLeaf node) throws IOException
+	{
 		this();
 		
 		dlgHeading = Utils.fromLastChar(node.getAssetEntry().getPath(), '/');
@@ -75,7 +76,8 @@ public class DialogEditText extends DialogEditorBase {
 	}
 	
 	
-	public DialogEditText(final File file) throws IOException {
+	public DialogEditText(final File file) throws IOException
+	{
 		this();
 		
 		final String path = Utils.fromLastChar(file.getPath(), '/');
@@ -99,7 +101,8 @@ public class DialogEditText extends DialogEditorBase {
 	}
 	
 	
-	public DialogEditText() {
+	public DialogEditText()
+	{
 		super();
 	}
 	

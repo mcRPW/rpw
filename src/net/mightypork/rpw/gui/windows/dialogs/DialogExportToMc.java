@@ -52,7 +52,8 @@ public class DialogExportToMc extends RpwDialog {
 	private static final int MC_NO_CHANGE = 2;
 	
 	
-	public DialogExportToMc() {
+	public DialogExportToMc()
+	{
 		super(App.getFrame(), "Export");
 		
 		installedPackNames = getOptions();

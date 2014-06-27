@@ -19,12 +19,14 @@ public class ManagerLayout extends HBox {
 	private int maxButtons = 0;
 	
 	
-	public ManagerLayout() {
+	public ManagerLayout()
+	{
 		this(6);
 	}
 	
 	
-	public ManagerLayout(int maxButtons) {
+	public ManagerLayout(int maxButtons)
+	{
 		left = new VBox();
 		
 		right = new JPanel();

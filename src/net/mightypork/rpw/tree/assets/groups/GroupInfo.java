@@ -18,7 +18,8 @@ public class GroupInfo implements Comparable<GroupInfo> {
 	 * @param key group key - must NOT end with a dot; dots are delimiters
 	 * @param label shown label
 	 */
-	public GroupInfo(String key, String label) {
+	public GroupInfo(String key, String label)
+	{
 		this.key = key;
 		this.label = label;
 	}

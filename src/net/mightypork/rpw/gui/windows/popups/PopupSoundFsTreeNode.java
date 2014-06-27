@@ -81,7 +81,8 @@ public class PopupSoundFsTreeNode {
 	}
 	
 	
-	public PopupSoundFsTreeNode(Container c, int x, int y, List<AbstractFsTreeNode> nodes, DialogSoundWizard wizard) {
+	public PopupSoundFsTreeNode(Container c, int x, int y, List<AbstractFsTreeNode> nodes, DialogSoundWizard wizard)
+	{
 		if (nodes == null || nodes.size() == 0) return;
 		
 		this.container = c;

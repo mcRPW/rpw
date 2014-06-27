@@ -25,7 +25,8 @@ public class DialogProgressTerminal extends DialogTerminalBase implements LogMon
 	private JLabel stepName;
 	
 	
-	public DialogProgressTerminal(String title, String heading) {
+	public DialogProgressTerminal(String title, String heading)
+	{
 		super(App.getFrame(), title);
 		
 		this.heading = heading;

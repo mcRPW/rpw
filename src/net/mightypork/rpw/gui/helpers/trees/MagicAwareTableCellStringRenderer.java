@@ -17,7 +17,8 @@ import net.mightypork.rpw.library.Sources;
 
 public class MagicAwareTableCellStringRenderer extends JLabel implements TableCellRenderer {
 	
-	public MagicAwareTableCellStringRenderer() {
+	public MagicAwareTableCellStringRenderer()
+	{
 		setOpaque(true); //MUST do this for background to show up.
 	}
 	

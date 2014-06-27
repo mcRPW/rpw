@@ -12,7 +12,8 @@ public class FileObject {
 	public int size;
 	
 	
-	public FileObject() {
+	public FileObject()
+	{
 	}
 	
 	

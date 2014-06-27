@@ -30,7 +30,8 @@ public class DialogSaveAs extends RpwDialog {
 	private JTextField titleField;
 	
 	
-	public DialogSaveAs() {
+	public DialogSaveAs()
+	{
 		super(App.getFrame(), "Save As...");
 		
 		projectNames = Projects.getProjectNames();

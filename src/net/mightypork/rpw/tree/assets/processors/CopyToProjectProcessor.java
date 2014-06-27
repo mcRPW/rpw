@@ -29,7 +29,8 @@ public class CopyToProjectProcessor implements AssetTreeProcessor {
 	private final List<String> ignoredSources = new ArrayList<String>();
 	
 	
-	public CopyToProjectProcessor() {
+	public CopyToProjectProcessor()
+	{
 	}
 	
 	

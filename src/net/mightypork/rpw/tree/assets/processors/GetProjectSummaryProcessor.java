@@ -21,7 +21,8 @@ public class GetProjectSummaryProcessor implements AssetTreeProcessor {
 	private final Map<String, String> summary = new LinkedHashMap<String, String>();
 	
 	
-	public GetProjectSummaryProcessor() {
+	public GetProjectSummaryProcessor()
+	{
 	}
 	
 	

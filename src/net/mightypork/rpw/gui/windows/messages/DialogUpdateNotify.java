@@ -3,7 +3,12 @@ package net.mightypork.rpw.gui.windows.messages;
 
 import java.awt.Dimension;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Paths;
@@ -22,7 +27,8 @@ public class DialogUpdateNotify extends RpwDialog {
 	private final String textMd;
 	
 	
-	public DialogUpdateNotify(String version, String textMd) {
+	public DialogUpdateNotify(String version, String textMd)
+	{
 		super(App.getFrame(), "Your RPW is outdated");
 		
 		this.version = version;

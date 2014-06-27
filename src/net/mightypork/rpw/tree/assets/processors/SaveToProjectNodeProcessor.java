@@ -17,7 +17,8 @@ public class SaveToProjectNodeProcessor implements AssetTreeProcessor {
 	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 	
 	
-	public SaveToProjectNodeProcessor(Project target) {
+	public SaveToProjectNodeProcessor(Project target)
+	{
 		this.project = target;
 	}
 	

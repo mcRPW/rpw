@@ -4,7 +4,14 @@ package net.mightypork.rpw.gui.windows.dialogs;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
@@ -20,7 +27,8 @@ public class DialogHelp extends RpwDialog {
 	private JButton buttonOK;
 	
 	
-	public DialogHelp() {
+	public DialogHelp()
+	{
 		super(App.getFrame(), "Quick Guide");
 		
 		createDialog();

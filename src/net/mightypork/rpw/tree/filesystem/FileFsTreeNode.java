@@ -21,7 +21,8 @@ public class FileFsTreeNode extends AbstractFsTreeNode {
 	private final EAsset type;
 	
 	
-	public FileFsTreeNode(File path) {
+	public FileFsTreeNode(File path)
+	{
 		this.path = path;
 		this.name = FileUtils.getBasename(path.getName());
 		this.type = EAsset.forFile(path);

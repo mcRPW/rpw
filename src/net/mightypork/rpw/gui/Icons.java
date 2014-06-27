@@ -233,12 +233,14 @@ public class Icons {
 	
 	private static class MyResizer extends AbstractResizer {
 		
-		public MyResizer() {
+		public MyResizer()
+		{
 			this(Collections.<RenderingHints.Key, Object> emptyMap());
 		}
 		
 		
-		public MyResizer(Map<RenderingHints.Key, Object> hints) {
+		public MyResizer(Map<RenderingHints.Key, Object> hints)
+		{
 			super(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR, hints);
 		}
 	}

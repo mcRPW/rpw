@@ -47,7 +47,8 @@ public class DialogManageLibrary extends RpwDialog {
 	}
 	
 	
-	public DialogManageLibrary() {
+	public DialogManageLibrary()
+	{
 		super(App.getFrame(), "Manage Library");
 		
 		packNames = Sources.getResourcepackNames();

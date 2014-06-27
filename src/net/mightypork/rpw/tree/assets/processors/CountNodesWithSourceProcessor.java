@@ -19,7 +19,8 @@ public class CountNodesWithSourceProcessor implements AssetTreeProcessor {
 	private final String source;
 	
 	
-	public CountNodesWithSourceProcessor(String source) {
+	public CountNodesWithSourceProcessor(String source)
+	{
 		this.source = source;
 	}
 	

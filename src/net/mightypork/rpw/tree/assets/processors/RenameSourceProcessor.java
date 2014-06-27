@@ -15,7 +15,8 @@ public class RenameSourceProcessor implements AssetTreeProcessor {
 	private final String oldSource, newSource;
 	
 	
-	public RenameSourceProcessor(String oldSource, String newSource) {
+	public RenameSourceProcessor(String oldSource, String newSource)
+	{
 		this.oldSource = oldSource;
 		this.newSource = newSource;
 	}

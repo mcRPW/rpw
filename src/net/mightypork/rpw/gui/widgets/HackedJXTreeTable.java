@@ -15,7 +15,8 @@ import org.jdesktop.swingx.treetable.TreeTableModel;
 
 public class HackedJXTreeTable extends JXTreeTable {
 	
-	public HackedJXTreeTable(TreeTableModel treeModel) {
+	public HackedJXTreeTable(TreeTableModel treeModel)
+	{
 		super(treeModel);
 	}
 	

@@ -33,7 +33,8 @@ public class DialogProjectSummary extends RpwDialog {
 	private JButton btnClose;
 	
 	
-	public DialogProjectSummary() {
+	public DialogProjectSummary()
+	{
 		super(App.getFrame(), "Project summary");
 		
 		createDialog();

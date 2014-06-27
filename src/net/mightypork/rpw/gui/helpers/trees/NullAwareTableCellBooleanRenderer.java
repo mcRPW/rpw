@@ -26,7 +26,8 @@ public class NullAwareTableCellBooleanRenderer extends JCheckBox implements Tabl
 	private final DefaultTableCellRenderer cdr = new DefaultTableCellRenderer();
 	
 	
-	public NullAwareTableCellBooleanRenderer() {
+	public NullAwareTableCellBooleanRenderer()
+	{
 		super();
 		setHorizontalAlignment(SwingConstants.CENTER);
 		setBorderPainted(true);

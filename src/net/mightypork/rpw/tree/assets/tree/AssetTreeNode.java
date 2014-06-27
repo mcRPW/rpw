@@ -19,7 +19,8 @@ public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNo
 	protected AssetTreeNode parent = null;
 	
 	
-	public AssetTreeNode(String label, String librarySource) {
+	public AssetTreeNode(String label, String librarySource)
+	{
 		this.label = label;
 		this.librarySource = librarySource;
 	}

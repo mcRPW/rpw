@@ -38,7 +38,8 @@ public enum EAsset
 	
 	//@formatter:on
 	
-	private EAsset(String extension) {
+	private EAsset(String extension)
+	{
 		this.extension = extension;
 	}
 	

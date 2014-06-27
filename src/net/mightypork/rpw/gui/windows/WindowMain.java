@@ -31,7 +31,8 @@ public class WindowMain {
 	public SidePanel sidePanel;
 	
 	
-	public WindowMain() {
+	public WindowMain()
+	{
 		frame = new JXFrame(App.getWindowTitle());
 		frame.setIconImage(Icons.WINDOW.getImage());
 		

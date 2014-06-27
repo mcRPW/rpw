@@ -17,7 +17,8 @@ import org.jdesktop.swingx.JXTreeTable;
 
 public class AssetTableClickListener extends PopupTriggerListener {
 	
-	public AssetTableClickListener(JXTreeTable treeTable) {
+	public AssetTableClickListener(JXTreeTable treeTable)
+	{
 		this.treeTable = treeTable;
 	}
 	

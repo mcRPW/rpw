@@ -26,7 +26,8 @@ public class GroupFilter {
 	 * @param groupKey target group key
 	 * @param filterSyntax matching patterns (* = wild card, | = divider)
 	 */
-	public GroupFilter(String groupKey, String filterSyntax) {
+	public GroupFilter(String groupKey, String filterSyntax)
+	{
 		this.filterSyntax = filterSyntax;
 		this.groupKey = groupKey;
 		

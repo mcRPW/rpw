@@ -19,7 +19,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.TransferHandler;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -43,6 +50,7 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.struct.SoundEntry;
 import net.mightypork.rpw.struct.SoundEntryMap;
+import net.mightypork.rpw.struct.SoundSubEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.tree.filesystem.AbstractFsTreeNode;
 import net.mightypork.rpw.tree.filesystem.DirectoryFsTreeNode;
@@ -66,6 +74,7 @@ public class DialogSoundWizard extends RpwDialog {
 	
 	private JComboBox fieldCategory;
 	private JTextField fieldKey;
+	private JCheckBox ckStreamed;
 	
 	private SimpleStringList fileList;
 	private SimpleStringList keyList;
@@ -80,7 +89,8 @@ public class DialogSoundWizard extends RpwDialog {
 	private ArrayList<Component> middlePanelComponents;
 	
 	
-	public DialogSoundWizard() {
+	public DialogSoundWizard()
+	{
 		super(App.getFrame(), "Sound Wizard");
 		
 		createDialog();
@@ -167,6 +177,7 @@ public class DialogSoundWizard extends RpwDialog {
 		// fields
 		final JLabel l1 = new JLabel("Name:");
 		final JLabel l2 = new JLabel("Category:");
+		final JLabel l3 = new JLabel("Playback:");
 		middlePanelComponents.add(l1);
 		middlePanelComponents.add(l2);
 		
@@ -179,7 +190,11 @@ public class DialogSoundWizard extends RpwDialog {
 		fieldCategory = new JComboBox(Const.SOUND_CATEGORIES);
 		middlePanelComponents.add(fieldCategory);
 		
-		vb.springForm(new Object[] { l1, l2 }, new JComponent[] { fieldKey, fieldCategory });
+		ckStreamed = new JCheckBox("Streamed (use for music)");
+		ckStreamed.setToolTipText("Use for long sounds and music, to avoid lag while playing the sound.");
+		middlePanelComponents.add(ckStreamed);
+		
+		vb.springForm(new Object[] { l1, l2, l3 }, new JComponent[] { fieldKey, fieldCategory, ckStreamed });
 		
 		// file list
 		JXTitledSeparator sep;
@@ -371,6 +386,7 @@ public class DialogSoundWizard extends RpwDialog {
 			public void actionPerformed(ActionEvent e)
 			{
 				markChange();
+				
 			}
 		});
 		
@@ -387,7 +403,16 @@ public class DialogSoundWizard extends RpwDialog {
 				keyList.removeItem(editedKey);
 				keyList.addItem(key);
 				
-				final SoundEntry newSoundEntry = new SoundEntry(ctg, fileList.getItems());
+				final boolean streamed = ckStreamed.isSelected();
+				
+				final List<String> soundsAdded = fileList.getItems();
+				final List<SoundSubEntry> subentries = new ArrayList<SoundSubEntry>();
+				
+				for (final String s : soundsAdded) {
+					subentries.add(new SoundSubEntry(s, streamed));
+				}
+				
+				final SoundEntry newSoundEntry = new SoundEntry(ctg, subentries);
 				
 				soundMap.remove(editedKey);
 				soundMap.put(key, newSoundEntry);
@@ -531,7 +556,16 @@ public class DialogSoundWizard extends RpwDialog {
 			fieldKey.setText(editedKey);
 			fieldCategory.setSelectedItem(se.category);
 			
-			fileList.setItems(se.sounds);
+			final ArrayList<String> snames = new ArrayList<String>();
+			boolean streamed = false; // if at least one is streamed, make all streamed (simplifying things)
+			for (final SoundSubEntry sse : se.sounds) {
+				snames.add(sse.name);
+				streamed |= sse.stream;
+			}
+			
+			fileList.setItems(snames);
+			
+			ckStreamed.setSelected(streamed);
 			
 			suppressEditCheck = false;
 			

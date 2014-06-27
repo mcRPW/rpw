@@ -11,7 +11,8 @@ import net.mightypork.rpw.utils.Utils;
 
 public class AssetGrouperRaw extends AssetGrouper {
 	
-	public AssetGrouperRaw() {
+	public AssetGrouperRaw()
+	{
 		groups.clear();
 		filters.clear();
 		

@@ -7,7 +7,8 @@ import javax.swing.tree.TreeNode;
 
 public class FsTreeModel extends DefaultTreeModel {
 	
-	public FsTreeModel(DirectoryFsTreeNode rootDirectory) {
+	public FsTreeModel(DirectoryFsTreeNode rootDirectory)
+	{
 		super(null);
 		
 		setRoot(rootDirectory);

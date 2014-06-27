@@ -29,7 +29,8 @@ public abstract class DialogEditorBase extends RpwDialog {
 	private HBox buttonsBox;
 	
 	
-	public DialogEditorBase() {
+	public DialogEditorBase()
+	{
 		super(App.getFrame(), "Text Editor"); // dummy title
 		
 	}

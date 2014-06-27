@@ -11,7 +11,8 @@ public class FolderSource extends Source {
 	private final File folder;
 	
 	
-	public FolderSource(File base) {
+	public FolderSource(File base)
+	{
 		folder = base;
 	}
 	

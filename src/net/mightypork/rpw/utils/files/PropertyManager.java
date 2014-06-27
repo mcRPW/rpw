@@ -1,9 +1,24 @@
 package net.mightypork.rpw.utils.files;
 
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.TreeMap;
+import java.util.Vector;
 
 import net.mightypork.rpw.utils.Calc;
 import net.mightypork.rpw.utils.Utils;
@@ -369,7 +384,8 @@ public class PropertyManager {
 		 * @param entry_type type
 		 * @param entry_comment entry comment
 		 */
-		public Property(String key, boolean default_value, PropertyType entry_type, String entry_comment) {
+		public Property(String key, boolean default_value, PropertyType entry_type, String entry_comment)
+		{
 			name = key;
 			defbool = default_value;
 			type = entry_type;
@@ -385,7 +401,8 @@ public class PropertyManager {
 		 * @param entry_type property type from enum
 		 * @param entry_comment property comment or null
 		 */
-		public Property(String key, double default_value, PropertyType entry_type, String entry_comment) {
+		public Property(String key, double default_value, PropertyType entry_type, String entry_comment)
+		{
 			name = key;
 			defnum = default_value;
 			type = entry_type;
@@ -401,7 +418,8 @@ public class PropertyManager {
 		 * @param entry_type type
 		 * @param entry_comment entry comment
 		 */
-		public Property(String key, String default_value, PropertyType entry_type, String entry_comment) {
+		public Property(String key, String default_value, PropertyType entry_type, String entry_comment)
+		{
 			name = key;
 			defstr = default_value;
 			type = entry_type;
@@ -614,7 +632,8 @@ public class PropertyManager {
 	 * @param file file with the props
 	 * @param comment the initial comment. Use \n in it if you want.
 	 */
-	public PropertyManager(File file, String comment) {
+	public PropertyManager(File file, String comment)
+	{
 		this.file = file;
 		this.entries = new TreeMap<String, Property>();
 		this.setValues = new TreeMap<String, String>();

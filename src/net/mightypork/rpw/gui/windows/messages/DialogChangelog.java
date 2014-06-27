@@ -21,7 +21,8 @@ public class DialogChangelog extends RpwDialog {
 	private JButton buttonOK;
 	
 	
-	public DialogChangelog() {
+	public DialogChangelog()
+	{
 		super(App.getFrame(), "What's new");
 		
 		createDialog();

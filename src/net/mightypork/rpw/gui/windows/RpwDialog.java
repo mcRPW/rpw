@@ -77,7 +77,8 @@ public abstract class RpwDialog extends JDialog {
 	 * @param parent parent frame
 	 * @param title window title
 	 */
-	public RpwDialog(Frame parent, String title) {
+	public RpwDialog(Frame parent, String title)
+	{
 		super(parent, title);
 		
 		this.dlgParent = parent;

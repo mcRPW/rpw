@@ -80,7 +80,8 @@ public class MenuMain {
 	private JMenu menuTools;
 	
 	
-	public MenuMain() {
+	public MenuMain()
+	{
 		menuBar = new JMenuBar();
 		JMenu menu, menu2;
 		JCheckBoxMenuItem ckitem;

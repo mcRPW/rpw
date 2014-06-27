@@ -39,7 +39,8 @@ public class DialogEditMeta extends DialogEditorBase {
 	private String dlgHeading;
 	
 	
-	public DialogEditMeta(AssetTreeLeaf node) {
+	public DialogEditMeta(AssetTreeLeaf node)
+	{
 		this.editedNode = node;
 		
 		createDialog();

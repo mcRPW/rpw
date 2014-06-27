@@ -22,7 +22,8 @@ public class AssetTreeLeaf extends AssetTreeNode {
 	 * @param asset asset entry for this leaf
 	 * @param librarySource asset source
 	 */
-	public AssetTreeLeaf(AssetEntry asset, String librarySource) {
+	public AssetTreeLeaf(AssetEntry asset, String librarySource)
+	{
 		super(asset.getLabel(), librarySource);
 		this.asset = asset;
 	}

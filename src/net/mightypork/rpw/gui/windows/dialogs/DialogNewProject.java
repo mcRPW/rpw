@@ -9,7 +9,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config.FilePath;
@@ -49,7 +54,8 @@ public class DialogNewProject extends RpwDialog {
 	private FileInput filepicker;
 	
 	
-	public DialogNewProject() {
+	public DialogNewProject()
+	{
 		super(App.getFrame(), "New Project");
 		
 		projectNames = Projects.getProjectNames();

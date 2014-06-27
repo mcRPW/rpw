@@ -19,7 +19,8 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class AssetGrouperFancy extends AssetGrouper {
 	
-	public AssetGrouperFancy() {
+	public AssetGrouperFancy()
+	{
 		groups.clear();
 		filters.clear();
 		

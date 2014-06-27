@@ -1,8 +1,6 @@
 package net.mightypork.rpw.utils;
 
 
-
-
 /**
  * Math helper
  * 

@@ -45,7 +45,8 @@ public class FileInput extends HBox {
 	 * @param filter file filter (there are constants for it on FileChooser)
 	 * @param mustExist true if the file is required to exist
 	 */
-	public FileInput(Component parent, String placeholder, FilePath pathEnum, String title, FileChooserFilter filter, boolean mustExist) {
+	public FileInput(Component parent, String placeholder, FilePath pathEnum, String title, FileChooserFilter filter, boolean mustExist)
+	{
 		this.mustExist = mustExist;
 		
 		importUrl = Gui.textField("", placeholder);
@@ -71,7 +72,7 @@ public class FileInput extends HBox {
 					if (f == null) return;
 					
 					if (FileInput.this.mustExist && !f.exists()) return; // doesn't exist
-						
+					
 					FileInput.this.file = f;
 					
 					importUrl.setText(file.getPath());

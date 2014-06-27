@@ -14,7 +14,8 @@ import org.jdesktop.swingx.JXTitledSeparator;
 
 public class VBox extends RpwBox {
 	
-	public VBox() {
+	public VBox()
+	{
 		super(BoxLayout.Y_AXIS);
 	}
 	

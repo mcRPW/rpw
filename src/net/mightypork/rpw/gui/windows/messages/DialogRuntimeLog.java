@@ -16,7 +16,8 @@ public class DialogRuntimeLog extends DialogTerminalBase {
 	private JButton btnClose;
 	
 	
-	public DialogRuntimeLog() {
+	public DialogRuntimeLog()
+	{
 		super(App.getFrame(), "Runtime log");
 		
 		createDialog();

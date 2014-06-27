@@ -32,7 +32,8 @@ public class SetToSourceProcessor implements AssetTreeProcessor {
 	}
 	
 	
-	public SetToSourceProcessor(String source) {
+	public SetToSourceProcessor(String source)
+	{
 		this.source = source;
 	}
 	

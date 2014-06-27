@@ -61,7 +61,8 @@ public class TreeDisplay {
 	}
 	
 	
-	public TreeDisplay() {
+	public TreeDisplay()
+	{
 		treeModel = new AssetTreeModel(buildProjectRoot()); // filler empty node
 		treeTable = new HackedJXTreeTable(treeModel);
 		

@@ -6,7 +6,8 @@ public class CharValidatorWhitelist implements CharValidator {
 	private final String whitelist;
 	
 	
-	public CharValidatorWhitelist(String allowed) {
+	public CharValidatorWhitelist(String allowed)
+	{
 		this.whitelist = allowed;
 	}
 	

@@ -50,7 +50,8 @@ public class FileChooser {
 	 * @param dirs allow choosing directories
 	 * @param multi allow multiple selection
 	 */
-	public FileChooser(Component parent, FilePath pathEnum, String title, FileChooserFilter filter, boolean files, boolean dirs, boolean multi) {
+	public FileChooser(Component parent, FilePath pathEnum, String title, FileChooserFilter filter, boolean files, boolean dirs, boolean multi)
+	{
 		this.parent = parent;
 		this.pathEnum = pathEnum;
 		
@@ -189,7 +190,8 @@ public class FileChooser {
 		private final String name;
 		
 		
-		public FileChooserFilter(String name, String suffixes) {
+		public FileChooserFilter(String name, String suffixes)
+		{
 			this.name = name;
 			this.fsf = new FileSuffixFilter(suffixes.split(","));
 		}

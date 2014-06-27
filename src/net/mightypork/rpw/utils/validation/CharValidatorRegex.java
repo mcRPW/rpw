@@ -6,7 +6,8 @@ public class CharValidatorRegex implements CharValidator {
 	private final String formula;
 	
 	
-	public CharValidatorRegex(String regex) {
+	public CharValidatorRegex(String regex)
+	{
 		this.formula = regex;
 	}
 	

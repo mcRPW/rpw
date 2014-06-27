@@ -3,7 +3,11 @@ package net.mightypork.rpw.project;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.mightypork.rpw.App;
@@ -52,7 +56,8 @@ public class Project extends Source implements NodeSourceProvider {
 	private Integer lastRpwVersion;
 	
 	
-	public Project(String identifier) {
+	public Project(String identifier)
+	{
 		projectName = identifier;
 		
 		projectTitle = identifier; // by default

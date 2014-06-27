@@ -30,7 +30,8 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	/**
 	 * @param path represented folder
 	 */
-	public DirectoryFsTreeNode(File path) {
+	public DirectoryFsTreeNode(File path)
+	{
 		this(path.getName(), path, null);
 		
 	}
@@ -40,7 +41,8 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 * @param path represented folder
 	 * @param filter file filter
 	 */
-	public DirectoryFsTreeNode(File path, FileFilter filter) {
+	public DirectoryFsTreeNode(File path, FileFilter filter)
+	{
 		this(path.getName(), path, filter);
 		
 	}
@@ -51,7 +53,8 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 * 
 	 * @param name the name
 	 */
-	public DirectoryFsTreeNode(String name) {
+	public DirectoryFsTreeNode(String name)
+	{
 		this.name = name;
 	}
 	
@@ -60,7 +63,8 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 * @param name display name
 	 * @param path paths to this directory
 	 */
-	public DirectoryFsTreeNode(String name, File path) {
+	public DirectoryFsTreeNode(String name, File path)
+	{
 		this(name, path, null);
 	}
 	
@@ -70,7 +74,8 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 * @param path paths to this directory
 	 * @param filter file filter
 	 */
-	public DirectoryFsTreeNode(String name, File path, FileFilter filter) {
+	public DirectoryFsTreeNode(String name, File path, FileFilter filter)
+	{
 		this(name, FileUtils.listDirectory(path), filter);
 		
 		this.path = path;
@@ -81,7 +86,8 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 * @param name display name
 	 * @param childPaths paths to children
 	 */
-	public DirectoryFsTreeNode(String name, List<File> childPaths) {
+	public DirectoryFsTreeNode(String name, List<File> childPaths)
+	{
 		this(name, childPaths, null);
 	}
 	
@@ -91,7 +97,8 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	 * @param childPaths paths to children
 	 * @param filter file filter
 	 */
-	public DirectoryFsTreeNode(String name, List<File> childPaths, FileFilter filter) {
+	public DirectoryFsTreeNode(String name, List<File> childPaths, FileFilter filter)
+	{
 		this.name = name;
 		
 		this.filter = filter;
@@ -263,7 +270,7 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode {
 	public void reload()
 	{
 		if (path == null) return; // can't do this, path wasn't used to init this dir.
-			
+		
 		children.clear();
 		
 		for (final File f : FileUtils.listDirectory(path)) {

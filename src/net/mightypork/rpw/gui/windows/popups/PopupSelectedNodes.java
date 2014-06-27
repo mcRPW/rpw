@@ -25,7 +25,12 @@ import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.tree.assets.EAsset;
-import net.mightypork.rpw.tree.assets.processors.*;
+import net.mightypork.rpw.tree.assets.processors.ApplyInheritProcessor;
+import net.mightypork.rpw.tree.assets.processors.CopyToProjectProcessor;
+import net.mightypork.rpw.tree.assets.processors.CountNodesInProjectProcessor;
+import net.mightypork.rpw.tree.assets.processors.CountNodesOfTypeProcessor;
+import net.mightypork.rpw.tree.assets.processors.DeleteFromProjectProcessor;
+import net.mightypork.rpw.tree.assets.processors.SetToSourceProcessor;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
@@ -67,7 +72,8 @@ public class PopupSelectedNodes {
 	}
 	
 	
-	public PopupSelectedNodes(Container c, int x, int y, List<AssetTreeNode> nodes) {
+	public PopupSelectedNodes(Container c, int x, int y, List<AssetTreeNode> nodes)
+	{
 		if (nodes == null) {
 			Log.w("Popup for NULL node array, cancelling.");
 			return;
@@ -347,10 +353,10 @@ public class PopupSelectedNodes {
 		});
 		
 		if (itemDeleteMetaFromProject != null) itemDeleteMetaFromProject.addActionListener(new ActionListener() {
-
+			
 			@Override
-			public void actionPerformed(ActionEvent e) 
-{
+			public void actionPerformed(ActionEvent e)
+			{
 				//@formatter:off
 				final boolean really = Alerts.askYesNo(
 						App.getFrame(),

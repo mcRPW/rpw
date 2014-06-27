@@ -9,7 +9,8 @@ import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 
 public class AssetTreeModel extends AbstractTreeTableModel {
 	
-	public AssetTreeModel(AssetTreeNode root) {
+	public AssetTreeModel(AssetTreeNode root)
+	{
 		super(root);
 	}
 	
@@ -173,16 +174,12 @@ public class AssetTreeModel extends AbstractTreeTableModel {
 		TreeNode[] retNodes;
 		
 		if (aNode == null) {
-			if (depth == 0)
-				return null;
-			else
-				retNodes = new TreeNode[depth];
+			if (depth == 0) return null;
+			else retNodes = new TreeNode[depth];
 		} else {
 			depth++;
-			if (aNode == root)
-				retNodes = new TreeNode[depth];
-			else
-				retNodes = getPathToRoot(aNode.getParent(), depth);
+			if (aNode == root) retNodes = new TreeNode[depth];
+			else retNodes = getPathToRoot(aNode.getParent(), depth);
 			retNodes[retNodes.length - depth] = aNode;
 		}
 		return retNodes;

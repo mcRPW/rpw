@@ -1,7 +1,13 @@
 package net.mightypork.rpw.gui.widgets;
 
 
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -9,8 +15,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.Box.Filler;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
@@ -334,7 +348,7 @@ public class SidePanel {
 		hb = new HBox();
 			hb.glue();
 			
-			JPanel jPanel = new JPanel();
+			final JPanel jPanel = new JPanel();
 			
 			hb.add(jPanel);
 			
@@ -464,13 +478,13 @@ public class SidePanel {
 					previewCardLayout.show(previewPanel, IMAGE);
 					
 					
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					Log.e(e);
 					return;
 				} finally {
 					try {
 						if (in != null) in.close();
-					} catch (IOException e1) {
+					} catch (final IOException e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -494,13 +508,13 @@ public class SidePanel {
 					previewText.setCaretPosition(0); // scroll to top
 					
 					previewCardLayout.show(previewPanel, TEXT);
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					Log.e(e);
 					return;
 				} finally {
 					try {
 						if (in != null) in.close();
-					} catch (IOException e1) {
+					} catch (final IOException e1) {
 						e1.printStackTrace();
 					}
 				}

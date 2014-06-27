@@ -8,11 +8,13 @@ public class LangEntry {
 	public boolean bidirectional;
 	
 	
-	public LangEntry() {
+	public LangEntry()
+	{
 	}
 	
 	
-	public LangEntry(String region, String name, boolean bidirectional) {
+	public LangEntry(String region, String name, boolean bidirectional)
+	{
 		this.region = region;
 		this.name = name;
 		this.bidirectional = bidirectional;

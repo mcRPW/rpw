@@ -94,7 +94,7 @@ public class TaskReloadVanilla {
 						Log.w("- unsupported type, skipping");
 						continue;
 					}
-				} catch (com.google.gson.JsonSyntaxException e) {
+				} catch (final com.google.gson.JsonSyntaxException e) {
 					Log.w("- JSON SYNTAX ERROR, skipping.");
 					continue;
 				}

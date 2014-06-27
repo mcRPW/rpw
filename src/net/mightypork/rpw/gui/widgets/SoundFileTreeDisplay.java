@@ -23,7 +23,8 @@ public class SoundFileTreeDisplay {
 	public FsTreeModel model;
 	
 	
-	public SoundFileTreeDisplay(DirectoryFsTreeNode root, DialogSoundWizard wizard) {
+	public SoundFileTreeDisplay(DirectoryFsTreeNode root, DialogSoundWizard wizard)
+	{
 		model = new FsTreeModel(root);
 		
 		tree = new JXTree(model);

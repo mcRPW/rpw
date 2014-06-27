@@ -36,7 +36,8 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 	private final Runnable successRunnable;
 	
 	
-	public SequenceExportProject(File target, Runnable onSuccess) {
+	public SequenceExportProject(File target, Runnable onSuccess)
+	{
 		this.target = target;
 		this.successRunnable = onSuccess;
 		

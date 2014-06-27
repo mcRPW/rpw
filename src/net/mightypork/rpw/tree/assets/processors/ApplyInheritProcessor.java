@@ -18,12 +18,14 @@ public class ApplyInheritProcessor implements AssetTreeProcessor {
 	private final String defaultSource;
 	
 	
-	public ApplyInheritProcessor() {
+	public ApplyInheritProcessor()
+	{
 		this.defaultSource = MagicSources.VANILLA;
 	}
 	
 	
-	public ApplyInheritProcessor(String defaultSource) {
+	public ApplyInheritProcessor(String defaultSource)
+	{
 		this.defaultSource = defaultSource;
 	}
 	
@@ -35,7 +37,7 @@ public class ApplyInheritProcessor implements AssetTreeProcessor {
 		processed.add(node);
 		
 		if (!node.isLeaf()) return; // leave groups alone
-			
+		
 		final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 		
 		final String assigned = leaf.getLibrarySource();

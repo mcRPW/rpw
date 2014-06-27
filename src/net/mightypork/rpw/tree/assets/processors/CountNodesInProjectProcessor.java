@@ -24,7 +24,8 @@ public class CountNodesInProjectProcessor implements AssetTreeProcessor {
 	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 	
 	
-	public CountNodesInProjectProcessor() {
+	public CountNodesInProjectProcessor()
+	{
 	}
 	
 	

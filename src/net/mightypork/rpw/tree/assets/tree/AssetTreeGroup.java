@@ -11,7 +11,8 @@ import javax.swing.tree.TreeNode;
 
 public class AssetTreeGroup extends AssetTreeNode {
 	
-	public AssetTreeGroup(String groupKey, String label, String librarySource) {
+	public AssetTreeGroup(String groupKey, String label, String librarySource)
+	{
 		super(label, librarySource);
 		this.groupKey = groupKey;
 	}

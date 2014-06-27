@@ -5,7 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileFilter;
 
 import net.mightypork.rpw.App;
@@ -53,7 +59,8 @@ public class DialogConfigureEditors extends RpwDialog {
 	private JCheckBox ckInternalText;
 	
 	
-	public DialogConfigureEditors() {
+	public DialogConfigureEditors()
+	{
 		super(App.getFrame(), "Configure Editors");
 		
 		createDialog();

@@ -49,7 +49,8 @@ public class App {
 	}
 	
 	
-	public App() {
+	public App()
+	{
 	}
 	
 	
@@ -63,14 +64,14 @@ public class App {
 	{
 		if (!lockInstance()) {
 			//@formatter:off
-			Alerts.error(
-					null,
-					"Couldn't lock workdir",
-					"The application is already running.\n" +
-					"\n" +
-					"No more than one instance can run at a time."
-			);
-			//@formatter:on
+		Alerts.error(
+				null,
+				"Couldn't lock workdir",
+				"The application is already running.\n" +
+				"\n" +
+				"No more than one instance can run at a time."
+		);
+		//@formatter:on
 			
 			System.exit(1);
 		}
@@ -83,9 +84,14 @@ public class App {
 		OsUtils.initDirs();
 		Config.init();
 		
+		// attempt to enable NUMBUS
 		if (Config.USE_NIMBUS) {
 			Gui.useNimbus();
 		}
+		
+		// attempt to enable anti-aliasing
+		System.setProperty("awt.useSystemAAFontSettings", "on");
+		System.setProperty("swing.aatext", "true");
 		
 		TaskDevel.run();
 		

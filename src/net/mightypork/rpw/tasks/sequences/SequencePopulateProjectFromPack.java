@@ -19,6 +19,7 @@ import net.mightypork.rpw.struct.LangEntry;
 import net.mightypork.rpw.struct.PackMcmeta;
 import net.mightypork.rpw.struct.SoundEntry;
 import net.mightypork.rpw.struct.SoundEntryMap;
+import net.mightypork.rpw.struct.SoundSubEntry;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.Utils;
@@ -46,7 +47,8 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 	 * @param packFile file to load
 	 * @param after runnable executed after it's done
 	 */
-	public SequencePopulateProjectFromPack(File packFile, Runnable after) {
+	public SequencePopulateProjectFromPack(File packFile, Runnable after)
+	{
 		this.packFile = packFile;
 		this.after = after;
 		this.project = Projects.getActive();
@@ -198,10 +200,10 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 				
 				for (final Entry<String, SoundEntry> entry : soundmap.entrySet()) {
 					// got through entry sounds
-					for (final String s : entry.getValue().sounds) {
+					for (final SoundSubEntry s : entry.getValue().sounds) {
 						// s = relative path to sound file from "sounds" directory, without suffix
 						
-						final String assetKey = "assets.minecraft.sounds." + s.replace('/', '.');
+						final String assetKey = "assets.minecraft.sounds." + s.name.replace('/', '.');
 						
 						final AssetEntry ae = new AssetEntry(assetKey, EAsset.SOUND);
 						
@@ -251,7 +253,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 				final ZipEntry ze = zip.getEntry(s);
 				
 				if (ze == null) continue; // garbage
-					
+				
 				alreadyExtracted.add(s);
 				
 				boolean mcmeta = false;

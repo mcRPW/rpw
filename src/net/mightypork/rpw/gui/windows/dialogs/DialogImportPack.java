@@ -43,7 +43,8 @@ public class DialogImportPack extends RpwDialog {
 	private FileInput filepicker;
 	
 	
-	public DialogImportPack() {
+	public DialogImportPack()
+	{
 		super(App.getFrame(), "Import");
 		
 		libPackNames = Sources.getResourcepackNames();

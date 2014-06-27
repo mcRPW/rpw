@@ -25,7 +25,8 @@ public class DialogAbout extends RpwDialog {
 	private JButton buttonTwitter;
 	
 	
-	public DialogAbout() {
+	public DialogAbout()
+	{
 		super(App.getFrame(), "About");
 		
 		createDialog();

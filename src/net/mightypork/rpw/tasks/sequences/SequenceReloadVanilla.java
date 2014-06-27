@@ -7,11 +7,21 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
@@ -73,7 +83,8 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence {
 	};
 	
 	
-	public SequenceReloadVanilla(String version) {
+	public SequenceReloadVanilla(String version)
+	{
 		this.version = version;
 	}
 	

@@ -10,7 +10,8 @@ import net.mightypork.rpw.gui.Gui;
 
 public abstract class RpwBox extends Box {
 	
-	public RpwBox(int axis) {
+	public RpwBox(int axis)
+	{
 		super(axis);
 	}
 	

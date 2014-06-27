@@ -13,7 +13,8 @@ public class HelpPage {
 	private String content;
 	
 	
-	public HelpPage(String title, String filename) {
+	public HelpPage(String title, String filename)
+	{
 		this.name = title;
 		
 		final String str = FileUtils.resourceToString(Paths.DATA_DIR_HELP + filename);

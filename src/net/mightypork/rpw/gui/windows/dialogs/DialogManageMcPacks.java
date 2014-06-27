@@ -63,7 +63,8 @@ public class DialogManageMcPacks extends RpwDialog {
 	}
 	
 	
-	public DialogManageMcPacks() {
+	public DialogManageMcPacks()
+	{
 		super(App.getFrame(), "Manage packs in MC");
 		
 		mcPacks = getOptions();

@@ -7,7 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 
 import net.mightypork.rpw.utils.AlphanumComparator;
 
@@ -32,17 +37,20 @@ public class SimpleStringList extends JScrollPane {
 	}
 	
 	
-	public SimpleStringList() {
+	public SimpleStringList()
+	{
 		this(null, true);
 	}
 	
 	
-	public SimpleStringList(boolean selectable) {
+	public SimpleStringList(boolean selectable)
+	{
 		this(null, selectable);
 	}
 	
 	
-	public SimpleStringList(List<String> options, boolean selectable) {
+	public SimpleStringList(List<String> options, boolean selectable)
+	{
 		this.selectable = selectable;
 		
 		model = new DefaultListModel();

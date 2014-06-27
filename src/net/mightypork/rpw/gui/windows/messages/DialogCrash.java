@@ -32,7 +32,8 @@ public class DialogCrash extends DialogTerminalBase {
 	private JButton buttonGH;
 	
 	
-	public DialogCrash(Throwable error) {
+	public DialogCrash(Throwable error)
+	{
 		super(App.getFrame(), Const.APP_NAME + " has crashed!");
 		
 		Log.e("Unhandled error, opening error screen.", error);

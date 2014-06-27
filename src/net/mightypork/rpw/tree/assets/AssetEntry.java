@@ -23,7 +23,8 @@ public class AssetEntry implements Comparable<AssetEntry> {
 	 * @param key node key, eg. assets.minecraft.textures.blocks.bedrock
 	 * @param type a type of file, eg. EAsset.IMAGE
 	 */
-	public AssetEntry(String key, EAsset type) {
+	public AssetEntry(String key, EAsset type)
+	{
 		this.key = key;
 		this.type = type;
 	}

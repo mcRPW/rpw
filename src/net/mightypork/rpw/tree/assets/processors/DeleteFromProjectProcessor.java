@@ -20,11 +20,13 @@ public class DeleteFromProjectProcessor implements AssetTreeProcessor {
 	private boolean assets = true, meta = true;
 	
 	
-	public DeleteFromProjectProcessor() {
+	public DeleteFromProjectProcessor()
+	{
 	}
 	
 	
-	public DeleteFromProjectProcessor(boolean assets, boolean meta) {
+	public DeleteFromProjectProcessor(boolean assets, boolean meta)
+	{
 		this.assets = assets;
 		this.meta = meta;
 	}
