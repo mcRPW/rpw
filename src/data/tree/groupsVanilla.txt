@@ -49,6 +49,7 @@ root.image.entity.mob.creeper = Creeper
 root.image.entity.mob.enderdragon = Ender Dragon
 root.image.entity.mob.enderman = Enderman
 root.image.entity.mob.ghast = Ghast
+root.image.entity.mob.guardian = Guardian
 root.image.entity.mob.horse = Horse
 root.image.entity.mob.horse.armor = Horse Armour
 root.image.entity.mob.pig = Pig
@@ -95,7 +96,7 @@ root.image.item.books = Books & Maps
 
 
 # audio pre-1.7
-root.audio = Audio (obsolete, pre-1.7)
+root.audio = Audio (pre-1.7)
 root.audio.music = Music
 root.audio.music.records = Records
 root.audio.music.ambient = Ambient Music
@@ -148,7 +149,7 @@ root.audio.sound.mob.zombiepig = Zombie Pigman
 
 # audio post-1.7
 
-root.audio2 = Audio
+root.audio2 = Audio (1.7)
 root.audio2.music = Music
 root.audio2.music.game = Game Music
 root.audio2.music.game.nether = Nether
@@ -202,15 +203,76 @@ root.audio2.sound.mob.wolf = Wolf
 root.audio2.sound.mob.zombie = Zombie
 root.audio2.sound.mob.zombiepig = Zombie Pigman	
 
+# audio post 1.8
+
+root.audio3 = Audio (1.8)
+root.audio3.music = Music
+root.audio3.music.game = Game Music
+root.audio3.music.game.nether = Nether
+root.audio3.music.game.end = End
+root.audio3.music.game.creative = Creative
+root.audio3.music.menu = Menu Music
+root.audio3.music.records = Records
+root.audio3.sound.note = Note Blocks
+root.audio3.sound = Sounds
+root.audio3.sound.environment = Environment
+root.audio3.sound.environment.ambient_cave = Cave
+root.audio3.sound.environment.ambient_weather = Weather
+root.audio3.sound.environment.liquid = Liquids & Fire
+root.audio3.sound.environment.portal = Portal
+root.audio3.sound.step = Footstep
+root.audio3.sound.dig = Digging
+root.audio3.sound.fireworks = Fireworks
+root.audio3.sound.minecart = Minecart
+root.audio3.sound.damage = Hit & Fall
+root.audio3.sound.random = Random
+root.audio3.sound.random.bow = Bow Hit
+root.audio3.sound.random.explode = Explosion
+root.audio3.sound.random.eat = Food & Drink
+root.audio3.sound.random.chest = Chest
+root.audio3.sound.random.anvil = Anvil
+root.audio3.sound.mob = Mobs
+root.audio3.sound.mob.bat = Bat
+root.audio3.sound.mob.blaze = Blaze
+root.audio3.sound.mob.cat = Cat
+root.audio3.sound.mob.chicken = Chicken
+root.audio3.sound.mob.cow = Cow
+root.audio3.sound.mob.creeper = Creeper
+root.audio3.sound.mob.enderdragon = Ender Dragon
+root.audio3.sound.mob.enderman = Enderman
+root.audio3.sound.mob.ghast = Ghast
+root.audio3.sound.mob.horse = Horse & Co.
+root.audio3.sound.mob.horse.donkey = Donkey
+root.audio3.sound.mob.horse.skeleton = Skeletal Horse
+root.audio3.sound.mob.horse.zombie = Zombie Horse
+root.audio3.sound.mob.irongolem = Iron Golem
+root.audio3.sound.mob.magmacube = Magma Cube
+root.audio3.sound.mob.guardian = Guardian
+root.audio3.sound.mob.pig = Pig
+root.audio3.sound.mob.sheep = Sheep
+root.audio3.sound.mob.silverfish = Silverfish
+root.audio3.sound.mob.skeleton = Skeleton
+root.audio3.sound.mob.slime = Slime
+root.audio3.sound.mob.spider = Spider
+root.audio3.sound.mob.villager = Villager
+root.audio3.sound.mob.wither = Wither
+root.audio3.sound.mob.wolf = Wolf
+root.audio3.sound.mob.zombie = Zombie
+root.audio3.sound.mob.zombiepig = Zombie Pigman	
+
 
 root.font = Font	
 root.font.unicode = Unicode
 root.text = Texts
 root.text.lang = Translations
+root.text.lang2 = Translations (1.8)
 
 root.shaders = Shaders
 root.shaders.post = Setups
-root.shaders.program = Low-level code (better don't touch)
+root.shaders.program = Shader program
 
 root.models = Models
 root.models.block = Blocks
+root.models.item = Items
+
+root.blockstates = Block states

@@ -19,6 +19,7 @@
 
 
 root.text.lang = assets.minecraft.lang.*
+root.text.lang2 = assets.minecraft.minecraft.lang.*
 root.text = assets.minecraft.texts.*
 
 root.font.unicode = assets.minecraft.textures.font.unicode_page_*
@@ -153,6 +154,72 @@ root.audio2.sound = assets.minecraft.sounds.*
 root.audio2 = NULL
 
 
+# Audio post-1.8
+
+root.audio3.sound.mob.bat = assets.minecraft.minecraft.sounds.mob.bat.*
+root.audio3.sound.mob.blaze = assets.minecraft.minecraft.sounds.mob.blaze.*
+root.audio3.sound.mob.cat = assets.minecraft.minecraft.sounds.mob.cat.*
+root.audio3.sound.mob.chicken = assets.minecraft.minecraft.sounds.mob.chicken.*
+root.audio3.sound.mob.cow = assets.minecraft.minecraft.sounds.mob.cow.*
+root.audio3.sound.mob.creeper = assets.minecraft.minecraft.sounds.mob.creeper.*
+root.audio3.sound.mob.enderdragon = assets.minecraft.minecraft.sounds.mob.enderdragon.*
+root.audio3.sound.mob.enderman = assets.minecraft.minecraft.sounds.mob.endermen.*
+root.audio3.sound.mob.ghast = assets.minecraft.minecraft.sounds.mob.ghast.*
+
+root.audio3.sound.mob.horse.donkey = assets.minecraft.minecraft.sounds.mob.horse.donkey.*
+root.audio3.sound.mob.horse.skeleton = assets.minecraft.minecraft.sounds.mob.horse.skeleton.*
+root.audio3.sound.mob.horse.zombie = assets.minecraft.minecraft.sounds.mob.horse.zombie.*
+root.audio3.sound.mob.horse = assets.minecraft.minecraft.sounds.mob.horse.*
+
+root.audio3.sound.mob.irongolem = assets.minecraft.minecraft.sounds.mob.irongolem.*
+root.audio3.sound.mob.magmacube = assets.minecraft.minecraft.sounds.mob.magmacube.*
+root.audio3.sound.mob.guardian = assets.minecraft.minecraft.sounds.mob.guardian.*
+root.audio3.sound.mob.pig = assets.minecraft.minecraft.sounds.mob.pig.*
+root.audio3.sound.mob.sheep = assets.minecraft.minecraft.sounds.mob.sheep.*
+root.audio3.sound.mob.silverfish = assets.minecraft.minecraft.sounds.mob.silverfish.*
+root.audio3.sound.mob.skeleton = assets.minecraft.minecraft.sounds.mob.skeleton.*
+root.audio3.sound.mob.slime = assets.minecraft.minecraft.sounds.mob.slime.*
+root.audio3.sound.mob.spider = assets.minecraft.minecraft.sounds.mob.spider.*
+root.audio3.sound.mob.villager = assets.minecraft.minecraft.sounds.mob.villager.*
+root.audio3.sound.mob.wither = assets.minecraft.minecraft.sounds.mob.wither.*
+root.audio3.sound.mob.wolf = assets.minecraft.minecraft.sounds.mob.wolf.*
+root.audio3.sound.mob.zombie = assets.minecraft.minecraft.sounds.mob.zombie.*
+root.audio3.sound.mob.zombiepig = assets.minecraft.minecraft.sounds.mob.zombiepig.*
+
+root.audio3.sound.mob = assets.minecraft.minecraft.sounds.mob.*
+
+root.audio3.sound.random.anvil = assets.minecraft.minecraft.sounds.random.anvil*
+root.audio3.sound.random.chest = assets.minecraft.minecraft.sounds.random.chest*
+root.audio3.sound.random.eat = assets.minecraft.minecraft.sounds.random.eat* | assets.minecraft.minecraft.sounds.random.drink* | assets.minecraft.minecraft.sounds.random.burp*
+root.audio3.sound.random.explode = assets.minecraft.minecraft.sounds.random.explode*
+root.audio3.sound.random.bow = assets.minecraft.minecraft.sounds.random.bow*
+root.audio3.sound.random = assets.minecraft.minecraft.sounds.random.* | assets.minecraft.minecraft.sounds.tile.*
+
+root.audio3.sound.environment.portal = assets.minecraft.minecraft.sounds.portal.*
+root.audio3.sound.environment.liquid = assets.minecraft.minecraft.sounds.liquid.* | assets.minecraft.minecraft.sounds.fire.*
+root.audio3.sound.environment.ambient_weather = assets.minecraft.minecraft.sounds.ambient.weather.*
+root.audio3.sound.environment.ambient_cave = assets.minecraft.minecraft.sounds.ambient.cave.*
+root.audio3.sound.environment = NULL
+
+root.audio3.sound.minecart = assets.minecraft.minecraft.sounds.minecart.*
+root.audio3.sound.fireworks = assets.minecraft.minecraft.sounds.fireworks.*
+root.audio3.sound.dig = assets.minecraft.minecraft.sounds.dig.*
+root.audio3.sound.step = assets.minecraft.minecraft.sounds.step.*
+root.audio3.sound.damage = assets.minecraft.minecraft.sounds.damage.*
+root.audio3.sound.note = assets.minecraft.minecraft.sounds.note.*
+
+root.audio3.music.game.creative = assets.minecraft.minecraft.sounds.music.game.creative.*
+root.audio3.music.game.end = assets.minecraft.minecraft.sounds.music.game.end.*
+root.audio3.music.game.nether = assets.minecraft.minecraft.sounds.music.game.nether.*
+root.audio3.music.game = assets.minecraft.minecraft.sounds.music.game.*
+root.audio3.music.menu = assets.minecraft.minecraft.sounds.music.menu.*
+root.audio3.music.records = assets.minecraft.minecraft.sounds.records.*
+root.audio3.music = NULL
+
+root.audio3.sound = assets.minecraft.minecraft.sounds.*
+
+root.audio3 = NULL
+
 
 root.image.item.rare = assets.minecraft.textures.items.gold_nugget | assets.minecraft.textures.items.diamond | assets.minecraft.textures.items.emerald | assets.minecraft.textures.items.iron_ingot | assets.minecraft.textures.items.ruby | assets.minecraft.textures.items.gold_ingot | assets.minecraft.textures.items.coal | assets.minecraft.textures.items.charcoal | assets.minecraft.textures.items.glowstone_dust | assets.minecraft.textures.items.quartz | assets.minecraft.textures.items.flint
 root.image.item.dyes = assets.minecraft.textures.items.dye_powder_*
@@ -212,7 +279,8 @@ root.image.entity.mob.villager = assets.minecraft.textures.entity.villager.*
 root.image.entity.mob.wither = assets.minecraft.textures.entity.wither.*
 root.image.entity.mob.wolf = assets.minecraft.textures.entity.wolf.*
 root.image.entity.mob.zombie = assets.minecraft.textures.entity.zombie.*
-root.image.entity.mob = assets.minecraft.textures.entity.silverfish | assets.minecraft.textures.entity.bat | assets.minecraft.textures.entity.blaze | assets.minecraft.textures.entity.chicken | assets.minecraft.textures.entity.iron_golem | assets.minecraft.textures.entity.snowman | assets.minecraft.textures.entity.squid | assets.minecraft.textures.entity.witch | assets.minecraft.textures.entity.zombie_pigman | assets.minecraft.textures.entity.steve
+root.image.entity.mob.guardian = assets.minecraft.textures.entity.guardian*
+root.image.entity.mob = assets.minecraft.textures.entity.silverfish | assets.minecraft.textures.entity.bat | assets.minecraft.textures.entity.blaze | assets.minecraft.textures.entity.chicken | assets.minecraft.textures.entity.iron_golem | assets.minecraft.textures.entity.snowman | assets.minecraft.textures.entity.squid | assets.minecraft.textures.entity.witch | assets.minecraft.textures.entity.zombie_pigman | assets.minecraft.textures.entity.steve | assets.minecraft.textures.entity.endermite
 
 # Chests moved to blocks to make it easier to find
 root.image.block.chest = assets.minecraft.textures.entity.chest.*
@@ -272,10 +340,12 @@ root.shaders.program = assets.minecraft.shaders.program.*
 root.shaders = assets.minecraft.shaders.*
 
 root.models.block = assets.minecraft.models.block.*
+root.models.item = assets.minecraft.models.item.*
 root.models = assets.minecraft.models.*
 
+root.blockstates = assets.minecraft.blockstates.*
 
-# some weird junk
+# some weird junk, discard.
 NULL = assets.minecraft.icons.*
 
 root = assets.minecraft.*
