@@ -781,20 +781,22 @@ public class MenuMain {
 	{
 		menuRecentProjects.removeAll();
 		
-		final List<String> recents = Projects.getRecentProjects();
-		
-		menuRecentProjects.setEnabled(recents.size() > 1);
+		final List<String> recents = Projects.getRecentProjects();		
 		
 		final Project activeProj = Projects.getActive();
 		final String activeName = (activeProj == null ? "" : activeProj.getName());
 		
 		JMenuItem item;
+		int added = 0;
 		for (final String s : recents) {
 			if (s.equalsIgnoreCase(activeName)) continue; // dont show current project in the list
 			menuRecentProjects.add(item = new JMenuItem(s));
 			item.setActionCommand(s);
 			item.addActionListener(openRecentProjectListener);
+			added++;
 		}
+		
+		menuRecentProjects.setEnabled(added > 0);
 	}
 	
 	

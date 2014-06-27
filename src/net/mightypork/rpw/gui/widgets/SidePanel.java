@@ -94,26 +94,54 @@ public class SidePanel {
 	
 	public SidePanel()
 	{
-		panel = new JXPanel();
-		panel.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL, Gui.GAP, Gui.GAPL));
+		JXPanel projectCard = new JXPanel();
 		
-		panel.setPreferredSize(new Dimension(320, 700));
-		panel.setMinimumSize(new Dimension(320, 300));
+		// project-info card
+		projectCard.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL, Gui.GAP, Gui.GAPL));
 		
-		panel.add(infoBox = createProjectInfoBox());
+		projectCard.setPreferredSize(new Dimension(320, 700));
+		projectCard.setMinimumSize(new Dimension(320, 300));
+		
+		projectCard.add(infoBox = createProjectInfoBox());
 		infoBox.setAlignmentX(0.5f);
 		
-		panel.add(Box.createRigidArea(new Dimension(300, 20)));
+		projectCard.add(Box.createRigidArea(new Dimension(300, 20)));
 		
-		panel.add(previewBox = createPreviewBox());
+		projectCard.add(previewBox = createPreviewBox());
 		previewBox.setAlignmentX(0.5f);
 		
-		panel.add(Box.createVerticalGlue());
+		projectCard.add(Box.createVerticalGlue());
+		
+		// no-project-open card
+		JXPanel empty = new JXPanel();
+		VBox vb = new VBox();
+		
+		JLabel l1 = new JLabel("No project active.");
+		l1.setFont(l1.getFont().deriveFont(20F));
+		
+		JLabel l2 = new JLabel("Use the menu to open\n or create a project.");
+		vb.add(l1);
+		vb.add(l2);
+				
+		empty.add(vb);
+		
+		
+		panel = new JXPanel();
+		panel.setLayout(new CardLayout());
+		panel.add(projectCard, "project");
+		panel.add(empty, "empty");
 		
 		addActions();
 		
 		updateProjectInfo();
 		redrawPreview();
+	}
+	
+	
+	public void showCard(String name)
+	{
+		CardLayout cl = (CardLayout) (panel.getLayout());
+		cl.show(panel, name);
 	}
 	
 	
@@ -400,6 +428,7 @@ public class SidePanel {
 		final Project p = Projects.getActive();
 		
 		if (p != null) {
+			showCard("project");
 			String name = p.getTitle();
 			final int length_name = (panel.getWidth() - 75) / 11;
 			name = Utils.cropStringAtEnd(name, length_name);
@@ -414,9 +443,10 @@ public class SidePanel {
 			infoBox.setVisible(true);
 			
 		} else {
-			infoBox.setVisible(false);
-			previewBox.setVisible(false);
-			updatePreview(null);
+			showCard("empty");
+//			infoBox.setVisible(false);
+//			previewBox.setVisible(false);
+//			updatePreview(null);
 		}
 	}
 	

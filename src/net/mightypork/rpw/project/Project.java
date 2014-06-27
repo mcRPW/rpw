@@ -298,6 +298,9 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 	
 	
+	/**
+	 * @param title visual project title
+	 */
 	public void setTitle(String title)
 	{
 		projectTitle = title;
@@ -305,6 +308,9 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 	
 	
+	/**
+	 * @return visual project title
+	 */
 	public String getTitle()
 	{
 		return projectTitle;
@@ -425,6 +431,9 @@ public class Project extends Source implements NodeSourceProvider {
 	}
 	
 	
+	/**
+	 * @return project name (save directory name)
+	 */
 	public String getName()
 	{
 		return projectName;
