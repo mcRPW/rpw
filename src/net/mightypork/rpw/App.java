@@ -1,9 +1,13 @@
 package net.mightypork.rpw;
 
 
+import java.awt.Font;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
+import java.util.Map;
+
+import javax.swing.UIManager;
 
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
@@ -64,14 +68,14 @@ public class App {
 	{
 		if (!lockInstance()) {
 			//@formatter:off
-		Alerts.error(
-				null,
-				"Couldn't lock workdir",
-				"The application is already running.\n" +
-				"\n" +
-				"No more than one instance can run at a time."
-		);
-		//@formatter:on
+			Alerts.error(
+					null,
+					"Couldn't lock workdir",
+					"The application is already running.\n" +
+					"\n" +
+					"No more than one instance can run at a time."
+			);
+			//@formatter:on
 			
 			System.exit(1);
 		}
