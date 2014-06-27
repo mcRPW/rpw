@@ -84,14 +84,19 @@ public class App {
 		OsUtils.initDirs();
 		Config.init();
 		
+		// attempt to enable anti-aliasing
+		try {
+			System.setProperty("awt.useSystemAAFontSettings", "on");
+			System.setProperty("swing.aatext", "true");
+			System.setProperty("sun.java2d.xrender", "true");
+		} catch (Exception e) {
+			Log.e(e);
+		}
+		
 		// attempt to enable NUMBUS
 		if (Config.USE_NIMBUS) {
 			Gui.useNimbus();
 		}
-		
-		// attempt to enable anti-aliasing
-		System.setProperty("awt.useSystemAAFontSettings", "on");
-		System.setProperty("swing.aatext", "true");
 		
 		TaskDevel.run();
 		

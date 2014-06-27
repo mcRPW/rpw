@@ -180,6 +180,7 @@ public class DialogSoundWizard extends RpwDialog {
 		final JLabel l3 = new JLabel("Playback:");
 		middlePanelComponents.add(l1);
 		middlePanelComponents.add(l2);
+		middlePanelComponents.add(l3);
 		
 		fieldKey = Gui.textField();
 		fieldKey.setDragEnabled(false);
