@@ -894,6 +894,7 @@ public class Tasks {
 	
 	public static void taskDialogImportFromStitch()
 	{
-	  
+	   Gui.open(new com.pixbits.rpw.gui.windows.dialogs.DialogImportStitch());
+
 	}
 }

@@ -152,7 +152,7 @@ public class MenuMain {
 			
       item = itemProjectImportStitch = new JMenuItem("Import stitched PNG from...", KeyEvent.VK_P);
       item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-      item.setIcon(Icons.MENU_EXPORT_BOX);
+      item.setIcon(Icons.MENU_IMPORT_BOX);
       menu.add(item);
 			
 			menu.addSeparator();

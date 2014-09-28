@@ -3,27 +3,94 @@ package com.pixbits.tasks;
 import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.util.*;
 import java.awt.Dimension;
 import java.awt.RenderingHints;
 import java.awt.image.*;
 import java.awt.Graphics2D;
 import java.awt.geom.*;
+import java.security.*;
 
 import javax.imageio.ImageIO;
 
+import com.google.gson.*;
+
+import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.library.*;
 import net.mightypork.rpw.tree.assets.*;
 import net.mightypork.rpw.tree.assets.groups.*;
+import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
 
 public class Tasks
 { 
+  public static void importPackFromStitchedPng(File inputFolder, Project project, Set<AssetCategory> categories)
+  {
+    boolean keep = true;
+    
+    for (AssetCategory c : categories)
+      if (keep)
+        keep = importPackFromStitchedPng(inputFolder, project, c);
+  }
+  
+  private static boolean importPackFromStitchedPng(File inputFolder, Project project, AssetCategory category)
+  {
+    File input = new File(inputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".png");
+    File jsonInput = new File(inputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".json");
+    
+    if (!input.exists())
+    {
+      Alerts.error(null, "Image not found", "File "+input.getName()+" not found in specified folder.");
+      return false;
+    }
+    
+    if (!jsonInput.exists())
+    {
+      Alerts.error(null, "Json not found", "File "+input.getName()+" not found in specified folder.");
+      return false;
+    }
+    
+    try
+    {
+      StitchJson.Category json = new GsonBuilder().create().fromJson(FileUtils.fileToString(jsonInput), StitchJson.Category.class);
+      BufferedImage image = ImageIO.read(input);
+      
+      MessageDigest digest = MessageDigest.getInstance("MD5");
+
+      
+      for (StitchJson.Element element : json.elements)
+      {
+        digest.reset();
+        
+        BigInteger savedHash = new BigInteger(element.hashCode, 16);
+        BigInteger computedHash = new BigInteger(1, computeHashcodeForSprite(image, element.x, element.y, element.w, element.h, digest));
+        
+        if (!savedHash.equals(computedHash))
+        {
+          System.out.println("Element "+element.key+" differs!");
+        }
+       
+      }
+      
+      
+    }
+    catch (Exception e)
+    {
+      Log.e(e);
+    }
+    
+    
+    return true;
+  }
+
+  
   public static void exportPackToStitchedPng(File outputFolder, Project project, Set<AssetCategory> categories, boolean exportMissing, boolean exportExisting)
   {
     for (AssetCategory c : categories)
@@ -84,13 +151,21 @@ public class Tasks
       Graphics2D g2d = (Graphics2D)image.getGraphics();
       
       g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+      
+      StitchJson.Category json = new StitchJson.Category();
+      json.category = category;
+      json.elements = new ArrayList<StitchJson.Element>();
             
       final int w = dimension.width, h = dimension.height;
       //final int tw = imageSize.width, th = imageSize.height;
       int x = 0, y = 0;
+      
+      MessageDigest digest = MessageDigest.getInstance("MD5");
 
       for (AssetEntry e : entries)
       {
+        digest.reset();
+        
         File file = project.getAssetFile(e.getKey());
         BufferedImage img = null;
         
@@ -103,7 +178,23 @@ public class Tasks
           img = ImageIO.read(vanilla.getAssetFile(e.getKey()));
         
         if (img != null)
+        {
           g2d.drawImage(img, dx, dy, dimension.width, dimension.height, null);
+
+          
+          StitchJson.Element element = new StitchJson.Element();
+          element.key = e.getKey();
+          element.w = dimension.width;
+          element.h = dimension.height;
+          element.x = dx;
+          element.y = dy;
+          json.elements.add(element);
+          
+          
+          byte[] hashCode = computeHashcodeForSprite(image, element.x, element.y, element.w, element.h, digest);
+          BigInteger bi = new BigInteger(1,hashCode);
+          element.hashCode = String.format("%0" + (hashCode.length << 1) + "X", bi);
+        }
         
         ++x;
         if (x >= rows)
@@ -114,10 +205,27 @@ public class Tasks
       }
       
       ImageIO.write(image, "png", output);
+      
+      File gsonOutput = new File(outputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".json");
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+      FileUtils.stringToFile(gsonOutput, gson.toJson(json, StitchJson.Category.class));
+      
     }
-    catch (IOException exception)
+    catch (Exception exception)
     {
       Log.e(exception);
     }
+  }
+    
+  public static byte[] computeHashcodeForSprite(BufferedImage image, final int x, final int y, final int w, final int h, final MessageDigest digest)
+  {
+    ByteBuffer b = ByteBuffer.allocate(w*h*4);
+    for (int ix = x; ix < x+w; ++ix)
+      for (int iy = y; iy < y+h; ++iy)
+      {
+        b.putInt(image.getRGB(ix, iy));
+      }
+    
+    return digest.digest(b.array());
   }
 }
