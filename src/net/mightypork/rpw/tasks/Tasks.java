@@ -886,4 +886,14 @@ public class Tasks {
 		return task;
 		
 	}
+	
+	public static void taskDialogExportToStitch()
+	{
+	  Gui.open(new com.pixbits.rpw.gui.windows.dialogs.DialogExportStitch());
+	}
+	
+	public static void taskDialogImportFromStitch()
+	{
+	  
+	}
 }

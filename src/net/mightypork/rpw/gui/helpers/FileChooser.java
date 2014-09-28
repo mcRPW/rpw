@@ -36,6 +36,7 @@ public class FileChooser {
 	public static final FileChooserFilter TXT = new FileChooserFilter("Text files", "txt,text,lang,json,properties,cfg,ini,conf");
 	public static final FileChooserFilter VSH = new FileChooserFilter("Vertex shaders", "vsh");
 	public static final FileChooserFilter FSH = new FileChooserFilter("Fragment shaders", "fsh");
+	public static final FileChooserFilter FOLDERS = new FolderChooserFilter();
 	
 	
 	/**
@@ -182,6 +183,20 @@ public class FileChooser {
 	protected Component getParent()
 	{
 		return parent;
+	}
+	
+	public static class FolderChooserFilter extends FileChooserFilter
+	{
+	  public FolderChooserFilter()
+	  {
+	    super("Folders", "");
+	  }
+
+	  @Override
+	  public String getDescription()
+	  { 
+	    return "Folders";
+	  }
 	}
 	
 	public static class FileChooserFilter extends FileFilter {

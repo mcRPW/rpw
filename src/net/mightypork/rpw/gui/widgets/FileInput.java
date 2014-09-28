@@ -86,7 +86,10 @@ public class FileInput extends HBox {
 		});
 		
 		// can be changed  by setFileChooser()
-		this.fc = new FileChooser(parent, pathEnum, title, filter, true, false, false);
+		if (filter == FileChooser.FOLDERS)
+	    this.fc = new FileChooser(parent, pathEnum, title, filter, false, true, false);
+		else
+		  this.fc = new FileChooser(parent, pathEnum, title, filter, true, false, false);
 		
 		// build the GUI
 		add(buttonPickFile);

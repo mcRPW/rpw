@@ -36,6 +36,8 @@ public class MenuMain {
 	private JMenuItem itemProjectSummary;
 	private JMenuItem itemProjectExportMc;
 	private JMenuItem itemProjectExport;
+	private JMenuItem itemProjectExportStitch;
+	private JMenuItem itemProjectImportStitch;
 	private JMenuItem itemExit;
 	private JMenuItem itemProjectClose;
 	private JMenuItem itemProjectOpenFolder;
@@ -140,6 +142,18 @@ public class MenuMain {
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 			item.setIcon(Icons.MENU_EXPORT_BOX);
 			menu.add(item);
+			
+			menu.addSeparator();
+			
+			item = itemProjectExportStitch = new JMenuItem("Export stitched PNG to...", KeyEvent.VK_X);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+			item.setIcon(Icons.MENU_EXPORT_BOX);
+			menu.add(item);
+			
+      item = itemProjectImportStitch = new JMenuItem("Import stitched PNG from...", KeyEvent.VK_P);
+      item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+      item.setIcon(Icons.MENU_EXPORT_BOX);
+      menu.add(item);
 			
 			menu.addSeparator();
 			
@@ -482,6 +496,26 @@ public class MenuMain {
 			}
 		});
 		
+		itemProjectExportStitch.addActionListener(new ActionListener() {
+		  
+		  @Override
+		  public void actionPerformed(ActionEvent e)
+		  {
+		    Tasks.taskDialogExportToStitch();
+		  }
+		  
+		});
+		
+    itemProjectImportStitch.addActionListener(new ActionListener() {
+      
+      @Override
+      public void actionPerformed(ActionEvent e)
+      {
+        Tasks.taskDialogImportFromStitch();
+      }
+      
+    });
+		
 		itemProjectClose.addActionListener(new ActionListener() {
 			
 			@Override
@@ -758,6 +792,8 @@ public class MenuMain {
 		itemProjectSave.setEnabled(open);
 		itemProjectSaveAs.setEnabled(open);
 		itemProjectExportMc.setEnabled(open);
+		itemProjectExportStitch.setEnabled(open);
+		itemProjectImportStitch.setEnabled(open);
 		itemProjectSetup.setEnabled(open);
 		itemProjectSummary.setEnabled(open);
 		itemProjectClose.setEnabled(open);
