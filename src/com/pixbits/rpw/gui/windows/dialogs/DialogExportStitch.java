@@ -1,51 +1,43 @@
 package com.pixbits.rpw.gui.windows.dialogs;
 
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import com.google.gson.reflect.TypeToken;
 
 import net.mightypork.rpw.App;
-import net.mightypork.rpw.Config;
-import net.mightypork.rpw.Const;
+
 import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.FileChooser;
-import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.FileInput;
-import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
-import net.mightypork.rpw.tasks.Tasks;
-import net.mightypork.rpw.utils.files.FileUtils;
-import net.mightypork.rpw.utils.files.OsUtils;
-import net.mightypork.rpw.utils.files.SimpleConfig;
-import net.mightypork.rpw.utils.logging.Log;
+
+import net.mightypork.rpw.project.Project;
+
+import com.pixbits.tasks.*;
 
 public class DialogExportStitch extends RpwDialog {
-  private final String[] groupNames = {"Blocks", "Items"};
   private JCheckBox[] selection;
 
   private FileInput filepicker;
 
   private JButton buttonOK;
   private JButton buttonCancel;
+  
+  private JCheckBox exportMissing;
+  private JCheckBox exportExisting;
 
   public DialogExportStitch()
   {
@@ -58,9 +50,14 @@ public class DialogExportStitch extends RpwDialog {
   @Override
   protected JComponent buildGui()
   {
-    selection = new JCheckBox[groupNames.length];
-    for (int i = 0; i < selection.length; ++i)
-      selection[i] = new JCheckBox(groupNames[i]);
+    selection = new JCheckBox[AssetCategory.values().length+1];
+    for (int i = 0; i < AssetCategory.values().length; ++i)
+      selection[i] = new JCheckBox(AssetCategory.values()[i].name);
+    
+    selection[selection.length-1] = new JCheckBox("Select All");
+    selection[selection.length-1].addActionListener(checkboxListener);
+    
+    for (JCheckBox cb : selection) cb.setSelected(true);
     
     final VBox vbox = new VBox();
     vbox.windowPadding();
@@ -72,6 +69,12 @@ public class DialogExportStitch extends RpwDialog {
     
     for (JCheckBox cb : selection)
       vbox.add(cb);
+    
+    vbox.gap();
+    
+    vbox.add(exportMissing = new JCheckBox("Export missing"));
+    vbox.add(exportExisting = new JCheckBox("Export existing"));
+    exportMissing.setSelected(true);
     
     vbox.gapl();
     
@@ -120,6 +123,20 @@ public class DialogExportStitch extends RpwDialog {
 
   }
   
+  private final ActionListener checkboxListener = new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent evt)
+    {
+      JCheckBox src = (JCheckBox)evt.getSource();
+      
+      if (src == selection[selection.length-1])
+      {
+        for (int i = 0; i < selection.length-1; ++i)
+          selection[i].setSelected(src.isSelected());
+      }
+    }
+  };
+  
   private final ActionListener exportListener = new ActionListener() {
     
     @Override
@@ -130,9 +147,22 @@ public class DialogExportStitch extends RpwDialog {
         return;
       }
       
+      Set<AssetCategory> categories = new HashSet<AssetCategory>();
+      
+      for (int i = 0; i < AssetCategory.values().length; ++i)
+        if (selection[i].isSelected())
+          categories.add(AssetCategory.values()[i]);
+      
+      if (categories.isEmpty())
+      {
+        Alerts.error(self(), "Category Required", "At least one category is required");
+        return;
+      }
+      
       final File file = filepicker.getFile();
+      final Project project = Projects.getActive();
       
-      
+      Tasks.exportPackToStitchedPng(file, project, categories, exportMissing.isSelected(), exportExisting.isSelected());
     }
   };
 
