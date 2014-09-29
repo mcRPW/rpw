@@ -10,6 +10,12 @@ public class StitchJson
     String hashCode;
     int x, y;
     int w, h;
+    
+    Element()
+    {
+      x = -1;
+      y = -1;
+    }
   }
  
   public static class Category

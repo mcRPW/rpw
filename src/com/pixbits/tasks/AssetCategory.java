@@ -3,7 +3,9 @@ package com.pixbits.tasks;
 public enum AssetCategory
 {
   BLOCKS("Blocks", "assets.minecraft.textures.blocks.*"),
-  ITEMS("Items", "assets.minecraft.textures.items.*")
+  ITEMS("Items", "assets.minecraft.textures.items.*"),
+  ENTITIES("Entities", "assets.minecraft.textures.entity.*"),
+  GUI("GUI", "assets.minecraft.textures.gui.*"),
 
   ;
   

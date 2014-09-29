@@ -11,6 +11,7 @@ import java.util.HashSet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JComboBox;
 
 import net.mightypork.rpw.App;
 
@@ -38,6 +39,8 @@ public class DialogExportStitch extends RpwDialog {
   
   private JCheckBox exportMissing;
   private JCheckBox exportExisting;
+  
+  private JComboBox forceBlockSize;
 
   public DialogExportStitch()
   {
@@ -50,6 +53,9 @@ public class DialogExportStitch extends RpwDialog {
   @Override
   protected JComponent buildGui()
   {
+    forceBlockSize = new JComboBox(BlockSize.values());
+    forceBlockSize.setSelectedItem(BlockSize.NO_CHANGE);    
+    
     selection = new JCheckBox[AssetCategory.values().length+1];
     for (int i = 0; i < AssetCategory.values().length; ++i)
       selection[i] = new JCheckBox(AssetCategory.values()[i].name);
@@ -57,7 +63,11 @@ public class DialogExportStitch extends RpwDialog {
     selection[selection.length-1] = new JCheckBox("Select All");
     selection[selection.length-1].addActionListener(checkboxListener);
     
-    for (JCheckBox cb : selection) cb.setSelected(true);
+    for (JCheckBox cb : selection)
+    {
+      cb.setSelected(true);
+      cb.addActionListener(checkboxListener);
+    }
     
     final VBox vbox = new VBox();
     vbox.windowPadding();
@@ -77,6 +87,9 @@ public class DialogExportStitch extends RpwDialog {
     exportMissing.setSelected(true);
     
     vbox.gapl();
+    
+    vbox.titsep("Force size of blocks");
+    vbox.add(forceBlockSize);
     
     vbox.titsep("Folder to export to");
     vbox.gap();
@@ -134,6 +147,20 @@ public class DialogExportStitch extends RpwDialog {
         for (int i = 0; i < selection.length-1; ++i)
           selection[i].setSelected(src.isSelected());
       }
+      else
+      {
+        boolean allSelected = true;
+        
+        for (int i = 0; i < selection.length-1; ++i)
+          allSelected &= selection[i].isSelected();
+        
+        selection[selection.length-1].setSelected(allSelected);
+        
+        if (src.getText().equals(AssetCategory.BLOCKS.name))
+        {
+          forceBlockSize.setEnabled(src.isSelected());
+        }
+      }
     }
   };
   
@@ -162,7 +189,7 @@ public class DialogExportStitch extends RpwDialog {
       final File file = filepicker.getFile();
       final Project project = Projects.getActive();
       
-      Tasks.exportPackToStitchedPng(file, project, categories, exportMissing.isSelected(), exportExisting.isSelected());
+      Tasks.exportPackToStitchedPng(file, project, categories, exportMissing.isSelected(), exportExisting.isSelected(), (BlockSize)forceBlockSize.getSelectedItem());
       
       closeDialog();
     }

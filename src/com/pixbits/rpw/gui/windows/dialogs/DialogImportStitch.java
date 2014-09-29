@@ -52,7 +52,11 @@ public class DialogImportStitch extends RpwDialog {
     selection[selection.length-1] = new JCheckBox("Select All");
     selection[selection.length-1].addActionListener(checkboxListener);
     
-    for (JCheckBox cb : selection) cb.setSelected(true);
+    for (JCheckBox cb : selection)
+    {
+      cb.setSelected(true);
+      cb.addActionListener(checkboxListener);
+    }
     
     final VBox vbox = new VBox();
     vbox.windowPadding();
@@ -122,6 +126,15 @@ public class DialogImportStitch extends RpwDialog {
       {
         for (int i = 0; i < selection.length-1; ++i)
           selection[i].setSelected(src.isSelected());
+      }
+      else
+      {
+        boolean allSelected = true;
+        
+        for (int i = 0; i < selection.length-1; ++i)
+          allSelected &= selection[i].isSelected();
+        
+        selection[selection.length-1].setSelected(allSelected);
       }
     }
   };

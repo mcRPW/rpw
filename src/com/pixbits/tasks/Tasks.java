@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.*;
 import java.awt.Graphics2D;
@@ -109,13 +110,13 @@ public class Tasks
   }
 
   
-  public static void exportPackToStitchedPng(File outputFolder, Project project, Set<AssetCategory> categories, boolean exportMissing, boolean exportExisting)
+  public static void exportPackToStitchedPng(File outputFolder, Project project, Set<AssetCategory> categories, boolean exportMissing, boolean exportExisting, BlockSize blockSize)
   {
     for (AssetCategory c : categories)
-      exportPackToStitchedPng(outputFolder, project, c, exportMissing, exportExisting);
+      exportPackToStitchedPng(outputFolder, project, c, exportMissing, exportExisting, blockSize);
   }
   
-  private static void exportPackToStitchedPng(File outputFolder, Project project, AssetCategory category, boolean exportMissing, boolean exportExisting)
+  private static void exportPackToStitchedPng(File outputFolder, Project project, AssetCategory category, boolean exportMissing, boolean exportExisting, BlockSize blockSize)
   {
     VanillaPack vanilla = Sources.vanilla;
 
@@ -125,15 +126,16 @@ public class Tasks
     List<AssetEntry> entries = new ArrayList<AssetEntry>();
     
     GroupFilter filter = new GroupFilter(null, category.prefix);
+    //GroupFilter fontFilter = new GroupFilter(null, "assets.minecraft.textures.font.*");
 
     for (AssetEntry e : totalEntries)
     {
-      if (filter.matches(e))
+      if (filter.matches(e) /*&& !fontFilter.matches(e)*/)
         entries.add(e);
     }
  
     try {
-      Dimension dimension = null;
+      /*Dimension dimension = null;
       int imgType = BufferedImage.TYPE_INT_ARGB;
       
       for (AssetEntry e : entries)
@@ -158,9 +160,9 @@ public class Tasks
             }
   
         }
-      }
+      }*/
       
-      int count = entries.size();
+      /*int count = entries.size();
       final int rows = (int)Math.ceil(Math.sqrt(count));
       Dimension imageSize = new Dimension(rows*dimension.width, rows*dimension.height);
       Log.i("Stitcher export image size: "+imageSize.width+", "+imageSize.height);
@@ -169,25 +171,76 @@ public class Tasks
       Graphics2D g2d = (Graphics2D)image.getGraphics();
       
       g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+      */
+      
       
       StitchJson.Category json = new StitchJson.Category();
       json.category = category;
       json.elements = new ArrayList<StitchJson.Element>();
             
-      final int w = dimension.width, h = dimension.height;
+      //final int w = dimension.width, h = dimension.height;
       //final int tw = imageSize.width, th = imageSize.height;
-      int x = 0, y = 0;
+      //int x = 0, y = 0;
       
       MessageDigest digest = MessageDigest.getInstance("MD5");
-
+      
+      AssetLayout layout = new AssetLayout();
+      
+      
       for (AssetEntry e : entries)
+      {
+        boolean hasCustom = project.getAssetFile(e.getKey()) != null;
+        File file = null;
+        
+        if (exportExisting && hasCustom)
+          file = project.getAssetFile(e.getKey());
+        else if (hasCustom)
+          continue;
+        
+        if (file == null && exportMissing)
+          file = vanilla.getAssetFile(e.getKey());
+        
+
+        if (file != null)
+        {
+          AssetImage iasset = new AssetImage(file, e);
+          
+          if (category == AssetCategory.BLOCKS && blockSize != BlockSize.NO_CHANGE)
+            iasset.cacheImage(blockSize.size, blockSize.size);
+          else
+            iasset.cacheImage();
+          layout.add(iasset);
+        }
+      }
+      
+      Point size = layout.computeLayout();
+      BufferedImage image = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g2d = (Graphics2D)image.getGraphics();
+      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+      
+      for (AssetImage e : layout)
+      {
+        digest.reset();
+        
+        BufferedImage img = e.image;
+        
+        g2d.drawImage(img, e.x(), e.y(), e.width(), e.height(), null);
+        
+        byte[] hashCode = computeHashcodeForSprite(image, e.x(), e.y(), e.width(), e.height(), digest);
+        BigInteger bi = new BigInteger(1,hashCode);
+        e.element.hashCode = String.format("%0" + (hashCode.length << 1) + "X", bi);
+        
+        json.elements.add(e.element);
+      }
+
+      /*for (AssetEntry e : entries)
       {
         digest.reset();
         
         File file = project.getAssetFile(e.getKey());
-        
-        AssetImage iasset = new AssetImage(file, e);
-        
+                
         BufferedImage img = null;
         
         int dx = x*w;
@@ -223,7 +276,7 @@ public class Tasks
           x %= rows;
           ++y;
         }
-      }
+      }*/
       
       ImageIO.write(image, "png", output);
       
