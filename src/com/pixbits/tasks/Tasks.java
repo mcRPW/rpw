@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 
 import com.google.gson.*;
 
+import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
@@ -63,8 +64,7 @@ public class Tasks
       BufferedImage image = ImageIO.read(input);
       
       MessageDigest digest = MessageDigest.getInstance("MD5");
-
-      
+            
       for (StitchJson.Element element : json.elements)
       {
         digest.reset();
@@ -74,20 +74,38 @@ public class Tasks
         
         if (!savedHash.equals(computedHash))
         {
-          System.out.println("Element "+element.key+" differs!");
+          // overwrite existing asset to new one
+          File outputAsset = project.getAssetFile(element.key);
+          
+          if (outputAsset != null)
+            FileUtils.delete(outputAsset, false);
+          else
+            outputAsset = new File(project.getAssetsDirectory() + File.separator + element.key.replaceAll("\\.", File.separator) + ".png");
+
+          
+          BufferedImage sprite = new BufferedImage(element.w, element.h, image.getType());
+          sprite.getGraphics().drawImage(image, 0, 0, element.w, element.h, element.x, element.y, element.x+element.w, element.y+element.h, null);
+          
+          project.setSourceForFile(element.key, MagicSources.PROJECT);
+          
+          outputAsset.mkdirs();
+          ImageIO.write(sprite, "PNG", outputAsset);
+          Log.i("Stitcher import, updating "+element.key+" to "+outputAsset.getAbsolutePath());
+          
         }
        
       }
       
-      
+      project.saveToTmp();
+      net.mightypork.rpw.tasks.Tasks.taskTreeRebuild();
+      return true;
     }
     catch (Exception e)
     {
       Log.e(e);
+      return false;
     }
-    
-    
-    return true;
+
   }
 
   
@@ -100,7 +118,7 @@ public class Tasks
   private static void exportPackToStitchedPng(File outputFolder, Project project, AssetCategory category, boolean exportMissing, boolean exportExisting)
   {
     VanillaPack vanilla = Sources.vanilla;
-       
+
     File output = new File(outputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".png");
     
     Collection<AssetEntry> totalEntries = vanilla.getAssetEntries();
@@ -167,6 +185,9 @@ public class Tasks
         digest.reset();
         
         File file = project.getAssetFile(e.getKey());
+        
+        AssetImage iasset = new AssetImage(file, e);
+        
         BufferedImage img = null;
         
         int dx = x*w;
