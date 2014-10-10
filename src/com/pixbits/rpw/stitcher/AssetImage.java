@@ -1,4 +1,4 @@
-package com.pixbits.tasks;
+package com.pixbits.rpw.stitcher;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +28,7 @@ public class AssetImage implements Comparable<AssetImage>
     placed = true;
     
     element = new StitchJson.Element();
+    element.key = entry.getKey();
   }
   
   @Override

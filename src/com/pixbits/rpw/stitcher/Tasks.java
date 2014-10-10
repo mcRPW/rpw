@@ -1,4 +1,4 @@
-package com.pixbits.tasks;
+package com.pixbits.rpw.stitcher;
 
 import java.io.InputStream;
 import java.io.File;
@@ -135,46 +135,6 @@ public class Tasks
     }
  
     try {
-      /*Dimension dimension = null;
-      int imgType = BufferedImage.TYPE_INT_ARGB;
-      
-      for (AssetEntry e : entries)
-      {      
-        File file = project.getAssetFile(e.getKey());
-        BufferedImage img = null;
-        
-        if (file != null)
-        {
-            img = ImageIO.read(file);
-            imgType = img.getType();
-            
-            if (dimension == null) 
-            {
-              Log.i("Stitcher recognized image size: "+img.getWidth()+", "+img.getHeight());
-              dimension = new Dimension(img.getWidth(), img.getHeight());
-            }
-            else if (img.getWidth() != dimension.width || img.getHeight() != dimension.height)
-            {
-              Log.e("Can't stitch a resource pack with different sizes per asset category");
-              return;
-            }
-  
-        }
-      }*/
-      
-      /*int count = entries.size();
-      final int rows = (int)Math.ceil(Math.sqrt(count));
-      Dimension imageSize = new Dimension(rows*dimension.width, rows*dimension.height);
-      Log.i("Stitcher export image size: "+imageSize.width+", "+imageSize.height);
-  
-      BufferedImage image = new BufferedImage(imageSize.width, imageSize.height, imgType);
-      Graphics2D g2d = (Graphics2D)image.getGraphics();
-      
-      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-
-      */
-      
-      
       StitchJson.Category json = new StitchJson.Category();
       json.category = category;
       json.elements = new ArrayList<StitchJson.Element>();
@@ -219,7 +179,6 @@ public class Tasks
       Graphics2D g2d = (Graphics2D)image.getGraphics();
       g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
-      
       for (AssetImage e : layout)
       {
         digest.reset();
@@ -234,49 +193,6 @@ public class Tasks
         
         json.elements.add(e.element);
       }
-
-      /*for (AssetEntry e : entries)
-      {
-        digest.reset();
-        
-        File file = project.getAssetFile(e.getKey());
-                
-        BufferedImage img = null;
-        
-        int dx = x*w;
-        int dy = y*h;
-        
-        if (file != null && exportExisting)
-          img = ImageIO.read(file);
-        else if (file == null && exportMissing)
-          img = ImageIO.read(vanilla.getAssetFile(e.getKey()));
-        
-        if (img != null)
-        {
-          g2d.drawImage(img, dx, dy, dimension.width, dimension.height, null);
-
-          
-          StitchJson.Element element = new StitchJson.Element();
-          element.key = e.getKey();
-          element.w = dimension.width;
-          element.h = dimension.height;
-          element.x = dx;
-          element.y = dy;
-          json.elements.add(element);
-          
-          
-          byte[] hashCode = computeHashcodeForSprite(image, element.x, element.y, element.w, element.h, digest);
-          BigInteger bi = new BigInteger(1,hashCode);
-          element.hashCode = String.format("%0" + (hashCode.length << 1) + "X", bi);
-        }
-        
-        ++x;
-        if (x >= rows)
-        {
-          x %= rows;
-          ++y;
-        }
-      }*/
       
       ImageIO.write(image, "png", output);
       

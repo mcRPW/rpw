@@ -1,4 +1,4 @@
-package com.pixbits.tasks;
+package com.pixbits.rpw.stitcher;
 
 import java.awt.Rectangle;
 import java.awt.Point;

@@ -1,4 +1,4 @@
-package com.pixbits.rpw.gui.windows.dialogs;
+package com.pixbits.rpw.stitcher;
 
 
 
@@ -11,10 +11,8 @@ import java.util.HashSet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JComboBox;
 
 import net.mightypork.rpw.App;
-
 import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
@@ -24,27 +22,21 @@ import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
-
 import net.mightypork.rpw.project.Project;
 
-import com.pixbits.tasks.*;
+import com.pixbits.rpw.stitcher.*;
 
-public class DialogExportStitch extends RpwDialog {
+public class DialogImportStitch extends RpwDialog {
   private JCheckBox[] selection;
 
   private FileInput filepicker;
 
   private JButton buttonOK;
   private JButton buttonCancel;
-  
-  private JCheckBox exportMissing;
-  private JCheckBox exportExisting;
-  
-  private JComboBox forceBlockSize;
 
-  public DialogExportStitch()
+  public DialogImportStitch()
   {
-    super(App.getFrame(), "Export Stitch");
+    super(App.getFrame(), "Import Stitch");
         
     createDialog();
   }
@@ -53,9 +45,6 @@ public class DialogExportStitch extends RpwDialog {
   @Override
   protected JComponent buildGui()
   {
-    forceBlockSize = new JComboBox(BlockSize.values());
-    forceBlockSize.setSelectedItem(BlockSize.NO_CHANGE);    
-    
     selection = new JCheckBox[AssetCategory.values().length+1];
     for (int i = 0; i < AssetCategory.values().length; ++i)
       selection[i] = new JCheckBox(AssetCategory.values()[i].name);
@@ -72,34 +61,25 @@ public class DialogExportStitch extends RpwDialog {
     final VBox vbox = new VBox();
     vbox.windowPadding();
     
-    vbox.heading("Export Stitched PNGs");
+    vbox.heading("Import Stitched PNGs");
     
-    vbox.titsep("Resources to export");
+    vbox.titsep("Resources to import");
     vbox.gap_small();
     
     for (JCheckBox cb : selection)
       vbox.add(cb);
-    
-    vbox.gap();
-    
-    vbox.add(exportMissing = new JCheckBox("Export missing"));
-    vbox.add(exportExisting = new JCheckBox("Export existing"));
-    exportMissing.setSelected(true);
-    
+
     vbox.gapl();
     
-    vbox.titsep("Force size of blocks");
-    vbox.add(forceBlockSize);
-    
-    vbox.titsep("Folder to export to");
+    vbox.titsep("Folder to import from");
     vbox.gap();
     
     //@formatter:off
     filepicker = new FileInput(
         this,
-        "Select folder to export to...",
+        "Select folder to import to...",
         FilePath.EXPORT,
-        "Export stitched pack",
+        "Import stitched pack",
         FileChooser.FOLDERS,
         true        
     );
@@ -109,10 +89,10 @@ public class DialogExportStitch extends RpwDialog {
     
     vbox.gapl();
 
-    vbox.titsep("Export");
+    vbox.titsep("Import");
     vbox.gap();
     
-    buttonOK = new JButton("Export", Icons.MENU_EXPORT);
+    buttonOK = new JButton("Import", Icons.MENU_IMPORT_BOX);
     buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
     vbox.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
     
@@ -155,15 +135,10 @@ public class DialogExportStitch extends RpwDialog {
           allSelected &= selection[i].isSelected();
         
         selection[selection.length-1].setSelected(allSelected);
-        
-        if (src.getText().equals(AssetCategory.BLOCKS.name))
-        {
-          forceBlockSize.setEnabled(src.isSelected());
-        }
       }
     }
   };
-  
+
   private final ActionListener exportListener = new ActionListener() {
     
     @Override
@@ -189,7 +164,7 @@ public class DialogExportStitch extends RpwDialog {
       final File file = filepicker.getFile();
       final Project project = Projects.getActive();
       
-      Tasks.exportPackToStitchedPng(file, project, categories, exportMissing.isSelected(), exportExisting.isSelected(), (BlockSize)forceBlockSize.getSelectedItem());
+      Tasks.importPackFromStitchedPng(file, project, categories);
       
       closeDialog();
     }

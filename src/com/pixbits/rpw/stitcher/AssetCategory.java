@@ -1,4 +1,4 @@
-package com.pixbits.tasks;
+package com.pixbits.rpw.stitcher;
 
 public enum AssetCategory
 {
