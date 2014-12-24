@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -36,123 +35,129 @@ import net.mightypork.rpw.utils.logging.Log;
 import com.google.gson.reflect.TypeToken;
 
 
-public class DialogExportToMc extends RpwDialog {
-	
+public class DialogExportToMc extends RpwDialog
+{
+
 	private final List<String> installedPackNames;
-	
+
 	private JTextField field;
 	private JButton buttonOK;
 	private SimpleStringList list;
 	private JButton buttonCancel;
-	
+
 	private JComboBox mcOptsCombo;
-	
+
 	private static final int MC_ALONE = 0;
 	private static final int MC_ADD = 1;
 	private static final int MC_NO_CHANGE = 2;
-	
-	
-	public DialogExportToMc()
-	{
+
+
+	public DialogExportToMc() {
 		super(App.getFrame(), "Export");
-		
+
 		installedPackNames = getOptions();
-		
+
 		createDialog();
 	}
-	
-	
+
+
 	@Override
 	protected JComponent buildGui()
 	{
 		final VBox vbox = new VBox();
 		vbox.windowPadding();
-		
+
 		vbox.heading("Export to Minecraft");
-		
+
 		vbox.titsep("Installed ResourcePacks");
 		vbox.gap();
-		
+
 		vbox.add(list = new SimpleStringList(installedPackNames, true));
 		list.getList().addListSelectionListener(new ListSelectionListener() {
-			
+
 			@Override
 			public void valueChanged(ListSelectionEvent e)
 			{
 				final String s = list.getSelectedValue();
-				if (s != null) field.setText(s);
+				if (s != null)
+					field.setText(s);
 			}
 		});
-		
+
 		vbox.gapl();
-		
+
 		vbox.titsep("Export options");
 		vbox.gap();
-		
-		field = Gui.textField("", "Output file name", "Output file name (without extension)");
+
+		field = Gui.textField("", "Output file name",
+				"Output file name (without extension)");
 		field.addKeyListener(TextInputValidator.filenames());
-		
+
 		final String[] choices = new String[3];
 		choices[MC_ALONE] = "Use this pack alone";
 		choices[MC_ADD] = "Add pack to selected (on top)";
 		choices[MC_NO_CHANGE] = "Don't change settings";
-		
-		Config.CHOICE_EXPORT_TO_MC = Math.max(0, Math.min(Config.CHOICE_EXPORT_TO_MC, choices.length - 1));
-		
+
+		Config.CHOICE_EXPORT_TO_MC = Math.max(0,
+				Math.min(Config.CHOICE_EXPORT_TO_MC, choices.length - 1));
+
 		mcOptsCombo = new JComboBox(choices);
 		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
-		
-		vbox.springForm(new String[] { "Pack name:", "In Minecraft:" }, new JComponent[] { field, mcOptsCombo });
-		
+
+		vbox.springForm(new String[] { "Pack name:", "In Minecraft:" },
+				new JComponent[] { field, mcOptsCombo });
+
 		vbox.gapl();
-		
+
 		buttonOK = new JButton("Export", Icons.MENU_EXPORT);
 		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
 		vbox.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
-		
+
 		return vbox;
 	}
-	
-	
+
+
 	@Override
 	protected void addActions()
 	{
 		setEnterButton(buttonOK);
-		
+
 		buttonCancel.addActionListener(closeListener);
-		
+
 		buttonOK.addActionListener(exportListener);
 	}
-	
-	
+
+
 	private List<String> getOptions()
 	{
-		final List<File> aList = FileUtils.listDirectory(OsUtils.getMcDir("resourcepacks"));
+		final List<File> aList = FileUtils.listDirectory(OsUtils
+				.getMcDir("resourcepacks"));
 		final List<String> options = new ArrayList<String>();
-		
+
 		for (final File f : aList) {
-			if (f.isDirectory()) continue;
+			if (f.isDirectory())
+				continue;
 			final String[] parts = FileUtils.getFilenameParts(f);
-			
+
 			if (parts[1].equalsIgnoreCase("zip")) {
 				options.add(parts[0]);
 			}
 		}
-		
+
 		Collections.sort(options);
-		
+
 		return options;
 	}
-	
-	
+
+
 	@Override
 	protected void onShown()
 	{
 		field.setText(Projects.getActive().getName());
 	}
-	
+
 	private final ActionListener exportListener = new ActionListener() {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent evt)
 		{
@@ -161,7 +166,7 @@ public class DialogExportToMc extends RpwDialog {
 				Alerts.error(self(), "Invalid name", "Missing file name!");
 				return;
 			}
-			
+
 			if (installedPackNames.contains(name)) {
 				//@formatter:off
 				final boolean overwrite = Alerts.askYesNo(
@@ -171,53 +176,59 @@ public class DialogExportToMc extends RpwDialog {
 						"Do you want to overwrite it?"
 				);
 				//@formatter:on
-				
-				if (!overwrite) return;
-				
+
+				if (!overwrite)
+					return;
+
 			}
-			
-			// OK name		
-			
-			final File file = OsUtils.getMcDir("resourcepacks/" + name + ".zip");
-			
+
+			// OK name
+
+			final File file = OsUtils
+					.getMcDir("resourcepacks/" + name + ".zip");
+
 			try {
 				closeDialog();
-				
+
 				Tasks.taskExportProject(file, new Runnable() {
-					
+
 					@Override
 					public void run()
 					{
 						// 0 - replace
 						// 1 - put on top
 						// 2 - don't change settings
-						
-						final int choice = Config.CHOICE_EXPORT_TO_MC = mcOptsCombo.getSelectedIndex();
+
+						final int choice = Config.CHOICE_EXPORT_TO_MC = mcOptsCombo
+								.getSelectedIndex();
 						Config.save();
-						
-						if (choice == MC_NO_CHANGE) return;
-						
+
+						if (choice == MC_NO_CHANGE)
+							return;
+
 						// TODO take action based on choice
-						
+
 						// set as default now.
-						
+
 						final File f = OsUtils.getMcDir("options.txt");
 						if (!f.exists()) {
 							Log.w("MC options file not found.");
 							return;
 						}
-						
+
 						try {
-							final List<String> lines = SimpleConfig.listFromFile(f);
-							
+							final List<String> lines = SimpleConfig
+									.listFromFile(f);
+
 							boolean a = false, b = false;
-							
+
 							final String fname = name + ".zip";
-							
+
 							final String optOld = "skin:" + fname;
-							
-							final String optNew = "resourcePacks:[" + Const.GSON_UGLY.toJson(fname) + "]";
-							
+
+							final String optNew = "resourcePacks:["
+									+ Const.GSON_UGLY.toJson(fname) + "]";
+
 							for (int i = 0; i < lines.size(); i++) {
 								// 1.6-
 								if (lines.get(i).startsWith("skin:")) {
@@ -229,46 +240,60 @@ public class DialogExportToMc extends RpwDialog {
 								if (lines.get(i).startsWith("resourcePacks:")) {
 									if (choice == MC_ADD) {
 										try {
-											String orig = lines.get(i).substring("resourcePacks:".length());
+											String orig = lines.get(i)
+													.substring(
+															"resourcePacks:"
+																	.length());
 											orig = orig.trim();
-											
-											final List<String> list = Const.GSON.fromJson(orig, new TypeToken<List<String>>() {}.getType());
-											
+
+											final List<String> list = Const.GSON
+													.fromJson(
+															orig,
+															new TypeToken<List<String>>() {
+															}.getType());
+
 											list.remove(fname);
 											list.add(0, fname);
-											
-											final String packs_new = Const.GSON_UGLY.toJson(list);
-											
-											Log.f3("Writing to MC options: " + packs_new);
-											
-											lines.set(i, "resourcePacks:" + packs_new);
+
+											final String packs_new = Const.GSON_UGLY
+													.toJson(list);
+
+											Log.f3("Writing to MC options: "
+													+ packs_new);
+
+											lines.set(i, "resourcePacks:"
+													+ packs_new);
 											b = true;
 										} catch (final Exception e) {
 											Log.e(e);
 										}
 									}
-									
+
 									if (!b || choice == MC_ALONE) {
 										lines.set(i, optNew);
-										Log.f3("Writing to MC options: " + optNew);
+										Log.f3("Writing to MC options: "
+												+ optNew);
 										b = true;
 									}
 								}
 							}
-							
-							// add the unused one (make sure both will be present when MC starts)
-							if (!b) lines.add(optNew);
-							if (!a) lines.add(optOld);
-							
+
+							// add the unused one (make sure both will be
+							// present when MC starts)
+							if (!b)
+								lines.add(optNew);
+							if (!a)
+								lines.add(optOld);
+
 							SimpleConfig.listToFile(f, lines);
 							Log.i("Minecraft config file was changed.");
-							
+
 						} catch (final IOException e) {
 							Log.e(e);
 						}
 					}
 				});
-				
+
 			} catch (final Exception e) {
 				Alerts.error(self(), "An error occured while exporting.");
 				Log.e(e);

@@ -1,6 +1,5 @@
 package net.mightypork.rpw.tree.assets;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,93 +19,106 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class TreeBuilder {
-	
-	public static GroupFilter DELETE_FONT = new GroupFilter(null, "assets.minecraft.textures.font.unicode_*");
-	
+public class TreeBuilder
+{
+
+	public static GroupFilter DELETE_FONT = new GroupFilter(null,
+			"assets.minecraft.textures.font.unicode_*");
+
 	private final Map<String, AssetTreeGroup> groups = new HashMap<String, AssetTreeGroup>();
 	private AssetTreeGroup rootGroup = null;
-	
+
 	private boolean fullTree = false;
 	private boolean ignoreOrphans = false;
-	
-	
-	public TreeBuilder()
-	{
+
+
+	public TreeBuilder() {
 	}
-	
-	
+
+
 	/**
 	 * Build complete tree (override settings)
 	 * 
-	 * @param project project to build from
+	 * @param project
+	 *            project to build from
 	 * @return tree root
 	 */
 	public AssetTreeGroup buildTreeForExport(NodeSourceProvider project)
 	{
 		this.fullTree = true;
 		this.ignoreOrphans = true;
-		
+
 		return buildTree(project);
 	}
-	
-	
+
+
 	public AssetTreeGroup buildTree(NodeSourceProvider project)
 	{
 		groups.clear();
 		rootGroup = new AssetTreeGroup(null, null, MagicSources.VANILLA);
-		
-		final AssetGrouper grouper = (Config.FANCY_TREE ? new AssetGrouperFancy() : new AssetGrouperRaw());
-		
+
+		final AssetGrouper grouper = (Config.FANCY_TREE ? new AssetGrouperFancy()
+				: new AssetGrouperRaw());
+
 		// build group structure
 		for (final GroupInfo gi : grouper.groups) {
 			final String groupKey = gi.getKey();
 			final String label = gi.getLabel();
 			final String source = project.getSourceForGroup(groupKey);
 			final String parent = gi.getParent();
-			
-			final AssetTreeGroup group = new AssetTreeGroup(groupKey, label, source);
-			
+
+			final AssetTreeGroup group = new AssetTreeGroup(groupKey, label,
+					source);
+
 			if (parent == null) {
 				rootGroup.addChild(group);
 			} else {
 				final AssetTreeGroup parentGroup = groups.get(parent);
-				
+
 				if (parentGroup == null) {
-					Log.w("Missing parent group for group " + groupKey + "\n\t" + parent);
+					Log.w("Missing parent group for group " + groupKey + "\n\t"
+							+ parent);
 				} else {
 					parentGroup.addChild(group);
 				}
 			}
-			
+
 			groups.put(groupKey, group);
 		}
-		
+
 		boolean orphans = false;
-		
+
 		for (final AssetEntry ae : Sources.vanilla.getAssetEntries()) {
 			if (!fullTree) {
 				if (!Config.SHOW_FONT) {
-					if (DELETE_FONT.matches(ae)) continue; // skip fonts				
+					if (DELETE_FONT.matches(ae))
+						continue; // skip fonts
 				}
-				
+
 				if (!Config.SHOW_OBSOLETE_DIRS) {
 					boolean del = false;
-					if (ae.getKey().startsWith("assets.minecraft.sound") && !ae.getKey().startsWith("assets.minecraft.sounds")) del = true; // sound dir
-					if (ae.getKey().startsWith("assets.minecraft.music")) del = true; // music dir	
-					if (ae.getKey().startsWith("assets.minecraft.records")) del = true; // records dir	
+					if (ae.getKey().startsWith("assets.minecraft.sound")
+							&& !ae.getKey().startsWith(
+									"assets.minecraft.sounds"))
+						del = true; // sound dir
+					if (ae.getKey().startsWith("assets.minecraft.music"))
+						del = true; // music dir
+					if (ae.getKey().startsWith("assets.minecraft.records"))
+						del = true; // records dir
 					if (del) {
-						//if(Config.LOG_GROUPS) Log.f3("IGNORE OBSOLETE: "+ae.getKey());
+						// if(Config.LOG_GROUPS)
+						// Log.f3("IGNORE OBSOLETE: "+ae.getKey());
 						continue;
 					}
 				}
-				
+
 				if (!Config.SHOW_LANG) {
-					if (ae.getType() == EAsset.LANG) continue; // skip lang files				
+					if (ae.getType() == EAsset.LANG)
+						continue; // skip lang files
 				}
-				
+
 			}
-			
+
 			boolean success = false;
 			for (final GroupFilter gf : grouper.filters) {
 				if (gf.matches(ae)) {
@@ -115,34 +127,36 @@ public class TreeBuilder {
 						success = true;
 						break;
 					}
-					
+
 					final AssetTreeGroup group = groups.get(gf.getGroupKey());
-					
+
 					final String source = project.getSourceForFile(ae.getKey());
-					
+
 					if (group == null) {
-						Log.w("Missing parent group for file " + ae + "\n\t" + gf.getGroupKey());
+						Log.w("Missing parent group for file " + ae + "\n\t"
+								+ gf.getGroupKey());
 					} else {
 						group.addChild(new AssetTreeLeaf(ae, source));
 						success = true;
 					}
-					
+
 					break;
 				}
 			}
-			
+
 			if (success == false) {
 				Log.e("Orphaned file " + ae);
 				orphans = true;
 			}
-			
+
 		}
-		
+
 		if (rootGroup == null) {
 			Log.e("MISSING ROOT GROUP!");
 		}
-		
-		if (!ignoreOrphans && Config.FANCY_TREE && orphans && Config.WARNING_ORPHANED_NODES) {
+
+		if (!ignoreOrphans && Config.FANCY_TREE && orphans
+				&& Config.WARNING_ORPHANED_NODES) {
 			//@formatter:off
 			final boolean yeah = Alerts.askYesNo(
 					App.getFrame(),
@@ -156,16 +170,16 @@ public class TreeBuilder {
 					"Disable Fancy Tree now?\n"
 			);
 			//@formatter:on
-			
+
 			if (yeah) {
 				Config.FANCY_TREE = false;
 				Config.save();
 				return buildTree(project); // RISC: Recursion
 			}
 		}
-		
+
 		return rootGroup;
-		
+
 	}
-	
+
 }

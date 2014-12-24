@@ -1,6 +1,5 @@
 package net.mightypork.rpw.tasks;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,19 +17,21 @@ import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class TaskReloadVanilla {
-	
+public class TaskReloadVanilla
+{
+
 	public static void run(String version)
 	{
 		(new SequenceReloadVanilla(version)).run();
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Ask user for the level to use
 	 * 
-	 * @param isInitial is this the first startup?
+	 * @param isInitial
+	 *            is this the first startup?
 	 * @return MC version selected
 	 */
 	public static String getUserChoice(boolean isInitial)
@@ -51,30 +52,31 @@ public class TaskReloadVanilla {
 				"\n" +
 				"Please, select a Minecraft version to use:";
 		//@formatter:on
-		
+
 		// obtain applicable versions
-		final List<File> list = FileUtils.listDirectory(OsUtils.getMcDir("versions"));
-		
+		final List<File> list = FileUtils.listDirectory(OsUtils
+				.getMcDir("versions"));
+
 		final List<String> opts = new ArrayList<String>();
-		
+
 		Log.f2("Looking for installed Minecraft versions.");
 		for (final File f : list) {
 			if (f.exists() && f.isDirectory()) {
 				final String version = f.getName();
 				Log.f3("Version " + version);
-				
+
 				final File jar = new File(f, version + ".jar");
 				if (!jar.exists() || !jar.isFile()) {
 					Log.w("- no jar, skipping");
 					continue;
 				}
-				
+
 				final File json = new File(f, version + ".json");
 				if (!json.exists() || !json.isFile()) {
 					Log.w("- no json, skipping");
 					continue;
 				}
-				
+
 				String s;
 				try {
 					s = FileUtils.fileToString(json);
@@ -82,12 +84,12 @@ public class TaskReloadVanilla {
 					Log.w("- couldn't load json, skipping");
 					continue;
 				}
-				
+
 				if (s == null || s.length() == 0) {
 					Log.w("- Empty or missing version file, skipping.");
 					continue;
 				}
-				
+
 				try {
 					final VersionInfo vi = VersionInfo.fromJson(s);
 					if (vi == null || !vi.isReleaseOrSnapshot()) {
@@ -98,12 +100,12 @@ public class TaskReloadVanilla {
 					Log.w("- JSON SYNTAX ERROR, skipping.");
 					continue;
 				}
-				
+
 				Log.f3("- valid");
 				opts.add(f.getName());
 			}
 		}
-		
+
 		if (opts.size() == 0) {
 			//@formatter:off
 			App.die(
@@ -112,15 +114,15 @@ public class TaskReloadVanilla {
 			);
 			//@formatter:on
 		}
-		
+
 		Collections.sort(opts);
 		Collections.reverse(opts);
-		
+
 		// build dialog
 		final String[] possibilities = opts.toArray(new String[opts.size()]);
-		
+
 		final String defChoice = possibilities[0];
-		
+
 		//@formatter:off
 		final String s = (String) JOptionPane.showInputDialog(
 				App.getFrame(),
@@ -132,7 +134,7 @@ public class TaskReloadVanilla {
 				defChoice
 			);
 		//@formatter:on
-		
+
 		return s;
 	}
 }

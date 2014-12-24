@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -31,39 +30,39 @@ import net.mightypork.rpw.utils.files.ZipUtils;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 
-public class DialogImportPack extends RpwDialog {
-	
+public class DialogImportPack extends RpwDialog
+{
+
 	private final List<String> libPackNames;
-	
+
 	private JTextField field;
-	
+
 	private JButton buttonOk;
 	private JButton buttonCancel;
-	
+
 	private FileInput filepicker;
-	
-	
-	public DialogImportPack()
-	{
+
+
+	public DialogImportPack() {
 		super(App.getFrame(), "Import");
-		
+
 		libPackNames = Sources.getResourcepackNames();
-		
+
 		createDialog();
 	}
-	
-	
+
+
 	@Override
 	protected JComponent buildGui()
 	{
 		final VBox vb = new VBox();
 		vb.windowPadding();
-		
+
 		vb.heading("Import resource pack");
-		
+
 		vb.titsep("File to import");
 		vb.gap();
-		
+
 		//@formatter:off
 		filepicker = new FileInput(
 				this,
@@ -74,31 +73,31 @@ public class DialogImportPack extends RpwDialog {
 				true				
 		);
 		//@formatter:on
-		
+
 		vb.add(filepicker);
-		
+
 		vb.gapl();
-		
+
 		field = Gui.textField("", "Pack name", "Name used in RPW");
 		field.addKeyListener(TextInputValidator.filenames());
-		
+
 		vb.springForm(new String[] { "Name:" }, new JComponent[] { field });
-		
+
 		vb.gapl();
-		
+
 		buttonOk = new JButton("Import", Icons.MENU_YES);
 		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
 		vb.buttonRow(Gui.RIGHT, buttonOk, buttonCancel);
-		
+
 		return vb;
 	}
-	
-	
+
+
 	@Override
 	protected void initGui()
 	{
 		filepicker.setListener(new FilePickListener() {
-			
+
 			@Override
 			public void onFileSelected(File file)
 			{
@@ -107,13 +106,14 @@ public class DialogImportPack extends RpwDialog {
 					if (field.getText().trim().length() == 0) {
 						field.setText(parts[0]);
 					}
-					
-				} catch (final Throwable t) {}
+
+				} catch (final Throwable t) {
+				}
 			}
 		});
 	}
-	
-	
+
+
 	@Override
 	protected void addActions()
 	{
@@ -121,73 +121,79 @@ public class DialogImportPack extends RpwDialog {
 		buttonOk.addActionListener(submitListener);
 		buttonCancel.addActionListener(closeListener);
 	}
-	
-	
+
+
 	@Override
 	public void onClose()
 	{
 		Tasks.taskReloadSources(null);
 	}
-	
+
 	private final ActionListener submitListener = new ActionListener() {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			if (!filepicker.hasFile()) {
-				Alerts.error(self(), "Missing file", "The selected file does not exist.");
+				Alerts.error(self(), "Missing file",
+						"The selected file does not exist.");
 				return;
 			}
-			
+
 			final File file = filepicker.getFile();
-			
+
 			final String name = field.getText().trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid name", "The pack needs a name!");
 				return;
 			}
-			
+
 			if (libPackNames.contains(name)) {
-				Alerts.error(self(), "Invalid name", "Pack named \"" + name + "\" is already in the library!");
+				Alerts.error(self(), "Invalid name", "Pack named \"" + name
+						+ "\" is already in the library!");
 				return;
 			}
-			
+
 			// do the import
-			
-			final File out = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS + "/" + name, true);
-			
+
+			final File out = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS + "/"
+					+ name, true);
+
 			final StringFilter filter = new StringFilter() {
-				
+
 				@Override
 				public boolean accept(String path)
 				{
 					boolean ok = false;
-					
+
 					final String ext = FileUtils.getExtension(path);
 					final EAsset type = EAsset.forExtension(ext);
-					
+
 					ok |= path.startsWith("assets");
 					ok &= type.isAsset();
-					
+
 					return ok;
 				}
 			};
-			
+
 			try {
 				if (!ZipUtils.entryExists(file, "pack.mcmeta")) {
-					Alerts.error(self(), "Invalid format", "Selected ZIP file isn't\na valid resource pack!");
+					Alerts.error(self(), "Invalid format",
+							"Selected ZIP file isn't\na valid resource pack!");
 					return;
 				}
-				
+
 				ZipUtils.extractZip(file, out, filter);
 				closeDialog();
-				Alerts.info(App.getFrame(), "Resource pack \"" + name + "\" was imported.");
-				
+				Alerts.info(App.getFrame(), "Resource pack \"" + name
+						+ "\" was imported.");
+
 			} catch (final Exception exc) {
-				Alerts.error(DialogImportPack.this, "Error while extracting the pack.");
+				Alerts.error(DialogImportPack.this,
+						"Error while extracting the pack.");
 				FileUtils.delete(out, true); // cleanup
 			}
-			
+
 		}
 	};
 }

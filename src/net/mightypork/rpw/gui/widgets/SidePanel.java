@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.widgets;
 
-
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -49,106 +48,108 @@ import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTitledSeparator;
 
 
-public class SidePanel {
-	
+public class SidePanel
+{
+
 	public JXPanel panel;
-	
+
 	private Box infoBox;
 	private JXLabel projectName;
 	private JXLabel projectBase;
 	private JButton buttonOpenBase;
 	private JButton buttonEditProps;
 	private JLabel projectIconLabel;
-	
+
 	private Box previewBox;
 	private JPanel previewPanel;
 	private CardLayout previewCardLayout;
-	
+
 	private JTextArea previewText;
 	private TitledBorder previewTextBorder;
-	
+
 	private JLabel previewImage;
 	private TitledBorder previewImageBorder;
 	private JPanelWithBackground previewImageBg;
-	
+
 	private JButton btnEditI;
 	private JButton btnMetaI;
 	private JButton btnReplaceI;
-	
+
 	private JButton btnEditT;
 	private JButton btnReplaceT;
-	
+
 	private JButton btnEditA;
 	private JButton btnReplaceA;
-	
+
 	private static final String IMAGE = "IMAGE";
 	private static final String TEXT = "TEXT";
 	private static final String AUDIO = "AUDIO";
-	
+
 	private AssetTreeLeaf displayedLeaf;
-	
+
 	private TitledBorder previewAudioBorder;
-	
+
 	private Border previewBorder;
-	
-	
-	public SidePanel()
-	{
+
+
+	public SidePanel() {
 		JXPanel projectCard = new JXPanel();
-		
+
 		// project-info card
-		projectCard.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL, Gui.GAP, Gui.GAPL));
-		
+		projectCard.setBorder(BorderFactory.createEmptyBorder(Gui.GAP,
+				Gui.GAPL, Gui.GAP, Gui.GAPL));
+
 		projectCard.setPreferredSize(new Dimension(320, 700));
 		projectCard.setMinimumSize(new Dimension(320, 300));
-		
+
 		projectCard.add(infoBox = createProjectInfoBox());
 		infoBox.setAlignmentX(0.5f);
-		
+
 		projectCard.add(Box.createRigidArea(new Dimension(300, 20)));
-		
+
 		projectCard.add(previewBox = createPreviewBox());
 		previewBox.setAlignmentX(0.5f);
-		
+
 		projectCard.add(Box.createVerticalGlue());
-		
+
 		// no-project-open card
 		JXPanel empty = new JXPanel();
 		VBox vb = new VBox();
-		
+
 		JLabel l1 = new JLabel("No project active.");
 		l1.setFont(l1.getFont().deriveFont(20F));
-		
+
 		JLabel l2 = new JLabel("Use the menu to open\n or create a project.");
 		vb.add(l1);
 		vb.add(l2);
-				
+
 		empty.add(vb);
-		
-		
+
 		panel = new JXPanel();
 		panel.setLayout(new CardLayout());
 		panel.add(projectCard, "project");
 		panel.add(empty, "empty");
-		
+
 		addActions();
-		
+
 		updateProjectInfo();
 		redrawPreview();
 	}
-	
-	
+
+
 	public void showCard(String name)
 	{
 		CardLayout cl = (CardLayout) (panel.getLayout());
 		cl.show(panel, name);
 	}
-	
-	
+
+
 	private Box createPreviewBox()
 	{
-		previewBorder = new CompoundBorder(BorderFactory.createLineBorder(new Color(0x666666)), BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		
+		previewBorder = new CompoundBorder(
+				BorderFactory.createLineBorder(new Color(0x666666)),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
 		//@formatter:off
 		VBox vbox, vb2;
 		
@@ -337,11 +338,11 @@ public class SidePanel {
 		vbox.add(previewPanel);
 
 		//@formatter:on
-		
+
 		return vbox;
 	}
-	
-	
+
+
 	private Box createProjectInfoBox()
 	{
 		//@formatter:off
@@ -418,225 +419,230 @@ public class SidePanel {
 		vb.add(hb);
 		vb.glue();
 		//@formatter:on
-		
+
 		return vb;
 	}
-	
-	
+
+
 	public void updateProjectInfo()
 	{
 		final Project p = Projects.getActive();
-		
+
 		if (p != null) {
 			showCard("project");
 			String name = p.getTitle();
 			final int length_name = (panel.getWidth() - 75) / 11;
 			name = Utils.cropStringAtEnd(name, length_name);
 			projectName.setText(name);
-			
-			final File iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
-			
-			final ImageIcon ic = Icons.getIconFromFile(iconFile, new Dimension(128, 128));
+
+			final File iconFile = new File(Projects.getActive()
+					.getProjectDirectory(), "pack.png");
+
+			final ImageIcon ic = Icons.getIconFromFile(iconFile, new Dimension(
+					128, 128));
 			projectIconLabel.setIcon(ic);
-			
-			
+
 			infoBox.setVisible(true);
-			
+
 		} else {
 			showCard("empty");
-//			infoBox.setVisible(false);
-//			previewBox.setVisible(false);
-//			updatePreview(null);
+			// infoBox.setVisible(false);
+			// previewBox.setVisible(false);
+			// updatePreview(null);
 		}
 	}
-	
-	
+
+
 	public void redrawPreview()
 	{
 		updatePreview(displayedLeaf);
 	}
-	
-	
+
+
 	public void updatePreview(AssetTreeNode selected)
 	{
 		if (selected == null || selected instanceof AssetTreeGroup) {
 			previewBox.setVisible(false);
 			displayedLeaf = null;
-			
+
 		} else {
 			previewBox.setVisible(true);
-			
+
 			final AssetTreeLeaf leaf = (AssetTreeLeaf) selected;
 			final String source = leaf.resolveAssetSource();
-			
+
 			final String path = leaf.getAssetEntry().getPath();
 			final String fname = FileUtils.getFilename(path);
-			
+
 			displayedLeaf = leaf;
-			
+
 			InputStream in = null;
-			
+
 			final EAsset type = leaf.getAssetType();
-			
+
 			if (type.isImage()) {
 				// image asset
 				final String key = leaf.getAssetKey();
 				if (key.startsWith("assets.minecraft.textures.font.")) {
-					previewImageBg.setBackground(Icons.TRANSPARENT_FONTS.getImage());
+					previewImageBg.setBackground(Icons.TRANSPARENT_FONTS
+							.getImage());
 				} else {
 					previewImageBg.setBackground(Icons.TRANSPARENT.getImage());
 				}
-				
+
 				try {
-					
+
 					in = Sources.getAssetStream(source, leaf.getAssetKey());
 					if (in == null) {
 						previewImage.setIcon(null);
 					} else {
-						final ImageIcon i = Icons.getIconFromStream(in, new Dimension(256, 256));
-						
+						final ImageIcon i = Icons.getIconFromStream(in,
+								new Dimension(256, 256));
+
 						previewImage.setIcon(i);
-						
+
 						final String fn = Utils.cropStringAtEnd(fname, 25);
-						
-						previewImageBorder.setTitle(fn + " (" + i.getDescription() + ")");
+
+						previewImageBorder.setTitle(fn + " ("
+								+ i.getDescription() + ")");
 					}
-					
+
 					final boolean metaInProj = leaf.isMetaProvidedByProject();
-					btnMetaI.setIcon(metaInProj ? Icons.MENU_EDIT : Icons.MENU_NEW);
-					
+					btnMetaI.setIcon(metaInProj ? Icons.MENU_EDIT
+							: Icons.MENU_NEW);
+
 					previewCardLayout.show(previewPanel, IMAGE);
-					
-					
+
 				} catch (final IOException e) {
 					Log.e(e);
 					return;
 				} finally {
 					try {
-						if (in != null) in.close();
+						if (in != null)
+							in.close();
 					} catch (final IOException e1) {
 						e1.printStackTrace();
 					}
 				}
-				
-				
+
 			} else if (type.isText()) {
 				// text asset
 				String text;
-				
+
 				try {
-					in = Sources.getAssetStream(leaf.resolveAssetSource(), leaf.getAssetKey());
+					in = Sources.getAssetStream(leaf.resolveAssetSource(),
+							leaf.getAssetKey());
 					text = FileUtils.streamToString(in, 100);
 					if (in == null) {
 						previewText.setText("");
 					} else {
 						previewText.setText(text);
-						
+
 						previewTextBorder.setTitle(fname);
 					}
-					
+
 					previewText.setCaretPosition(0); // scroll to top
-					
+
 					previewCardLayout.show(previewPanel, TEXT);
 				} catch (final IOException e) {
 					Log.e(e);
 					return;
 				} finally {
 					try {
-						if (in != null) in.close();
+						if (in != null)
+							in.close();
 					} catch (final IOException e1) {
 						e1.printStackTrace();
 					}
 				}
-				
-				
+
 			} else if (type.isSound()) {
 				// sound asset
 				previewAudioBorder.setTitle(fname);
-				
+
 				previewCardLayout.show(previewPanel, AUDIO);
-				
+
 			} else {
 				// undisplayable
 				previewBox.setVisible(false);
 			}
-			
+
 			previewBox.repaint();
 		}
 	}
-	
-	
+
+
 	private void addActions()
 	{
 		buttonOpenBase.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskOpenProjectFolder();
 			}
 		});
-		
+
 		buttonEditProps.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskDialogProjectProperties();
 			}
 		});
-		
+
 		projectIconLabel.addMouseListener(new ClickListener() {
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
 				Tasks.taskDialogProjectProperties();
 			}
 		});
-		
+
 		final ActionListener listenerReplace = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskImportReplacement(displayedLeaf);
 			}
 		};
-		
+
 		btnReplaceI.addActionListener(listenerReplace);
 		btnReplaceT.addActionListener(listenerReplace);
 		btnReplaceA.addActionListener(listenerReplace);
-		
+
 		btnEditI.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskEditAsset(displayedLeaf);
 			}
 		});
-		
+
 		btnMetaI.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskEditMeta(displayedLeaf);
 			}
 		});
-		
+
 		btnEditT.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskEditAsset(displayedLeaf);
 			}
 		});
-		
+
 		btnEditA.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{

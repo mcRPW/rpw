@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.helpers.trees;
 
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.HashMap;
@@ -12,12 +11,13 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 
-public class ColumnHeaderToolTipsMouseListener extends MouseMotionAdapter {
-	
+public class ColumnHeaderToolTipsMouseListener extends MouseMotionAdapter
+{
+
 	TableColumn curCol;
 	Map<TableColumn, String> tips = new HashMap<TableColumn, String>();
-	
-	
+
+
 	public void setToolTip(TableColumn col, String tooltip)
 	{
 		if (tooltip == null) {
@@ -26,8 +26,8 @@ public class ColumnHeaderToolTipsMouseListener extends MouseMotionAdapter {
 			tips.put(col, tooltip);
 		}
 	}
-	
-	
+
+
 	@Override
 	public void mouseMoved(MouseEvent evt)
 	{

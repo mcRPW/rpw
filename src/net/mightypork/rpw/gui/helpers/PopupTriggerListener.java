@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.helpers;
 
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -10,8 +9,9 @@ import java.awt.event.MouseListener;
  * 
  * @author Ondřej Hruška (MightyPork)
  */
-public abstract class PopupTriggerListener implements MouseListener {
-	
+public abstract class PopupTriggerListener implements MouseListener
+{
+
 	@Override
 	public final void mouseClicked(MouseEvent e)
 	{
@@ -19,11 +19,11 @@ public abstract class PopupTriggerListener implements MouseListener {
 			onPopupTrigger(e);
 		}
 	}
-	
-	
+
+
 	public abstract void onPopupTrigger(MouseEvent e);
-	
-	
+
+
 	@Override
 	public final void mousePressed(MouseEvent e)
 	{
@@ -31,8 +31,8 @@ public abstract class PopupTriggerListener implements MouseListener {
 			onPopupTrigger(e);
 		}
 	}
-	
-	
+
+
 	@Override
 	public final void mouseReleased(MouseEvent e)
 	{
@@ -40,17 +40,17 @@ public abstract class PopupTriggerListener implements MouseListener {
 			onPopupTrigger(e);
 		}
 	}
-	
-	
+
+
 	@Override
 	public final void mouseEntered(MouseEvent e)
 	{
 	}
-	
-	
+
+
 	@Override
 	public final void mouseExited(MouseEvent e)
 	{
 	}
-	
+
 }

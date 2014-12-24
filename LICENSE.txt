@@ -1,4 +1,9 @@
 Copyright (c) 2014, Ondřej Hruška (MightyPork), <ondra@ondrovo.com>
+
+Contributors:
+* Jacopo Santoni <jack@pixbits.com>, https://github.com/Jakz
+
+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without 

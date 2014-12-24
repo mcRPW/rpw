@@ -1,6 +1,5 @@
 package net.mightypork.rpw.struct;
 
-
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 
@@ -9,26 +8,28 @@ import net.mightypork.rpw.Const;
 import com.google.gson.reflect.TypeToken;
 
 
-public class SoundEntryMap extends LinkedHashMap<String, SoundEntry> {
-	
+public class SoundEntryMap extends LinkedHashMap<String, SoundEntry>
+{
+
 	private static Type type = null;
-	
-	
+
+
 	public static Type getType()
 	{
 		if (type == null) {
-			type = new TypeToken<SoundEntryMap>() {}.getType();
+			type = new TypeToken<SoundEntryMap>() {
+			}.getType();
 		}
 		return type;
 	}
-	
-	
+
+
 	public static SoundEntryMap fromJson(String json)
 	{
 		return Const.GSON.fromJson(json, getType());
 	}
-	
-	
+
+
 	public String toJson()
 	{
 		return Const.GSON.toJson(this);

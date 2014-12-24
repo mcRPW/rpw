@@ -1,6 +1,5 @@
 package net.mightypork.rpw.tasks.sequences;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,38 +27,38 @@ import net.mightypork.rpw.utils.files.ZipBuilder;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class SequenceExportProject extends AbstractMonitoredSequence {
-	
+public class SequenceExportProject extends AbstractMonitoredSequence
+{
+
 	private final File target;
 	private ZipBuilder zb;
 	private final Project project;
 	private final Runnable successRunnable;
-	
-	
-	public SequenceExportProject(File target, Runnable onSuccess)
-	{
+
+
+	public SequenceExportProject(File target, Runnable onSuccess) {
 		this.target = target;
 		this.successRunnable = onSuccess;
-		
+
 		this.project = Projects.getActive();
-		
+
 	}
-	
-	
+
+
 	@Override
 	protected String getMonitorHeading()
 	{
 		return "Exporting project";
 	}
-	
-	
+
+
 	@Override
 	public int getStepCount()
 	{
 		return 6;
 	}
-	
-	
+
+
 	@Override
 	public String getStepName(int step)
 	{
@@ -73,11 +72,11 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 			case 5: return "Exporting project assets.";
 		}
 		//@formatter:on
-		
+
 		return null;
 	}
-	
-	
+
+
 	@Override
 	protected boolean step(int step)
 	{
@@ -92,24 +91,24 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 				case 5: return stepExportProjectAssets();
 			}
 			//@formatter:on
-			
+
 		} catch (final IOException e) {
 			Log.e(e);
 			return false;
 		}
-		
+
 		return false;
 	}
-	
-	
+
+
 	private boolean stepPrepareOutput() throws FileNotFoundException
 	{
 		zb = new ZipBuilder(target);
-		
+
 		return true;
 	}
-	
-	
+
+
 	private boolean stepAddIncludedExtras()
 	{
 		try {
@@ -119,33 +118,34 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 			Log.e("Error when including extras.", t);
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
+
 	private boolean stepAddCustomSounds() throws IOException
 	{
 		final File dir = project.getCustomSoundsDirectory();
 		addDirectoryToZip(dir, "assets/minecraft/sounds");
-		
+
 		return true;
 	}
-	
-	
+
+
 	private boolean stepAddCustomLanguages() throws IOException
 	{
 		final File dir = project.getCustomLangDirectory();
 		addDirectoryToZip(dir, "assets/minecraft/lang");
-		
+
 		return true;
 	}
-	
-	
+
+
 	private boolean stepAddConfigFiles() throws IOException
 	{
 		// pack.png
-		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.png");
+		if (Config.LOG_EXPORT_FILES)
+			Log.f3("+ pack.png");
 		InputStream in = null;
 		try {
 			final File f = new File(project.getProjectDirectory(), "pack.png");
@@ -155,70 +155,75 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 				in = FileUtils.getResource("/data/export/pack.png");
 			}
 			zb.addStream("pack.png", in);
-			
+
 		} finally {
 			Utils.close(in);
 		}
-		
-		if (Config.LOG_EXPORT_FILES) Log.f3("+ readme.txt");
+
+		if (Config.LOG_EXPORT_FILES)
+			Log.f3("+ readme.txt");
 		zb.addResource("readme.txt", "/data/export/pack-readme.txt");
-		
-		if (Config.LOG_EXPORT_FILES) Log.f3("+ assets/minecraft/sounds.json");
-		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
-		
+
+		if (Config.LOG_EXPORT_FILES)
+			Log.f3("+ assets/minecraft/sounds.json");
+		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap()
+				.toJson());
+
 		// json mcmeta
-		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");
+		if (Config.LOG_EXPORT_FILES)
+			Log.f3("+ pack.mcmeta");
 		final String desc = project.getTitle();
-		
+
 		final PackMcmeta pim = new PackMcmeta();
 		pim.setPackInfo(new PackInfo(1, desc));
-		
+
 		zb.addString("pack.mcmeta", pim.toJson());
-		
+
 		return true;
 	}
-	
-	
+
+
 	private boolean stepExportProjectAssets()
 	{
 		Log.f2("Adding project asset files.");
-		
+
 		final AssetTreeProcessor processor = new ExportProcessor();
-		
-		final AssetTreeNode root = new TreeBuilder().buildTreeForExport(Projects.getActive());
-		
+
+		final AssetTreeNode root = new TreeBuilder()
+				.buildTreeForExport(Projects.getActive());
+
 		root.processThisAndChildren(processor);
-		
+
 		return true;
 	}
-	
-	
+
+
 	@Override
 	protected void doBefore()
 	{
 		Alerts.loading(true);
-		
+
 		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target);
-		
+
 	}
-	
-	
+
+
 	@Override
 	protected void doAfter(boolean success)
 	{
 		Alerts.loading(false);
-		
+
 		try {
 			zb.close();
 		} catch (final IOException e) {
 			Log.e(e);
 		}
-		
+
 		if (!success) {
 			Log.w("Exporting project \"" + project.getTitle() + "\" - FAILED.");
 			// cleanup
 			target.delete();
-			
+
 			//@formatter:off
 			Alerts.error(
 					App.getFrame(),
@@ -226,123 +231,140 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
 					"Check log file for details."
 			);
 			//@formatter:on	
-			
+
 			return;
 		}
-		
-		if (successRunnable != null) successRunnable.run();
-		
-		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target + " - done.");
-		
+
+		if (successRunnable != null)
+			successRunnable.run();
+
+		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target
+				+ " - done.");
+
 		Alerts.info(App.getFrame(), "Export successful.");
 	}
-	
-	
-	private void addDirectoryToZip(File dir, String pathPrefix) throws IOException
+
+
+	private void addDirectoryToZip(File dir, String pathPrefix)
+			throws IOException
 	{
 		final List<File> filesToAdd = new ArrayList<File>();
-		
+
 		FileUtils.listDirectoryRecursive(dir, null, filesToAdd);
-		
+
 		for (final File file : filesToAdd) {
-			if (!file.isFile()) return;
-			
+			if (!file.isFile())
+				return;
+
 			String path = file.getAbsolutePath();
 			path = pathPrefix + path.replace(dir.getAbsolutePath(), "");
-			
+
 			FileInputStream in = null;
-			
+
 			try {
 				in = new FileInputStream(file);
 				zb.addStream(path, in);
 			} finally {
 				Utils.close(in);
 			}
-			
-			if (Config.LOG_EXPORT_FILES) Log.f3("+ " + path);
+
+			if (Config.LOG_EXPORT_FILES)
+				Log.f3("+ " + path);
 		}
-		
+
 	}
-	
-	private class ExportProcessor implements AssetTreeProcessor {
-		
+
+	private class ExportProcessor implements AssetTreeProcessor
+	{
+
 		@Override
 		public void process(AssetTreeNode node)
 		{
 			if (node instanceof AssetTreeLeaf) {
 				final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
-				
+
 				String logEntry = null;
-				
+
 				// file
 				boolean fileSaved = false;
 				do {
 					final String srcName = leaf.resolveAssetSource();
-					if (srcName == null) break;
-					if (MagicSources.isVanilla(srcName)) break;
-					if (MagicSources.isInherit(srcName)) break;
-					
+					if (srcName == null)
+						break;
+					if (MagicSources.isVanilla(srcName))
+						break;
+					if (MagicSources.isInherit(srcName))
+						break;
+
 					InputStream data = null;
-					
+
 					try {
-						data = Sources.getAssetStream(srcName, leaf.getAssetKey());
-						if (data == null) break;
-						
+						data = Sources.getAssetStream(srcName,
+								leaf.getAssetKey());
+						if (data == null)
+							break;
+
 						final String path = leaf.getAssetEntry().getPath();
 						logEntry = "+ " + path;
 						zb.addStream(path, data);
-						
+
 						logEntry += " <- \"" + srcName + "\"";
-						
+
 						fileSaved = true;
-						
+
 					} catch (final IOException e) {
 						Log.e("Error getting asset stream.", e);
 					} finally {
 						Utils.close(data);
 					}
-					
+
 				} while (false);
-				
-				if (!fileSaved) return;
-				
+
+				if (!fileSaved)
+					return;
+
 				// meta
 				do {
 					final String srcName = node.resolveAssetMetaSource();
-					if (srcName == null) break;
-					if (MagicSources.isVanilla(srcName)) break;
-					if (MagicSources.isInherit(srcName)) break;
-					
+					if (srcName == null)
+						break;
+					if (MagicSources.isVanilla(srcName))
+						break;
+					if (MagicSources.isInherit(srcName))
+						break;
+
 					InputStream data = null;
-					
+
 					try {
-						data = Sources.getAssetMetaStream(srcName, leaf.getAssetKey());
+						data = Sources.getAssetMetaStream(srcName,
+								leaf.getAssetKey());
 						if (data == null) {
 							Log.e("null meta stream");
 							break;
 						}
-						
-						final String path = leaf.getAssetEntry().getPath() + ".mcmeta";
+
+						final String path = leaf.getAssetEntry().getPath()
+								+ ".mcmeta";
 						zb.addStream(path, data);
-						
+
 						logEntry += ", m: \"" + srcName + "\"";
-						
+
 					} catch (final IOException e) {
 						Log.e("Error getting asset meta stream.", e);
 					} finally {
 						Utils.close(data);
 					}
-					
+
 				} while (false);
-				
+
 				if (Config.LOG_EXPORT_FILES) {
 					if (logEntry != null) {
 						Log.f3(logEntry);
 					}
 				}
-				
+
 			}
 		}
 	};
-	
+
 }

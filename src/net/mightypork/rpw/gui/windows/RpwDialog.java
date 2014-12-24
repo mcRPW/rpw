@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.windows;
 
-
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -20,32 +19,33 @@ import net.mightypork.rpw.gui.helpers.WindowCloseListener;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public abstract class RpwDialog extends JDialog {
-	
+public abstract class RpwDialog extends JDialog
+{
+
 	private boolean onCloseCalled = false;
 	private boolean closingByCommand = false;
-	
+
 	private boolean closeable = true;
-	
+
 	private final List<Runnable> closeHooks = new ArrayList<Runnable>();
-	
-	
+
+
 	public void addCloseHook(Runnable hook)
 	{
 		this.closeHooks.add(hook);
 	}
-	
+
 	protected final ActionListener closeListener = new ActionListener() {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			closeDialog();
 		}
 	};
-	
+
 	private final WindowCloseListener closeWindowListener = new WindowCloseListener() {
-		
+
 		@Override
 		public void onClose(WindowEvent e)
 		{
@@ -57,61 +57,63 @@ public abstract class RpwDialog extends JDialog {
 		}
 	};
 	private final Frame dlgParent;
-	
-	
+
+
 	public void setCloseable(boolean closeable)
 	{
 		this.closeable = closeable;
-		
-		setDefaultCloseOperation(closeable ? DISPOSE_ON_CLOSE : DO_NOTHING_ON_CLOSE);
+
+		setDefaultCloseOperation(closeable ? DISPOSE_ON_CLOSE
+				: DO_NOTHING_ON_CLOSE);
 	}
-	
-	
+
+
 	public boolean isCloseable()
 	{
 		return closeable;
 	}
-	
-	
+
+
 	/**
-	 * @param parent parent frame
-	 * @param title window title
+	 * @param parent
+	 *            parent frame
+	 * @param title
+	 *            window title
 	 */
-	public RpwDialog(Frame parent, String title)
-	{
+	public RpwDialog(Frame parent, String title) {
 		super(parent, title);
-		
+
 		this.dlgParent = parent;
-		
+
 		setAlwaysOnTop(parent == null); // initial load dialog
-		
+
 		setModal(true);
 		setResizable(false);
 		setLocationRelativeTo(parent);
-		
+
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		
+
 		addWindowListener(closeWindowListener);
 	}
-	
-	
+
+
 	/**
 	 * Close it
 	 */
 	public final void closeDialog()
 	{
 		closingByCommand = true;
-		
+
 		dispose();
-		
+
 		if (!onCloseCalled) {
 			onCloseCalled = true;
 			onClose();
 			afterOnClose();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Convention method to set visible
 	 */
@@ -119,29 +121,32 @@ public abstract class RpwDialog extends JDialog {
 	{
 		setVisible(true);
 	}
-	
-	
+
+
 	/**
 	 * Create dialog: build GUI, center dialog, set visible etc
 	 */
 	public final void createDialog()
 	{
 		final JComponent jc = buildGui();
-		
-		if (jc != null) getContentPane().add(jc);
-		
+
+		if (jc != null)
+			getContentPane().add(jc);
+
 		initGui();
-		
+
 		pack();
-		
+
 		Gui.centerWindow(this, dlgParent);
-		
+
 		addActions();
-		
-		getRootPane().registerKeyboardAction(closeListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+		getRootPane().registerKeyboardAction(closeListener,
+				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
-	
-	
+
+
 	/**
 	 * Build the GUI
 	 * 
@@ -149,53 +154,54 @@ public abstract class RpwDialog extends JDialog {
 	 *         elements were already added to the content pane
 	 */
 	protected abstract JComponent buildGui();
-	
-	
+
+
 	/**
 	 * Called after buildGui() and before pack()
 	 */
 	protected void initGui()
 	{
 	}
-	
-	
+
+
 	/**
 	 * Set button pressed on ENTER press
 	 * 
-	 * @param button btn
+	 * @param button
+	 *            btn
 	 */
 	protected void setEnterButton(JButton button)
 	{
 		getRootPane().setDefaultButton(button);
 	}
-	
-	
+
+
 	@Override
 	public void setVisible(boolean b)
 	{
 		onShown();
-		
+
 		super.setVisible(b);
-		
+
 		Log.f3("Dialog open: " + getTitle());
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Called after setVisible was executed
 	 */
 	protected void onShown()
 	{
 	}
-	
-	
+
+
 	/**
 	 * Here the dialog should add actions to the UI components
 	 */
 	protected abstract void addActions();
-	
-	
+
+
 	/**
 	 * To be used in enclosed types instead of weird stuff with
 	 * DialogXXX.this.something()
@@ -206,32 +212,32 @@ public abstract class RpwDialog extends JDialog {
 	{
 		return this;
 	}
-	
-	
+
+
 	/**
 	 * Called after onClose - run the hooks
 	 */
 	private void afterOnClose()
 	{
 		Log.f3("Dialog closed: " + getTitle());
-		
+
 		for (final Runnable hook : closeHooks) {
 			hook.run();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Called right after dialog closes
 	 */
 	protected void onClose()
 	{
 	}
-	
-	
+
+
 	protected void setPreferredSize(int i, int j)
 	{
 		setPreferredSize(new Dimension(i, j));
 	}
-	
+
 }

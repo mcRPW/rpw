@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -33,49 +32,49 @@ import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.files.FileUtils;
 
 
-public class DialogNewProject extends RpwDialog {
-	
+public class DialogNewProject extends RpwDialog
+{
+
 	private final List<String> projectNames;
-	
+
 	private JTextField nameField;
 	private JTextField titleField;
 	private JButton buttonOK;
 	private JButton buttonCancel;
 	private JRadioButton radioBlank;
 	private JRadioButton radioResourcePack;
-	
+
 	private boolean usePackFile = false;
-	
+
 	private final List<JComponent> respackGroup = new ArrayList<JComponent>();
 	private final List<JComponent> titleFieldGroup = new ArrayList<JComponent>();
-	
+
 	private JCheckBox ckKeepTitle;
-	
+
 	private FileInput filepicker;
-	
-	
-	public DialogNewProject()
-	{
+
+
+	public DialogNewProject() {
 		super(App.getFrame(), "New Project");
-		
+
 		projectNames = Projects.getProjectNames();
-		
+
 		createDialog();
 	}
-	
-	
+
+
 	@Override
 	protected JComponent buildGui()
 	{
 		HBox hb, hb2;
 		final VBox vbox = new VBox();
 		vbox.windowPadding();
-		
+
 		vbox.heading("Create New Project");
-		
+
 		vbox.titsep("Project type");
 		vbox.gap();
-		
+
 		//@formatter:off
 		
 		hb = new HBox();	
@@ -126,77 +125,80 @@ public class DialogNewProject extends RpwDialog {
 		group.add(radioResourcePack);
 		
 		//@formatter:on
-		
+
 		vbox.gapl();
 		vbox.titsep("Project settings");
 		vbox.gap();
-		
-		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
+
+		nameField = Gui.textField("", "Project folder name",
+				"Project folder name - avoid special characters");
 		nameField.addKeyListener(TextInputValidator.filenames());
-		
-		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
+
+		titleField = Gui.textField("", "Resource pack title",
+				"Pack title, shown in Minecraft");
 		titleFieldGroup.add(titleField);
-		
-		vbox.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField });
-		
+
+		vbox.springForm(new String[] { "Name:", "Title:" }, new JComponent[] {
+				nameField, titleField });
+
 		vbox.gapl();
-		
+
 		buttonOK = new JButton("Create", Icons.MENU_NEW);
 		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
 		vbox.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
-		
+
 		return vbox;
 	}
-	
-	
+
+
 	private void enableFilePicker(boolean enable)
 	{
 		for (final JComponent j : respackGroup) {
 			j.setEnabled(enable);
 		}
 	}
-	
-	
+
+
 	private void enableTitleField(boolean enable)
 	{
 		for (final JComponent j : titleFieldGroup) {
 			j.setEnabled(enable);
 		}
 	}
-	
-	
+
+
 	@Override
 	protected void initGui()
 	{
 		enableFilePicker(false);
-		
+
 	}
-	
-	
+
+
 	@Override
 	public void onClose()
 	{
 		// do nothing
 	}
-	
-	
+
+
 	@Override
 	protected void addActions()
 	{
 		buttonOK.addActionListener(createListener);
 		buttonCancel.addActionListener(closeListener);
-		
+
 		ckKeepTitle.addItemListener(new ItemListener() {
-			
+
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
 				enableTitleField(e.getStateChange() == ItemEvent.DESELECTED);
 			}
 		});
-		
+
 		radioBlank.addItemListener(new ItemListener() {
-			
+
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
@@ -207,9 +209,9 @@ public class DialogNewProject extends RpwDialog {
 				}
 			}
 		});
-		
+
 		radioResourcePack.addItemListener(new ItemListener() {
-			
+
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
@@ -220,93 +222,100 @@ public class DialogNewProject extends RpwDialog {
 				}
 			}
 		});
-		
+
 		filepicker.setListener(new FilePickListener() {
-			
+
 			@Override
 			public void onFileSelected(File f)
 			{
 				if (f.exists()) {
 					try {
 						final String[] parts = FileUtils.getFilenameParts(f);
-						
+
 						if (nameField.getText().trim().length() == 0) {
 							nameField.setText(parts[0]);
 						}
-					} catch (final Throwable t) {}
+					} catch (final Throwable t) {
+					}
 				}
-				
+
 			}
 		});
 	}
-	
+
 	private final ActionListener createListener = new ActionListener() {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			String name = nameField.getText();
-			if (name == null) name = "";
-			
+			if (name == null)
+				name = "";
+
 			String title = titleField.getText();
-			if (title == null) title = "";
-			
+			if (title == null)
+				title = "";
+
 			name = name.trim();
 			title = title.trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid name", "Missing project name!");
 				return;
 			}
-			
-			if ((!usePackFile || !ckKeepTitle.isSelected()) && title.length() == 0) {
+
+			if ((!usePackFile || !ckKeepTitle.isSelected())
+					&& title.length() == 0) {
 				Alerts.error(self(), "Invalid title", "Missing project title!");
 				return;
 			}
-			
+
 			if (usePackFile && !filepicker.hasFile()) {
-				Alerts.error(self(), "Missing file", "The selected file does not exist.");
+				Alerts.error(self(), "Missing file",
+						"The selected file does not exist.");
 				return;
 			}
-			
+
 			if (projectNames.contains(name)) {
-				Alerts.error(self(), "Name already used", "Project named \"" + name + "\" already exists!");
+				Alerts.error(self(), "Name already used", "Project named \""
+						+ name + "\" already exists!");
 				return;
 			}
-			
+
 			final File file = filepicker.getFile();
-			
+
 			// create the project
-			
+
 			final String projname = name;
-			
-			final String projtitle = (usePackFile && ckKeepTitle.isSelected()) ? "" : title;
-			
+
+			final String projtitle = (usePackFile && ckKeepTitle.isSelected()) ? ""
+					: title;
+
 			Tasks.taskAskToSaveIfChanged(new Runnable() {
-				
+
 				@Override
 				public void run()
 				{
 					// OK name
 					closeDialog();
-					
+
 					Alerts.loading(true);
 					Projects.openNewProject(projname);
 					Projects.getActive().setTitle(projtitle);
-					
+
 					Tasks.taskStoreProjectChanges();
-					
+
 					Projects.getActive().save();
-					
+
 					Projects.markProjectAsRecent(Projects.getActive().getName());
-					
+
 					if (usePackFile) {
 						Tasks.taskPopulateProjectFromPack(file, new Runnable() {
-							
+
 							@Override
 							public void run()
 							{
 								Projects.getActive().save();
-								
+
 								Tasks.taskOnProjectChanged();
 								Alerts.loading(false);
 							}
@@ -315,10 +324,10 @@ public class DialogNewProject extends RpwDialog {
 						Tasks.taskOnProjectChanged();
 						Alerts.loading(false);
 					}
-					
+
 				}
 			});
-			
+
 		}
 	};
 }

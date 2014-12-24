@@ -1,6 +1,5 @@
 package net.mightypork.rpw.tree.assets;
 
-
 import java.io.File;
 
 import net.mightypork.rpw.gui.helpers.FileChooser;
@@ -13,8 +12,7 @@ import net.mightypork.rpw.utils.files.FileUtils;
  * 
  * @author Ondřej Hruška (MightyPork)
  */
-public enum EAsset
-{
+public enum EAsset {
 	//@formatter:off
 	
 	/* sound */
@@ -37,73 +35,72 @@ public enum EAsset
 	UNKNOWN("");
 	
 	//@formatter:on
-	
-	private EAsset(String extension)
-	{
+
+	private EAsset(String extension) {
 		this.extension = extension;
 	}
-	
+
 	private String extension;
-	
-	
+
+
 	public String getExtension()
 	{
 		return this.extension;
 	}
-	
-	
+
+
 	public boolean isText()
 	{
 		switch (this) {
-			case TEXT:
-			case LANG:
-			case PROPERTIES:
-			case INI:
-			case CFG:
-			case JSON:
-				return true;
-			default:
-				return false;
+		case TEXT:
+		case LANG:
+		case PROPERTIES:
+		case INI:
+		case CFG:
+		case JSON:
+			return true;
+		default:
+			return false;
 		}
 	}
-	
-	
+
+
 	public boolean isImage()
 	{
 		return this == IMAGE;
 	}
-	
-	
+
+
 	public boolean isSound()
 	{
 		return this == SOUND;
 	}
-	
-	
+
+
 	public boolean isMeta()
 	{
 		return this == MCMETA;
 	}
-	
-	
+
+
 	public boolean isJson()
 	{
 		return this == JSON;
 	}
-	
-	
+
+
 	public boolean isShader()
 	{
 		return this == VSH || this == FSH;
 	}
-	
-	
+
+
 	public boolean isAsset()
 	{
 		return isText() || isImage() || isSound() || isJson();
 	}
-	
-	
+
+
 	/**
 	 * Get if type is asset or meta<br>
 	 * Used to filter out files not to be extracted from vanilla
@@ -117,17 +114,17 @@ public enum EAsset
 		// common trait with mcmeta files.
 		//
 		// Future version may add shader editor to deal with them.
-		
+
 		return isMeta() || isAsset() || isShader();
 	}
-	
-	
+
+
 	public boolean isUnknown()
 	{
 		return this == UNKNOWN;
 	}
-	
-	
+
+
 	public static EAsset forExtension(String ext)
 	{
 		for (final EAsset a : EAsset.values()) {
@@ -135,23 +132,23 @@ public enum EAsset
 				return a;
 			}
 		}
-		
+
 		return UNKNOWN;
 	}
-	
-	
+
+
 	public static EAsset forFile(File file)
 	{
 		return forExtension(FileUtils.getExtension(file));
 	}
-	
-	
+
+
 	public static EAsset forFile(String file)
 	{
 		return forExtension(FileUtils.getExtension(file));
 	}
-	
-	
+
+
 	/**
 	 * Get filter for file chooser
 	 * 
@@ -160,24 +157,24 @@ public enum EAsset
 	public FileChooserFilter getFilter()
 	{
 		switch (this) {
-			case CFG:
-			case PROPERTIES:
-			case INI:
-			case TEXT:
-			case JSON:
-			case MCMETA:
-			case LANG:
-				return FileChooser.TXT;
-			case IMAGE:
-				return FileChooser.PNG;
-			case SOUND:
-				return FileChooser.OGG;
-			case FSH:
-				return FileChooser.FSH;
-			case VSH:
-				return FileChooser.VSH;
-			default:
-				return null;
+		case CFG:
+		case PROPERTIES:
+		case INI:
+		case TEXT:
+		case JSON:
+		case MCMETA:
+		case LANG:
+			return FileChooser.TXT;
+		case IMAGE:
+			return FileChooser.PNG;
+		case SOUND:
+			return FileChooser.OGG;
+		case FSH:
+			return FileChooser.FSH;
+		case VSH:
+			return FileChooser.VSH;
+		default:
+			return null;
 		}
 	}
 }

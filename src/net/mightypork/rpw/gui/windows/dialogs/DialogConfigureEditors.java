@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -23,14 +22,15 @@ import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 
 
-public class DialogConfigureEditors extends RpwDialog {
-	
+public class DialogConfigureEditors extends RpwDialog
+{
+
 	private JFileChooser fc;
-	
+
 	private JButton btnOK;
 	private JButton btnCancel;
 	private JButton btnDefaults;
-	
+
 	private JCheckBox ckI;
 	private HBox boxI;
 	private JLabel labelExI;
@@ -38,7 +38,7 @@ public class DialogConfigureEditors extends RpwDialog {
 	private JTextField fieldCommandI;
 	private JButton btnBrowseI;
 	private JTextField fieldArgsI;
-	
+
 	private JCheckBox ckT;
 	private HBox boxT;
 	private JLabel labelExT;
@@ -46,7 +46,7 @@ public class DialogConfigureEditors extends RpwDialog {
 	private JTextField fieldCommandT;
 	private JButton btnBrowseT;
 	private JTextField fieldArgsT;
-	
+
 	private JCheckBox ckA;
 	private HBox boxA;
 	private JLabel labelExA;
@@ -54,19 +54,18 @@ public class DialogConfigureEditors extends RpwDialog {
 	private JTextField fieldCommandA;
 	private JButton btnBrowseA;
 	private JTextField fieldArgsA;
-	
+
 	private JCheckBox ckInternalMeta;
 	private JCheckBox ckInternalText;
-	
-	
-	public DialogConfigureEditors()
-	{
+
+
+	public DialogConfigureEditors() {
 		super(App.getFrame(), "Configure Editors");
-		
+
 		createDialog();
 	}
-	
-	
+
+
 	@Override
 	protected JComponent buildGui()
 	{
@@ -75,10 +74,10 @@ public class DialogConfigureEditors extends RpwDialog {
 		VBox section_vb;
 		final VBox vbox = new VBox();
 		vbox.windowPadding();
-		
+
 		final int fieldW = 300;
 		final int argsW = 100;
-		
+
 		//@formatter:off
 		
 		final String exe_placeholder = "Path to editor binary";
@@ -214,80 +213,80 @@ public class DialogConfigureEditors extends RpwDialog {
 		vbox.buttonRow(Gui.RIGHT, btnDefaults, null, btnOK, btnCancel);		
 		
 		//@formatter:on
-		
+
 		return vbox;
-		
+
 	}
-	
-	
+
+
 	@Override
 	protected void initGui()
 	{
 		initFileChooser();
-		
+
 		initFields();
 	}
-	
-	
+
+
 	@Override
 	protected void addActions()
 	{
 		setEnterButton(btnOK);
-		
+
 		btnOK.addActionListener(saveListener);
 		btnCancel.addActionListener(closeListener);
-		
+
 		ckA.addActionListener(ckListener);
 		ckI.addActionListener(ckListener);
 		ckT.addActionListener(ckListener);
-		
+
 		ckInternalMeta.addActionListener(ckListener);
 		ckInternalText.addActionListener(ckListener);
-		
+
 		btnBrowseA.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				fc.setCurrentDirectory(new File(fieldCommandA.getText()));
 				final int res = fc.showDialog(self(), "Select");
-				
+
 				if (res == JFileChooser.APPROVE_OPTION) {
 					fieldCommandA.setText(fc.getSelectedFile().getPath());
 				}
 			}
 		});
-		
+
 		btnBrowseI.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				fc.setCurrentDirectory(new File(fieldCommandI.getText()));
 				final int res = fc.showDialog(self(), "Select");
-				
+
 				if (res == JFileChooser.APPROVE_OPTION) {
 					fieldCommandI.setText(fc.getSelectedFile().getPath());
 				}
 			}
 		});
-		
+
 		btnBrowseT.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				fc.setCurrentDirectory(new File(fieldCommandT.getText()));
 				final int res = fc.showDialog(self(), "Select");
-				
+
 				if (res == JFileChooser.APPROVE_OPTION) {
 					fieldCommandT.setText(fc.getSelectedFile().getPath());
 				}
 			}
 		});
-		
+
 		btnDefaults.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -295,142 +294,143 @@ public class DialogConfigureEditors extends RpwDialog {
 			}
 		});
 	}
-	
-	
+
+
 	private void initFields()
 	{
 		ckInternalMeta.setSelected(Config.USE_INTERNAL_META_EDITOR);
 		ckInternalText.setSelected(Config.USE_INTERNAL_TEXT_EDITOR);
-		
+
 		ckI.setSelected(Config.USE_IMAGE_EDITOR);
 		ckT.setSelected(Config.USE_TEXT_EDITOR);
 		ckA.setSelected(Config.USE_AUDIO_EDITOR);
-		
+
 		fieldCommandA.setText(Config.AUDIO_EDITOR);
 		fieldArgsA.setText(Config.AUDIO_EDITOR_ARGS);
-		
+
 		fieldCommandI.setText(Config.IMAGE_EDITOR);
 		fieldArgsI.setText(Config.IMAGE_EDITOR_ARGS);
-		
+
 		fieldCommandT.setText(Config.TEXT_EDITOR);
 		fieldArgsT.setText(Config.TEXT_EDITOR_ARGS);
-		
+
 		ckListener.actionPerformed(null);
 	}
-	
-	
+
+
 	private void initFieldsDef()
 	{
 		ckInternalMeta.setSelected(Config.def_USE_INTERNAL_META_EDITOR);
 		ckInternalText.setSelected(Config.def_USE_INTERNAL_TEXT_EDITOR);
-		
+
 		ckI.setSelected(Config.def_USE_IMAGE_EDITOR);
 		ckT.setSelected(Config.def_USE_TEXT_EDITOR);
 		ckA.setSelected(Config.def_USE_AUDIO_EDITOR);
-		
+
 		fieldCommandA.setText(Config.def_AUDIO_EDITOR);
 		fieldArgsA.setText(Config.def_AUDIO_EDITOR_ARGS);
-		
+
 		fieldCommandI.setText(Config.def_IMAGE_EDITOR);
 		fieldArgsI.setText(Config.def_IMAGE_EDITOR_ARGS);
-		
+
 		fieldCommandT.setText(Config.def_TEXT_EDITOR);
 		fieldArgsT.setText(Config.def_TEXT_EDITOR_ARGS);
-		
+
 		ckListener.actionPerformed(null);
 	}
-	
-	
+
+
 	private void initFileChooser()
 	{
 		fc = new JFileChooser();
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setDialogTitle("Select executable");
 		fc.setFileFilter(new FileFilter() {
-			
+
 			@Override
 			public String getDescription()
 			{
 				return "All files";
 			}
-			
-			
+
+
 			@Override
 			public boolean accept(File f)
 			{
 				return true;
 			}
 		});
-		
+
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fc.setMultiSelectionEnabled(false);
 		fc.setFileHidingEnabled(!Config.SHOW_HIDDEN_FILES);
 	}
-	
+
 	private final ActionListener ckListener = new ActionListener() {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			final boolean internalText = ckInternalText.isSelected();
 			final boolean internalMeta = ckInternalMeta.isSelected();
-			
+
 			final boolean cmdI = ckI.isSelected();
-			final boolean cmdT = ckT.isSelected() && (!internalMeta || !internalText);
+			final boolean cmdT = ckT.isSelected()
+					&& (!internalMeta || !internalText);
 			final boolean cmdA = ckA.isSelected();
-			
+
 			ckT.setEnabled(!internalMeta || !internalText);
-			
+
 			boxI.setEnabled(cmdI);
 			boxT.setEnabled(cmdT);
 			boxA.setEnabled(cmdA);
-			
+
 			fieldCommandI.setEnabled(cmdI);
 			fieldCommandT.setEnabled(cmdT);
 			fieldCommandA.setEnabled(cmdA);
-			
+
 			fieldArgsI.setEnabled(cmdI);
 			fieldArgsT.setEnabled(cmdT);
 			fieldArgsA.setEnabled(cmdA);
-			
+
 			btnBrowseI.setEnabled(cmdI);
 			btnBrowseT.setEnabled(cmdT);
 			btnBrowseA.setEnabled(cmdA);
-			
+
 			labelExI.setEnabled(cmdI);
 			labelExT.setEnabled(cmdT);
 			labelExA.setEnabled(cmdA);
-			
+
 			labelArI.setEnabled(cmdI);
 			labelArT.setEnabled(cmdT);
 			labelArA.setEnabled(cmdA);
 		}
 	};
-	
+
 	private final ActionListener saveListener = new ActionListener() {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
 			Config.USE_AUDIO_EDITOR = ckA.isSelected();
 			Config.AUDIO_EDITOR = fieldCommandA.getText();
 			Config.AUDIO_EDITOR_ARGS = fieldArgsA.getText();
-			
+
 			Config.USE_TEXT_EDITOR = ckT.isSelected();
 			Config.TEXT_EDITOR = fieldCommandT.getText();
 			Config.TEXT_EDITOR_ARGS = fieldArgsT.getText();
-			
+
 			Config.USE_IMAGE_EDITOR = ckI.isSelected();
 			Config.IMAGE_EDITOR = fieldCommandI.getText();
 			Config.IMAGE_EDITOR_ARGS = fieldArgsI.getText();
-			
+
 			Config.USE_INTERNAL_META_EDITOR = ckInternalMeta.isSelected();
 			Config.USE_INTERNAL_TEXT_EDITOR = ckInternalText.isSelected();
-			
+
 			Config.save();
-			
+
 			closeDialog();
 		}
 	};
-	
+
 }

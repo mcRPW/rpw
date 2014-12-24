@@ -1,22 +1,21 @@
 package net.mightypork.rpw.struct;
 
-
 /**
  * Entry in objects index
  * 
  * @author Ondřej Hruška (MightyPork)
  */
-public class FileObject {
-	
+public class FileObject
+{
+
 	public String hash;
 	public int size;
-	
-	
-	public FileObject()
-	{
+
+
+	public FileObject() {
 	}
-	
-	
+
+
 	@Override
 	public String toString()
 	{

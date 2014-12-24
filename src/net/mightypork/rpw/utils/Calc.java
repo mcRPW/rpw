@@ -1,18 +1,18 @@
 package net.mightypork.rpw.utils;
 
-
 /**
  * Math helper
  * 
  * @author Ondřej Hruška (MightyPork)
  */
-public class Calc {
-	
-	
+public class Calc
+{
+
 	/**
 	 * Convert double to string, remove the mess at the end.
 	 * 
-	 * @param d double
+	 * @param d
+	 *            double
 	 * @return string
 	 */
 	public static String doubleToString(double d)
@@ -23,12 +23,13 @@ public class Calc {
 		s = s.replaceAll("\\.$", "");
 		return s;
 	}
-	
-	
+
+
 	/**
 	 * Convert float to string, remove the mess at the end.
 	 * 
-	 * @param f float
+	 * @param f
+	 *            float
 	 * @return string
 	 */
 	public static String floatToString(float f)
@@ -39,5 +40,5 @@ public class Calc {
 		s = s.replaceAll("\\.$", "");
 		return s;
 	}
-	
+
 }
