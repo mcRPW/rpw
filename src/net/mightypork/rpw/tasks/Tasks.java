@@ -886,4 +886,15 @@ public class Tasks {
 		return task;
 		
 	}
+	
+	public static void taskDialogExportToStitch()
+	{
+	  Gui.open(new com.pixbits.rpw.stitcher.DialogExportStitch());
+	}
+	
+	public static void taskDialogImportFromStitch()
+	{
+	   Gui.open(new com.pixbits.rpw.stitcher.DialogImportStitch());
+
+	}
 }
