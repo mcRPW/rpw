@@ -14,7 +14,7 @@ import com.google.gson.GsonBuilder;
 public class Const
 {
 
-	public static final int VERSION_SERIAL = 388;
+	public static final int VERSION_SERIAL = 390;
 
 	public static final String VERSION = VersionUtils
 			.getVersionString(VERSION_SERIAL);

@@ -20,6 +20,7 @@
 
 root.text.lang = assets.minecraft.lang.*
 root.text.lang2 = assets.minecraft.minecraft.lang.*
+root.text.lang_realms = assets.minecraft.realms.lang.*
 root.text = assets.minecraft.texts.*
 
 root.font.unicode = assets.minecraft.textures.font.unicode_page_*
@@ -221,7 +222,7 @@ root.audio3.sound = assets.minecraft.minecraft.sounds.*
 root.audio3 = NULL
 
 
-root.image.item.rare = assets.minecraft.textures.items.gold_nugget | assets.minecraft.textures.items.diamond | assets.minecraft.textures.items.emerald | assets.minecraft.textures.items.iron_ingot | assets.minecraft.textures.items.ruby | assets.minecraft.textures.items.gold_ingot | assets.minecraft.textures.items.coal | assets.minecraft.textures.items.charcoal | assets.minecraft.textures.items.glowstone_dust | assets.minecraft.textures.items.quartz | assets.minecraft.textures.items.flint
+root.image.item.rare = assets.minecraft.textures.items.gold_nugget | assets.minecraft.textures.items.diamond | assets.minecraft.textures.items.emerald | assets.minecraft.textures.items.iron_ingot | assets.minecraft.textures.items.ruby | assets.minecraft.textures.items.gold_ingot | assets.minecraft.textures.items.coal | assets.minecraft.textures.items.charcoal | assets.minecraft.textures.items.glowstone_dust | assets.minecraft.textures.items.quartz | assets.minecraft.textures.items.flint | assets.minecraft.textures.items.prismarine_*
 root.image.item.dyes = assets.minecraft.textures.items.dye_powder_*
 root.image.item.redstone = assets.minecraft.textures.items.hopper | assets.minecraft.textures.items.redstone_dust | assets.minecraft.textures.items.repeater | assets.minecraft.textures.items.comparator
 root.image.item.buckets = assets.minecraft.textures.items.brewing_stand | assets.minecraft.textures.items.cauldron | assets.minecraft.textures.items.bucket_* | assets.minecraft.textures.items.potion_*
@@ -229,11 +230,13 @@ root.image.item.records = assets.minecraft.textures.items.record_*
 root.image.item.horses = assets.minecraft.textures.items.*_horse_armor | assets.minecraft.textures.items.lead | assets.minecraft.textures.items.saddle | assets.minecraft.textures.items.name_tag | assets.minecraft.textures.items.carrot_on_a_stick
 root.image.item.mob_drops = assets.minecraft.textures.items.blaze* | assets.minecraft.textures.items.bone | assets.minecraft.textures.items.ender_pearl | assets.minecraft.textures.items.ghast_tear | assets.minecraft.textures.items.gunpowder | assets.minecraft.textures.items.magma_cream | assets.minecraft.textures.items.nether_star | assets.minecraft.textures.items.rotten_flesh | assets.minecraft.textures.items.spider_eye* | assets.minecraft.textures.items.string | assets.minecraft.textures.items.slimeball
 root.image.item.crops.fish = assets.minecraft.textures.items.fish*
-root.image.item.crops.meat = assets.minecraft.textures.items.beef* | assets.minecraft.textures.items.chicken* | assets.minecraft.textures.items.porkchop*
+root.image.item.crops.meat = assets.minecraft.textures.items.beef* | assets.minecraft.textures.items.chicken* | assets.minecraft.textures.items.porkchop* | assets.minecraft.textures.items.mutton*
 root.image.item.crops.vegetables = assets.minecraft.textures.items.apple* | assets.minecraft.textures.items.carrot* | assets.minecraft.textures.items.melon* | assets.minecraft.textures.items.potato*
 root.image.item.crops.pastry = assets.minecraft.textures.items.bread | assets.minecraft.textures.items.cake | assets.minecraft.textures.items.cookie | assets.minecraft.textures.items.mushroom_stew | assets.minecraft.textures.items.pumpkin_pie | assets.minecraft.textures.items.sugar | assets.minecraft.textures.items.wheat | assets.minecraft.textures.items.egg
+root.image.item.crops.rabbit = assets.minecraft.textures.items.rabbit*
 root.image.item.crops = assets.minecraft.textures.items.reeds | assets.minecraft.textures.items.seeds* | assets.minecraft.textures.items.nether_wart
-root.image.item.armour = assets.minecraft.textures.items.*_boots* | assets.minecraft.textures.items.*_helmet* | assets.minecraft.textures.items.*_chestplate* | assets.minecraft.textures.items.*_leggings*
+root.image.item.doors = assets.minecraft.textures.items.door_*
+root.image.item.armour = assets.minecraft.textures.items.*_boots* | assets.minecraft.textures.items.*_helmet* | assets.minecraft.textures.items.*_chestplate* | assets.minecraft.textures.items.*_leggings* | assets.minecraft.textures.items.wooden_armorstand
 root.image.item.tools = assets.minecraft.textures.items.*_axe | assets.minecraft.textures.items.*_hoe | assets.minecraft.textures.items.*_pickaxe | assets.minecraft.textures.items.*_shovel | assets.minecraft.textures.items.*_sword | assets.minecraft.textures.items.shears | assets.minecraft.textures.items.quiver | assets.minecraft.textures.items.fishing_rod* | assets.minecraft.textures.items.bow_* | assets.minecraft.textures.items.flint_and_steel | assets.minecraft.textures.items.arrow | assets.minecraft.textures.items.clock | assets.minecraft.textures.items.compass
 root.image.item.minecarts = assets.minecraft.textures.items.minecart_*
 root.image.item.fireworks = assets.minecraft.textures.items.fireball | assets.minecraft.textures.items.fireworks*
@@ -250,10 +253,12 @@ root.image.environment = assets.minecraft.textures.environment.*
 
 root.image.gui.achievement = assets.minecraft.textures.gui.achievement.*
 root.image.gui.container.creative = assets.minecraft.textures.gui.container.creative_inventory.*
-root.image.gui.container = assets.minecraft.textures.gui.container.*
+root.image.gui.container = assets.minecraft.textures.gui.container.* | assets.minecraft.textures.gui.demo_background | assets.minecraft.textures.gui.book
 root.image.gui.title.background = assets.minecraft.textures.gui.title.background.*
 root.image.gui.title = assets.minecraft.textures.gui.title.*
 root.image.gui.map = assets.minecraft.textures.map.*
+root.image.gui.presets = assets.minecraft.textures.gui.presets.*
+root.image.gui.widgets = assets.minecraft.textures.gui.widgets | assets.minecraft.textures.gui.stream_indicator | assets.minecraft.textures.gui.spectator_widgets | assets.minecraft.textures.gui.server_selection | assets.minecraft.textures.gui.resource_packs | assets.minecraft.textures.gui.icons
 root.image.gui = assets.minecraft.textures.gui.*
 
 root.image.misc = assets.minecraft.textures.misc.* | assets.minecraft.textures.painting.* | assets.minecraft.textures.effect.*
@@ -280,10 +285,13 @@ root.image.entity.mob.wither = assets.minecraft.textures.entity.wither.*
 root.image.entity.mob.wolf = assets.minecraft.textures.entity.wolf.*
 root.image.entity.mob.zombie = assets.minecraft.textures.entity.zombie.*
 root.image.entity.mob.guardian = assets.minecraft.textures.entity.guardian*
-root.image.entity.mob = assets.minecraft.textures.entity.silverfish | assets.minecraft.textures.entity.bat | assets.minecraft.textures.entity.blaze | assets.minecraft.textures.entity.chicken | assets.minecraft.textures.entity.iron_golem | assets.minecraft.textures.entity.snowman | assets.minecraft.textures.entity.squid | assets.minecraft.textures.entity.witch | assets.minecraft.textures.entity.zombie_pigman | assets.minecraft.textures.entity.steve | assets.minecraft.textures.entity.endermite
+root.image.entity.mob = assets.minecraft.textures.entity.silverfish | assets.minecraft.textures.entity.bat | assets.minecraft.textures.entity.blaze | assets.minecraft.textures.entity.chicken | assets.minecraft.textures.entity.iron_golem | assets.minecraft.textures.entity.snowman | assets.minecraft.textures.entity.squid | assets.minecraft.textures.entity.witch | assets.minecraft.textures.entity.zombie_pigman | assets.minecraft.textures.entity.endermite
+root.image.entity.player = assets.minecraft.textures.entity.steve | assets.minecraft.textures.entity.alex 
 
 # Chests moved to blocks to make it easier to find
 root.image.block.chest = assets.minecraft.textures.entity.chest.*
+
+root.image.entity.banner = assets.minecraft.textures.entity.banner.* | assets.minecraft.textures.entity.banner_base
 
 root.image.entity = assets.minecraft.textures.entity.*
 
@@ -322,15 +330,17 @@ root.image.block.rails = assets.minecraft.textures.blocks.rail_*
 
 root.image.block.clay = assets.minecraft.textures.blocks.clay | assets.minecraft.textures.blocks.hardened_clay*
 root.image.block.wool = assets.minecraft.textures.blocks.wool_*
-root.image.block.dirt = assets.minecraft.textures.blocks.red_sand | assets.minecraft.textures.blocks.sand | assets.minecraft.textures.blocks.sand_* | assets.minecraft.textures.blocks.gravel | assets.minecraft.textures.blocks.soul_sand | assets.minecraft.textures.blocks.dirt | assets.minecraft.textures.blocks.dirt_* | assets.minecraft.textures.blocks.grass_* | assets.minecraft.textures.blocks.mycelium_* | assets.minecraft.textures.blocks.farmland_* 
+root.image.block.dirt = assets.minecraft.textures.blocks.red_sand | assets.minecraft.textures.blocks.sand | assets.minecraft.textures.blocks.sand_* | assets.minecraft.textures.blocks.gravel | assets.minecraft.textures.blocks.soul_sand | assets.minecraft.textures.blocks.dirt | assets.minecraft.textures.blocks.dirt_* | assets.minecraft.textures.blocks.grass_* | assets.minecraft.textures.blocks.mycelium_* | assets.minecraft.textures.blocks.farmland_* | assets.minecraft.textures.blocks.coarse_dirt 
 root.image.block.rocks = assets.minecraft.textures.blocks.bedrock | assets.minecraft.textures.blocks.cobblestone* | assets.minecraft.textures.blocks.end_stone | assets.minecraft.textures.blocks.netherrack | assets.minecraft.textures.blocks.stone | assets.minecraft.textures.blocks.stone_andesite* | assets.minecraft.textures.blocks.stone_diorite* | assets.minecraft.textures.blocks.stone_granite*
-root.image.block.rocks.sandstone = assets.minecraft.textures.blocks.sandstone_*
+root.image.block.rocks.sandstone = assets.minecraft.textures.blocks.sandstone_* | assets.minecraft.textures.blocks.red_sandstone_*
 root.image.block.rocks.brick = assets.minecraft.textures.blocks.brick | assets.minecraft.textures.blocks.nether_brick | assets.minecraft.textures.blocks.stone_slab_* | assets.minecraft.textures.blocks.stonebrick*
 
 root.image.block.wood.logs = assets.minecraft.textures.blocks.log_*
 root.image.block.wood.leaves = assets.minecraft.textures.blocks.leaves_*
 root.image.block.wood.planks = assets.minecraft.textures.blocks.planks_*
 root.image.block.wood = NULL
+
+root.image.block.watertemple = assets.minecraft.textures.blocks.sponge* | assets.minecraft.textures.blocks.sea_lantern | assets.minecraft.textures.blocks.prismarine_*
 
 root.image.block = assets.minecraft.textures.blocks.*
 root.image = assets.minecraft.textures.*
