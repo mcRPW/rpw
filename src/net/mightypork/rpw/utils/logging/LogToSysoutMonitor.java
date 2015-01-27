@@ -14,8 +14,7 @@ public class LogToSysoutMonitor implements LogMonitor
 		if (!Config.LOG_TO_STDOUT)
 			return;
 
-		if (level == Level.FINE || level == Level.FINER
-				|| level == Level.FINEST || level == Level.INFO) {
+		if (level == Level.FINE || level == Level.FINER || level == Level.FINEST || level == Level.INFO) {
 			System.out.print(message);
 		} else if (level == Level.SEVERE || level == Level.WARNING) {
 			System.err.print(message);

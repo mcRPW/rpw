@@ -64,8 +64,7 @@ public class Projects
 
 	public static List<String> getProjectNames()
 	{
-		final List<File> dirs = FileUtils.listDirectory(OsUtils
-				.getAppDir(Paths.DIR_PROJECTS));
+		final List<File> dirs = FileUtils.listDirectory(OsUtils.getAppDir(Paths.DIR_PROJECTS));
 		final List<String> names = new ArrayList<String>();
 
 		for (final File f : dirs) {

@@ -39,8 +39,7 @@ public class DialogManageMcPacks extends RpwDialog
 
 	private List<String> getOptions()
 	{
-		final List<File> aList = FileUtils.listDirectory(OsUtils
-				.getMcDir("resourcepacks"));
+		final List<File> aList = FileUtils.listDirectory(OsUtils.getMcDir("resourcepacks"));
 		final List<String> options = new ArrayList<String>();
 
 		for (final File f : aList) {
@@ -99,12 +98,10 @@ public class DialogManageMcPacks extends RpwDialog
 		});
 
 		// buttons
-		buttonDelete = Gui.sidebarButton("Delete", "Delete pack from library",
-				Icons.MENU_DELETE);
+		buttonDelete = Gui.sidebarButton("Delete", "Delete pack from library", Icons.MENU_DELETE);
 		buttonDelete.setEnabled(false);
 
-		buttonClose = Gui.sidebarButton("Close", "Close dialog",
-				Icons.MENU_EXIT);
+		buttonClose = Gui.sidebarButton("Close", "Close dialog", Icons.MENU_EXIT);
 
 		final ManagerLayout ml = new ManagerLayout();
 		ml.setMainComponent(list);
@@ -165,8 +162,7 @@ public class DialogManageMcPacks extends RpwDialog
 				return;
 
 			for (final String s : choice) {
-				final File f = new File(OsUtils.getMcDir("resourcepacks"), s
-						+ ".zip");
+				final File f = new File(OsUtils.getMcDir("resourcepacks"), s + ".zip");
 				f.delete();
 			}
 

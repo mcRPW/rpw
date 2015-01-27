@@ -72,7 +72,9 @@ public class SimpleConfig
 			// ignore invalid lines
 			if (s.length() == 0)
 				continue;
-			if (s.startsWith("#") || s.startsWith("//"))
+			
+			// comments
+			if (s.startsWith("#") || s.startsWith("//") || s.startsWith(";"))
 				continue;
 
 			// NULL value
@@ -107,7 +109,7 @@ public class SimpleConfig
 			// ignore invalid lines
 			if (s.length() == 0)
 				continue;
-			if (s.startsWith("#") || s.startsWith("//"))
+			if (s.startsWith("#") || s.startsWith("//") || s.startsWith(";"))
 				continue;
 			if (!s.contains("="))
 				continue;
@@ -161,8 +163,7 @@ public class SimpleConfig
 	 *            allow nulls.
 	 * @throws IOException
 	 */
-	public static void mapToFile(File target, Map<String, String> data,
-			boolean allowNulls) throws IOException
+	public static void mapToFile(File target, Map<String, String> data, boolean allowNulls) throws IOException
 	{
 		final List<String> lines = new ArrayList<String>();
 
@@ -170,9 +171,7 @@ public class SimpleConfig
 			String key = e.getKey();
 			String value = e.getValue();
 
-			if (!allowNulls
-					&& (key == null || value == null || key.length() == 0 || value
-							.length() == 0))
+			if (!allowNulls && (key == null || value == null || key.length() == 0 || value.length() == 0))
 				continue;
 
 			if (key == null)
@@ -207,8 +206,7 @@ public class SimpleConfig
 	 * @param data
 	 * @throws IOException
 	 */
-	public static void listToFile(File target, List<String> data)
-			throws IOException
+	public static void listToFile(File target, List<String> data) throws IOException
 	{
 		String text = ""; // # File written by SimpleConfig
 

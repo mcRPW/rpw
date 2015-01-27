@@ -654,8 +654,7 @@ public class MenuMain
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				final boolean newOpt = itemOptionWarningOrphanedNodes
-						.isSelected();
+				final boolean newOpt = itemOptionWarningOrphanedNodes.isSelected();
 
 				if (Config.WARNING_ORPHANED_NODES != newOpt) {
 					Config.WARNING_ORPHANED_NODES = newOpt;
@@ -820,8 +819,7 @@ public class MenuMain
 		final List<String> recents = Projects.getRecentProjects();
 
 		final Project activeProj = Projects.getActive();
-		final String activeName = (activeProj == null ? "" : activeProj
-				.getName());
+		final String activeName = (activeProj == null ? "" : activeProj.getName());
 
 		JMenuItem item;
 		int added = 0;
@@ -844,8 +842,7 @@ public class MenuMain
 		itemOptionObsoleteDirs.setSelected(Config.SHOW_OBSOLETE_DIRS);
 		itemOptionLangFiles.setSelected(Config.SHOW_LANG);
 		itemOptionFontFiles.setSelected(Config.SHOW_FONT);
-		itemOptionWarningOrphanedNodes
-				.setSelected(Config.WARNING_ORPHANED_NODES);
+		itemOptionWarningOrphanedNodes.setSelected(Config.WARNING_ORPHANED_NODES);
 		itemOptionPreviewHover.setSelected(Config.PREVIEW_HOVER);
 		itemOptionHiddenFiles.setSelected(Config.SHOW_HIDDEN_FILES);
 		itemUseNimbusTheme.setSelected(Config.USE_NIMBUS);

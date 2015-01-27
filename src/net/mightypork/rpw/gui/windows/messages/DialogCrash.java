@@ -60,8 +60,7 @@ public class DialogCrash extends DialogTerminalBase
 		String wholeLogAsString = "Not found.";
 
 		try {
-			wholeLogAsString = FileUtils.fileToString(
-					OsUtils.getAppDir(Paths.FILE_LOG)).replace("\n\n", "\n");
+			wholeLogAsString = FileUtils.fileToString(OsUtils.getAppDir(Paths.FILE_LOG)).replace("\n\n", "\n");
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
@@ -85,13 +84,10 @@ public class DialogCrash extends DialogTerminalBase
 
 		txt += " Key               | Value \n";
 		txt += "-------------------|-------------------------------\n";
-		txt += " Runtime name      | "
-				+ System.getProperty("java.runtime.name") + "\n";
-		txt += " Java version      | " + System.getProperty("java.version")
-				+ "\n";
+		txt += " Runtime name      | " + System.getProperty("java.runtime.name") + "\n";
+		txt += " Java version      | " + System.getProperty("java.version") + "\n";
 		txt += " OS name           | " + System.getProperty("os.name") + "\n";
-		txt += " File encoding     | " + System.getProperty("file.encoding")
-				+ "\n";
+		txt += " File encoding     | " + System.getProperty("file.encoding") + "\n";
 		txt += " Launch dir        | " + System.getProperty("user.dir") + "\n";
 		txt += " RPW version       | " + Const.VERSION + "\n";
 		txt += " Library version   | " + Config.LIBRARY_VERSION + "\n";
@@ -130,9 +126,7 @@ public class DialogCrash extends DialogTerminalBase
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					DesktopApi.browse(new URL(
-							"https://github.com/MightyPork/rpw/issues/new")
-							.toURI());
+					DesktopApi.browse(new URL("https://github.com/MightyPork/rpw/issues/new").toURI());
 				} catch (final Exception exc) {
 					Alerts.error(self(), "Sorry, something went wrong.");
 				}
@@ -146,15 +140,12 @@ public class DialogCrash extends DialogTerminalBase
 			public void actionPerformed(ActionEvent arg0)
 			{
 				try {
-					final StringSelection selection = new StringSelection(
-							reportText);
-					final Clipboard clipboard = Toolkit.getDefaultToolkit()
-							.getSystemClipboard();
+					final StringSelection selection = new StringSelection(reportText);
+					final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 					clipboard.setContents(selection, selection);
 					Alerts.info(App.getFrame(), "Text copied to clipboard.");
 				} catch (final Exception e) {
-					Alerts.error(App.getFrame(),
-							"Sorry, it didn't work.\nTry Ctrl+A and Ctrl+C instead.");
+					Alerts.error(App.getFrame(), "Sorry, it didn't work.\nTry Ctrl+A and Ctrl+C instead.");
 					Log.e("Error copying to clipboard", e);
 				}
 
@@ -207,8 +198,7 @@ public class DialogCrash extends DialogTerminalBase
 		buttonContinue = new JButton("Carry On", Icons.MENU_CANCEL);
 		buttonQuit = new JButton("Close RPW", Icons.MENU_EXIT);
 
-		return new JButton[] { buttonCopy, buttonGH, null, buttonContinue,
-				buttonQuit };
+		return new JButton[] { buttonCopy, buttonGH, null, buttonContinue, buttonQuit };
 	}
 
 }

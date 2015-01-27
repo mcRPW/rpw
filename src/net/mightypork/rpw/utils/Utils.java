@@ -69,8 +69,7 @@ public class Utils
 	 * @return linked hash map with sorted entries
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <K extends Comparable, V extends Comparable> Map<K, V> sortByKeys(
-			Map<K, V> map)
+	public static <K extends Comparable, V extends Comparable> Map<K, V> sortByKeys(Map<K, V> map)
 	{
 		final List<K> keys = new LinkedList<K>(map.keySet());
 		Collections.sort(keys);
@@ -94,11 +93,9 @@ public class Utils
 	 * @return linked hash map with sorted entries
 	 */
 	@SuppressWarnings("rawtypes")
-	public static <K extends Comparable, V extends Comparable> Map<K, V> sortByValues(
-			Map<K, V> map)
+	public static <K extends Comparable, V extends Comparable> Map<K, V> sortByValues(Map<K, V> map)
 	{
-		final List<Map.Entry<K, V>> entries = new LinkedList<Map.Entry<K, V>>(
-				map.entrySet());
+		final List<Map.Entry<K, V>> entries = new LinkedList<Map.Entry<K, V>>(map.entrySet());
 
 		Collections.sort(entries, new Comparator<Map.Entry<K, V>>() {
 
@@ -163,9 +160,7 @@ public class Utils
 	public static String cropStringAtStart(String orig, int length)
 	{
 		if (orig.length() > length) {
-			orig = "\u2026"
-					+ orig.substring(strSizeWeighted(orig) - length,
-							orig.length());
+			orig = "\u2026" + orig.substring(strSizeWeighted(orig) - length, orig.length());
 		}
 		return orig;
 	}
@@ -174,8 +169,7 @@ public class Utils
 	public static String cropStringAtEnd(String orig, int length)
 	{
 		if (orig.length() > length) {
-			orig = orig.substring(0,
-					Math.min(strSizeWeighted(orig), length) - 1) + "\u2026";
+			orig = orig.substring(0, Math.min(strSizeWeighted(orig), length) - 1) + "\u2026";
 		}
 		return orig;
 	}
@@ -250,8 +244,7 @@ public class Utils
 				m.invoke(o);
 
 			} catch (final Exception e) {
-				Log.e("Could not close " + o.getClass().getSimpleName() + ": "
-						+ e.getMessage());
+				Log.e("Could not close " + o.getClass().getSimpleName() + ": " + e.getMessage());
 			}
 		}
 	}

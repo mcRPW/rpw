@@ -34,15 +34,13 @@ public class TaskLoadVanillaStructure
 
 		Map<String, AssetEntry> assets = new LinkedHashMap<String, AssetEntry>();
 
-		final File structureFile = OsUtils
-				.getAppDir(Paths.FILE_VANILLA_STRUCTURE);
+		final File structureFile = OsUtils.getAppDir(Paths.FILE_VANILLA_STRUCTURE);
 		if (!structureFile.exists()) {
 			return; // success == false
 		}
 
 		try {
-			final Map<String, String> saveMap = SimpleConfig
-					.mapFromFile(structureFile);
+			final Map<String, String> saveMap = SimpleConfig.mapFromFile(structureFile);
 
 			// fix changes introduced in 3.8.4
 			Map<String, String> fixedMap = null;
@@ -73,8 +71,7 @@ public class TaskLoadVanillaStructure
 						Log.f3("+ " + ae);
 
 				} catch (final IllegalArgumentException iae) {
-					Log.w("Unknown asset type " + e.getValue()
-							+ " - skipping entry.");
+					Log.w("Unknown asset type " + e.getValue() + " - skipping entry.");
 				}
 			}
 

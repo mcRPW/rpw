@@ -34,8 +34,7 @@ public class AssetImage implements Comparable<AssetImage>
 	@Override
 	public boolean equals(Object o)
 	{
-		return o != null & o instanceof AssetImage
-				&& ((AssetImage) o).entry.equals(entry);
+		return o != null & o instanceof AssetImage && ((AssetImage) o).entry.equals(entry);
 	}
 
 
@@ -97,11 +96,8 @@ public class AssetImage implements Comparable<AssetImage>
 			image = tmpImage;
 		else {
 			image = new BufferedImage(w, h, tmpImage.getType());
-			((Graphics2D) image.getGraphics()).setRenderingHint(
-					RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-			((Graphics2D) image.getGraphics()).drawImage(tmpImage, 0, 0, w, h,
-					null);
+			((Graphics2D) image.getGraphics()).setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+			((Graphics2D) image.getGraphics()).drawImage(tmpImage, 0, 0, w, h, null);
 		}
 
 		element.w = image.getWidth();

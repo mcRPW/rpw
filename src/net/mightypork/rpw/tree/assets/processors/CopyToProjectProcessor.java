@@ -72,8 +72,7 @@ public class CopyToProjectProcessor implements AssetTreeProcessor
 
 			if (!MagicSources.isProject(sourceMeta)) {
 				try {
-					in = Sources.getAssetMetaStream(sourceMeta,
-							leaf.getAssetKey());
+					in = Sources.getAssetMetaStream(sourceMeta, leaf.getAssetKey());
 
 					if (in != null) {
 						out = new FileOutputStream(targetMeta);

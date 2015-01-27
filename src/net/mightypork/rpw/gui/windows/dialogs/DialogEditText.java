@@ -52,29 +52,26 @@ public class DialogEditText extends DialogEditorBase
 
 		dlgHeading = Utils.fromLastChar(node.getAssetEntry().getPath(), '/');
 
-		final InputStream in = Projects.getActive().getAssetStream(
-				node.getAssetKey());
+		final InputStream in = Projects.getActive().getAssetStream(node.getAssetKey());
 		final String text = FileUtils.streamToString(in);
 
-		create(dlgHeading, text, node.getAssetType(), true,
-				new TextEditListener() {
+		create(dlgHeading, text, node.getAssetType(), true, new TextEditListener() {
 
-					@Override
-					public void onDialogClosed(String text)
-					{
-						final File file = Projects.getActive().getAssetFile(
-								node.getAssetKey());
+			@Override
+			public void onDialogClosed(String text)
+			{
+				final File file = Projects.getActive().getAssetFile(node.getAssetKey());
 
-						try {
-							FileUtils.stringToFile(file, text);
-						} catch (final IOException e1) {
-							Log.e(e1);
+				try {
+					FileUtils.stringToFile(file, text);
+				} catch (final IOException e1) {
+					Log.e(e1);
 
-							Alerts.error(App.getFrame(), "Could not save file.");
-						}
+					Alerts.error(App.getFrame(), "Could not save file.");
+				}
 
-					}
-				});
+			}
+		});
 	}
 
 
@@ -107,8 +104,7 @@ public class DialogEditText extends DialogEditorBase
 	}
 
 
-	private void create(String title, String text, EAsset type,
-			boolean showFormatingCodes, TextEditListener listener)
+	private void create(String title, String text, EAsset type, boolean showFormatingCodes, TextEditListener listener)
 	{
 		this.dlgTitle = title + " - RPW Text editor";
 		this.dlgText = text;
@@ -126,8 +122,7 @@ public class DialogEditText extends DialogEditorBase
 	{
 		final JPopupMenu popup = new JPopupMenu();
 
-		final String text = FileUtils
-				.resourceToString("/data/misc/colorcodes.txt");
+		final String text = FileUtils.resourceToString("/data/misc/colorcodes.txt");
 		final Map<String, String> map = SimpleConfig.mapFromString(text);
 
 		JMenuItem item;
@@ -148,8 +143,7 @@ public class DialogEditText extends DialogEditorBase
 
 			final int colorCode = Integer.parseInt(colorText, 16);
 
-			popup.add(item = new JMenuItem(code.replace("\u00A7", "\u00A7 ")
-					+ " - " + labelText));
+			popup.add(item = new JMenuItem(code.replace("\u00A7", "\u00A7 ") + " - " + labelText));
 
 			item.setForeground(new Color(colorCode));
 			item.setActionCommand(code);
@@ -192,11 +186,7 @@ public class DialogEditText extends DialogEditorBase
 					first = false;
 				}
 
-				formatCodesPopup.show(
-						getButtonsBox(),
-						btnFormatCodes.getBounds().x,
-						btnFormatCodes.getBounds().y
-								- formatCodesPopup.getHeight());
+				formatCodesPopup.show(getButtonsBox(), btnFormatCodes.getBounds().x, btnFormatCodes.getBounds().y - formatCodesPopup.getHeight());
 			}
 		});
 	}

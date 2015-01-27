@@ -77,8 +77,7 @@ public class Sources
 			Utils.sleep(100);
 		}
 
-		if (Flags.MUST_RELOAD_VANILLA
-				|| Flags.VANILLA_STRUCTURE_LOAD_OK == false) {
+		if (Flags.MUST_RELOAD_VANILLA || Flags.VANILLA_STRUCTURE_LOAD_OK == false) {
 			Flags.MUST_RELOAD_VANILLA = false;
 
 			final int task = Tasks.taskReloadVanillaOrDie();
@@ -113,9 +112,7 @@ public class Sources
 			}
 
 			if (MagicSources.isProject(source)) {
-				return Projects.isOpen()
-						&& Projects.getActive()
-								.doesProvideAsset(asset.getKey());
+				return Projects.isOpen() && Projects.getActive().doesProvideAsset(asset.getKey());
 			}
 		}
 
@@ -126,8 +123,7 @@ public class Sources
 	}
 
 
-	public static boolean doesSourceProvideAssetMeta(String source,
-			AssetEntry asset)
+	public static boolean doesSourceProvideAssetMeta(String source, AssetEntry asset)
 	{
 		if (asset == null || source == null)
 			return false;
@@ -142,9 +138,7 @@ public class Sources
 			}
 
 			if (MagicSources.isProject(source)) {
-				return Projects.isOpen()
-						&& Projects.getActive().doesProvideAssetMeta(
-								asset.getKey());
+				return Projects.isOpen() && Projects.getActive().doesProvideAssetMeta(asset.getKey());
 			}
 		}
 
@@ -171,15 +165,13 @@ public class Sources
 	}
 
 
-	public static InputStream getAssetStream(String source, String assetKey)
-			throws IOException
+	public static InputStream getAssetStream(String source, String assetKey) throws IOException
 	{
 		return getSource(source).getAssetStream(assetKey);
 	}
 
 
-	public static InputStream getAssetMetaStream(String source, String assetKey)
-			throws IOException
+	public static InputStream getAssetMetaStream(String source, String assetKey) throws IOException
 	{
 		return getSource(source).getAssetMetaStream(assetKey);
 	}

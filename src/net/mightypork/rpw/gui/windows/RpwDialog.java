@@ -63,8 +63,7 @@ public abstract class RpwDialog extends JDialog
 	{
 		this.closeable = closeable;
 
-		setDefaultCloseOperation(closeable ? DISPOSE_ON_CLOSE
-				: DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(closeable ? DISPOSE_ON_CLOSE : DO_NOTHING_ON_CLOSE);
 	}
 
 
@@ -141,9 +140,7 @@ public abstract class RpwDialog extends JDialog
 
 		addActions();
 
-		getRootPane().registerKeyboardAction(closeListener,
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-				JComponent.WHEN_IN_FOCUSED_WINDOW);
+		getRootPane().registerKeyboardAction(closeListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 	}
 
 

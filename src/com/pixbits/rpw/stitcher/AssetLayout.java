@@ -59,8 +59,7 @@ public class AssetLayout implements Iterable<AssetImage>
 
 	static String rectToString(Rectangle rc)
 	{
-		return "{" + rc.x + ", " + rc.y + ", " + rc.width + "x" + rc.height
-				+ "}";
+		return "{" + rc.x + ", " + rc.y + ", " + rc.width + "x" + rc.height + "}";
 	}
 
 
@@ -113,8 +112,7 @@ public class AssetLayout implements Iterable<AssetImage>
 
 				if (asset.width() > rc.width || asset.height() > rc.height)
 					return null;
-				else if (asset.width() == rc.width
-						&& asset.height() == rc.height)
+				else if (asset.width() == rc.width && asset.height() == rc.height)
 					return this;
 
 				int dw = rc.width - asset.width();
@@ -122,12 +120,10 @@ public class AssetLayout implements Iterable<AssetImage>
 
 				if (dw > dh) {
 					child[0] = new Node(rc.x, rc.y, asset.width(), rc.height);
-					child[1] = new Node(rc.x + asset.width(), rc.y, rc.width
-							- asset.width(), rc.height);
+					child[1] = new Node(rc.x + asset.width(), rc.y, rc.width - asset.width(), rc.height);
 				} else {
 					child[0] = new Node(rc.x, rc.y, rc.width, asset.height());
-					child[1] = new Node(rc.x, rc.y + asset.height(), rc.width,
-							rc.height - asset.height());
+					child[1] = new Node(rc.x, rc.y + asset.height(), rc.width, rc.height - asset.height());
 				}
 
 				// System.out.println("Splitting "+rectToString(rc)+" into "+rectToString(child[0].rc)+" and "+rectToString(child[1].rc));

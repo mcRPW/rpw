@@ -17,11 +17,8 @@ public class TaskImportCustomSounds
 
 	public static void run(DirectoryFsTreeNode dirNode, Runnable afterImport)
 	{
-		final String title = "Import sound files into sounds/"
-				+ dirNode.getPathRelativeToRoot();
-		final FileChooser fc = new FileChooser(App.getFrame(),
-				FilePath.IMPORT_SOUND, title, FileChooser.OGG, true, false,
-				true);
+		final String title = "Import sound files into sounds/" + dirNode.getPathRelativeToRoot();
+		final FileChooser fc = new FileChooser(App.getFrame(), FilePath.IMPORT_SOUND, title, FileChooser.OGG, true, false, true);
 
 		fc.showDialog("Open");
 

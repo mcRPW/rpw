@@ -140,8 +140,7 @@ public class DialogImportStitch extends RpwDialog
 		public void actionPerformed(ActionEvent evt)
 		{
 			if (!filepicker.hasFile()) {
-				Alerts.error(self(), "Missing folder",
-						"The selected folder does not exist.");
+				Alerts.error(self(), "Missing folder", "The selected folder does not exist.");
 				return;
 			}
 
@@ -152,8 +151,7 @@ public class DialogImportStitch extends RpwDialog
 					categories.add(AssetCategory.values()[i]);
 
 			if (categories.isEmpty()) {
-				Alerts.error(self(), "Category Required",
-						"At least one category is required");
+				Alerts.error(self(), "Category Required", "At least one category is required");
 				return;
 			}
 

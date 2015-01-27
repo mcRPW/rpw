@@ -162,8 +162,7 @@ public class DialogExportStitch extends RpwDialog
 		public void actionPerformed(ActionEvent evt)
 		{
 			if (!filepicker.hasFile()) {
-				Alerts.error(self(), "Missing folder",
-						"The selected folder does not exist.");
+				Alerts.error(self(), "Missing folder", "The selected folder does not exist.");
 				return;
 			}
 
@@ -174,17 +173,14 @@ public class DialogExportStitch extends RpwDialog
 					categories.add(AssetCategory.values()[i]);
 
 			if (categories.isEmpty()) {
-				Alerts.error(self(), "Category Required",
-						"At least one category is required");
+				Alerts.error(self(), "Category Required", "At least one category is required");
 				return;
 			}
 
 			final File file = filepicker.getFile();
 			final Project project = Projects.getActive();
 
-			Tasks.exportPackToStitchedPng(file, project, categories,
-					exportMissing.isSelected(), exportExisting.isSelected(),
-					(BlockSize) forceBlockSize.getSelectedItem());
+			Tasks.exportPackToStitchedPng(file, project, categories, exportMissing.isSelected(), exportExisting.isSelected(), (BlockSize) forceBlockSize.getSelectedItem());
 
 			closeDialog();
 		}

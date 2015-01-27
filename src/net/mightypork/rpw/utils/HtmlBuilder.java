@@ -29,14 +29,10 @@ public class HtmlBuilder
 		mdBuilder.setDecorator(new ExtDecorator());
 		mdBuilder.setCodeBlockEmitter(new CodeBlockEmitter());
 
-		htmlBaseTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML
-				+ "html_base_top.html");
-		htmlHelpTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML
-				+ "html_help_top.html");
-		htmlChangelogTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML
-				+ "html_changelog_top.html");
-		htmlBottom = FileUtils.resourceToString(Paths.DATA_DIR_HTML
-				+ "html_bottom.html");
+		htmlBaseTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_base_top.html");
+		htmlHelpTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_help_top.html");
+		htmlChangelogTop = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_changelog_top.html");
+		htmlBottom = FileUtils.resourceToString(Paths.DATA_DIR_HTML + "html_bottom.html");
 	}
 
 

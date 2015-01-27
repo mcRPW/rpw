@@ -23,8 +23,7 @@ public class SoundFileTreeDisplay
 	public FsTreeModel model;
 
 
-	public SoundFileTreeDisplay(DirectoryFsTreeNode root,
-			DialogSoundWizard wizard) {
+	public SoundFileTreeDisplay(DirectoryFsTreeNode root, DialogSoundWizard wizard) {
 		model = new FsTreeModel(root);
 
 		tree = new JXTree(model);
@@ -32,8 +31,7 @@ public class SoundFileTreeDisplay
 		tree.setShowsRootHandles(true);
 		tree.setRootVisible(false);
 
-		tree.getSelectionModel().setSelectionMode(
-				TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 
 		tree.setCellRenderer(new DefaultTreeRenderer(new TreeIconProvider()));
 

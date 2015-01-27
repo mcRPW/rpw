@@ -66,8 +66,7 @@ public class DialogAbout extends RpwDialog
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					DesktopApi.browse(new URL("https://twitter.com/MightyPork")
-							.toURI());
+					DesktopApi.browse(new URL("https://twitter.com/MightyPork").toURI());
 				} catch (final Exception err) {
 					Log.e(err);
 				}

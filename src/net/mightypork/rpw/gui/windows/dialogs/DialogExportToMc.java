@@ -89,8 +89,7 @@ public class DialogExportToMc extends RpwDialog
 		vbox.titsep("Export options");
 		vbox.gap();
 
-		field = Gui.textField("", "Output file name",
-				"Output file name (without extension)");
+		field = Gui.textField("", "Output file name", "Output file name (without extension)");
 		field.addKeyListener(TextInputValidator.filenames());
 
 		final String[] choices = new String[3];
@@ -98,14 +97,12 @@ public class DialogExportToMc extends RpwDialog
 		choices[MC_ADD] = "Add pack to selected (on top)";
 		choices[MC_NO_CHANGE] = "Don't change settings";
 
-		Config.CHOICE_EXPORT_TO_MC = Math.max(0,
-				Math.min(Config.CHOICE_EXPORT_TO_MC, choices.length - 1));
+		Config.CHOICE_EXPORT_TO_MC = Math.max(0, Math.min(Config.CHOICE_EXPORT_TO_MC, choices.length - 1));
 
 		mcOptsCombo = new JComboBox(choices);
 		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
 
-		vbox.springForm(new String[] { "Pack name:", "In Minecraft:" },
-				new JComponent[] { field, mcOptsCombo });
+		vbox.springForm(new String[] { "Pack name:", "In Minecraft:" }, new JComponent[] { field, mcOptsCombo });
 
 		vbox.gapl();
 
@@ -130,8 +127,7 @@ public class DialogExportToMc extends RpwDialog
 
 	private List<String> getOptions()
 	{
-		final List<File> aList = FileUtils.listDirectory(OsUtils
-				.getMcDir("resourcepacks"));
+		final List<File> aList = FileUtils.listDirectory(OsUtils.getMcDir("resourcepacks"));
 		final List<String> options = new ArrayList<String>();
 
 		for (final File f : aList) {
@@ -184,8 +180,7 @@ public class DialogExportToMc extends RpwDialog
 
 			// OK name
 
-			final File file = OsUtils
-					.getMcDir("resourcepacks/" + name + ".zip");
+			final File file = OsUtils.getMcDir("resourcepacks/" + name + ".zip");
 
 			try {
 				closeDialog();
@@ -199,8 +194,7 @@ public class DialogExportToMc extends RpwDialog
 						// 1 - put on top
 						// 2 - don't change settings
 
-						final int choice = Config.CHOICE_EXPORT_TO_MC = mcOptsCombo
-								.getSelectedIndex();
+						final int choice = Config.CHOICE_EXPORT_TO_MC = mcOptsCombo.getSelectedIndex();
 						Config.save();
 
 						if (choice == MC_NO_CHANGE)
@@ -217,8 +211,7 @@ public class DialogExportToMc extends RpwDialog
 						}
 
 						try {
-							final List<String> lines = SimpleConfig
-									.listFromFile(f);
+							final List<String> lines = SimpleConfig.listFromFile(f);
 
 							boolean a = false, b = false;
 
@@ -226,8 +219,7 @@ public class DialogExportToMc extends RpwDialog
 
 							final String optOld = "skin:" + fname;
 
-							final String optNew = "resourcePacks:["
-									+ Const.GSON_UGLY.toJson(fname) + "]";
+							final String optNew = "resourcePacks:[" + Const.GSON_UGLY.toJson(fname) + "]";
 
 							for (int i = 0; i < lines.size(); i++) {
 								// 1.6-
@@ -240,29 +232,20 @@ public class DialogExportToMc extends RpwDialog
 								if (lines.get(i).startsWith("resourcePacks:")) {
 									if (choice == MC_ADD) {
 										try {
-											String orig = lines.get(i)
-													.substring(
-															"resourcePacks:"
-																	.length());
+											String orig = lines.get(i).substring("resourcePacks:".length());
 											orig = orig.trim();
 
-											final List<String> list = Const.GSON
-													.fromJson(
-															orig,
-															new TypeToken<List<String>>() {
-															}.getType());
+											final List<String> list = Const.GSON.fromJson(orig, new TypeToken<List<String>>() {
+											}.getType());
 
 											list.remove(fname);
 											list.add(0, fname);
 
-											final String packs_new = Const.GSON_UGLY
-													.toJson(list);
+											final String packs_new = Const.GSON_UGLY.toJson(list);
 
-											Log.f3("Writing to MC options: "
-													+ packs_new);
+											Log.f3("Writing to MC options: " + packs_new);
 
-											lines.set(i, "resourcePacks:"
-													+ packs_new);
+											lines.set(i, "resourcePacks:" + packs_new);
 											b = true;
 										} catch (final Exception e) {
 											Log.e(e);
@@ -271,8 +254,7 @@ public class DialogExportToMc extends RpwDialog
 
 									if (!b || choice == MC_ALONE) {
 										lines.set(i, optNew);
-										Log.f3("Writing to MC options: "
-												+ optNew);
+										Log.f3("Writing to MC options: " + optNew);
 										b = true;
 									}
 								}

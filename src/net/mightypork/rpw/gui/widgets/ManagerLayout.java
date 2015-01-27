@@ -59,8 +59,7 @@ public class ManagerLayout extends HBox
 	public void build()
 	{
 		if (topButtons.length + bottomButtons.length > maxButtons) {
-			throw new IllegalArgumentException(
-					"Buttons can't fit into the layout!");
+			throw new IllegalArgumentException("Buttons can't fit into the layout!");
 		}
 
 		final Component[] bb = new Component[maxButtons];

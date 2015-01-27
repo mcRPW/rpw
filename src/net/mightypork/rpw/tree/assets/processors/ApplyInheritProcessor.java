@@ -44,11 +44,8 @@ public class ApplyInheritProcessor implements AssetTreeProcessor
 		String resolved = leaf.resolveAssetSource();
 
 		if (!assigned.equals(resolved)) {
-			if (MagicSources.isInherit(resolved)
-					|| MagicSources.isVanilla(resolved)) {
-				if (MagicSources.isInherit(defaultSource)
-						|| Sources.doesSourceProvideAsset(defaultSource,
-								leaf.getAssetEntry())) {
+			if (MagicSources.isInherit(resolved) || MagicSources.isVanilla(resolved)) {
+				if (MagicSources.isInherit(defaultSource) || Sources.doesSourceProvideAsset(defaultSource, leaf.getAssetEntry())) {
 					resolved = defaultSource;
 				}
 			}

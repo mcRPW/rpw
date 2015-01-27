@@ -32,11 +32,9 @@ public class HackedJXTreeTable extends JXTreeTable
 
 
 	@Override
-	public Component prepareRenderer(TableCellRenderer renderer, int row,
-			int column)
+	public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
 	{
-		final Component returnComp = super.prepareRenderer(renderer, row,
-				column);
+		final Component returnComp = super.prepareRenderer(renderer, row, column);
 
 		final Color alternateColor = Const.TABLE_ALT_COLOR;
 		final Color whiteColor = Color.WHITE;

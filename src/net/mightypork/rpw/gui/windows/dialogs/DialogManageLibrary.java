@@ -78,25 +78,20 @@ public class DialogManageLibrary extends RpwDialog
 				final int[] selected = list.getSelectedIndices();
 
 				buttonDelete.setEnabled(selected != null);
-				buttonRename.setEnabled(selected != null
-						&& selected.length == 1);
+				buttonRename.setEnabled(selected != null && selected.length == 1);
 			}
 		});
 
 		// buttons
-		buttonDelete = Gui.sidebarButton("Delete", "Delete resource pack",
-				Icons.MENU_DELETE);
+		buttonDelete = Gui.sidebarButton("Delete", "Delete resource pack", Icons.MENU_DELETE);
 		buttonDelete.setEnabled(false);
 
-		buttonRename = Gui.sidebarButton("Rename", "Rename resource pack",
-				Icons.MENU_RENAME);
+		buttonRename = Gui.sidebarButton("Rename", "Rename resource pack", Icons.MENU_RENAME);
 		buttonRename.setEnabled(false);
 
-		buttonImport = Gui.sidebarButton("Import", "Import pack (zip)",
-				Icons.MENU_IMPORT_BOX);
+		buttonImport = Gui.sidebarButton("Import", "Import pack (zip)", Icons.MENU_IMPORT_BOX);
 
-		buttonClose = Gui.sidebarButton("Close", "Close dialog",
-				Icons.MENU_EXIT);
+		buttonClose = Gui.sidebarButton("Close", "Close dialog", Icons.MENU_EXIT);
 
 		final ManagerLayout ml = new ManagerLayout();
 		ml.setMainComponent(list);
@@ -156,8 +151,7 @@ public class DialogManageLibrary extends RpwDialog
 				return;
 			newName.trim();
 			if (!Utils.isValidFilenameString(newName)) {
-				Alerts.error(DialogManageLibrary.this, "\"" + newName
-						+ "\" is not a valid name.");
+				Alerts.error(DialogManageLibrary.this, "\"" + newName + "\" is not a valid name.");
 				return;
 			}
 
@@ -165,19 +159,15 @@ public class DialogManageLibrary extends RpwDialog
 				return;
 
 			if (packNames.contains(newName)) {
-				Alerts.error(DialogManageLibrary.this, "Name \"" + newName
-						+ "\" is already used.");
+				Alerts.error(DialogManageLibrary.this, "Name \"" + newName + "\" is already used.");
 				return;
 			}
 
-			final File oldDir = new File(
-					OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS), oldName);
-			final File newDir = new File(
-					OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS), newName);
+			final File oldDir = new File(OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS), oldName);
+			final File newDir = new File(OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS), newName);
 
 			if (!oldDir.renameTo(newDir)) {
-				Alerts.error(DialogManageLibrary.this,
-						"Failed to move the pack.");
+				Alerts.error(DialogManageLibrary.this, "Failed to move the pack.");
 				FileUtils.delete(newDir, true); // cleanup
 			}
 

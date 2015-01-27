@@ -38,8 +38,7 @@ public class TaskModifyAsset
 			return;
 		}
 
-		if (!editMeta && Config.USE_INTERNAL_TEXT_EDITOR
-				&& node.getAssetType().isText()) {
+		if (!editMeta && Config.USE_INTERNAL_TEXT_EDITOR && node.getAssetType().isText()) {
 			try {
 				Alerts.loading(true);
 				final Dialog d = new DialogEditText(node);
@@ -47,8 +46,7 @@ public class TaskModifyAsset
 				d.setVisible(true);
 			} catch (final IOException e) {
 				Log.e("Error openning text file for edit.", e);
-				Alerts.error(App.getFrame(),
-						"Error openning text file for edit.");
+				Alerts.error(App.getFrame(), "Error openning text file for edit.");
 			}
 
 			return;
@@ -113,13 +111,11 @@ public class TaskModifyAsset
 	 *            true = meta, false = asset
 	 * @return is in project
 	 */
-	private static boolean assertIsInProject(AssetTreeLeaf node,
-			boolean wantMeta)
+	private static boolean assertIsInProject(AssetTreeLeaf node, boolean wantMeta)
 	{
 		final boolean hasMeta = node.isMetaProvidedByProject();
 
-		final boolean doesMetaExist = Sources.doesSourceProvideAssetMeta(
-				node.resolveAssetMetaSource(), node.getAssetEntry());
+		final boolean doesMetaExist = Sources.doesSourceProvideAssetMeta(node.resolveAssetMetaSource(), node.getAssetEntry());
 
 		final boolean hasAsset = node.isAssetProvidedByProject();
 
@@ -142,11 +138,9 @@ public class TaskModifyAsset
 						proc.process(node);
 					}
 
-					final File projbase = Projects.getActive()
-							.getAssetsDirectory();
+					final File projbase = Projects.getActive().getAssetsDirectory();
 
-					final File metafile = new File(projbase, node
-							.getAssetEntry().getPath() + ".mcmeta");
+					final File metafile = new File(projbase, node.getAssetEntry().getPath() + ".mcmeta");
 
 					final String def = "{\n}";
 

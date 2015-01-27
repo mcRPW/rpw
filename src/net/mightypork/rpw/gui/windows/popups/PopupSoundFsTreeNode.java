@@ -29,8 +29,7 @@ import net.mightypork.rpw.utils.files.FileUtils;
 public class PopupSoundFsTreeNode
 {
 
-	public static PopupSoundFsTreeNode open(Container c, int x, int y,
-			List<AbstractFsTreeNode> nodes, DialogSoundWizard wizard)
+	public static PopupSoundFsTreeNode open(Container c, int x, int y, List<AbstractFsTreeNode> nodes, DialogSoundWizard wizard)
 	{
 		return new PopupSoundFsTreeNode(c, x, y, nodes, wizard);
 	}
@@ -82,8 +81,7 @@ public class PopupSoundFsTreeNode
 	}
 
 
-	public PopupSoundFsTreeNode(Container c, int x, int y,
-			List<AbstractFsTreeNode> nodes, DialogSoundWizard wizard) {
+	public PopupSoundFsTreeNode(Container c, int x, int y, List<AbstractFsTreeNode> nodes, DialogSoundWizard wizard) {
 		if (nodes == null || nodes.size() == 0)
 			return;
 
@@ -209,11 +207,9 @@ public class PopupSoundFsTreeNode
 			public void actionPerformed(ActionEvent e)
 			{
 				if (node.isFile()) {
-					TaskImportCustomSoundReplacement.run((FileFsTreeNode) node,
-							pathChangedRunnable);
+					TaskImportCustomSoundReplacement.run((FileFsTreeNode) node, pathChangedRunnable);
 				} else {
-					TaskImportCustomSounds.run((DirectoryFsTreeNode) node,
-							pathChangedRunnable);
+					TaskImportCustomSounds.run((DirectoryFsTreeNode) node, pathChangedRunnable);
 				}
 			}
 		});
@@ -237,11 +233,7 @@ public class PopupSoundFsTreeNode
 			public void actionPerformed(ActionEvent e)
 			{
 				if (node.isDirectory()) {
-					final String name = Alerts.askForInput(
-							container,
-							"New Folder",
-							"Enter name for the new folder\ncreated in "
-									+ node.getPathRelativeToRoot(), "");
+					final String name = Alerts.askForInput(container, "New Folder", "Enter name for the new folder\ncreated in " + node.getPathRelativeToRoot(), "");
 
 					if (name == null || name.length() == 0)
 						return;
@@ -249,8 +241,7 @@ public class PopupSoundFsTreeNode
 					final File newDir = new File(node.getPath(), name);
 
 					if (newDir.exists()) {
-						Alerts.warning(container,
-								"The directory already exists.");
+						Alerts.warning(container, "The directory already exists.");
 					} else {
 						newDir.mkdirs();
 						pathChangedRunnable.run();

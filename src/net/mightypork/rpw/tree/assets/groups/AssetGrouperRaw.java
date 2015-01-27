@@ -59,8 +59,7 @@ public class AssetGrouperRaw extends AssetGrouper
 				if (parent == null)
 					continue;
 				if (!createdGroups.contains(parent)) {
-					final GroupInfo parentGroup = new GroupInfo(parent,
-							Utils.fromLastDot(parent));
+					final GroupInfo parentGroup = new GroupInfo(parent, Utils.fromLastDot(parent));
 					toAdd.add(parentGroup);
 					// if (Config.LOG_GROUPS) Log.f3("Group: " + parentGroup);
 

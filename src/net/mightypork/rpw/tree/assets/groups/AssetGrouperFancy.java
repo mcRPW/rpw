@@ -33,8 +33,7 @@ public class AssetGrouperFancy extends AssetGrouper
 
 		// mod groups
 		try {
-			pairs = SimpleConfig.mapFromFile(OsUtils
-					.getAppDir(Paths.FILE_CFG_MODGROUPS));
+			pairs = SimpleConfig.mapFromFile(OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS));
 
 			for (final Entry<String, String> pair : pairs.entrySet()) {
 				createdGroups.add(pair.getKey());
@@ -66,8 +65,7 @@ public class AssetGrouperFancy extends AssetGrouper
 				if (parent == null)
 					continue;
 				if (!createdGroups.contains(parent)) {
-					final GroupInfo parentGroup = new GroupInfo(parent,
-							Utils.fromLastDot(parent));
+					final GroupInfo parentGroup = new GroupInfo(parent, Utils.fromLastDot(parent));
 					toAdd.add(parentGroup);
 					if (Config.LOG_GROUPS)
 						Log.f3("Group: " + parentGroup);
@@ -85,8 +83,7 @@ public class AssetGrouperFancy extends AssetGrouper
 
 		// mod filters
 		try {
-			pairs = SimpleConfig.mapFromFile(OsUtils
-					.getAppDir(Paths.FILE_CFG_MODFILTERS));
+			pairs = SimpleConfig.mapFromFile(OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS));
 
 			for (final Entry<String, String> pair : pairs.entrySet()) {
 				addFilter(pair.getKey(), pair.getValue());

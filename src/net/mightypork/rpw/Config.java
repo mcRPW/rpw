@@ -94,14 +94,10 @@ public class Config
 	public static boolean USE_NIMBUS;
 
 	// filechooser paths
-	public static final String def_FILECHOOSER_PATH_IMPORT_FILE = System
-			.getProperty("user.home");
-	public static final String def_FILECHOOSER_PATH_IMPORT_SOUND = System
-			.getProperty("user.home");
-	public static final String def_FILECHOOSER_PATH_IMPORT_PACK = System
-			.getProperty("user.home");
-	public static final String def_FILECHOOSER_PATH_EXPORT = System
-			.getProperty("user.home");
+	public static final String def_FILECHOOSER_PATH_IMPORT_FILE = System.getProperty("user.home");
+	public static final String def_FILECHOOSER_PATH_IMPORT_SOUND = System.getProperty("user.home");
+	public static final String def_FILECHOOSER_PATH_IMPORT_PACK = System.getProperty("user.home");
+	public static final String def_FILECHOOSER_PATH_EXPORT = System.getProperty("user.home");
 
 	private static String FILECHOOSER_PATH_IMPORT_FILE;
 	private static String FILECHOOSER_PATH_IMPORT_SOUND;
@@ -185,60 +181,40 @@ public class Config
 		mgr.cfgNewlineBeforeComments(true);
 		mgr.cfgSeparateSections(true);
 
-		mgr.putBoolean(PK_FANCY_GROUPS, def_FANCY_GROUPS,
-				"Show assets using human-readable groups");
-		mgr.putBoolean(PK_SHOW_FONT, def_SHOW_FONT,
-				"Show unicode font textures (the ugly thin font)");
-		mgr.putBoolean(PK_SHOW_LANG, def_SHOW_LANG,
-				"Show translation files (*.lang)");
-		mgr.putBoolean(PK_SHOW_OBSOLETE_DIRS, def_SHOW_OBSOLETE_DIRS,
-				"Show obsolete directories and groups (eg. the pre-1.7 sounds)");
-		mgr.putBoolean(PK_PREVIEW_HOVER, def_PREVIEW_HOVER,
-				"Display preview of item under mouse");
-		mgr.putBoolean(PK_SHOW_HIDDEN_IN_FILEPICKER,
-				def_SHOW_HIDDEN_IN_FILEPICKER,
-				"Show hidden files in file pickers (import, export)");
+		mgr.putBoolean(PK_FANCY_GROUPS, def_FANCY_GROUPS, "Show assets using human-readable groups");
+		mgr.putBoolean(PK_SHOW_FONT, def_SHOW_FONT, "Show unicode font textures (the ugly thin font)");
+		mgr.putBoolean(PK_SHOW_LANG, def_SHOW_LANG, "Show translation files (*.lang)");
+		mgr.putBoolean(PK_SHOW_OBSOLETE_DIRS, def_SHOW_OBSOLETE_DIRS, "Show obsolete directories and groups (eg. the pre-1.7 sounds)");
+		mgr.putBoolean(PK_PREVIEW_HOVER, def_PREVIEW_HOVER, "Display preview of item under mouse");
+		mgr.putBoolean(PK_SHOW_HIDDEN_IN_FILEPICKER, def_SHOW_HIDDEN_IN_FILEPICKER, "Show hidden files in file pickers (import, export)");
 
-		mgr.putBoolean(PK_USE_INTERNAL_META_EDITOR,
-				def_USE_INTERNAL_META_EDITOR,
-				"Use internal editor, ignore configured command.");
-		mgr.putBoolean(PK_USE_INTERNAL_TEXT_EDITOR,
-				def_USE_INTERNAL_TEXT_EDITOR,
-				"Use internal editor, ignore configured command.");
-		mgr.putBoolean(PK_WARNING_ORPHANED_NODES, def_WARNING_ORPHANED_NODES,
-				"Warn when some assets could not be displayed.");
+		mgr.putBoolean(PK_USE_INTERNAL_META_EDITOR, def_USE_INTERNAL_META_EDITOR, "Use internal editor, ignore configured command.");
+		mgr.putBoolean(PK_USE_INTERNAL_TEXT_EDITOR, def_USE_INTERNAL_TEXT_EDITOR, "Use internal editor, ignore configured command.");
+		mgr.putBoolean(PK_WARNING_ORPHANED_NODES, def_WARNING_ORPHANED_NODES, "Warn when some assets could not be displayed.");
 
 		mgr.putString(PK_IMAGE_EDITOR, def_IMAGE_EDITOR);
 		mgr.putString(PK_IMAGE_EDITOR_ARGS, def_IMAGE_EDITOR_ARGS);
-		mgr.putBoolean(PK_USE_IMAGE_EDITOR, def_USE_IMAGE_EDITOR,
-				"Use command instead of system default.");
+		mgr.putBoolean(PK_USE_IMAGE_EDITOR, def_USE_IMAGE_EDITOR, "Use command instead of system default.");
 
 		mgr.putString(PK_AUDIO_EDITOR, def_AUDIO_EDITOR);
 		mgr.putString(PK_AUDIO_EDITOR_ARGS, def_AUDIO_EDITOR_ARGS);
-		mgr.putBoolean(PK_USE_AUDIO_EDITOR, def_USE_AUDIO_EDITOR,
-				"Use command instead of system default.");
+		mgr.putBoolean(PK_USE_AUDIO_EDITOR, def_USE_AUDIO_EDITOR, "Use command instead of system default.");
 
 		mgr.putString(PK_TEXT_EDITOR, def_TEXT_EDITOR);
 		mgr.putString(PK_TEXT_EDITOR_ARGS, def_TEXT_EDITOR_ARGS);
-		mgr.putBoolean(PK_USE_TEXT_EDITOR, def_USE_TEXT_EDITOR,
-				"Use command instead of system default.");
+		mgr.putBoolean(PK_USE_TEXT_EDITOR, def_USE_TEXT_EDITOR, "Use command instead of system default.");
 
-		mgr.putBoolean(PK_CLOSED_WITH_PROJECT_OPEN,
-				def_CLOSED_WITH_PROJECT_OPEN);
+		mgr.putBoolean(PK_CLOSED_WITH_PROJECT_OPEN, def_CLOSED_WITH_PROJECT_OPEN);
 		mgr.putInteger(PK_LAST_RUN_VERSION, def_LAST_RUN_VERSION);
 		mgr.putString(PK_LIBRARY_VERSION, def_LIBRARY_VERSION);
 		mgr.putInteger(PK_CHOICE_EXPORT_TO_MC, def_CHOICE_EXPORT_TO_MC);
 
-		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_FILE,
-				def_FILECHOOSER_PATH_IMPORT_FILE);
-		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_SOUND,
-				def_FILECHOOSER_PATH_IMPORT_SOUND);
-		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_PACK,
-				def_FILECHOOSER_PATH_IMPORT_PACK);
+		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_FILE, def_FILECHOOSER_PATH_IMPORT_FILE);
+		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_SOUND, def_FILECHOOSER_PATH_IMPORT_SOUND);
+		mgr.putString(PK_FILECHOOSER_PATH_IMPORT_PACK, def_FILECHOOSER_PATH_IMPORT_PACK);
 		mgr.putString(PK_FILECHOOSER_PATH_EXPORT, def_FILECHOOSER_PATH_EXPORT);
 
-		mgr.putBoolean(PK_USE_NIMBUS, def_USE_NIMBUS,
-				"Use the Nimbus theme instead of Metal (default).");
+		mgr.putBoolean(PK_USE_NIMBUS, def_USE_NIMBUS, "Use the Nimbus theme instead of Metal (default).");
 		mgr.putInteger(PK_CHOICE_EXPORT_TO_MC, def_CHOICE_EXPORT_TO_MC);
 
 		load(); // load what has been "put"
@@ -274,12 +250,9 @@ public class Config
 
 		mgr.setValue(PK_USE_NIMBUS, USE_NIMBUS);
 
-		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_FILE,
-				FILECHOOSER_PATH_IMPORT_FILE);
-		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_SOUND,
-				FILECHOOSER_PATH_IMPORT_SOUND);
-		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_PACK,
-				FILECHOOSER_PATH_IMPORT_PACK);
+		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_FILE, FILECHOOSER_PATH_IMPORT_FILE);
+		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_SOUND, FILECHOOSER_PATH_IMPORT_SOUND);
+		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_PACK, FILECHOOSER_PATH_IMPORT_PACK);
 		mgr.setValue(PK_FILECHOOSER_PATH_EXPORT, FILECHOOSER_PATH_EXPORT);
 		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
 		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL); // LAST_RUN_VERSION
@@ -331,12 +304,9 @@ public class Config
 
 		USE_NIMBUS = mgr.getBoolean(PK_USE_NIMBUS);
 
-		FILECHOOSER_PATH_IMPORT_FILE = mgr
-				.getString(PK_FILECHOOSER_PATH_IMPORT_FILE);
-		FILECHOOSER_PATH_IMPORT_SOUND = mgr
-				.getString(PK_FILECHOOSER_PATH_IMPORT_SOUND);
-		FILECHOOSER_PATH_IMPORT_PACK = mgr
-				.getString(PK_FILECHOOSER_PATH_IMPORT_PACK);
+		FILECHOOSER_PATH_IMPORT_FILE = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_FILE);
+		FILECHOOSER_PATH_IMPORT_SOUND = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_SOUND);
+		FILECHOOSER_PATH_IMPORT_PACK = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_PACK);
 		FILECHOOSER_PATH_EXPORT = mgr.getString(PK_FILECHOOSER_PATH_EXPORT);
 
 		LAST_RUN_VERSION = mgr.getInteger(PK_LAST_RUN_VERSION);

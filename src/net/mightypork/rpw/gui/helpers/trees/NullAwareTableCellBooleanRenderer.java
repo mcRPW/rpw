@@ -18,8 +18,7 @@ import javax.swing.table.TableCellRenderer;
  * 
  * @author Ondřej Hruška (MightyPork)
  */
-public class NullAwareTableCellBooleanRenderer extends JCheckBox implements
-		TableCellRenderer, UIResource
+public class NullAwareTableCellBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource
 {
 
 	private final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
@@ -35,12 +34,10 @@ public class NullAwareTableCellBooleanRenderer extends JCheckBox implements
 
 
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int column)
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
 	{
 		if (value == null)
-			return cdr.getTableCellRendererComponent(table, "", isSelected,
-					hasFocus, row, column);
+			return cdr.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
 
 		if (isSelected) {
 			setForeground(table.getSelectionForeground());

@@ -55,9 +55,7 @@ public class Log
 
 				final int index = 0;
 
-				final String fname = (new SimpleDateFormat(
-						"yyyy-MM-dd_HH-mm-ss")).format(d)
-						+ (index == 0 ? "" : "_" + index) + ".log";
+				final String fname = (new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss")).format(d) + (index == 0 ? "" : "_" + index) + ".log";
 
 				final File f2 = new File(logsDir, fname);
 
@@ -108,8 +106,7 @@ public class Log
 		logger.setUseParentHandlers(false);
 		logger.setLevel(Level.ALL);
 		logger.info("Main logger initialized.");
-		logger.info((new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"))
-				.format(new Date()));
+		logger.info((new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")).format(new Date()));
 	}
 
 

@@ -294,8 +294,7 @@ public class OsUtils
 		OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS, true);
 
 		final File vanilla = OsUtils.getAppDir(Paths.DIR_VANILLA, true);
-		final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA
-				+ "/assets", false);
+		final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA + "/assets", false);
 
 		if (vanilla.list().length == 0 || !vanillaAssets.exists()) {
 			Flags.MUST_RELOAD_VANILLA = true;

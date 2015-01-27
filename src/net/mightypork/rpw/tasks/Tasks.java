@@ -213,8 +213,7 @@ public class Tasks
 	public static void taskTreeSourceRename(String oldSource, String newSource)
 	{
 		final AssetTreeNode root = App.getTreeDisplay().treeModel.getRoot();
-		final AssetTreeProcessor processor = new RenameSourceProcessor(
-				oldSource, newSource);
+		final AssetTreeProcessor processor = new RenameSourceProcessor(oldSource, newSource);
 		root.processThisAndChildren(processor);
 
 		taskStoreProjectChanges();
@@ -298,8 +297,7 @@ public class Tasks
 	}
 
 
-	public static int taskExportProject(final File target,
-			final Runnable afterExport)
+	public static int taskExportProject(final File target, final Runnable afterExport)
 	{
 		final int task = Tasks.startTask();
 
@@ -519,8 +517,7 @@ public class Tasks
 			{
 				// -- task begin --
 
-				final File dir = new File(
-						OsUtils.getAppDir(Paths.DIR_PROJECTS), identifier);
+				final File dir = new File(OsUtils.getAppDir(Paths.DIR_PROJECTS), identifier);
 				FileUtils.delete(dir, true);
 
 				Tasks.stopTask(task);
@@ -708,8 +705,7 @@ public class Tasks
 
 	public static void taskSaveProjectAs(String name, String title)
 	{
-		Log.f1("Saving project '" + Projects.getActive().getName() + "' as '"
-				+ name + "'");
+		Log.f1("Saving project '" + Projects.getActive().getName() + "' as '" + name + "'");
 
 		taskStoreProjectChanges(); // save current project to TMP
 
@@ -739,8 +735,7 @@ public class Tasks
 
 	public static void taskDeleteResourcepack(String packname)
 	{
-		final File f = new File(OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS),
-				packname);
+		final File f = new File(OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS), packname);
 		FileUtils.delete(f, true);
 	}
 
@@ -753,7 +748,11 @@ public class Tasks
 
 	public static void taskDialogProjectSummary()
 	{
-		Gui.open(new DialogProjectSummary());
+		if (!Projects.isOpen()) {
+			Alerts.error(null, "No project is open!");
+		} else {
+			Gui.open(new DialogProjectSummary());
+		}
 	}
 
 
@@ -826,8 +825,7 @@ public class Tasks
 
 	public static void taskOpenProjectFolder()
 	{
-		if (Projects.isOpen()
-				&& !DesktopApi.open(Projects.getActive().getProjectDirectory())) {
+		if (Projects.isOpen() && !DesktopApi.open(Projects.getActive().getProjectDirectory())) {
 			//@formatter:off
 			Alerts.error(
 					App.getFrame(),
@@ -884,8 +882,7 @@ public class Tasks
 	}
 
 
-	public static int taskPopulateProjectFromPack(final File pack,
-			final Runnable after)
+	public static int taskPopulateProjectFromPack(final File pack, final Runnable after)
 	{
 		final int task = Tasks.startTask();
 

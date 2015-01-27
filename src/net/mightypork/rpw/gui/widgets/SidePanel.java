@@ -96,8 +96,7 @@ public class SidePanel
 		JXPanel projectCard = new JXPanel();
 
 		// project-info card
-		projectCard.setBorder(BorderFactory.createEmptyBorder(Gui.GAP,
-				Gui.GAPL, Gui.GAP, Gui.GAPL));
+		projectCard.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL, Gui.GAP, Gui.GAPL));
 
 		projectCard.setPreferredSize(new Dimension(320, 700));
 		projectCard.setMinimumSize(new Dimension(320, 300));
@@ -146,9 +145,7 @@ public class SidePanel
 
 	private Box createPreviewBox()
 	{
-		previewBorder = new CompoundBorder(
-				BorderFactory.createLineBorder(new Color(0x666666)),
-				BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		previewBorder = new CompoundBorder(BorderFactory.createLineBorder(new Color(0x666666)), BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		//@formatter:off
 		VBox vbox, vb2;
@@ -435,11 +432,9 @@ public class SidePanel
 			name = Utils.cropStringAtEnd(name, length_name);
 			projectName.setText(name);
 
-			final File iconFile = new File(Projects.getActive()
-					.getProjectDirectory(), "pack.png");
+			final File iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
 
-			final ImageIcon ic = Icons.getIconFromFile(iconFile, new Dimension(
-					128, 128));
+			final ImageIcon ic = Icons.getIconFromFile(iconFile, new Dimension(128, 128));
 			projectIconLabel.setIcon(ic);
 
 			infoBox.setVisible(true);
@@ -484,8 +479,7 @@ public class SidePanel
 				// image asset
 				final String key = leaf.getAssetKey();
 				if (key.startsWith("assets.minecraft.textures.font.")) {
-					previewImageBg.setBackground(Icons.TRANSPARENT_FONTS
-							.getImage());
+					previewImageBg.setBackground(Icons.TRANSPARENT_FONTS.getImage());
 				} else {
 					previewImageBg.setBackground(Icons.TRANSPARENT.getImage());
 				}
@@ -496,20 +490,17 @@ public class SidePanel
 					if (in == null) {
 						previewImage.setIcon(null);
 					} else {
-						final ImageIcon i = Icons.getIconFromStream(in,
-								new Dimension(256, 256));
+						final ImageIcon i = Icons.getIconFromStream(in, new Dimension(256, 256));
 
 						previewImage.setIcon(i);
 
 						final String fn = Utils.cropStringAtEnd(fname, 25);
 
-						previewImageBorder.setTitle(fn + " ("
-								+ i.getDescription() + ")");
+						previewImageBorder.setTitle(fn + " (" + i.getDescription() + ")");
 					}
 
 					final boolean metaInProj = leaf.isMetaProvidedByProject();
-					btnMetaI.setIcon(metaInProj ? Icons.MENU_EDIT
-							: Icons.MENU_NEW);
+					btnMetaI.setIcon(metaInProj ? Icons.MENU_EDIT : Icons.MENU_NEW);
 
 					previewCardLayout.show(previewPanel, IMAGE);
 
@@ -530,8 +521,7 @@ public class SidePanel
 				String text;
 
 				try {
-					in = Sources.getAssetStream(leaf.resolveAssetSource(),
-							leaf.getAssetKey());
+					in = Sources.getAssetStream(leaf.resolveAssetSource(), leaf.getAssetKey());
 					text = FileUtils.streamToString(in, 100);
 					if (in == null) {
 						previewText.setText("");

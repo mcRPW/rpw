@@ -86,8 +86,7 @@ public class DialogProjectSummary extends RpwDialog
 	private Object[][] getData()
 	{
 		final GetProjectSummaryProcessor proc = new GetProjectSummaryProcessor();
-		final AssetTreeNode root = new TreeBuilder()
-				.buildTreeForExport(Projects.getActive());
+		final AssetTreeNode root = new TreeBuilder().buildTreeForExport(Projects.getActive());
 
 		root.processThisAndChildren(proc);
 
@@ -96,8 +95,7 @@ public class DialogProjectSummary extends RpwDialog
 		final List<Object[]> rows = new ArrayList<Object[]>();
 
 		for (final Entry<String, String> e : summary.entrySet()) {
-			rows.add(new Object[] { e.getKey(),
-					Sources.processForDisplay(e.getValue()) });
+			rows.add(new Object[] { e.getKey(), Sources.processForDisplay(e.getValue()) });
 		}
 
 		for (final String s : Projects.getActive().getSoundsMap().keySet()) {

@@ -11,8 +11,7 @@ import net.mightypork.rpw.tree.IFileTreeNode;
 import net.mightypork.rpw.utils.AlphanumComparator;
 
 
-public abstract class AssetTreeNode implements Comparable<AssetTreeNode>,
-		TreeNode, IFileTreeNode
+public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNode, IFileTreeNode
 {
 
 	protected String librarySource = MagicSources.INHERIT;
@@ -226,8 +225,7 @@ public abstract class AssetTreeNode implements Comparable<AssetTreeNode>,
 
 	private int compareTo_3(AssetTreeNode o)
 	{
-		return AlphanumComparator.instance.compare(label.toLowerCase(),
-				o.label.toLowerCase());
+		return AlphanumComparator.instance.compare(label.toLowerCase(), o.label.toLowerCase());
 	}
 
 

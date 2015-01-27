@@ -252,15 +252,13 @@ public class Icons
 		try {
 			orig = ImageIO.read(in);
 			if (size != null) {
-				final ImageSource<BufferedImage> src = new BufferedImageSource(
-						orig);
+				final ImageSource<BufferedImage> src = new BufferedImageSource(orig);
 				final ImageSink<BufferedImage> out = new BufferedImageSink();
 
 				Region r = null;
 
 				if (orig.getHeight() > orig.getWidth() * 8) {
-					r = new Region(Positions.TOP_LEFT, new AbsoluteSize(
-							orig.getWidth(), orig.getWidth()));
+					r = new Region(Positions.TOP_LEFT, new AbsoluteSize(orig.getWidth(), orig.getWidth()));
 				}
 
 				//@formatter:off
@@ -279,8 +277,7 @@ public class Icons
 				);
 				//@formatter:on
 
-				final ThumbnailTask<BufferedImage, BufferedImage> task = new SourceSinkThumbnailTask<BufferedImage, BufferedImage>(
-						p, src, out);
+				final ThumbnailTask<BufferedImage, BufferedImage> task = new SourceSinkThumbnailTask<BufferedImage, BufferedImage>(p, src, out);
 
 				Thumbnailator.createThumbnail(task);
 

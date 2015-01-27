@@ -76,26 +76,22 @@ public class DialogOpenProject extends RpwDialog
 				final int[] selected = list.getSelectedIndices();
 
 				buttonDelete.setEnabled(selected != null);
-				buttonRename.setEnabled(selected != null
-						&& selected.length == 1);
+				buttonRename.setEnabled(selected != null && selected.length == 1);
 				buttonOpen.setEnabled(selected != null && selected.length == 1);
 			}
 		});
 
 		// buttons
-		buttonDelete = Gui.sidebarButton("Delete", "Delete resource pack",
-				Icons.MENU_DELETE);
+		buttonDelete = Gui.sidebarButton("Delete", "Delete resource pack", Icons.MENU_DELETE);
 		buttonDelete.setEnabled(false);
 
-		buttonRename = Gui.sidebarButton("Rename", "Rename project folder",
-				Icons.MENU_RENAME);
+		buttonRename = Gui.sidebarButton("Rename", "Rename project folder", Icons.MENU_RENAME);
 		buttonRename.setEnabled(false);
 
 		buttonOpen = Gui.sidebarButton("Open", "Open in RPW", Icons.MENU_OPEN);
 		buttonOpen.setEnabled(false);
 
-		buttonClose = Gui.sidebarButton("Close", "Close dialog",
-				Icons.MENU_EXIT);
+		buttonClose = Gui.sidebarButton("Close", "Close dialog", Icons.MENU_EXIT);
 
 		final ManagerLayout ml = new ManagerLayout();
 		ml.setMainComponent(list);
@@ -135,11 +131,8 @@ public class DialogOpenProject extends RpwDialog
 				return;
 			}
 
-			if (Projects.isOpen()
-					&& Projects.getActive().getName().equals(projname)) {
-				final boolean agree = Alerts
-						.askOkCancel(self(), "Project is open",
-								"RPW can't RENAME an open project.\n\nDo you want to close it?");
+			if (Projects.isOpen() && Projects.getActive().getName().equals(projname)) {
+				final boolean agree = Alerts.askOkCancel(self(), "Project is open", "RPW can't RENAME an open project.\n\nDo you want to close it?");
 
 				if (!agree)
 					return;
@@ -173,15 +166,12 @@ public class DialogOpenProject extends RpwDialog
 				return;
 
 			if (projectNames.contains(newName)) {
-				Alerts.error(self(), "Name \"" + newName
-						+ "\" is already used.");
+				Alerts.error(self(), "Name \"" + newName + "\" is already used.");
 				return;
 			}
 
-			final File oldDir = new File(OsUtils.getAppDir(Paths.DIR_PROJECTS),
-					projname);
-			final File newDir = new File(OsUtils.getAppDir(Paths.DIR_PROJECTS),
-					newName);
+			final File oldDir = new File(OsUtils.getAppDir(Paths.DIR_PROJECTS), projname);
+			final File newDir = new File(OsUtils.getAppDir(Paths.DIR_PROJECTS), newName);
 
 			if (!oldDir.renameTo(newDir)) {
 				Alerts.error(self(), "Failed to move the project directory.");
@@ -217,8 +207,7 @@ public class DialogOpenProject extends RpwDialog
 				return;
 
 			if (Projects.isOpen()) {
-				final String openProjectDirname = Projects.getActive()
-						.getName();
+				final String openProjectDirname = Projects.getActive().getName();
 
 				boolean isOpen = false;
 				for (final String s : choice) {
@@ -227,9 +216,7 @@ public class DialogOpenProject extends RpwDialog
 				}
 
 				if (isOpen) {
-					final boolean agree = Alerts
-							.askOkCancel(self(), "Project is open",
-									"RPW can't DELETE an open project.\n\nDo you want to close it?");
+					final boolean agree = Alerts.askOkCancel(self(), "Project is open", "RPW can't DELETE an open project.\n\nDo you want to close it?");
 
 					if (!agree)
 						return;

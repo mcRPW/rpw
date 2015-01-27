@@ -54,8 +54,7 @@ public class DialogProjectProperties extends RpwDialog
 	public DialogProjectProperties() {
 		super(App.getFrame(), "Project Properties");
 
-		iconFile = new File(Projects.getActive().getProjectDirectory(),
-				"pack.png");
+		iconFile = new File(Projects.getActive().getProjectDirectory(), "pack.png");
 
 		createDialog();
 	}
@@ -75,20 +74,16 @@ public class DialogProjectProperties extends RpwDialog
 		vbox.gap();
 
 		// form
-		titleField = Gui.textField("", "Resource pack title",
-				"Title shown in Minecraft");
+		titleField = Gui.textField("", "Resource pack title", "Title shown in Minecraft");
 
-		nameField = Gui.textField("", "Project folder name",
-				"Name of the project folder");
+		nameField = Gui.textField("", "Project folder name", "Name of the project folder");
 		nameField.setEditable(false);
 		nameField.setBackground(new Color(0xeeeeee));
 
-		vbox.springForm(new String[] { "Title:", "Name:" }, new JComponent[] {
-				titleField, nameField });
+		vbox.springForm(new String[] { "Title:", "Name:" }, new JComponent[] { titleField, nameField });
 
 		vbox.gap();
-		vbox.add(Gui
-				.commentLine("Use \"My Projects\" dialog to rename project."));
+		vbox.add(Gui.commentLine("Use \"My Projects\" dialog to rename project."));
 		vbox.gapl();
 
 		vbox.titsep("Icon");
@@ -99,14 +94,10 @@ public class DialogProjectProperties extends RpwDialog
 		imageView.setHorizontalAlignment(SwingConstants.CENTER);
 		imageView.setAlignmentX(0.5f);
 
-		btnIconEdit = Gui.sidebarButton("Edit", "Open in image editor",
-				Icons.MENU_EDIT);
-		btnIconImport = Gui.sidebarButton("Import", "Import replacement icon",
-				Icons.MENU_IMPORT_BOX);
-		btnIconDefault = Gui.sidebarButton("Default",
-				"Reset to RPW default icon", Icons.MENU_DELETE);
-		btnIconRefresh = Gui.sidebarButton("Refresh", "Reload preview",
-				Icons.MENU_RELOAD);
+		btnIconEdit = Gui.sidebarButton("Edit", "Open in image editor", Icons.MENU_EDIT);
+		btnIconImport = Gui.sidebarButton("Import", "Import replacement icon", Icons.MENU_IMPORT_BOX);
+		btnIconDefault = Gui.sidebarButton("Default", "Reset to RPW default icon", Icons.MENU_DELETE);
+		btnIconRefresh = Gui.sidebarButton("Refresh", "Reload preview", Icons.MENU_RELOAD);
 
 		final ManagerLayout ml = new ManagerLayout(4);
 		ml.setMainComponent(imageView);
@@ -135,9 +126,7 @@ public class DialogProjectProperties extends RpwDialog
 	@Override
 	protected void initGui()
 	{
-		fc = new FileChooser(this, FilePath.IMPORT_FILE,
-				"Import Project Icon (128x128 PNG)", FileChooser.PNG, true,
-				false, false);
+		fc = new FileChooser(this, FilePath.IMPORT_FILE, "Import Project Icon (128x128 PNG)", FileChooser.PNG, true, false, false);
 	}
 
 

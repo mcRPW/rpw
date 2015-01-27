@@ -23,14 +23,12 @@ public class VersionUtils
 
 		final int from = Const.VERSION_MAJOR;
 
-		for (int i = Math.max(Const.VERSION_SERIAL - 2,
-				Math.max(Config.LAST_RUN_VERSION, from) + 1); i <= Const.VERSION_SERIAL; i++) {
+		for (int i = Math.max(Const.VERSION_SERIAL - 2, Math.max(Config.LAST_RUN_VERSION, from) + 1); i <= Const.VERSION_SERIAL; i++) {
 			final String chl = getChangelogForVersion(i);
 			if (chl == null)
 				continue;
 
-			document += "\n\n<p class=\"littleHeading\">" + getVersionString(i)
-					+ "</p>\n\n";
+			document += "\n\n<p class=\"littleHeading\">" + getVersionString(i) + "</p>\n\n";
 
 			document += chl.trim() + "\n";
 		}

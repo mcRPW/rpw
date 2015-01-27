@@ -15,8 +15,7 @@ import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.logging.LogMonitor;
 
 
-public class DialogProgressTerminal extends DialogTerminalBase implements
-		LogMonitor, ProgressListener
+public class DialogProgressTerminal extends DialogTerminalBase implements LogMonitor, ProgressListener
 {
 
 	private int monitorId;
@@ -140,8 +139,7 @@ public class DialogProgressTerminal extends DialogTerminalBase implements
 	public void onStepStarted(int index, int total, String name)
 	{
 		stepName.setText(name);
-		progress.setValue((int) Math
-				.round(((double) index / (double) (total - 1)) * 100));
+		progress.setValue((int) Math.round(((double) index / (double) (total - 1)) * 100));
 	}
 
 

@@ -61,8 +61,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		projectTitle = identifier; // by default
 
-		tmpBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP + "-"
-				+ identifier, true);
+		tmpBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP + "-" + identifier, true);
 
 		init();
 	}
@@ -94,8 +93,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		fileConfig = new File(tmpBase, Paths.FILENAME_PROJECT_CONFIG);
 
-		props = new PropertyManager(fileConfig, "Project '" + projectName
-				+ "' config file");
+		props = new PropertyManager(fileConfig, "Project '" + projectName + "' config file");
 		props.cfgNewlineBeforeComments(false);
 		props.cfgSeparateSections(false);
 
@@ -130,12 +128,10 @@ public class Project extends Source implements NodeSourceProvider
 				groups = SimpleConfig.mapFromFile(fileSourcesGroups);
 
 				if (UpdateHelper.needFixProjectKeys(lastRpwVersion)) {
-					final Map<String, String> files_fixed = new HashMap<String, String>(
-							files.size());
+					final Map<String, String> files_fixed = new HashMap<String, String>(files.size());
 
 					for (final Entry<String, String> e : files.entrySet()) {
-						files_fixed.put(UpdateHelper.fixProjectKey(e.getKey()),
-								e.getValue());
+						files_fixed.put(UpdateHelper.fixProjectKey(e.getKey()), e.getValue());
 					}
 
 					files = files_fixed;
@@ -143,13 +139,11 @@ public class Project extends Source implements NodeSourceProvider
 			}
 
 			if (fileSounds.exists()) {
-				sounds = SoundEntryMap.fromJson(FileUtils
-						.fileToString(fileSounds));
+				sounds = SoundEntryMap.fromJson(FileUtils.fileToString(fileSounds));
 			}
 
 			if (fileLangs.exists()) {
-				langs = LangEntryMap
-						.fromJson(FileUtils.fileToString(fileLangs));
+				langs = LangEntryMap.fromJson(FileUtils.fileToString(fileLangs));
 			}
 
 			privateCopiesBase.mkdirs();
@@ -165,9 +159,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		} catch (final Exception e) {
 			Log.w(getLogPrefix() + "Project data files could not be loaded.");
-			Alerts.error(
-					App.getFrame(),
-					"An arror occured while loading the project.\nPlease, check the log for details.");
+			Alerts.error(App.getFrame(), "An arror occured while loading the project.\nPlease, check the log for details.");
 		}
 
 	}
@@ -178,10 +170,8 @@ public class Project extends Source implements NodeSourceProvider
 		final List<File[]> oldnew = new ArrayList<File[]>();
 
 		// changed in 3.8.4 to "cfg"
-		oldnew.add(new File[] { new File(tmpBase, "sources_files.dat"),
-				fileSourcesFiles });
-		oldnew.add(new File[] { new File(tmpBase, "sources_groups.dat"),
-				fileSourcesGroups });
+		oldnew.add(new File[] { new File(tmpBase, "sources_files.dat"), fileSourcesFiles });
+		oldnew.add(new File[] { new File(tmpBase, "sources_groups.dat"), fileSourcesGroups });
 
 		for (final File[] ff : oldnew) {
 			if (ff[0].exists()) {
@@ -220,12 +210,9 @@ public class Project extends Source implements NodeSourceProvider
 
 		final DirectoryTreeDifferenceFinder comparator = new DirectoryTreeDifferenceFinder();
 
-		final boolean retval = !comparator.areEqual(getProjectDirectory(),
-				getRealProjectBase());
+		final boolean retval = !comparator.areEqual(getProjectDirectory(), getRealProjectBase());
 
-		Log.f3(getLogPrefix()
-				+ (retval ? "Changes detected, needs save."
-						: "No changes found."));
+		Log.f3(getLogPrefix() + (retval ? "Changes detected, needs save." : "No changes found."));
 
 		return retval;
 	}
@@ -259,8 +246,7 @@ public class Project extends Source implements NodeSourceProvider
 			Log.f2(getLogPrefix() + "Copying - done.");
 
 		} catch (final IOException e) {
-			Alerts.error(App.getFrame(), "Error",
-					"An error occured while\nopening the project.");
+			Alerts.error(App.getFrame(), "Error", "An error occured while\nopening the project.");
 			Log.e(e);
 		}
 	}
@@ -280,8 +266,7 @@ public class Project extends Source implements NodeSourceProvider
 			Log.f2(getLogPrefix() + "Copying - done.");
 
 		} catch (final IOException e) {
-			Alerts.error(App.getFrame(), "Error Saving Project",
-					"Failed to save project.\nThe project may have been corrupted.");
+			Alerts.error(App.getFrame(), "Error Saving Project", "Failed to save project.\nThe project may have been corrupted.");
 			return;
 		}
 	}

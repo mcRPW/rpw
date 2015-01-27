@@ -47,8 +47,7 @@ public class HBox extends RpwBox
 		// BEHOLD, MAGIC
 		// ugly fix for Swing bug (separator with weird size)
 		// http://stackoverflow.com/a/7515903/2180189
-		final Dimension size = new Dimension(sep.getPreferredSize().width,
-				sep.getMaximumSize().height);
+		final Dimension size = new Dimension(sep.getPreferredSize().width, sep.getMaximumSize().height);
 		sep.setMaximumSize(size);
 
 		return sep;

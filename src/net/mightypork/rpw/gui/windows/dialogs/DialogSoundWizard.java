@@ -64,8 +64,7 @@ import org.jdesktop.swingx.JXTitledSeparator;
 public class DialogSoundWizard extends RpwDialog
 {
 
-	private static final DataFlavor FLAVOR_FSTREE_FILE = new DataFlavor(
-			FileFsTreeNode.class, "FSTREE_FILE_NODE");
+	private static final DataFlavor FLAVOR_FSTREE_FILE = new DataFlavor(FileFsTreeNode.class, "FSTREE_FILE_NODE");
 
 	private JButton buttonDeleteKey;
 	private JButton buttonDiscard;
@@ -193,12 +192,10 @@ public class DialogSoundWizard extends RpwDialog
 		middlePanelComponents.add(fieldCategory);
 
 		ckStreamed = new JCheckBox("Streamed (use for music)");
-		ckStreamed
-				.setToolTipText("Use for long sounds and music, to avoid lag while playing the sound.");
+		ckStreamed.setToolTipText("Use for long sounds and music, to avoid lag while playing the sound.");
 		middlePanelComponents.add(ckStreamed);
 
-		vb.springForm(new Object[] { l1, l2, l3 }, new JComponent[] { fieldKey,
-				fieldCategory, ckStreamed });
+		vb.springForm(new Object[] { l1, l2, l3 }, new JComponent[] { fieldKey, fieldCategory, ckStreamed });
 
 		// file list
 		JXTitledSeparator sep;
@@ -246,8 +243,7 @@ public class DialogSoundWizard extends RpwDialog
 
 		// comment
 		vb.gap();
-		vb.add(Gui
-				.commentLine("<html><center>Drag to <i>Selected Files</i> to select.<br>Right-click for options.</center></html>"));
+		vb.add(Gui.commentLine("<html><center>Drag to <i>Selected Files</i> to select.<br>Right-click for options.</center></html>"));
 
 		return vb;
 	}
@@ -369,8 +365,7 @@ public class DialogSoundWizard extends RpwDialog
 			{
 				final String txt = fieldKey.getText().trim();
 
-				editStateValid = txt.length() > 0
-						&& (!keyList.contains(txt) || txt.equals(editedKey));
+				editStateValid = txt.length() > 0 && (!keyList.contains(txt) || txt.equals(editedKey));
 
 				if (!txt.equals(editedKey))
 					markChange();
@@ -553,9 +548,7 @@ public class DialogSoundWizard extends RpwDialog
 				return;
 
 			if (hasChange()) {
-				final boolean y = Alerts.askYesNo(DialogSoundWizard.this,
-						"Discard Changes", "Discard changes in \"" + editedKey
-								+ "\"?");
+				final boolean y = Alerts.askYesNo(DialogSoundWizard.this, "Discard Changes", "Discard changes in \"" + editedKey + "\"?");
 
 				if (!y) {
 					keyList.list.setSelectedValue(editedKey, true);
@@ -641,16 +634,13 @@ public class DialogSoundWizard extends RpwDialog
 			}
 		};
 
-		f = new File(OsUtils.getAppDir(Paths.DIR_VANILLA),
-				"assets/minecraft/sounds");
-		root.addChild(dir = new DirectoryFsTreeNode("Vanilla sounds", f,
-				soundOnlyFileFilter));
+		f = new File(OsUtils.getAppDir(Paths.DIR_VANILLA), "assets/minecraft/sounds");
+		root.addChild(dir = new DirectoryFsTreeNode("Vanilla sounds", f, soundOnlyFileFilter));
 		dir.setPathRoot(true);
 		dir.setMark(1);
 
 		f = Projects.getActive().getCustomSoundsDirectory();
-		root.addChild(dir = new DirectoryFsTreeNode("Custom sounds", f,
-				soundOnlyFileFilter));
+		root.addChild(dir = new DirectoryFsTreeNode("Custom sounds", f, soundOnlyFileFilter));
 		dir.setPathRoot(true);
 		dir.setMark(2);
 
@@ -694,13 +684,11 @@ public class DialogSoundWizard extends RpwDialog
 			try {
 				final Transferable trans = support.getTransferable();
 
-				final List<FileFsTreeNode> nodes = (List<FileFsTreeNode>) trans
-						.getTransferData(FLAVOR_FSTREE_FILE);
+				final List<FileFsTreeNode> nodes = (List<FileFsTreeNode>) trans.getTransferData(FLAVOR_FSTREE_FILE);
 
 				boolean changed = false;
 				for (final FileFsTreeNode node : nodes) {
-					final String path = Utils.toLastDot(node
-							.getPathRelativeToRoot().getPath());
+					final String path = Utils.toLastDot(node.getPathRelativeToRoot().getPath());
 					if (!fileList.contains(path)) {
 						fileList.addItemNoSort(path);
 						changed = true;
@@ -749,8 +737,7 @@ public class DialogSoundWizard extends RpwDialog
 
 			final TreePath[] paths = tree.getSelectionPaths();
 			for (final TreePath path : paths) {
-				final AbstractFsTreeNode fsnode = (AbstractFsTreeNode) path
-						.getLastPathComponent();
+				final AbstractFsTreeNode fsnode = (AbstractFsTreeNode) path.getLastPathComponent();
 				if (fsnode.isDirectory()) {
 					recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsnode);
 				} else {
@@ -767,8 +754,7 @@ public class DialogSoundWizard extends RpwDialog
 
 
 				@Override
-				public Object getTransferData(DataFlavor flavor)
-						throws UnsupportedFlavorException, IOException
+				public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
 				{
 					if (!isDataFlavorSupported(flavor))
 						throw new UnsupportedFlavorException(flavor);
@@ -808,8 +794,7 @@ public class DialogSoundWizard extends RpwDialog
 		{
 			try {
 				if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-					final String str = (String) support.getTransferable()
-							.getTransferData(DataFlavor.stringFlavor);
+					final String str = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
 
 					final String[] lines = str.split("\n");
 

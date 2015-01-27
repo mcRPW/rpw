@@ -39,8 +39,7 @@ import net.mightypork.rpw.utils.logging.Log;
 public class PopupSelectedNodes
 {
 
-	public static PopupSelectedNodes open(Container c, int x, int y,
-			List<AssetTreeNode> nodes)
+	public static PopupSelectedNodes open(Container c, int x, int y, List<AssetTreeNode> nodes)
 	{
 		return new PopupSelectedNodes(c, x, y, nodes);
 	}
@@ -73,8 +72,7 @@ public class PopupSelectedNodes
 	}
 
 
-	public PopupSelectedNodes(Container c, int x, int y,
-			List<AssetTreeNode> nodes) {
+	public PopupSelectedNodes(Container c, int x, int y, List<AssetTreeNode> nodes) {
 		if (nodes == null) {
 			Log.w("Popup for NULL node array, cancelling.");
 			return;
@@ -110,8 +108,7 @@ public class PopupSelectedNodes
 		item.setEnabled(inProject < allLeaves);
 		popup.add(item);
 
-		item = itemCopyToProjectSkipVanilla = new JMenuItem(
-				"Copy to project, skip VANILLA");
+		item = itemCopyToProjectSkipVanilla = new JMenuItem("Copy to project, skip VANILLA");
 		item.setIcon(Icons.MENU_COPY);
 		item.setEnabled(inProject < allLeaves && vanillaLeaves != allLeaves);
 		popup.add(item);
@@ -124,8 +121,7 @@ public class PopupSelectedNodes
 		popup.add(item);
 
 		if (metaLeaves > 0) {
-			item = itemDeleteMetaFromProject = new JMenuItem(
-					"Delete \".mcmeta\" files in project");
+			item = itemDeleteMetaFromProject = new JMenuItem("Delete \".mcmeta\" files in project");
 			item.setIcon(Icons.MENU_DELETE_ASSET);
 			item.setEnabled(inProjectMeta > 0);
 			popup.add(item);
@@ -184,8 +180,7 @@ public class PopupSelectedNodes
 		item.setIcon(Icons.MENU_RESOLVE);
 		popup.add(item);
 
-		item = itemApplyResolvedOrInherit = new JMenuItem(
-				"Assign resolved, skip VANILLA");
+		item = itemApplyResolvedOrInherit = new JMenuItem("Assign resolved, skip VANILLA");
 		item.setIcon(Icons.MENU_RESOLVE);
 		popup.add(item);
 
@@ -275,8 +270,7 @@ public class PopupSelectedNodes
 					{
 						Alerts.loading(true);
 						final AssetTreeProcessor procCopyToProject = new CopyToProjectProcessor();
-						final AssetTreeProcessor procSetToInherit = new SetToSourceProcessor(
-								MagicSources.INHERIT);
+						final AssetTreeProcessor procSetToInherit = new SetToSourceProcessor(MagicSources.INHERIT);
 						for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
 							node.processThisAndChildren(procCopyToProject);
 							node.processThisAndChildren(procSetToInherit);
@@ -305,11 +299,9 @@ public class PopupSelectedNodes
 						Alerts.loading(true);
 
 						final CopyToProjectProcessor procCopyToProject = new CopyToProjectProcessor();
-						procCopyToProject
-								.addIgnoredSource(MagicSources.VANILLA);
+						procCopyToProject.addIgnoredSource(MagicSources.VANILLA);
 
-						final AssetTreeProcessor procSetToInherit = new SetToSourceProcessor(
-								MagicSources.INHERIT);
+						final AssetTreeProcessor procSetToInherit = new SetToSourceProcessor(MagicSources.INHERIT);
 
 						for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
 							node.processThisAndChildren(procCopyToProject);
@@ -390,8 +382,7 @@ public class PopupSelectedNodes
 						public void run()
 						{
 							Alerts.loading(true);
-							final AssetTreeProcessor proc = new DeleteFromProjectProcessor(
-									false, true);
+							final AssetTreeProcessor proc = new DeleteFromProjectProcessor(false, true);
 							for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
 								node.processThisAndChildren(proc);
 							}
@@ -415,8 +406,7 @@ public class PopupSelectedNodes
 		});
 
 		itemApplyResolved.addActionListener(listenerResolveRecursive);
-		itemApplyResolvedOrInherit
-				.addActionListener(listenerResolveOrInheritRecursive);
+		itemApplyResolvedOrInherit.addActionListener(listenerResolveOrInheritRecursive);
 
 		itemEditAsset.addActionListener(new ActionListener() {
 
@@ -443,8 +433,7 @@ public class PopupSelectedNodes
 	{
 		final List<Component> items = new ArrayList<Component>();
 
-		final ActionListener listener = (recursive ? listenerSetRecursive
-				: listenerSetSimple);
+		final ActionListener listener = (recursive ? listenerSetRecursive : listenerSetSimple);
 
 		JMenuItem item;
 
@@ -469,8 +458,7 @@ public class PopupSelectedNodes
 		items.add(null);
 
 		// count sounds in selection
-		final CountNodesOfTypeProcessor procCnt = new CountNodesOfTypeProcessor(
-				EAsset.SOUND);
+		final CountNodesOfTypeProcessor procCnt = new CountNodesOfTypeProcessor(EAsset.SOUND);
 		for (final AssetTreeNode node : nodes) {
 			node.processThisAndChildren(procCnt);
 		}
@@ -561,14 +549,12 @@ public class PopupSelectedNodes
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			final ApplyInheritProcessor proc1 = new ApplyInheritProcessor(
-					MagicSources.INHERIT);
+			final ApplyInheritProcessor proc1 = new ApplyInheritProcessor(MagicSources.INHERIT);
 			for (final AssetTreeNode node : nodes) {
 				node.processThisAndChildren(proc1);
 			}
 
-			final SetToSourceProcessor proc2 = new SetToSourceProcessor(
-					MagicSources.INHERIT);
+			final SetToSourceProcessor proc2 = new SetToSourceProcessor(MagicSources.INHERIT);
 			proc2.setModifyLeaves(false); // do only groups
 			for (final AssetTreeNode node : nodes) {
 				node.processThisAndChildren(proc2);

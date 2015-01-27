@@ -22,7 +22,6 @@ public class LangEntry
 	@Override
 	public String toString()
 	{
-		return "LANG[region: " + region + ", name: " + name + ", bidi: "
-				+ bidirectional + "]";
+		return "LANG[region: " + region + ", name: " + name + ", bidi: " + bidirectional + "]";
 	}
 }

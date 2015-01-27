@@ -48,8 +48,7 @@ public class DirectoryTreeDifferenceFinder
 
 			calcChecksum();
 
-			Log.f3("Checksums calculated in "
-					+ (System.currentTimeMillis() - from) + " ms");
+			Log.f3("Checksums calculated in " + (System.currentTimeMillis() - from) + " ms");
 
 			return true;
 
@@ -82,8 +81,7 @@ public class DirectoryTreeDifferenceFinder
 					final int read2 = cin2.read(BUFFER);
 
 					if (read1 != read2 || ck1.getValue() != ck2.getValue()) {
-						throw new NotEqualException("Bytes differ:\n" + pair.a
-								+ "\n" + pair.b);
+						throw new NotEqualException("Bytes differ:\n" + pair.a + "\n" + pair.b);
 					}
 
 					if (read1 == -1)
@@ -101,8 +99,7 @@ public class DirectoryTreeDifferenceFinder
 	private void buildList(File f1, File f2) throws NotEqualException
 	{
 		if (f1.isDirectory() != f2.isDirectory())
-			throw new NotEqualException("isDirectory differs:\n" + f1 + "\n"
-					+ f2);
+			throw new NotEqualException("isDirectory differs:\n" + f1 + "\n" + f2);
 
 		if (f1.isFile() && f2.isFile()) {
 			if (f1.length() != f2.length())
@@ -117,16 +114,14 @@ public class DirectoryTreeDifferenceFinder
 			Arrays.sort(children2, fileFirstSorter);
 
 			if (children1.length != children2.length)
-				throw new NotEqualException("Child counts differ:\n" + f1
-						+ "\n" + f2);
+				throw new NotEqualException("Child counts differ:\n" + f1 + "\n" + f2);
 
 			for (int i = 0; i < children1.length; i++) {
 				final File ch1 = children1[i];
 				final File ch2 = children2[i];
 
 				if (!ch1.getName().equals(ch2.getName()))
-					throw new NotEqualException("Filenames differ:\n" + ch1
-							+ "\n" + ch2);
+					throw new NotEqualException("Filenames differ:\n" + ch1 + "\n" + ch2);
 
 				buildList(ch1, ch2);
 			}

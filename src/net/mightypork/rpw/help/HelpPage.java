@@ -16,8 +16,7 @@ public class HelpPage
 	public HelpPage(String title, String filename) {
 		this.name = title;
 
-		final String str = FileUtils.resourceToString(Paths.DATA_DIR_HELP
-				+ filename);
+		final String str = FileUtils.resourceToString(Paths.DATA_DIR_HELP + filename);
 
 		if (str.length() == 0) {
 			Log.w("Missing help page " + filename);

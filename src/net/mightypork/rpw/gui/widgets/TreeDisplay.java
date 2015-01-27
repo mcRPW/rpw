@@ -39,8 +39,7 @@ public class TreeDisplay
 	public JXTreeTable treeTable;
 	public AssetTreeModel treeModel;
 
-	public static final AssetTreeGroup EMPTY_ROOT = new AssetTreeGroup(null,
-			"", "");
+	public static final AssetTreeGroup EMPTY_ROOT = new AssetTreeGroup(null, "", "");
 
 
 	private AssetTreeGroup buildProjectRoot()
@@ -70,38 +69,32 @@ public class TreeDisplay
 		treeTable.setRowHeight(20);
 		treeTable.addMouseListener(new AssetTableClickListener(treeTable));
 
-		final DefaultTreeRenderer renderer = new DefaultTreeRenderer(
-				new TreeIconProvider());
+		final DefaultTreeRenderer renderer = new DefaultTreeRenderer(new TreeIconProvider());
 
 		treeTable.putClientProperty("JTree.lineStyle", "Angled");
 		treeTable.setTreeCellRenderer(renderer);
 		treeTable.getTableHeader().setReorderingAllowed(false);
 
-		treeTable.setDefaultRenderer(Boolean.class,
-				new NullAwareTableCellBooleanRenderer());
-		treeTable.setDefaultRenderer(SourceName.class,
-				new MagicAwareTableCellStringRenderer());
+		treeTable.setDefaultRenderer(Boolean.class, new NullAwareTableCellBooleanRenderer());
+		treeTable.setDefaultRenderer(SourceName.class, new MagicAwareTableCellStringRenderer());
 
 		final TreeSelectionListener tsl = new TreeSelectionListener() {
 
 			@Override
 			public void valueChanged(TreeSelectionEvent e)
 			{
-				final int count = treeTable.getTreeSelectionModel()
-						.getSelectionCount();
+				final int count = treeTable.getTreeSelectionModel().getSelectionCount();
 
 				if (count == 0) {
 					App.getSidePanel().updatePreview(null);
 				} else {
-					final TreePath[] paths = treeTable.getTreeSelectionModel()
-							.getSelectionPaths();
+					final TreePath[] paths = treeTable.getTreeSelectionModel().getSelectionPaths();
 					final TreePath path = paths[paths.length - 1];
 
 					if (path == null)
 						return;
 
-					final AssetTreeNode node = (AssetTreeNode) path
-							.getLastPathComponent();
+					final AssetTreeNode node = (AssetTreeNode) path.getLastPathComponent();
 
 					App.getSidePanel().updatePreview(node);
 				}
@@ -144,8 +137,7 @@ public class TreeDisplay
 				if (path == null)
 					return;
 
-				final AssetTreeNode node = (AssetTreeNode) path
-						.getLastPathComponent();
+				final AssetTreeNode node = (AssetTreeNode) path.getLastPathComponent();
 				App.getSidePanel().updatePreview(node);
 			}
 
@@ -256,8 +248,7 @@ public class TreeDisplay
 		if (node == null)
 			return;
 		if (node.getChildCount() > 0) {
-			for (final Enumeration<TreeNode> e = node.children(); e
-					.hasMoreElements();) {
+			for (final Enumeration<TreeNode> e = node.children(); e.hasMoreElements();) {
 				final TreeNode treeNode = e.nextElement();
 				final TreePath path = parent.pathByAddingChild(treeNode);
 				expandAll(tree, path, expand);

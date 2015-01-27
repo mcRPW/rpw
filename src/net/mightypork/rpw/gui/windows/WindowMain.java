@@ -45,8 +45,7 @@ public class WindowMain
 		frame.pack();
 
 		final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setLocation((dim.width - frame.getWidth()) / 2,
-				(dim.height - frame.getHeight()) / 2);
+		frame.setLocation((dim.width - frame.getWidth()) / 2, (dim.height - frame.getHeight()) / 2);
 
 		frame.setVisible(true);
 
@@ -78,8 +77,7 @@ public class WindowMain
 
 		sidePanel = new SidePanel();
 
-		final JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				true, scrollpane, sidePanel.panel);
+		final JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, scrollpane, sidePanel.panel);
 
 		split.setOneTouchExpandable(true);
 		split.setEnabled(false); // no dragging

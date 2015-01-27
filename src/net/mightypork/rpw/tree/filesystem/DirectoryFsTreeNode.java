@@ -105,8 +105,7 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode
 	 * @param filter
 	 *            file filter
 	 */
-	public DirectoryFsTreeNode(String name, List<File> childPaths,
-			FileFilter filter) {
+	public DirectoryFsTreeNode(String name, List<File> childPaths, FileFilter filter) {
 		this.name = name;
 
 		this.filter = filter;

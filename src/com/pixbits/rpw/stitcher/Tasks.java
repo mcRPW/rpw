@@ -26,8 +26,7 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class Tasks
 {
-	public static void importPackFromStitchedPng(File inputFolder,
-			Project project, Set<AssetCategory> categories)
+	public static void importPackFromStitchedPng(File inputFolder, Project project, Set<AssetCategory> categories)
 	{
 		boolean keep = true;
 
@@ -37,30 +36,23 @@ public class Tasks
 	}
 
 
-	private static boolean importPackFromStitchedPng(File inputFolder,
-			Project project, AssetCategory category)
+	private static boolean importPackFromStitchedPng(File inputFolder, Project project, AssetCategory category)
 	{
-		File input = new File(inputFolder.getAbsolutePath() + File.separator
-				+ category.name.toLowerCase() + ".png");
-		File jsonInput = new File(inputFolder.getAbsolutePath()
-				+ File.separator + category.name.toLowerCase() + ".json");
+		File input = new File(inputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".png");
+		File jsonInput = new File(inputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".json");
 
 		if (!input.exists()) {
-			Alerts.error(null, "Image not found", "File " + input.getName()
-					+ " not found in specified folder.");
+			Alerts.error(null, "Image not found", "File " + input.getName() + " not found in specified folder.");
 			return false;
 		}
 
 		if (!jsonInput.exists()) {
-			Alerts.error(null, "Json not found", "File " + input.getName()
-					+ " not found in specified folder.");
+			Alerts.error(null, "Json not found", "File " + input.getName() + " not found in specified folder.");
 			return false;
 		}
 
 		try {
-			StitchJson.Category json = new GsonBuilder().create().fromJson(
-					FileUtils.fileToString(jsonInput),
-					StitchJson.Category.class);
+			StitchJson.Category json = new GsonBuilder().create().fromJson(FileUtils.fileToString(jsonInput), StitchJson.Category.class);
 			BufferedImage image = ImageIO.read(input);
 
 			MessageDigest digest = MessageDigest.getInstance("MD5");
@@ -69,9 +61,7 @@ public class Tasks
 				digest.reset();
 
 				BigInteger savedHash = new BigInteger(element.hashCode, 16);
-				BigInteger computedHash = new BigInteger(1,
-						computeHashcodeForSprite(image, element.x, element.y,
-								element.w, element.h, digest));
+				BigInteger computedHash = new BigInteger(1, computeHashcodeForSprite(image, element.x, element.y, element.w, element.h, digest));
 
 				if (!savedHash.equals(computedHash)) {
 					// overwrite existing asset to new one
@@ -80,23 +70,16 @@ public class Tasks
 					if (outputAsset != null)
 						FileUtils.delete(outputAsset, false);
 					else
-						outputAsset = new File(project.getAssetsDirectory()
-								+ File.separator
-								+ element.key.replaceAll("\\.", File.separator)
-								+ ".png");
+						outputAsset = new File(project.getAssetsDirectory() + File.separator + element.key.replaceAll("\\.", File.separator) + ".png");
 
-					BufferedImage sprite = new BufferedImage(element.w,
-							element.h, image.getType());
-					sprite.getGraphics().drawImage(image, 0, 0, element.w,
-							element.h, element.x, element.y,
-							element.x + element.w, element.y + element.h, null);
+					BufferedImage sprite = new BufferedImage(element.w, element.h, image.getType());
+					sprite.getGraphics().drawImage(image, 0, 0, element.w, element.h, element.x, element.y, element.x + element.w, element.y + element.h, null);
 
 					project.setSourceForFile(element.key, MagicSources.PROJECT);
 
 					outputAsset.mkdirs();
 					ImageIO.write(sprite, "PNG", outputAsset);
-					Log.i("Stitcher import, updating " + element.key + " to "
-							+ outputAsset.getAbsolutePath());
+					Log.i("Stitcher import, updating " + element.key + " to " + outputAsset.getAbsolutePath());
 
 				}
 
@@ -113,24 +96,18 @@ public class Tasks
 	}
 
 
-	public static void exportPackToStitchedPng(File outputFolder,
-			Project project, Set<AssetCategory> categories,
-			boolean exportMissing, boolean exportExisting, BlockSize blockSize)
+	public static void exportPackToStitchedPng(File outputFolder, Project project, Set<AssetCategory> categories, boolean exportMissing, boolean exportExisting, BlockSize blockSize)
 	{
 		for (AssetCategory c : categories)
-			exportPackToStitchedPng(outputFolder, project, c, exportMissing,
-					exportExisting, blockSize);
+			exportPackToStitchedPng(outputFolder, project, c, exportMissing, exportExisting, blockSize);
 	}
 
 
-	private static void exportPackToStitchedPng(File outputFolder,
-			Project project, AssetCategory category, boolean exportMissing,
-			boolean exportExisting, BlockSize blockSize)
+	private static void exportPackToStitchedPng(File outputFolder, Project project, AssetCategory category, boolean exportMissing, boolean exportExisting, BlockSize blockSize)
 	{
 		VanillaPack vanilla = Sources.vanilla;
 
-		File output = new File(outputFolder.getAbsolutePath() + File.separator
-				+ category.name.toLowerCase() + ".png");
+		File output = new File(outputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".png");
 
 		Collection<AssetEntry> totalEntries = vanilla.getAssetEntries();
 		List<AssetEntry> entries = new ArrayList<AssetEntry>();
@@ -172,8 +149,7 @@ public class Tasks
 				if (file != null) {
 					AssetImage iasset = new AssetImage(file, e);
 
-					if (category == AssetCategory.BLOCKS
-							&& blockSize != BlockSize.NO_CHANGE)
+					if (category == AssetCategory.BLOCKS && blockSize != BlockSize.NO_CHANGE)
 						iasset.cacheImage(blockSize.size, blockSize.size);
 					else
 						iasset.cacheImage();
@@ -182,11 +158,9 @@ public class Tasks
 			}
 
 			Point size = layout.computeLayout();
-			BufferedImage image = new BufferedImage(size.x, size.y,
-					BufferedImage.TYPE_INT_ARGB);
+			BufferedImage image = new BufferedImage(size.x, size.y, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) image.getGraphics();
-			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
 			for (AssetImage e : layout) {
 				digest.reset();
@@ -195,22 +169,18 @@ public class Tasks
 
 				g2d.drawImage(img, e.x(), e.y(), e.width(), e.height(), null);
 
-				byte[] hashCode = computeHashcodeForSprite(image, e.x(), e.y(),
-						e.width(), e.height(), digest);
+				byte[] hashCode = computeHashcodeForSprite(image, e.x(), e.y(), e.width(), e.height(), digest);
 				BigInteger bi = new BigInteger(1, hashCode);
-				e.element.hashCode = String.format("%0"
-						+ (hashCode.length << 1) + "X", bi);
+				e.element.hashCode = String.format("%0" + (hashCode.length << 1) + "X", bi);
 
 				json.elements.add(e.element);
 			}
 
 			ImageIO.write(image, "png", output);
 
-			File gsonOutput = new File(outputFolder.getAbsolutePath()
-					+ File.separator + category.name.toLowerCase() + ".json");
+			File gsonOutput = new File(outputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".json");
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			FileUtils.stringToFile(gsonOutput,
-					gson.toJson(json, StitchJson.Category.class));
+			FileUtils.stringToFile(gsonOutput, gson.toJson(json, StitchJson.Category.class));
 
 		} catch (Exception exception) {
 			Log.e(exception);
@@ -218,9 +188,7 @@ public class Tasks
 	}
 
 
-	public static byte[] computeHashcodeForSprite(BufferedImage image,
-			final int x, final int y, final int w, final int h,
-			final MessageDigest digest)
+	public static byte[] computeHashcodeForSprite(BufferedImage image, final int x, final int y, final int w, final int h, final MessageDigest digest)
 	{
 		ByteBuffer b = ByteBuffer.allocate(w * h * 4);
 		for (int ix = x; ix < x + w; ++ix)

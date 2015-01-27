@@ -22,14 +22,12 @@ public class HelpStore
 	{
 		Log.f2("Loading help pages");
 
-		final String text = FileUtils.resourceToString(Paths.DATA_DIR_HELP
-				+ "index.txt");
+		final String text = FileUtils.resourceToString(Paths.DATA_DIR_HELP + "index.txt");
 		final Map<String, String> pageMap = SimpleConfig.mapFromString(text);
 
 		for (final Entry<String, String> entry : pageMap.entrySet()) {
 			if (Config.LOG_HELP_LOADING)
-				Log.f3("Loading file: " + entry.getKey() + " (\""
-						+ entry.getValue() + "\")");
+				Log.f3("Loading file: " + entry.getKey() + " (\"" + entry.getValue() + "\")");
 
 			try {
 				pages.add(new HelpPage(entry.getValue(), entry.getKey()));

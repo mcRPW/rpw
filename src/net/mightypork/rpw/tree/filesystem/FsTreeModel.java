@@ -19,8 +19,7 @@ public class FsTreeModel extends DefaultTreeModel
 	{
 		if (root != null) {
 			if (!(root instanceof DirectoryFsTreeNode)) {
-				throw new IllegalArgumentException(
-						"Invalid type of fstree root node.");
+				throw new IllegalArgumentException("Invalid type of fstree root node.");
 			}
 
 			((DirectoryFsTreeNode) root).sort();

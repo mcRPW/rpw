@@ -126,15 +126,12 @@ public class Gui
 	{
 		try {
 			if (parent == null) {
-				final Point p = GraphicsEnvironment
-						.getLocalGraphicsEnvironment().getCenterPoint();
-				window.setLocation(p.x - window.getWidth() / 2,
-						p.y - window.getHeight() / 2);
+				final Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
+				window.setLocation(p.x - window.getWidth() / 2, p.y - window.getHeight() / 2);
 			} else {
 				final Point point = parent.getLocationOnScreen();
 				final Dimension dim = parent.getSize();
-				window.setLocation(point.x + (dim.width - window.getWidth())
-						/ 2, point.y + (dim.height - window.getHeight()) / 2);
+				window.setLocation(point.x + (dim.width - window.getWidth()) / 2, point.y + (dim.height - window.getHeight()) / 2);
 			}
 		} catch (final IllegalStateException e) {
 			// meh
@@ -179,17 +176,14 @@ public class Gui
 	}
 
 
-	public static JTextField textField(String text, String placeholder,
-			String tooltip)
+	public static JTextField textField(String text, String placeholder, String tooltip)
 	{
 		final int padding = PADDING_TEXTFIELD;
 
 		final JXTextField field = new JXTextField();
 
 		if (!Config.USE_NIMBUS) {
-			final Border bdr = BorderFactory.createCompoundBorder(field
-					.getBorder(), BorderFactory.createEmptyBorder(padding,
-					padding, padding, padding));
+			final Border bdr = BorderFactory.createCompoundBorder(field.getBorder(), BorderFactory.createEmptyBorder(padding, padding, padding, padding));
 
 			field.setBorder(bdr);
 		}
@@ -229,8 +223,7 @@ public class Gui
 
 	public static Border winbdr()
 	{
-		return BorderFactory.createEmptyBorder(WINDOW_PADDING, WINDOW_PADDING,
-				WINDOW_PADDING, WINDOW_PADDING);
+		return BorderFactory.createEmptyBorder(WINDOW_PADDING, WINDOW_PADDING, WINDOW_PADDING, WINDOW_PADDING);
 	}
 
 
@@ -257,8 +250,7 @@ public class Gui
 	}
 
 
-	public static JButton sidebarButton(String text, String tooltip,
-			ImageIcon icon)
+	public static JButton sidebarButton(String text, String tooltip, ImageIcon icon)
 	{
 		final JButton jb = new JButton(text);
 		if (icon != null)
@@ -288,18 +280,13 @@ public class Gui
 	public static void useNimbus()
 	{
 		try {
-			for (final LookAndFeelInfo info : UIManager
-					.getInstalledLookAndFeels()) {
+			for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
 					UIManager.setLookAndFeel(info.getClassName());
-					final UIDefaults defaults = UIManager
-							.getLookAndFeelDefaults();
-					defaults.put("Table.alternateRowColor",
-							Const.TABLE_ALT_COLOR);
-					defaults.put("Table.focusCellHighlightBorder",
-							Const.TABLE_CELL_INSETS);
-					defaults.put("TableHeader.cellBorder",
-							Const.TABLE_HEADER_BORDERS);
+					final UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+					defaults.put("Table.alternateRowColor", Const.TABLE_ALT_COLOR);
+					defaults.put("Table.focusCellHighlightBorder", Const.TABLE_CELL_INSETS);
+					defaults.put("TableHeader.cellBorder", Const.TABLE_HEADER_BORDERS);
 					defaults.put("nimbusOrange", new Color(0x1F87B5)); // override
 																		// for
 																		// progressbar
@@ -315,8 +302,7 @@ public class Gui
 	public static void useMetal()
 	{
 		try {
-			for (final LookAndFeelInfo info : UIManager
-					.getInstalledLookAndFeels()) {
+			for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Metal".equals(info.getName())) {
 					UIManager.setLookAndFeel(info.getClassName());
 					break;
@@ -333,8 +319,7 @@ public class Gui
 		final JPanel p = new JPanel(new SpringLayout());
 
 		if (labels.length != fields.length)
-			throw new IllegalArgumentException(
-					"Nr. of labels doesn't match nr. of fields.");
+			throw new IllegalArgumentException("Nr. of labels doesn't match nr. of fields.");
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel l = null;
@@ -351,8 +336,7 @@ public class Gui
 			p.add(fields[i]);
 		}
 
-		SpringUtilities.makeCompactGrid(p, labels.length, 2, 0, 0, Gui.GAP,
-				Gui.GAP);
+		SpringUtilities.makeCompactGrid(p, labels.length, 2, 0, 0, Gui.GAP, Gui.GAP);
 
 		return p;
 	}
@@ -363,12 +347,10 @@ public class Gui
 		textfeld.setEditable(!readonly);
 
 		if (readonly) {
-			textfeld.putClientProperty("rpw.originalBackground",
-					textfeld.getBackground());
+			textfeld.putClientProperty("rpw.originalBackground", textfeld.getBackground());
 			textfeld.setBackground(READONLYBG_COLOR);
 		} else {
-			Color c = (Color) textfeld
-					.getClientProperty("rpw.originalBackground");
+			Color c = (Color) textfeld.getClientProperty("rpw.originalBackground");
 
 			if (c == null)
 				c = Color.WHITE;

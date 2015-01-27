@@ -45,8 +45,7 @@ public class PropertyManager
 	{
 
 		/** A table of hex digits */
-		private static final char[] hexChars = { '0', '1', '2', '3', '4', '5',
-				'6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+		private static final char[] hexChars = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 
 		/**
@@ -61,8 +60,7 @@ public class PropertyManager
 		}
 
 
-		private static void writeComments(BufferedWriter bw, String comm)
-				throws IOException
+		private static void writeComments(BufferedWriter bw, String comm) throws IOException
 		{
 			final String comments = comm.replace("\n\n", "\n \n");
 
@@ -87,8 +85,7 @@ public class PropertyManager
 						bw.write(new String(uu));
 					} else {
 						bw.newLine();
-						if (c == '\r' && current != len - 1
-								&& comments.charAt(current + 1) == '\n') {
+						if (c == '\r' && current != len - 1 && comments.charAt(current + 1) == '\n') {
 							current++;
 						}
 					}
@@ -135,8 +132,7 @@ public class PropertyManager
 		}
 
 
-		private String saveConvert(String theString, boolean escapeSpace,
-				boolean escapeUnicode)
+		private String saveConvert(String theString, boolean escapeSpace, boolean escapeUnicode)
 		{
 			final int len = theString.length();
 			int bufLen = len * 2;
@@ -232,8 +228,7 @@ public class PropertyManager
 		@Override
 		public void store(OutputStream out, String comments) throws IOException
 		{
-			final BufferedWriter bw = new BufferedWriter(
-					new OutputStreamWriter(out, "UTF-8"));
+			final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
 
 			final boolean escUnicode = false;
 
@@ -250,9 +245,7 @@ public class PropertyManager
 					key = saveConvert(key, true, escUnicode);
 					val = saveConvert(val, false, escUnicode);
 
-					if (cfgSeparateSectionsByEmptyLine
-							&& !lastSectionBeginning
-									.equals(key.split("[.]")[0])) {
+					if (cfgSeparateSectionsByEmptyLine && !lastSectionBeginning.equals(key.split("[.]")[0])) {
 						if (!firstEntry) {
 							bw.newLine();
 							bw.newLine();
@@ -270,8 +263,7 @@ public class PropertyManager
 
 						final String[] cmlines = cm.split("\n");
 
-						if (!wasNewLine && !firstEntry
-								&& cfgEmptyLineBeforeComment) {
+						if (!wasNewLine && !firstEntry && cfgEmptyLineBeforeComment) {
 							bw.newLine();
 						}
 						for (final String cmline : cmlines) {
@@ -333,15 +325,13 @@ public class PropertyManager
 		}
 
 
-		public static SortedProperties loadProperties(SortedProperties props,
-				InputStream is) throws IOException
+		public static SortedProperties loadProperties(SortedProperties props, InputStream is) throws IOException
 		{
 			return loadProperties(props, is, "utf-8");
 		}
 
 
-		public static SortedProperties loadProperties(SortedProperties props,
-				InputStream is, String encoding) throws IOException
+		public static SortedProperties loadProperties(SortedProperties props, InputStream is, String encoding) throws IOException
 		{
 			final StringBuilder sb = new StringBuilder();
 			final InputStreamReader isr = new InputStreamReader(is, encoding);
@@ -403,8 +393,7 @@ public class PropertyManager
 		 * @param entry_comment
 		 *            entry comment
 		 */
-		public Property(String key, boolean default_value,
-				PropertyType entry_type, String entry_comment) {
+		public Property(String key, boolean default_value, PropertyType entry_type, String entry_comment) {
 			name = key;
 			defbool = default_value;
 			type = entry_type;
@@ -424,8 +413,7 @@ public class PropertyManager
 		 * @param entry_comment
 		 *            property comment or null
 		 */
-		public Property(String key, double default_value,
-				PropertyType entry_type, String entry_comment) {
+		public Property(String key, double default_value, PropertyType entry_type, String entry_comment) {
 			name = key;
 			defnum = default_value;
 			type = entry_type;
@@ -445,8 +433,7 @@ public class PropertyManager
 		 * @param entry_comment
 		 *            entry comment
 		 */
-		public Property(String key, String default_value,
-				PropertyType entry_type, String entry_comment) {
+		public Property(String key, String default_value, PropertyType entry_type, String entry_comment) {
 			name = key;
 			defstr = default_value;
 			type = entry_type;
@@ -577,9 +564,7 @@ public class PropertyManager
 				}
 
 				final String string2 = string.toLowerCase();
-				bool = string2.equals("yes") || string2.equals("true")
-						|| string2.equals("on") || string2.equals("enabled")
-						|| string2.equals("enable");
+				bool = string2.equals("yes") || string2.equals("true") || string2.equals("on") || string2.equals("enabled") || string2.equals("enable");
 			}
 
 			return true;

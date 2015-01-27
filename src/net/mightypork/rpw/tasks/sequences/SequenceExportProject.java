@@ -166,8 +166,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 		if (Config.LOG_EXPORT_FILES)
 			Log.f3("+ assets/minecraft/sounds.json");
-		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap()
-				.toJson());
+		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
 
 		// json mcmeta
 		if (Config.LOG_EXPORT_FILES)
@@ -189,8 +188,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 		final AssetTreeProcessor processor = new ExportProcessor();
 
-		final AssetTreeNode root = new TreeBuilder()
-				.buildTreeForExport(Projects.getActive());
+		final AssetTreeNode root = new TreeBuilder().buildTreeForExport(Projects.getActive());
 
 		root.processThisAndChildren(processor);
 
@@ -238,15 +236,13 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		if (successRunnable != null)
 			successRunnable.run();
 
-		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target
-				+ " - done.");
+		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target + " - done.");
 
 		Alerts.info(App.getFrame(), "Export successful.");
 	}
 
 
-	private void addDirectoryToZip(File dir, String pathPrefix)
-			throws IOException
+	private void addDirectoryToZip(File dir, String pathPrefix) throws IOException
 	{
 		final List<File> filesToAdd = new ArrayList<File>();
 
@@ -299,8 +295,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 					InputStream data = null;
 
 					try {
-						data = Sources.getAssetStream(srcName,
-								leaf.getAssetKey());
+						data = Sources.getAssetStream(srcName, leaf.getAssetKey());
 						if (data == null)
 							break;
 
@@ -336,15 +331,13 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 					InputStream data = null;
 
 					try {
-						data = Sources.getAssetMetaStream(srcName,
-								leaf.getAssetKey());
+						data = Sources.getAssetMetaStream(srcName, leaf.getAssetKey());
 						if (data == null) {
 							Log.e("null meta stream");
 							break;
 						}
 
-						final String path = leaf.getAssetEntry().getPath()
-								+ ".mcmeta";
+						final String path = leaf.getAssetEntry().getPath() + ".mcmeta";
 						zb.addStream(path, data);
 
 						logEntry += ", m: \"" + srcName + "\"";

@@ -42,8 +42,7 @@ public class DesktopApi
 	public static boolean editText(File file)
 	{
 		if (Config.USE_TEXT_EDITOR) {
-			if (runCommand(Config.TEXT_EDITOR, Config.TEXT_EDITOR_ARGS,
-					file.getPath()))
+			if (runCommand(Config.TEXT_EDITOR, Config.TEXT_EDITOR_ARGS, file.getPath()))
 				return true;
 		}
 
@@ -60,8 +59,7 @@ public class DesktopApi
 	public static boolean editImage(File file)
 	{
 		if (Config.USE_IMAGE_EDITOR) {
-			if (runCommand(Config.IMAGE_EDITOR, Config.IMAGE_EDITOR_ARGS,
-					file.getPath()))
+			if (runCommand(Config.IMAGE_EDITOR, Config.IMAGE_EDITOR_ARGS, file.getPath()))
 				return true;
 		}
 
@@ -83,8 +81,7 @@ public class DesktopApi
 	public static boolean editAudio(File file)
 	{
 		if (Config.USE_AUDIO_EDITOR) {
-			if (runCommand(Config.AUDIO_EDITOR, Config.AUDIO_EDITOR_ARGS,
-					file.getPath()))
+			if (runCommand(Config.AUDIO_EDITOR, Config.AUDIO_EDITOR_ARGS, file.getPath()))
 				return true;
 		}
 
@@ -127,8 +124,7 @@ public class DesktopApi
 
 	private static boolean browseDESKTOP(URI uri)
 	{
-		Log.f2("Trying to use Desktop.getDesktop().browse() with "
-				+ uri.toString());
+		Log.f2("Trying to use Desktop.getDesktop().browse() with " + uri.toString());
 		try {
 			if (!Desktop.isDesktopSupported()) {
 				Log.w("Platform is not supported.");
@@ -152,8 +148,7 @@ public class DesktopApi
 
 	private static boolean openDESKTOP(File file)
 	{
-		Log.f2("Trying to use Desktop.getDesktop().open() with "
-				+ file.toString());
+		Log.f2("Trying to use Desktop.getDesktop().open() with " + file.toString());
 		try {
 			if (!Desktop.isDesktopSupported()) {
 				Log.w("Platform is not supported.");
@@ -201,8 +196,7 @@ public class DesktopApi
 
 	private static boolean runCommand(String command, String args, String file)
 	{
-		Log.f2("Trying to exec:\n   cmd = " + command + "\n   args = " + args
-				+ "\n   %s = " + file);
+		Log.f2("Trying to exec:\n   cmd = " + command + "\n   args = " + args + "\n   %s = " + file);
 
 		final String[] parts = prepareCommand(command, args, file);
 
@@ -231,8 +225,7 @@ public class DesktopApi
 	}
 
 
-	private static String[] prepareCommand(String command, String args,
-			String file)
+	private static String[] prepareCommand(String command, String args, String file)
 	{
 		final List<String> parts = new ArrayList<String>();
 		parts.add(command);

@@ -54,8 +54,7 @@ public class TaskReloadVanilla
 		//@formatter:on
 
 		// obtain applicable versions
-		final List<File> list = FileUtils.listDirectory(OsUtils
-				.getMcDir("versions"));
+		final List<File> list = FileUtils.listDirectory(OsUtils.getMcDir("versions"));
 
 		final List<String> opts = new ArrayList<String>();
 

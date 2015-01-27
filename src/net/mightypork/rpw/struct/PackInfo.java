@@ -20,7 +20,6 @@ public class PackInfo
 	@Override
 	public String toString()
 	{
-		return "PACK[format: " + pack_format + ", description: " + description
-				+ "]";
+		return "PACK[format: " + pack_format + ", description: " + description + "]";
 	}
 }

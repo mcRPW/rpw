@@ -41,8 +41,7 @@ public class FileUtils
 	 * @throws IOException
 	 *             on error
 	 */
-	public static void copyDirectory(File source, File target)
-			throws IOException
+	public static void copyDirectory(File source, File target) throws IOException
 	{
 		copyDirectory(source, target, null, null);
 	}
@@ -62,8 +61,7 @@ public class FileUtils
 	 * @throws IOException
 	 *             on error
 	 */
-	public static void copyDirectory(File source, File target,
-			FileFilter filter, List<File> filesCopied) throws IOException
+	public static void copyDirectory(File source, File target, FileFilter filter, List<File> filesCopied) throws IOException
 	{
 		if (!source.exists())
 			return;
@@ -75,8 +73,7 @@ public class FileUtils
 
 			final String[] children = source.list();
 			for (final String element : children) {
-				copyDirectory(new File(source, element), new File(target,
-						element), filter, filesCopied);
+				copyDirectory(new File(source, element), new File(target, element), filter, filesCopied);
 			}
 
 		} else {
@@ -103,8 +100,7 @@ public class FileUtils
 	 * @throws IOException
 	 *             on error
 	 */
-	public static void listDirectoryRecursive(File source, StringFilter filter,
-			List<File> files) throws IOException
+	public static void listDirectoryRecursive(File source, StringFilter filter, List<File> files) throws IOException
 	{
 		if (source.isDirectory()) {
 			final String[] children = source.list();
@@ -158,8 +154,7 @@ public class FileUtils
 	 * @throws IOException
 	 *             on error
 	 */
-	public static void copyStream(InputStream in, OutputStream out)
-			throws IOException
+	public static void copyStream(InputStream in, OutputStream out) throws IOException
 	{
 		if (in == null) {
 			throw new NullPointerException("Input stream is null");
@@ -343,8 +338,7 @@ public class FileUtils
 	public static String streamToString(InputStream in, int lines)
 	{
 		if (in == null) {
-			Log.e(new NullPointerException(
-					"Null stream to be converted to String."));
+			Log.e(new NullPointerException("Null stream to be converted to String."));
 			return ""; // to avoid NPE's
 		}
 
@@ -355,8 +349,7 @@ public class FileUtils
 		try {
 			int cnt = 0;
 			br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-			while ((line = br.readLine()) != null
-					&& (cnt < lines || lines <= 0)) {
+			while ((line = br.readLine()) != null && (cnt < lines || lines <= 0)) {
 				sb.append(line + "\n");
 				cnt++;
 			}
@@ -532,8 +525,7 @@ public class FileUtils
 	 *            output dir for the files
 	 * @return map of entries found
 	 */
-	public static Map<String, AssetEntry> loadAssetsFromZip(File zipFile,
-			File outDir)
+	public static Map<String, AssetEntry> loadAssetsFromZip(File zipFile, File outDir)
 	{
 		return loadAssetsFromZip(zipFile, outDir, null);
 	}
@@ -551,8 +543,7 @@ public class FileUtils
 	 *            map.
 	 * @return map of entries found
 	 */
-	public static Map<String, AssetEntry> loadAssetsFromZip(File file,
-			File outDir, Map<String, AssetEntry> assets)
+	public static Map<String, AssetEntry> loadAssetsFromZip(File file, File outDir, Map<String, AssetEntry> assets)
 	{
 		Log.f3("Extracting: " + file);
 		if (assets == null)
@@ -582,8 +573,7 @@ public class FileUtils
 				if (s.startsWith("assets")) {
 					final String s2 = FileUtils.escapeFilename(s);
 					final String[] parts = FileUtils.getFilenameParts(s2);
-					final String key = parts[0].replace('\\', '.').replace('/',
-							'.');
+					final String key = parts[0].replace('\\', '.').replace('/', '.');
 					final String ext = parts[1];
 					final EAsset type = EAsset.forExtension(ext);
 
@@ -624,8 +614,7 @@ public class FileUtils
 	 * @param filesCopied
 	 * @throws IOException
 	 */
-	public static void extractObjectFiles(File indexFile, File targetDir,
-			StringFilter filter, List<File> filesCopied) throws IOException
+	public static void extractObjectFiles(File indexFile, File targetDir, StringFilter filter, List<File> filesCopied) throws IOException
 	{
 		final File objectsDir = OsUtils.getMcDir("assets/objects");
 
@@ -644,8 +633,7 @@ public class FileUtils
 
 			final String hashPrefix = hash.substring(0, 2);
 
-			final File source = new File(objectsDir + "/" + hashPrefix + "/"
-					+ hash);
+			final File source = new File(objectsDir + "/" + hashPrefix + "/" + hash);
 
 			if (!source.exists()) {
 				Log.w("Object '" + hash + "' does not exist, skipping.");
@@ -687,8 +675,7 @@ public class FileUtils
 	 *            out file
 	 * @throws IOException
 	 */
-	public static void resourceToFile(String resname, File file)
-			throws IOException
+	public static void resourceToFile(String resname, File file) throws IOException
 	{
 		InputStream in = null;
 		OutputStream out = null;

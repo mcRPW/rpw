@@ -76,8 +76,7 @@ public class App
 
 		Log.init();
 
-		Log.i("ResourcePack Workbench v." + Const.VERSION + " (#"
-				+ Const.VERSION_SERIAL + ")");
+		Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
 		Log.f1("Init started...");
 		OsUtils.initDirs();
@@ -99,9 +98,7 @@ public class App
 
 		TaskDevel.run();
 
-		Log.f3("Last run version: "
-				+ VersionUtils.getVersionString(Config.LAST_RUN_VERSION)
-				+ " (#" + Config.LAST_RUN_VERSION + ")");
+		Log.f3("Last run version: " + VersionUtils.getVersionString(Config.LAST_RUN_VERSION) + " (#" + Config.LAST_RUN_VERSION + ")");
 		Log.i("Using library version: " + Config.LIBRARY_VERSION);
 
 		HtmlBuilder.init();
@@ -157,8 +154,7 @@ public class App
 		final File lockFile = OsUtils.getAppDir(".lock");
 
 		try {
-			final RandomAccessFile randomAccessFile = new RandomAccessFile(
-					lockFile, "rw");
+			final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
 			final FileLock fileLock = randomAccessFile.getChannel().tryLock();
 			if (fileLock != null) {
 				Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -258,8 +254,7 @@ public class App
 		String wt = "";
 		if (Projects.isOpen())
 			wt += Projects.getActive().getName() + "  \u2022  ";
-		wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ "
-				+ Config.LIBRARY_VERSION + " ]  \u2022  Created by MightyPork";
+		wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  Created by MightyPork";
 		return wt;
 	}
 

@@ -34,16 +34,14 @@ public class SaveToProjectNodeProcessor implements AssetTreeProcessor
 			if (group.getGroupKey() == null)
 				return;
 
-			project.setSourceForGroup(group.getGroupKey(),
-					group.getLibrarySource());
+			project.setSourceForGroup(group.getGroupKey(), group.getLibrarySource());
 
 		} else if (node instanceof AssetTreeLeaf) {
 			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 			if (leaf.getAssetKey() == null)
 				return;
 
-			project.setSourceForFile(leaf.getAssetKey(),
-					leaf.getLibrarySource());
+			project.setSourceForFile(leaf.getAssetKey(), leaf.getLibrarySource());
 		}
 	}
 

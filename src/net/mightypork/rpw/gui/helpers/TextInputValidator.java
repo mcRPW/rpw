@@ -14,8 +14,7 @@ public class TextInputValidator extends KeyAdapter
 	private final CharValidator validator;
 
 
-	public TextInputValidator(CharValidator validator,
-			CharInputListener listener) {
+	public TextInputValidator(CharValidator validator, CharInputListener listener) {
 		this.listener = listener;
 		this.validator = validator;
 	}

@@ -51,8 +51,7 @@ public class DialogUpdateNotify extends RpwDialog
 		final JLabel content = new JLabel(text);
 		content.setAlignmentX(0.5f);
 		content.setMinimumSize(new Dimension(200, 100));
-		content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP,
-				Gui.GAPL * 2, Gui.GAP, Gui.GAPL * 2));
+		content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL * 2, Gui.GAP, Gui.GAPL * 2));
 		vb.add(content);
 
 		vb.gapl();

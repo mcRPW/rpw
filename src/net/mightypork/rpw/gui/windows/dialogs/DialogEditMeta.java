@@ -49,8 +49,7 @@ public class DialogEditMeta extends DialogEditorBase
 	@Override
 	protected String getTitleText()
 	{
-		final String path = Utils.fromLastChar(editedNode.getAssetEntry()
-				.getPath(), '/');
+		final String path = Utils.fromLastChar(editedNode.getAssetEntry().getPath(), '/');
 
 		dlgHeading = path + ".mcmeta";
 
@@ -62,8 +61,7 @@ public class DialogEditMeta extends DialogEditorBase
 	protected String getInitialText()
 	{
 		try {
-			final InputStream in = Projects.getActive().getAssetMetaStream(
-					editedNode.getAssetKey());
+			final InputStream in = Projects.getActive().getAssetMetaStream(editedNode.getAssetKey());
 			return FileUtils.streamToString(in);
 		} catch (final IOException e) {
 			Log.e(e);
@@ -204,11 +202,9 @@ public class DialogEditMeta extends DialogEditorBase
 
 				try {
 					jp.parse(text);
-					Alerts.info(DialogEditMeta.this, "Check JSON",
-							"Entered code is (probably) valid.");
+					Alerts.info(DialogEditMeta.this, "Check JSON", "Entered code is (probably) valid.");
 				} catch (final Exception er) {
-					Alerts.warning(DialogEditMeta.this, "Check JSON",
-							"Entered code contains\n a SYNTAX ERROR!");
+					Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");
 				}
 
 			}
@@ -221,8 +217,7 @@ public class DialogEditMeta extends DialogEditorBase
 			{
 				final String text = getTextArea().getText();
 
-				final File file = Projects.getActive().getAssetMetaFile(
-						editedNode.getAssetKey());
+				final File file = Projects.getActive().getAssetMetaFile(editedNode.getAssetKey());
 
 				try {
 					FileUtils.stringToFile(file, text);
@@ -250,8 +245,7 @@ public class DialogEditMeta extends DialogEditorBase
 					first = false;
 				}
 
-				presetsPopup.show(getButtonsBox(), btnPresets.getBounds().x,
-						btnPresets.getBounds().y - presetsPopup.getHeight());
+				presetsPopup.show(getButtonsBox(), btnPresets.getBounds().x, btnPresets.getBounds().y - presetsPopup.getHeight());
 			}
 		});
 	}
@@ -263,8 +257,7 @@ public class DialogEditMeta extends DialogEditorBase
 		{
 			final String res = e.getActionCommand();
 
-			final String text = FileUtils.resourceToString("/data/mcmeta/"
-					+ res);
+			final String text = FileUtils.resourceToString("/data/mcmeta/" + res);
 
 			setTextareaText(text);
 		}

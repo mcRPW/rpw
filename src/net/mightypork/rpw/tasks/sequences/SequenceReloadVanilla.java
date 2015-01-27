@@ -149,8 +149,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 	 */
 	private boolean stepCheckVersionCompatibility()
 	{
-		final File jsonFile = new File(OsUtils.getMcDir("versions/" + version),
-				version + ".json");
+		final File jsonFile = new File(OsUtils.getMcDir("versions/" + version), version + ".json");
 
 		if (!jsonFile.exists()) {
 			Log.e("Version JSON file not found, aborting!");
@@ -216,8 +215,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 	 */
 	private boolean stepLoadFromJar()
 	{
-		final File zipFile = new File(OsUtils.getMcDir("versions/" + version),
-				version + ".jar");
+		final File zipFile = new File(OsUtils.getMcDir("versions/" + version), version + ".jar");
 
 		assets = FileUtils.loadAssetsFromZip(zipFile, outDir);
 
@@ -254,32 +252,39 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 		} else {
 			// objects
 			useObjectRegistry = true;
-			source = OsUtils.getMcDir("assets/indexes/" + assetsVersion
-					+ ".json"); // try per-version file
+			source = OsUtils.getMcDir("assets/indexes/" + assetsVersion + ".json"); // try
+																					// per-version
+																					// file
 
 			Log.f3("Detected object registry.");
 			Log.f3("Checking index file: " + source);
 
 			if (!source.exists()) {
 				Log.e("Index file not found, aborting.");
-				Log.i("TO FIX THIS, run Minecraft (v. " + version
-						+ "),\nclose it and try this again.");
+				Log.i("TO FIX THIS, run Minecraft (v. " + version + "),\nclose it and try this again.");
 				return false;
 			}
 		}
 
-		final File target = new File(outDir, "assets/minecraft");
+		File target;
+		String targetDirName;
 
 		try {
 			final ArrayList<File> list = new ArrayList<File>();
 
 			if (useObjectRegistry) {
+
+				targetDirName = "assets";
+				target = new File(outDir, targetDirName);
+
 				Log.f2("Using index file: " + source);
-				FileUtils.extractObjectFiles(source, target, ASSETS_DIR_FILTER,
-						list);
+				FileUtils.extractObjectFiles(source, target, ASSETS_DIR_FILTER, list);
 
 			} else {
 				// legacy structure
+
+				targetDirName = "assets/minecraft";
+				target = new File(outDir, targetDirName);
 
 				Log.f2("Copying assets from: " + source);
 
@@ -299,15 +304,13 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 			for (final File f : list) {
 				final String p = f.getAbsolutePath();
 
-				String path = p.replace(target.getAbsolutePath(),
-						"assets/minecraft");
+				String path = p.replace(target.getAbsolutePath(), targetDirName);
 
 				path = FileUtils.escapeFilename(path);
 				final String[] parts = FileUtils.getFilenameParts(path);
 
 				// slashes to dots
-				final String key = parts[0].replace('\\', '.')
-						.replace('/', '.');
+				final String key = parts[0].replace('\\', '.').replace('/', '.');
 
 				final String ext = parts[1];
 
@@ -375,13 +378,10 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 				try {
 					modzf = new ZipFile(f);
 					try {
-						final ZipEntry ze_modinfo = modzf
-								.getEntry("mcmod.info");
+						final ZipEntry ze_modinfo = modzf.getEntry("mcmod.info");
 						if (ze_modinfo != null) {
-							final String json_modinfo = ZipUtils
-									.zipEntryToString(modzf, ze_modinfo);
-							final ModEntryList mel = ModEntryList
-									.fromJson(json_modinfo);
+							final String json_modinfo = ZipUtils.zipEntryToString(modzf, ze_modinfo);
+							final ModEntryList mel = ModEntryList.fromJson(json_modinfo);
 							name = mel.getModListName();
 						}
 					} catch (final Exception e) {
@@ -414,9 +414,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 
 			vb.padding(5, 5, 5, 5);
 
-			final JScrollPane sp = new JScrollPane(vb,
-					ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-					ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			final JScrollPane sp = new JScrollPane(vb, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			sp.setPreferredSize(new Dimension(350, 300));
 
 			final VBox vb2 = new VBox();
@@ -574,8 +572,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 		Log.f1("Extracting Minecraft assets - done.");
 		Flags.VANILLA_STRUCTURE_LOAD_OK = true;
 
-		Config.LIBRARY_VERSION = version + "+" + assetsVersion
-				+ (modsLoaded ? "m" : "");
+		Config.LIBRARY_VERSION = version + "+" + assetsVersion + (modsLoaded ? "m" : "");
 		Config.save();
 
 		Tasks.taskUpdateTitlebar(); // update titlebar

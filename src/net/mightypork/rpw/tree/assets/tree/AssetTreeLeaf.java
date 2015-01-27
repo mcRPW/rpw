@@ -87,8 +87,7 @@ public class AssetTreeLeaf extends AssetTreeNode
 	{
 		String source = librarySource;
 
-		if (!Sources.doesSourceExist(source)
-				|| !Sources.doesSourceProvideAsset(source, asset)) {
+		if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAsset(source, asset)) {
 			source = MagicSources.INHERIT;
 		}
 
@@ -96,8 +95,7 @@ public class AssetTreeLeaf extends AssetTreeNode
 			if (parent != null) {
 				source = parent.resolveAssetSource();
 
-				if (!Sources.doesSourceExist(source)
-						|| !Sources.doesSourceProvideAsset(source, asset)) {
+				if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAsset(source, asset)) {
 					source = MagicSources.VANILLA;
 				}
 
@@ -116,8 +114,7 @@ public class AssetTreeLeaf extends AssetTreeNode
 	{
 		String source = librarySource;
 
-		if (!Sources.doesSourceExist(source)
-				|| !Sources.doesSourceProvideAssetMeta(source, asset)) {
+		if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAssetMeta(source, asset)) {
 			source = MagicSources.INHERIT;
 		}
 
@@ -125,8 +122,7 @@ public class AssetTreeLeaf extends AssetTreeNode
 			if (parent != null) {
 				source = parent.resolveAssetMetaSource();
 
-				if (!Sources.doesSourceExist(source)
-						|| !Sources.doesSourceProvideAssetMeta(source, asset)) {
+				if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAssetMeta(source, asset)) {
 					source = MagicSources.VANILLA;
 				}
 

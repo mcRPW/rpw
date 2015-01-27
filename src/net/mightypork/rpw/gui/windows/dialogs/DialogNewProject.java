@@ -130,16 +130,13 @@ public class DialogNewProject extends RpwDialog
 		vbox.titsep("Project settings");
 		vbox.gap();
 
-		nameField = Gui.textField("", "Project folder name",
-				"Project folder name - avoid special characters");
+		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
 		nameField.addKeyListener(TextInputValidator.filenames());
 
-		titleField = Gui.textField("", "Resource pack title",
-				"Pack title, shown in Minecraft");
+		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
 		titleFieldGroup.add(titleField);
 
-		vbox.springForm(new String[] { "Name:", "Title:" }, new JComponent[] {
-				nameField, titleField });
+		vbox.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField });
 
 		vbox.gapl();
 
@@ -263,21 +260,18 @@ public class DialogNewProject extends RpwDialog
 				return;
 			}
 
-			if ((!usePackFile || !ckKeepTitle.isSelected())
-					&& title.length() == 0) {
+			if ((!usePackFile || !ckKeepTitle.isSelected()) && title.length() == 0) {
 				Alerts.error(self(), "Invalid title", "Missing project title!");
 				return;
 			}
 
 			if (usePackFile && !filepicker.hasFile()) {
-				Alerts.error(self(), "Missing file",
-						"The selected file does not exist.");
+				Alerts.error(self(), "Missing file", "The selected file does not exist.");
 				return;
 			}
 
 			if (projectNames.contains(name)) {
-				Alerts.error(self(), "Name already used", "Project named \""
-						+ name + "\" already exists!");
+				Alerts.error(self(), "Name already used", "Project named \"" + name + "\" already exists!");
 				return;
 			}
 
@@ -287,8 +281,7 @@ public class DialogNewProject extends RpwDialog
 
 			final String projname = name;
 
-			final String projtitle = (usePackFile && ckKeepTitle.isSelected()) ? ""
-					: title;
+			final String projtitle = (usePackFile && ckKeepTitle.isSelected()) ? "" : title;
 
 			Tasks.taskAskToSaveIfChanged(new Runnable() {
 

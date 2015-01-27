@@ -38,8 +38,7 @@ public class ZipUtils
 	 * @return list of entries extracted (paths)
 	 * @throws IOException
 	 */
-	public static List<String> extractZip(File file, File outputDir,
-			StringFilter filter) throws IOException
+	public static List<String> extractZip(File file, File outputDir, StringFilter filter) throws IOException
 	{
 		ZipFile zip = null;
 		try {
@@ -65,8 +64,7 @@ public class ZipUtils
 	 * @return list of entries extracted (paths)
 	 * @throws IOException
 	 */
-	public static List<String> extractZip(ZipFile zip, File outputDir,
-			StringFilter filter) throws IOException
+	public static List<String> extractZip(ZipFile zip, File outputDir, StringFilter filter) throws IOException
 	{
 		final ArrayList<String> files = new ArrayList<String>();
 
@@ -83,8 +81,7 @@ public class ZipUtils
 			final File destFile = new File(outputDir, entryPath);
 			final File destinationParent = destFile.getParentFile();
 
-			if (entry.isDirectory()
-					|| (filter != null && !filter.accept(entryPath)))
+			if (entry.isDirectory() || (filter != null && !filter.accept(entryPath)))
 				continue;
 
 			// make sure directories exist
@@ -161,8 +158,7 @@ public class ZipUtils
 	 * @throws IOException
 	 *             on error
 	 */
-	public static void extractZipEntry(ZipFile zip, ZipEntry entry,
-			File destFile) throws IOException
+	public static void extractZipEntry(ZipFile zip, ZipEntry entry, File destFile) throws IOException
 	{
 		destFile.getParentFile().mkdirs();
 
@@ -193,8 +189,7 @@ public class ZipUtils
 	 * @throws IOException
 	 *             on error
 	 */
-	public static String zipEntryToString(ZipFile zip, ZipEntry entry)
-			throws IOException
+	public static String zipEntryToString(ZipFile zip, ZipEntry entry) throws IOException
 	{
 		BufferedInputStream is = null;
 		try {

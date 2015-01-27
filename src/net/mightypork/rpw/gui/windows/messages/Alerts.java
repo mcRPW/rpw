@@ -27,6 +27,9 @@ public class Alerts
 
 	public static void error(Component c, String title, String message)
 	{
+		if (c == null)
+			c = App.getFrame();
+
 		Log.e(message);
 
 		//@formatter:off
@@ -160,8 +163,7 @@ public class Alerts
 	}
 
 
-	public static String askForInput(Component c, String title, String message,
-			String initial)
+	public static String askForInput(Component c, String title, String message, String initial)
 	{
 		//@formatter:off
 		return (String) JOptionPane.showInputDialog(

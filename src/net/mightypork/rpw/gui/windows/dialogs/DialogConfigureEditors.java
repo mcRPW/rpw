@@ -375,8 +375,7 @@ public class DialogConfigureEditors extends RpwDialog
 			final boolean internalMeta = ckInternalMeta.isSelected();
 
 			final boolean cmdI = ckI.isSelected();
-			final boolean cmdT = ckT.isSelected()
-					&& (!internalMeta || !internalText);
+			final boolean cmdT = ckT.isSelected() && (!internalMeta || !internalText);
 			final boolean cmdA = ckA.isSelected();
 
 			ckT.setEnabled(!internalMeta || !internalText);

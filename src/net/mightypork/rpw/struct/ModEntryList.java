@@ -50,8 +50,7 @@ public class ModEntryList extends ArrayList<ModEntry>
 
 		if (size() > 0) {
 			String name = get(0).name;
-			if (get(0).mcversion != null
-					&& get(0).mcversion.trim().length() > 0) {
+			if (get(0).mcversion != null && get(0).mcversion.trim().length() > 0) {
 				name += " [" + get(0).mcversion + "]";
 			}
 			return name;

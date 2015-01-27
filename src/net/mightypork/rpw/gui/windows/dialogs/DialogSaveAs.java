@@ -50,15 +50,12 @@ public class DialogSaveAs extends RpwDialog
 		vb.titsep("New project settings");
 		vb.gap();
 
-		nameField = Gui.textField("", "Project folder name",
-				"Project folder name - avoid special characters");
+		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
 		nameField.addKeyListener(TextInputValidator.filenames());
 
-		titleField = Gui.textField("", "Resource pack title",
-				"Pack title, shown in Minecraft");
+		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
 
-		vb.springForm(new String[] { "Name:", "Title:" }, new JComponent[] {
-				nameField, titleField });
+		vb.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField });
 
 		vb.gapl();
 
@@ -112,8 +109,7 @@ public class DialogSaveAs extends RpwDialog
 			}
 
 			if (projectNames.contains(name)) {
-				Alerts.error(self(), "Invalid name", "Project named \"" + name
-						+ "\" already exists!");
+				Alerts.error(self(), "Invalid name", "Project named \"" + name + "\" already exists!");
 				return;
 			} else {
 				// OK name

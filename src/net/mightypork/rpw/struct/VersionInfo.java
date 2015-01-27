@@ -41,8 +41,7 @@ public class VersionInfo
 
 	public boolean isReleaseOrSnapshot()
 	{
-		return type != null
-				&& (type.equals("release") || type.equals("snapshot"));
+		return type != null && (type.equals("release") || type.equals("snapshot"));
 	}
 
 }

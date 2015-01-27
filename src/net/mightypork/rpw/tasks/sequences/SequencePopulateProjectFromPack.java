@@ -128,8 +128,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 			// get title and custom languages
 			final ZipEntry ze_mcmeta = zip.getEntry("pack.mcmeta");
 			if (ze_mcmeta != null) {
-				final String json_mcmeta = ZipUtils.zipEntryToString(zip,
-						ze_mcmeta);
+				final String json_mcmeta = ZipUtils.zipEntryToString(zip, ze_mcmeta);
 				final PackMcmeta mcmeta = PackMcmeta.fromJson(json_mcmeta);
 
 				alreadyExtracted.add("pack.mcmeta");
@@ -147,14 +146,12 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 
 				if (mcmeta.language != null) {
 					// copy custom languages
-					for (final Entry<String, LangEntry> entry : mcmeta.language
-							.entrySet()) {
+					for (final Entry<String, LangEntry> entry : mcmeta.language.entrySet()) {
 						final String key = entry.getKey();
 
 						final String assetKey = "assets.minecraft.lang." + key;
 
-						final AssetEntry ae = new AssetEntry(assetKey,
-								EAsset.LANG);
+						final AssetEntry ae = new AssetEntry(assetKey, EAsset.LANG);
 
 						if (Sources.vanilla.doesProvideAsset(ae.getKey())) {
 							// vanilla language, skip (why was it there
@@ -162,16 +159,12 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 						} else {
 							// new language
 							final String entryname = ae.getPath();
-							final ZipEntry ze_langfile = zip
-									.getEntry(entryname);
+							final ZipEntry ze_langfile = zip.getEntry(entryname);
 
 							if (ze_langfile != null) {
 								// copy lang to langs folder
-								target = new File(
-										project.getCustomLangDirectory(), key
-												+ ".lang");
-								ZipUtils.extractZipEntry(zip, ze_langfile,
-										target);
+								target = new File(project.getCustomLangDirectory(), key + ".lang");
+								ZipUtils.extractZipEntry(zip, ze_langfile, target);
 
 								// register in project
 								// doing this here ensures there's no crap in
@@ -207,27 +200,22 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 			final ZipEntry ze_sounds = zip.getEntry(sndfile);
 
 			if (ze_sounds != null) {
-				final String json_sounds = ZipUtils.zipEntryToString(zip,
-						ze_sounds);
-				final SoundEntryMap soundmap = SoundEntryMap
-						.fromJson(json_sounds);
+				final String json_sounds = ZipUtils.zipEntryToString(zip, ze_sounds);
+				final SoundEntryMap soundmap = SoundEntryMap.fromJson(json_sounds);
 
 				alreadyExtracted.add(sndfile); // don't extract again
 
 				project.setSoundMap(soundmap); // add to the project
 
-				for (final Entry<String, SoundEntry> entry : soundmap
-						.entrySet()) {
+				for (final Entry<String, SoundEntry> entry : soundmap.entrySet()) {
 					// got through entry sounds
 					for (final SoundSubEntry s : entry.getValue().sounds) {
 						// s = relative path to sound file from "sounds"
 						// directory, without suffix
 
-						final String assetKey = "assets.minecraft.sounds."
-								+ s.name.replace('/', '.');
+						final String assetKey = "assets.minecraft.sounds." + s.name.replace('/', '.');
 
-						final AssetEntry ae = new AssetEntry(assetKey,
-								EAsset.SOUND);
+						final AssetEntry ae = new AssetEntry(assetKey, EAsset.SOUND);
 
 						if (Sources.vanilla.doesProvideAsset(ae.getKey())) {
 							// vanilla sound, skip
@@ -236,16 +224,12 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 
 							final String entryname = ae.getPath();
 
-							final ZipEntry ze_soundfile = zip
-									.getEntry(entryname);
+							final ZipEntry ze_soundfile = zip.getEntry(entryname);
 
 							if (ze_soundfile != null) {
 								// copy to sounds folder
-								target = new File(
-										project.getCustomSoundsDirectory(), s
-												+ ".ogg");
-								ZipUtils.extractZipEntry(zip, ze_soundfile,
-										target);
+								target = new File(project.getCustomSoundsDirectory(), s + ".ogg");
+								ZipUtils.extractZipEntry(zip, ze_soundfile, target);
 
 								// mark as extracted
 								alreadyExtracted.add(entryname);
@@ -294,8 +278,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 
 				final String s2 = FileUtils.escapeFilename(s);
 				final String[] parts = FileUtils.getFilenameParts(s2);
-				final String key = parts[0].replace('\\', '.')
-						.replace('/', '.');
+				final String key = parts[0].replace('\\', '.').replace('/', '.');
 
 				if (Sources.vanilla.doesProvideAsset(key)) {
 					// override for vanilla
