@@ -100,9 +100,11 @@ public class DesktopApi
 		final EnumOS os = OsUtils.getOs();
 
 		if (os.isLinux()) {
-			if (runCommand("kde-open", "%s", what))
+			if (runCommand("exo-open", "%s", what))
 				return true;
 			if (runCommand("gnome-open", "%s", what))
+				return true;
+			if (runCommand("kde-open", "%s", what))
 				return true;
 			if (runCommand("xdg-open", "%s", what))
 				return true;
