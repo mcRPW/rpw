@@ -620,6 +620,11 @@ public class FileUtils
 
 		final String index_s = fileToString(indexFile);
 		final FileObjectIndex index = FileObjectIndex.fromJson(index_s);
+		
+		// workaround for 1.6.4 weirdness
+		boolean virtual = index.virtual;
+		if(virtual) targetDir = new File(targetDir, "minecraft");
+		
 		for (final Entry<String, FileObject> entry : index.objects.entrySet()) {
 			final String path = entry.getKey();
 			final String hash = entry.getValue().hash;

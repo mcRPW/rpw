@@ -46,6 +46,11 @@ import net.mightypork.rpw.utils.validation.FileSuffixFilter;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 
+/**
+ * Sequence of "re-extract minecraft assets".
+ * 
+ * @author MightyPork
+ */
 public class SequenceReloadVanilla extends AbstractMonitoredSequence
 {
 
@@ -73,14 +78,10 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 			final String ext = split[1];
 
 			// discard crap we don't want
-			if (fname.equals("READ_ME_I_AM_VERY_IMPORTANT.txt"))
-				return false;
-			if (fname.equals("icon_16x16.png"))
-				return false;
-			if (fname.equals("icon_32x32.png"))
-				return false;
-			if (fname.equals("sounds.json"))
-				return false;
+			if (fname.equals("READ_ME_I_AM_VERY_IMPORTANT.txt")) return false;
+			if (fname.equals("icon_16x16.png")) return false;
+			if (fname.equals("icon_32x32.png")) return false;
+			if (fname.equals("sounds.json")) return false;
 
 			return EAsset.forExtension(ext).isAssetOrMeta();
 		}
@@ -252,9 +253,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 		} else {
 			// objects
 			useObjectRegistry = true;
-			source = OsUtils.getMcDir("assets/indexes/" + assetsVersion + ".json"); // try
-																					// per-version
-																					// file
+			source = OsUtils.getMcDir("assets/indexes/" + assetsVersion + ".json"); // try  per-version file
 
 			Log.f3("Detected object registry.");
 			Log.f3("Checking index file: " + source);
@@ -317,8 +316,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 				final EAsset type = EAsset.forExtension(ext);
 
 				if (!type.isAsset()) {
-					if (Config.LOG_EXTRACTED_ASSETS)
-						Log.f3("SKIPPED " + p);
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("SKIPPED " + p);
 					continue;
 				}
 
@@ -326,8 +324,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 
 				assets.put(key, ae);
 
-				if (Config.LOG_EXTRACTED_ASSETS)
-					Log.f3("+ " + ae.toString());
+				if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ " + ae.toString());
 			}
 
 		} catch (final Exception e) {
@@ -488,8 +485,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 				// do the work
 				int added = 0;
 				for (final JCheckBox c : modCkboxes) {
-					if (!c.isSelected())
-						continue;
+					if (!c.isSelected()) continue;
 
 					final int oldLen = assets.size();
 

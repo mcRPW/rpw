@@ -2,7 +2,7 @@
 
 This project is a standalone application for manupulating Minecraft resource packs.
 
-![img](https://lh4.googleusercontent.com/-IcNtV5IIfEI/Uvqyjc5tuYI/AAAAAAAABck/OBXQcbs9MxU/w1040-h751-no/rpw384.png)
+RPW's "home page" is here: [ondrovo.com/rpw](http://www.ondrovo.com/20130927-rpw)
 
 Here's some links where you can find more:
 

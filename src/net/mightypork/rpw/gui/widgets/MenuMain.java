@@ -38,6 +38,8 @@ public class MenuMain
 	private JMenuItem itemProjectExport;
 	private JMenuItem itemProjectExportStitch;
 	private JMenuItem itemProjectImportStitch;
+	private JMenuItem itemProjectDataExport;
+	private JMenuItem itemProjectDataImport;
 	private JMenuItem itemExit;
 	private JMenuItem itemProjectClose;
 	private JMenuItem itemProjectOpenFolder;
@@ -132,12 +134,12 @@ public class MenuMain
 						
 			menu.addSeparator();
 			
-			item = itemProjectExport = new JMenuItem("Export to...", KeyEvent.VK_E);
+			item = itemProjectExport = new JMenuItem("Export pack to...", KeyEvent.VK_E);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_EXPORT_BOX);
 			menu.add(item);		
 						
-			item = itemProjectExportMc = new JMenuItem("Export to Minecraft", KeyEvent.VK_M);
+			item = itemProjectExportMc = new JMenuItem("Export pack to Minecraft", KeyEvent.VK_M);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 			item.setIcon(Icons.MENU_EXPORT_BOX);
 			menu.add(item);
@@ -149,10 +151,20 @@ public class MenuMain
 			item.setIcon(Icons.MENU_EXPORT_BOX);
 			menu.add(item);
 			
-      item = itemProjectImportStitch = new JMenuItem("Import stitched PNG from...", KeyEvent.VK_P);
-      item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-      item.setIcon(Icons.MENU_IMPORT_BOX);
-      menu.add(item);
+			item = itemProjectImportStitch = new JMenuItem("Import stitched PNG from...", KeyEvent.VK_P);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+			item.setIcon(Icons.MENU_IMPORT_BOX);
+			menu.add(item);
+			
+//			menu.addSeparator();
+//			
+//			item = itemProjectDataExport = new JMenuItem("Export RPW project");
+//			item.setIcon(Icons.MENU_EXPORT_BOX);
+//			menu.add(item);
+//			
+//			item = itemProjectImportStitch = new JMenuItem("Import RPW project");
+//			item.setIcon(Icons.MENU_IMPORT_BOX);
+//			menu.add(item);
 			
 			menu.addSeparator();
 			
@@ -824,8 +836,7 @@ public class MenuMain
 		JMenuItem item;
 		int added = 0;
 		for (final String s : recents) {
-			if (s.equalsIgnoreCase(activeName))
-				continue; // dont show current project in the list
+			if (s.equalsIgnoreCase(activeName)) continue; // dont show current project in the list
 			menuRecentProjects.add(item = new JMenuItem(s));
 			item.setActionCommand(s);
 			item.addActionListener(openRecentProjectListener);
