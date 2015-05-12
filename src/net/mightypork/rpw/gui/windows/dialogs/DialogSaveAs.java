@@ -116,7 +116,6 @@ public class DialogSaveAs extends RpwDialog
 				Tasks.taskSaveProjectAs(name, title);
 				closeDialog();
 			}
-
 		}
 	};
 }

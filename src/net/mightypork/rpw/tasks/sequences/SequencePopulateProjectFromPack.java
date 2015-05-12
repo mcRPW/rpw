@@ -258,6 +258,12 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 		try {
 			for (final String sorig : zipEntries) {
 				String s = sorig;
+				
+				if (s.contains("__MACOSX") || s.contains(".DS_Store") || s.contains(".fsevents")) {
+					if (Config.LOG_EXTRACTED_ASSETS)
+						Log.f3("x OSX junk: " + s);
+					continue;
+				}
 
 				if (alreadyExtracted.contains(s))
 					continue;

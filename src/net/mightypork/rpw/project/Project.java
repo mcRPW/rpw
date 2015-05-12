@@ -1,6 +1,7 @@
 package net.mightypork.rpw.project;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.UpdateHelper;
 import net.mightypork.rpw.utils.files.DirectoryTreeDifferenceFinder;
+import net.mightypork.rpw.utils.files.FileDirFilter;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.PropertyManager;
@@ -30,6 +32,22 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class Project extends Source implements NodeSourceProvider
 {
+	/** Ignore git directory */
+	private static final FileDirFilter NoGitFilter = new FileDirFilter() {
+
+		@Override
+		public boolean acceptFile(File f)
+		{
+			return true;
+		}
+
+
+		@Override
+		public boolean acceptDirectory(File f)
+		{
+			return !f.getName().equals(".git");
+		}
+	};
 
 	private Map<String, String> files = new LinkedHashMap<String, String>();
 	private Map<String, String> groups = new LinkedHashMap<String, String>();
@@ -208,7 +226,7 @@ public class Project extends Source implements NodeSourceProvider
 	{
 		Log.f3(getLogPrefix() + "Finding differences TMP:BASE");
 
-		final DirectoryTreeDifferenceFinder comparator = new DirectoryTreeDifferenceFinder();
+		final DirectoryTreeDifferenceFinder comparator = new DirectoryTreeDifferenceFinder(NoGitFilter);
 
 		final boolean retval = !comparator.areEqual(getProjectDirectory(), getRealProjectBase());
 
@@ -228,6 +246,11 @@ public class Project extends Source implements NodeSourceProvider
 		} catch (final IOException e) {
 			Log.e(e);
 		}
+		
+		if(!needsSave()) {
+			Log.f3("Not saving, no changes found.");
+			return;
+		}
 
 		copyFromTmpToBasedir();
 	}
@@ -241,7 +264,7 @@ public class Project extends Source implements NodeSourceProvider
 		try {
 			Log.f2(getLogPrefix() + "Copying BASE->TMP");
 
-			FileUtils.copyDirectory(getRealProjectBase(), tmpBase);
+			FileUtils.copyDirectory(getRealProjectBase(), tmpBase, NoGitFilter, null);
 
 			Log.f2(getLogPrefix() + "Copying - done.");
 
@@ -256,7 +279,8 @@ public class Project extends Source implements NodeSourceProvider
 	{
 		final File realBase = getRealProjectBase();
 
-		FileUtils.delete(realBase, true);
+		// Delete all but the git folder
+		FileUtils.delete(realBase, true, NoGitFilter);
 
 		try {
 			Log.f2(getLogPrefix() + "Copying TMP->BASE");
@@ -356,8 +380,7 @@ public class Project extends Source implements NodeSourceProvider
 	public String getSourceForGroup(String groupKey)
 	{
 		final String source = groups.get(groupKey);
-		if (source == null)
-			return MagicSources.INHERIT;
+		if (source == null) return MagicSources.INHERIT;
 
 		return source;
 	}
@@ -368,8 +391,7 @@ public class Project extends Source implements NodeSourceProvider
 	public String getSourceForFile(String assetKey)
 	{
 		final String source = files.get(assetKey);
-		if (source == null)
-			return MagicSources.INHERIT;
+		if (source == null) return MagicSources.INHERIT;
 
 		return source;
 	}
@@ -390,8 +412,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		final File file = new File(privateCopiesBase, path);
 
-		if (!file.exists())
-			return null;
+		if (!file.exists()) return null;
 
 		return file;
 	}

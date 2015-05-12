@@ -38,8 +38,9 @@ public class MenuMain
 	private JMenuItem itemProjectExport;
 	private JMenuItem itemProjectExportStitch;
 	private JMenuItem itemProjectImportStitch;
-	private JMenuItem itemProjectDataExport;
-	private JMenuItem itemProjectDataImport;
+//	private JMenuItem itemProjectDataExport;
+//	private JMenuItem itemProjectDataImport;
+	private JMenuItem itemDeleteVanillaCopies;
 	private JMenuItem itemExit;
 	private JMenuItem itemProjectClose;
 	private JMenuItem itemProjectOpenFolder;
@@ -199,6 +200,11 @@ public class MenuMain
 			item = itemProjectOpenFolder = new JMenuItem("Open project folder", KeyEvent.VK_I);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_OPEN);
+			menu.add(item);
+			
+			item = itemDeleteVanillaCopies = new JMenuItem("Delete unchanged vanilla copies", KeyEvent.VK_U);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.MENU_DELETE_ASSET);
 			menu.add(item);
 			
 			menu.addSeparator();
@@ -789,6 +795,15 @@ public class MenuMain
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskOpenSoundWizard();
+			}
+		});
+
+		itemDeleteVanillaCopies.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Tasks.taskDeleteIdenticalToVanilla();
 			}
 		});
 

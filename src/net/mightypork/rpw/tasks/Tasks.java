@@ -38,6 +38,7 @@ import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
+import net.mightypork.rpw.tasks.sequences.SequenceDeleteIdenticalToVanilla;
 import net.mightypork.rpw.tasks.sequences.SequenceExportProject;
 import net.mightypork.rpw.tasks.sequences.SequencePopulateProjectFromPack;
 import net.mightypork.rpw.tree.assets.processors.RenameSourceProcessor;
@@ -268,7 +269,7 @@ public class Tasks
 
 
 	public static int taskSaveProject(final Runnable afterSave)
-	{
+	{		
 		final int task = Tasks.startTask();
 
 		new Thread(new Runnable() {
@@ -286,6 +287,32 @@ public class Tasks
 
 				if (afterSave != null)
 					afterSave.run();
+
+				Tasks.stopTask(task);
+
+				// -- task end --
+			}
+		}).start();
+
+		return task;
+	}
+
+
+	public static int taskDeleteIdenticalToVanilla()
+	{		
+		final int task = Tasks.startTask();
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run()
+			{
+				// -- task begin --
+
+				Alerts.loading(true);
+				Tasks.taskStoreProjectChanges();
+				
+				(new SequenceDeleteIdenticalToVanilla()).run();
 
 				Tasks.stopTask(task);
 
@@ -654,7 +681,6 @@ public class Tasks
 				System.exit(0);
 			}
 		});
-
 	}
 
 
@@ -730,6 +756,8 @@ public class Tasks
 		Projects.setActive(newProject);
 
 		taskOnProjectChanged();
+		
+		newProject.save();
 	}
 
 

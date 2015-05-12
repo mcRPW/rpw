@@ -61,12 +61,15 @@ public class FileUtils
 	 * @throws IOException
 	 *             on error
 	 */
-	public static void copyDirectory(File source, File target, FileFilter filter, List<File> filesCopied) throws IOException
+	public static void copyDirectory(File source, File target, FileDirFilter filter, List<File> filesCopied) throws IOException
 	{
-		if (!source.exists())
-			return;
+		if (!source.exists()) return;
 
 		if (source.isDirectory()) {
+			if (filter != null && !filter.acceptDirectory(source)) {
+				return;
+			}
+
 			if (!target.exists()) {
 				target.mkdir();
 			}
@@ -77,12 +80,11 @@ public class FileUtils
 			}
 
 		} else {
-			if (filter != null && !filter.accept(source)) {
+			if (filter != null && !filter.acceptFile(source)) {
 				return;
 			}
 
-			if (filesCopied != null)
-				filesCopied.add(target);
+			if (filesCopied != null) filesCopied.add(target);
 			copyFile(source, target);
 		}
 	}
@@ -183,18 +185,30 @@ public class FileUtils
 	 */
 	public static boolean delete(File path, boolean recursive)
 	{
+		return delete(path, recursive, null);
+	}
+
+
+	public static boolean delete(File path, boolean recursive, FileDirFilter filter)
+	{
+		if (filter != null) {
+			if (path.isFile() && !filter.acceptFile(path)) return true;
+			if (path.isDirectory() && !filter.acceptDirectory(path)) return true;
+		}
+
 		if (!path.exists()) {
 			return true;
 		}
 
-		if (!recursive || !path.isDirectory())
+		if (!recursive || !path.isDirectory()){
 			return path.delete();
+		}
 
 		final String[] list = path.list();
 		for (int i = 0; i < list.length; i++) {
-			if (!delete(new File(path, list[i]), true))
-				return false;
+			if (!delete(new File(path, list[i]), true, filter)) return false;
 		}
+
 
 		return path.delete();
 	}
@@ -370,8 +384,7 @@ public class FileUtils
 
 	public static InputStream stringToStream(String text)
 	{
-		if (text == null)
-			return null;
+		if (text == null) return null;
 
 		try {
 			return new ByteArrayInputStream(text.getBytes("UTF-8"));
@@ -415,8 +428,7 @@ public class FileUtils
 			out.flush();
 
 		} finally {
-			if (out != null)
-				out.close();
+			if (out != null) out.close();
 		}
 	}
 
@@ -424,8 +436,7 @@ public class FileUtils
 	public static void deleteEmptyDirs(File base)
 	{
 		for (final File f : listDirectory(base)) {
-			if (!f.isDirectory())
-				continue;
+			if (!f.isDirectory()) continue;
 
 			deleteEmptyDirs(f);
 
@@ -546,8 +557,7 @@ public class FileUtils
 	public static Map<String, AssetEntry> loadAssetsFromZip(File file, File outDir, Map<String, AssetEntry> assets)
 	{
 		Log.f3("Extracting: " + file);
-		if (assets == null)
-			assets = new LinkedHashMap<String, AssetEntry>();
+		if (assets == null) assets = new LinkedHashMap<String, AssetEntry>();
 
 		try {
 			final StringFilter filter = new StringFilter() {
@@ -577,8 +587,7 @@ public class FileUtils
 					final String ext = parts[1];
 					final EAsset type = EAsset.forExtension(ext);
 
-					if (Config.LOG_EXTRACTED_ASSETS)
-						Log.f3("+ " + s);
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ " + s);
 
 					if (!type.isAsset()) {
 						continue;
@@ -620,19 +629,18 @@ public class FileUtils
 
 		final String index_s = fileToString(indexFile);
 		final FileObjectIndex index = FileObjectIndex.fromJson(index_s);
-		
+
 		// workaround for 1.6.4 weirdness
 		boolean virtual = index.virtual;
-		if(virtual) targetDir = new File(targetDir, "minecraft");
-		
+		if (virtual) targetDir = new File(targetDir, "minecraft");
+
 		for (final Entry<String, FileObject> entry : index.objects.entrySet()) {
 			final String path = entry.getKey();
 			final String hash = entry.getValue().hash;
 			final int size = entry.getValue().size;
 
 			if (!filter.accept(new File(path).getName())) {
-				if (Config.LOG_EXTRACTED_ASSETS)
-					Log.f3("Skipping file: " + path);
+				if (Config.LOG_EXTRACTED_ASSETS) Log.f3("Skipping file: " + path);
 				continue;
 			}
 

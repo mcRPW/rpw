@@ -189,7 +189,7 @@ public class PopupSelectedNodes
 		if (groups > 0) {
 			List<Component> list;
 
-			submenu = new JMenu("Recursive edit");
+			submenu = new JMenu("Recursive assign");
 			submenu.setIcon(Icons.MENU_RECURSION);
 
 			list = buildMenuItems(true);

@@ -37,6 +37,7 @@ import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.files.FileDirFilter;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.SimpleConfig;
@@ -287,12 +288,19 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 
 				Log.f2("Copying assets from: " + source);
 
-				FileUtils.copyDirectory(source, target, new FileFilter() {
+				FileUtils.copyDirectory(source, target, new FileDirFilter() {
 
 					@Override
-					public boolean accept(File f)
+					public boolean acceptFile(File f)
 					{
 						return ASSETS_DIR_FILTER.accept(f.getName());
+					}
+
+
+					@Override
+					public boolean acceptDirectory(File f)
+					{
+						return true;
 					}
 
 				}, list);
