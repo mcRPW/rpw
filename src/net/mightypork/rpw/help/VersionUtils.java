@@ -21,12 +21,11 @@ public class VersionUtils
 	{
 		String document = "";
 
-		final int from = Const.VERSION_MAJOR;
+		for (int i = Config.LAST_RUN_VERSION + 1; i <= Const.VERSION_SERIAL; i++) {
 
-		for (int i = Math.max(Const.VERSION_SERIAL - 2, Math.max(Config.LAST_RUN_VERSION, from) + 1); i <= Const.VERSION_SERIAL; i++) {
 			final String chl = getChangelogForVersion(i);
-			if (chl == null)
-				continue;
+
+			if (chl == null || chl.equals("")) continue;
 
 			document += "\n\n<p class=\"littleHeading\">" + getVersionString(i) + "</p>\n\n";
 

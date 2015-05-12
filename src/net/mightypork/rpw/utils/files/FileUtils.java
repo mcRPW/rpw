@@ -352,7 +352,7 @@ public class FileUtils
 	public static String streamToString(InputStream in, int lines)
 	{
 		if (in == null) {
-			Log.e(new NullPointerException("Null stream to be converted to String."));
+			Log.e("Null stream to be converted to String, using empty instead.");
 			return ""; // to avoid NPE's
 		}
 
