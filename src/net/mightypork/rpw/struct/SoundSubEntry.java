@@ -29,7 +29,9 @@ public class SoundSubEntry
 			try {
 				if (json.isJsonObject()) {
 					final JsonObject jso = json.getAsJsonObject();
-					return new SoundSubEntry(jso.get("name").getAsString(), jso.get("stream").getAsBoolean());
+					
+					String name = jso.get("name").getAsString();					
+					return new SoundSubEntry(name, jso.get("stream").getAsBoolean());
 				}
 
 				return new SoundSubEntry(json.getAsJsonPrimitive().getAsString());
@@ -67,12 +69,14 @@ public class SoundSubEntry
 
 
 	public SoundSubEntry(String name) {
+		name = name.replace('\\', '/');
 		this.name = name;
 		this.stream = false;
 	}
 
 
 	public SoundSubEntry(String name, boolean stream) {
+		name = name.replace('\\', '/');
 		this.name = name;
 		this.stream = stream;
 	}

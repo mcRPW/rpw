@@ -26,7 +26,9 @@ public class SoundEntryMap extends LinkedHashMap<String, SoundEntry>
 
 	public static SoundEntryMap fromJson(String json)
 	{
-		return Const.GSON.fromJson(json, getType());
+		SoundEntryMap sem = Const.GSON.fromJson(json, getType());
+		
+		return sem;
 	}
 
 

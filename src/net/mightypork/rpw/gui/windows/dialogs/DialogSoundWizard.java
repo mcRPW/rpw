@@ -57,6 +57,7 @@ import net.mightypork.rpw.tree.filesystem.FileFsTreeNode;
 import net.mightypork.rpw.utils.AlphanumComparator;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.OsUtils;
+import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXTitledSeparator;
 
@@ -230,11 +231,9 @@ public class DialogSoundWizard extends RpwDialog
 		// file list
 		Gui.titledBorder(vb, "All Audio Files", Gui.GAP);
 
-		if (Config.USE_NIMBUS)
-			Gui.useMetal();
+		if (Config.USE_NIMBUS) Gui.useMetal();
 		treeDisplay = new SoundFileTreeDisplay(null, this);
-		if (Config.USE_NIMBUS)
-			Gui.useNimbus();
+		if (Config.USE_NIMBUS) Gui.useNimbus();
 
 		vb.glue();
 		final JComponent c = treeDisplay.getComponent();
@@ -263,8 +262,7 @@ public class DialogSoundWizard extends RpwDialog
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					for (final String val : fileList.getSelectedValues()) {
 						fileList.removeItemNoSort(val);
-						if (val.equals(editedKey))
-							enableMiddlePanel(false);
+						if (val.equals(editedKey)) enableMiddlePanel(false);
 					}
 					fileList.sortAndUpdate();
 				}
@@ -310,8 +308,7 @@ public class DialogSoundWizard extends RpwDialog
 			{
 				final String key = keyList.getSelectedValue();
 
-				if (key == null)
-					return;
+				if (key == null) return;
 
 				//@formatter:off
 				final boolean y = Alerts.askYesNo(
@@ -322,8 +319,7 @@ public class DialogSoundWizard extends RpwDialog
 				);
 				//@formatter:on
 
-				if (!y)
-					return;
+				if (!y) return;
 
 				keyList.removeItem(key);
 
@@ -367,8 +363,7 @@ public class DialogSoundWizard extends RpwDialog
 
 				editStateValid = txt.length() > 0 && (!keyList.contains(txt) || txt.equals(editedKey));
 
-				if (!txt.equals(editedKey))
-					markChange();
+				if (!txt.equals(editedKey)) markChange();
 
 			}
 
@@ -405,8 +400,7 @@ public class DialogSoundWizard extends RpwDialog
 				final String key = fieldKey.getText().trim();
 				final String ctg = (String) fieldCategory.getSelectedItem();
 
-				if (!editStateValid)
-					return;
+				if (!editStateValid) return;
 
 				keyList.removeItem(editedKey);
 				keyList.addItem(key);
@@ -456,14 +450,10 @@ public class DialogSoundWizard extends RpwDialog
 
 		for (final Component c : middlePanelComponents) {
 			c.setEnabled(yes);
-			if (c instanceof JXTitledSeparator)
-				c.setForeground(yes ? Color.BLACK : Color.GRAY);
-			if (c instanceof JTextField)
-				((JTextField) c).setText("");
-			if (c instanceof JComboBox)
-				((JComboBox) c).setSelectedItem("");
-			if (c instanceof SimpleStringList)
-				((SimpleStringList) c).empty();
+			if (c instanceof JXTitledSeparator) c.setForeground(yes ? Color.BLACK : Color.GRAY);
+			if (c instanceof JTextField) ((JTextField) c).setText("");
+			if (c instanceof JComboBox) ((JComboBox) c).setSelectedItem("");
+			if (c instanceof SimpleStringList) ((SimpleStringList) c).empty();
 		}
 
 		suppressEditCheck = false;
@@ -544,8 +534,7 @@ public class DialogSoundWizard extends RpwDialog
 		if (i != -1) {
 			final String sel = keyList.getSelectedValue();
 
-			if (sel.equals(editedKey))
-				return;
+			if (sel.equals(editedKey)) return;
 
 			if (hasChange()) {
 				final boolean y = Alerts.askYesNo(DialogSoundWizard.this, "Discard Changes", "Discard changes in \"" + editedKey + "\"?");
@@ -570,8 +559,7 @@ public class DialogSoundWizard extends RpwDialog
 			fieldCategory.setSelectedItem(se.category);
 
 			final ArrayList<String> snames = new ArrayList<String>();
-			boolean streamed = false; // if at least one is streamed, make all
-										// streamed (simplifying things)
+			boolean streamed = false; // if at least one is streamed, make all  streamed (simplifying things)
 			for (final SoundSubEntry sse : se.sounds) {
 				snames.add(sse.name);
 				streamed |= sse.stream;
@@ -592,8 +580,7 @@ public class DialogSoundWizard extends RpwDialog
 
 	public void pathChanged(AbstractFsTreeNode node)
 	{
-		if (node instanceof DirectoryFsTreeNode)
-			((DirectoryFsTreeNode) node).reload();
+		if (node instanceof DirectoryFsTreeNode) ((DirectoryFsTreeNode) node).reload();
 		treeDisplay.model.nodeStructureChanged(node);
 	}
 
@@ -624,11 +611,9 @@ public class DialogSoundWizard extends RpwDialog
 			@Override
 			public boolean accept(File file)
 			{
-				if (file.isDirectory())
-					return true;
+				if (file.isDirectory()) return true;
 
-				if (!EAsset.forFile(file).isSound())
-					return false;
+				if (!EAsset.forFile(file).isSound()) return false;
 
 				return true;
 			}
@@ -653,14 +638,11 @@ public class DialogSoundWizard extends RpwDialog
 		@Override
 		public boolean canImport(TransferSupport support)
 		{
-			if (!support.isDrop())
-				return false;
+			if (!support.isDrop()) return false;
 
-			if (!fileList.isEnabled())
-				return false;
+			if (!fileList.isEnabled()) return false;
 
-			if (!support.isDataFlavorSupported(FLAVOR_FSTREE_FILE))
-				return false;
+			if (!support.isDataFlavorSupported(FLAVOR_FSTREE_FILE)) return false;
 
 			support.setShowDropLocation(true);
 
@@ -678,8 +660,7 @@ public class DialogSoundWizard extends RpwDialog
 		@Override
 		public boolean importData(TransferSupport support)
 		{
-			if (!canImport(support))
-				return false;
+			if (!canImport(support)) return false;
 
 			try {
 				final Transferable trans = support.getTransferable();
@@ -688,7 +669,11 @@ public class DialogSoundWizard extends RpwDialog
 
 				boolean changed = false;
 				for (final FileFsTreeNode node : nodes) {
-					final String path = Utils.toLastDot(node.getPathRelativeToRoot().getPath());
+					String path = Utils.toLastDot(node.getPathRelativeToRoot().getPath());
+
+					// Fix Windoze backslashes
+					path = path.replaceAll("\\", "/");
+
 					if (!fileList.contains(path)) {
 						fileList.addItemNoSort(path);
 						changed = true;
@@ -745,8 +730,7 @@ public class DialogSoundWizard extends RpwDialog
 				}
 			}
 
-			if (tmpNodeList.size() == 0)
-				return null;
+			if (tmpNodeList.size() == 0) return null;
 
 			return new Transferable() {
 
@@ -756,11 +740,9 @@ public class DialogSoundWizard extends RpwDialog
 				@Override
 				public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
 				{
-					if (!isDataFlavorSupported(flavor))
-						throw new UnsupportedFlavorException(flavor);
+					if (!isDataFlavorSupported(flavor)) throw new UnsupportedFlavorException(flavor);
 
-					if (flavor.equals(FLAVOR_FSTREE_FILE))
-						return nodes;
+					if (flavor.equals(FLAVOR_FSTREE_FILE)) return nodes;
 
 					return null;
 				}
