@@ -279,8 +279,8 @@ public class Project extends Source implements NodeSourceProvider
 	{
 		final File realBase = getRealProjectBase();
 
-		// Delete all but the git folder
-		FileUtils.delete(realBase, true, NoGitFilter);
+		// Delete all but the git folder, keep the folder itself.
+		FileUtils.delete(realBase, true, NoGitFilter, false);
 
 		try {
 			Log.f2(getLogPrefix() + "Copying TMP->BASE");

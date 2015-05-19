@@ -174,22 +174,31 @@ public class FileUtils
 	}
 
 
-	/**
-	 * Improved delete
-	 * 
-	 * @param path
-	 *            deleted path
-	 * @param recursive
-	 *            recursive delete
-	 * @return success
-	 */
 	public static boolean delete(File path, boolean recursive)
 	{
-		return delete(path, recursive, null);
+		return delete(path, recursive, null, true);
+	}
+
+
+	public static boolean delete(File path, boolean recursive, boolean self)
+	{
+		return delete(path, recursive, null, self);
 	}
 
 
 	public static boolean delete(File path, boolean recursive, FileDirFilter filter)
+	{
+		return delete_do(path, recursive, filter, true, 0);
+	}
+
+
+	public static boolean delete(File path, boolean recursive, FileDirFilter filter, boolean self)
+	{
+		return delete_do(path, recursive, filter, self, 0);
+	}
+
+
+	private static boolean delete_do(File path, boolean recursive, FileDirFilter filter, boolean self, int depth)
 	{
 		if (filter != null) {
 			if (path.isFile() && !filter.acceptFile(path)) return true;
@@ -200,17 +209,21 @@ public class FileUtils
 			return true;
 		}
 
-		if (!recursive || !path.isDirectory()){
+		if (!recursive || !path.isDirectory()) {
 			return path.delete();
 		}
 
 		final String[] list = path.list();
 		for (int i = 0; i < list.length; i++) {
-			if (!delete(new File(path, list[i]), true, filter)) return false;
+			if (!delete_do(new File(path, list[i]), true, filter, self, depth + 1)) return false;
 		}
 
-
-		return path.delete();
+		if (depth == 0) {
+			if (self) return path.delete();
+			else return true;
+		} else {
+			return true;
+		}
 	}
 
 
