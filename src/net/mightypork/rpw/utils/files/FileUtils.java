@@ -730,4 +730,22 @@ public class FileUtils
 		final InputStream in = FileUtils.getResource(resname);
 		return streamToString(in);
 	}
+
+
+	/** Ignore git directory */
+	public static final FileDirFilter NoGitFilter = new FileDirFilter() {
+	
+		@Override
+		public boolean acceptFile(File f)
+		{
+			return true;
+		}
+	
+	
+		@Override
+		public boolean acceptDirectory(File f)
+		{
+			return !f.getName().equals(".git");
+		}
+	};
 }

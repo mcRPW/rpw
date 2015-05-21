@@ -96,8 +96,6 @@ public class Projects
 		Tasks.taskTreeRebuild();
 		openProject(name);
 		Tasks.taskStoreProjectChanges();
-		// saveProject(); don't save yet
-
 	}
 
 
@@ -110,10 +108,10 @@ public class Projects
 	}
 
 
-	public static void saveProject()
+	public static void revertProject()
 	{
 		if (active != null) {
-			active.save();
+			active.revert();
 		}
 	}
 

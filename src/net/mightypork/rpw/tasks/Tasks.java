@@ -90,12 +90,10 @@ public class Tasks
 	 */
 	public static boolean isRunning(int task)
 	{
-		if (task == -1)
-			return false;
+		if (task == -1) return false;
 
 		final Boolean state = TASKS_RUNNING.get(task);
-		if (state == null || state == false)
-			return false;
+		if (state == null || state == false) return false;
 
 		return true;
 	}
@@ -153,8 +151,7 @@ public class Tasks
 				Sources.initLibrary();
 				Tasks.taskTreeRedraw();
 
-				if (after != null)
-					after.run();
+				if (after != null) after.run();
 
 				Tasks.stopTask(task);
 
@@ -238,8 +235,7 @@ public class Tasks
 
 	public static void taskStoreProjectChanges(Project proj)
 	{
-		if (proj == null)
-			return;
+		if (proj == null) return;
 
 		final AssetTreeProcessor proc = new SaveToProjectNodeProcessor(proj);
 		final AssetTreeNode root = App.getTreeDisplay().treeModel.getRoot();
@@ -249,7 +245,7 @@ public class Tasks
 		}
 
 		try {
-			proj.saveToTmp();
+			proj.flushMetadata();
 		} catch (final IOException e) {
 			Log.e(e);
 		}
@@ -260,16 +256,15 @@ public class Tasks
 
 	public static void taskDialogExportProject()
 	{
-		if (!Projects.isOpen())
-			return;
+		if (!Projects.isOpen()) return;
 
 		TaskExportProject.showDialog();
 
 	}
 
 
-	public static int taskSaveProject(final Runnable afterSave)
-	{		
+	public static int taskRevertProject()
+	{
 		final int task = Tasks.startTask();
 
 		new Thread(new Runnable() {
@@ -280,15 +275,13 @@ public class Tasks
 				// -- task begin --
 
 				Alerts.loading(true);
-				Tasks.taskStoreProjectChanges();
-				Projects.saveProject();
+				Projects.revertProject();
 				Alerts.loading(false);
-				Projects.clearChangeFlag();
-
-				if (afterSave != null)
-					afterSave.run();
 
 				Tasks.stopTask(task);
+
+				Tasks.taskOnProjectPropertiesChanged();
+				Tasks.taskTreeRebuild();
 
 				// -- task end --
 			}
@@ -299,7 +292,7 @@ public class Tasks
 
 
 	public static int taskDeleteIdenticalToVanilla()
-	{		
+	{
 		final int task = Tasks.startTask();
 
 		new Thread(new Runnable() {
@@ -311,7 +304,7 @@ public class Tasks
 
 				Alerts.loading(true);
 				Tasks.taskStoreProjectChanges();
-				
+
 				(new SequenceDeleteIdenticalToVanilla()).run();
 
 				Tasks.stopTask(task);
@@ -351,37 +344,32 @@ public class Tasks
 
 	public static void taskAskToSaveIfChanged(Runnable afterSave)
 	{
-		if (Flags.GOING_FOR_HALT) {
-			if (afterSave != null)
-				afterSave.run();
+		if (Flags.GOING_FOR_HALT || !Projects.isOpen()) {
+			if (afterSave != null) afterSave.run();
 			return;
 		}
 
-		if (Projects.isChanged()) {
-			taskStoreProjectChanges();
-		}
+		// Save temporary changes
+		taskStoreProjectChanges();
 
-		boolean needsSave = false;
+		boolean anyChanges = false;
 
-		if (Projects.isOpen()) {
-			Log.f2("Checking project for unsaved changes.");
+		// Compare with backup
+		Log.f2("Checking project for unsaved changes.");
 
-			Alerts.loading(true);
-			needsSave = Projects.getActive().needsSave();
-			Alerts.loading(false);
-		}
+		Alerts.loading(true);
+		anyChanges = Projects.getActive().isWorkdirDirty();
+		Alerts.loading(false);
 
-		if (needsSave) {
+		if (anyChanges) {
 			Log.f3("Asking to save.");
 
 			//@formatter:off
 			final int choice = Alerts.askYesNoCancel(
 					App.getFrame(),
-					"Unsaved Changes", 
-					"There are some unsaved changes\n" + 
-					"in the current project.\n" +
-					"\n" +
-					"Save it now?\n"
+					"Confirm changes", 
+					"There are some changes in the project.\n"
+					+ "Do you want to keep those changes (\"save\")?\n"
 			);
 			//@formatter:on
 
@@ -389,17 +377,30 @@ public class Tasks
 				Log.f3("- User choice CANCEL");
 				return; // cancelled
 			} else if (choice == JOptionPane.OK_OPTION) {
-				Log.f3("- User choice SAVE");
-				Tasks.taskSaveProject(afterSave);
+				Log.f3("- User choice SAVE");			
 			} else {
 				Log.f3("- User choice DISCARD");
-				if (afterSave != null)
-					afterSave.run();
+
+				//@formatter:off
+				if (Alerts.askOkCancel(
+						App.getFrame(),
+						"Confirm Revert",
+						"You selected to discard changes.\n"
+						+ "This will undo ALL changes in the project\n"
+						+ "since the last save, even done by external programs.\n\n"
+						+ "Are you sure you want to do this?")) {
+					
+					Tasks.taskRevertProject();
+					
+				} else {
+					return; // do not call handler
+				}
+				//@formatter:on
 			}
-		} else {
-			if (afterSave != null)
-				afterSave.run();
 		}
+		
+
+		if (afterSave != null) afterSave.run();
 	}
 
 
@@ -518,12 +519,18 @@ public class Tasks
 	}
 
 
+	public static void taskSaveProject()
+	{
+		taskTreeSaveAndRebuild();
+		// Saved -> overwrite the backup.
+		Projects.getActive().createBackup();
+	}
+
+
 	public static void taskTreeRebuild()
 	{
-		if (App.getTreeDisplay() != null)
-			App.getTreeDisplay().updateRoot();
-		if (App.getSidePanel() != null)
-			App.getSidePanel().updatePreview(null);
+		if (App.getTreeDisplay() != null) App.getTreeDisplay().updateRoot();
+		if (App.getSidePanel() != null) App.getSidePanel().updatePreview(null);
 	}
 
 
@@ -604,8 +611,7 @@ public class Tasks
 	{
 		final String version = TaskReloadVanilla.getUserChoice(false);
 
-		if (version == null)
-			return -1;
+		if (version == null) return -1;
 
 		final int task = Tasks.startTask();
 
@@ -742,7 +748,7 @@ public class Tasks
 		final File targetDir = newProject.getProjectDirectory();
 
 		try {
-			FileUtils.copyDirectory(currentDir, targetDir);
+			FileUtils.copyDirectory(currentDir, targetDir, FileUtils.NoGitFilter, null);
 		} catch (final IOException e) {
 			Log.e("An error occured while\ncopying project files.");
 			FileUtils.delete(targetDir, true); // cleanup
@@ -755,9 +761,9 @@ public class Tasks
 		// mark new project as active
 		Projects.setActive(newProject);
 
+		taskSaveProject();
+
 		taskOnProjectChanged();
-		
-		newProject.save();
 	}
 
 
@@ -891,8 +897,7 @@ public class Tasks
 
 	public static void taskOpenSoundWizard()
 	{
-		if (!Projects.isOpen())
-			return;
+		if (!Projects.isOpen()) return;
 
 		Alerts.loading(true);
 		final DialogSoundWizard dlg = new DialogSoundWizard();

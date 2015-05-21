@@ -297,7 +297,7 @@ public class DialogNewProject extends RpwDialog
 
 					Tasks.taskStoreProjectChanges();
 
-					Projects.getActive().save();
+					//Projects.getActive().revert();
 
 					Projects.markProjectAsRecent(Projects.getActive().getName());
 
@@ -307,7 +307,7 @@ public class DialogNewProject extends RpwDialog
 							@Override
 							public void run()
 							{
-								Projects.getActive().save();
+								//Projects.getActive().revert();
 
 								Tasks.taskOnProjectChanged();
 								Alerts.loading(false);

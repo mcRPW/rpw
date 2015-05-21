@@ -35,6 +35,7 @@ public class Icons
 {
 
 	public static ImageIcon MENU_NEW;
+	public static ImageIcon MENU_REVERT;
 	public static ImageIcon MENU_SAVE;
 	public static ImageIcon MENU_SAVE_AS;
 	public static ImageIcon MENU_OPEN;
@@ -132,6 +133,10 @@ public class Icons
 		MENU_MANAGE 		= loadImage(imgPath + "menu/manage.png");
 		MENU_EXPORT 		= loadImage(imgPath + "menu/export.png");
 		MENU_UNDO 			= loadImage(imgPath + "menu/undo.png");
+		
+
+		MENU_REVERT 		= MENU_UNDO;
+		
 		MENU_REDO 			= loadImage(imgPath + "menu/redo.png");
 		MENU_RELOAD			= loadImage(imgPath + "menu/reload.png");
 		MENU_RELOAD2 		= loadImage(imgPath + "menu/reload2.png");

@@ -30,6 +30,7 @@ public class MenuMain
 	private JMenuItem itemProjectNew;
 	private JMenuItem itemProjectOpen;
 	private JMenuItem itemProjectSave;
+	private JMenuItem itemProjectRevert;
 	private JMenuItem itemProjectSaveAs;
 	private JMenuItem itemManageMcPacks;
 	private JMenuItem itemProjectSetup;
@@ -38,8 +39,8 @@ public class MenuMain
 	private JMenuItem itemProjectExport;
 	private JMenuItem itemProjectExportStitch;
 	private JMenuItem itemProjectImportStitch;
-//	private JMenuItem itemProjectDataExport;
-//	private JMenuItem itemProjectDataImport;
+	//	private JMenuItem itemProjectDataExport;
+	//	private JMenuItem itemProjectDataImport;
 	private JMenuItem itemDeleteVanillaCopies;
 	private JMenuItem itemExit;
 	private JMenuItem itemProjectClose;
@@ -131,6 +132,14 @@ public class MenuMain
 			item = itemProjectSaveAs = new JMenuItem("Save project as...", KeyEvent.VK_A);
 			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_SAVE_AS);
+			menu.add(item);
+			
+			menu.addSeparator();
+
+			
+			item = itemProjectRevert = new JMenuItem("REVERT ALL CHANGES", KeyEvent.VK_R);
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK));
+			item.setIcon(Icons.MENU_REVERT);
 			menu.add(item);
 						
 			menu.addSeparator();
@@ -491,7 +500,16 @@ public class MenuMain
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Tasks.taskSaveProject(null);
+				Tasks.taskSaveProject();
+			}
+		});
+
+		itemProjectRevert.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Tasks.taskRevertProject();
 			}
 		});
 

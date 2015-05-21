@@ -22,7 +22,6 @@ import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.UpdateHelper;
 import net.mightypork.rpw.utils.files.DirectoryTreeDifferenceFinder;
-import net.mightypork.rpw.utils.files.FileDirFilter;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.PropertyManager;
@@ -32,23 +31,6 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class Project extends Source implements NodeSourceProvider
 {
-	/** Ignore git directory */
-	private static final FileDirFilter NoGitFilter = new FileDirFilter() {
-
-		@Override
-		public boolean acceptFile(File f)
-		{
-			return true;
-		}
-
-
-		@Override
-		public boolean acceptDirectory(File f)
-		{
-			return !f.getName().equals(".git");
-		}
-	};
-
 	private Map<String, String> files = new LinkedHashMap<String, String>();
 	private Map<String, String> groups = new LinkedHashMap<String, String>();
 	private SoundEntryMap sounds = new SoundEntryMap();
@@ -56,7 +38,7 @@ public class Project extends Source implements NodeSourceProvider
 
 	private PropertyManager props;
 
-	private final File tmpBase;
+	private final File backupBase;
 	private File privateCopiesBase;
 	private File extraIncludesBase;
 	private File customSoundsBase;
@@ -73,13 +55,17 @@ public class Project extends Source implements NodeSourceProvider
 
 	private Integer lastRpwVersion;
 
+	private final File projDir;
+
 
 	public Project(String identifier) {
 		projectName = identifier;
 
 		projectTitle = identifier; // by default
 
-		tmpBase = OsUtils.getAppDir(Paths.DIR_PROJECT_WORKING_COPY_TMP + "-" + identifier, true);
+		backupBase = OsUtils.getAppDir(Paths.DIR_PROJECT_BACKUP_TMP + "-" + identifier, true);
+
+		projDir = OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + projectName, false);
 
 		init();
 	}
@@ -87,7 +73,7 @@ public class Project extends Source implements NodeSourceProvider
 
 	private File getRealProjectBase()
 	{
-		return OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + projectName, false);
+		return projDir;
 	}
 
 
@@ -96,7 +82,7 @@ public class Project extends Source implements NodeSourceProvider
 	 */
 	private void init()
 	{
-		copyFromBasedirToTmp();
+		createBackup();
 
 		reload();
 	}
@@ -109,7 +95,7 @@ public class Project extends Source implements NodeSourceProvider
 	{
 		Log.f2(getLogPrefix() + " Loading from TMP");
 
-		fileConfig = new File(tmpBase, Paths.FILENAME_PROJECT_CONFIG);
+		fileConfig = new File(projDir, Paths.FILENAME_PROJECT_CONFIG);
 
 		props = new PropertyManager(fileConfig, "Project '" + projectName + "' config file");
 		props.cfgNewlineBeforeComments(false);
@@ -125,22 +111,23 @@ public class Project extends Source implements NodeSourceProvider
 		projectTitle = props.getString("title");
 		lastRpwVersion = props.getInteger("version");
 
-		privateCopiesBase = new File(tmpBase, Paths.DIRNAME_PROJECT_PRIVATE);
-		extraIncludesBase = new File(tmpBase, Paths.DIRNAME_PROJECT_INCLUDE);
-		customSoundsBase = new File(tmpBase, Paths.DIRNAME_PROJECT_SOUNDS);
-		customLanguagesBase = new File(tmpBase, Paths.DIRNAME_PROJECT_LANGUAGES);
+		privateCopiesBase = new File(projDir, Paths.DIRNAME_PROJECT_PRIVATE);
+		extraIncludesBase = new File(projDir, Paths.DIRNAME_PROJECT_EXTRA);
+		customSoundsBase = new File(projDir, Paths.DIRNAME_PROJECT_SOUNDS);
+		customLanguagesBase = new File(projDir, Paths.DIRNAME_PROJECT_LANGUAGES);
 
-		fileSourcesFiles = new File(tmpBase, Paths.FILENAME_PROJECT_FILES);
-		fileSourcesGroups = new File(tmpBase, Paths.FILENAME_PROJECT_GROUPS);
-		fileSounds = new File(tmpBase, Paths.FILENAME_PROJECT_SOUNDS);
-		fileLangs = new File(tmpBase, Paths.FILENAME_PROJECT_LANGS);
-
-		updateProjectStructure();
-
-		installDefaultIcon(false);
-		installReadme(true);
+		fileSourcesFiles = new File(projDir, Paths.FILENAME_PROJECT_FILES);
+		fileSourcesGroups = new File(projDir, Paths.FILENAME_PROJECT_GROUPS);
+		fileSounds = new File(projDir, Paths.FILENAME_PROJECT_SOUNDS);
+		fileLangs = new File(projDir, Paths.FILENAME_PROJECT_LANGS);
 
 		try {
+			fixProjectStructure();
+
+			// Add new readme and icon
+			installDefaultIcon(false);
+			installReadme(true);
+
 			if (fileSourcesFiles.exists() && fileSourcesGroups.exists()) {
 				files = SimpleConfig.mapFromFile(fileSourcesFiles);
 				groups = SimpleConfig.mapFromFile(fileSourcesGroups);
@@ -173,7 +160,7 @@ public class Project extends Source implements NodeSourceProvider
 			final File tmpFile = new File(extraIncludesBase, "assets/minecraft");
 			tmpFile.mkdirs();
 
-			saveToTmp();
+			flushMetadata();
 
 		} catch (final Exception e) {
 			Log.w(getLogPrefix() + "Project data files could not be loaded.");
@@ -183,25 +170,41 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 
-	private void updateProjectStructure()
+	/**
+	 * Fix changes in project structure
+	 */
+	private void fixProjectStructure()
 	{
 		final List<File[]> oldnew = new ArrayList<File[]>();
 
-		// changed in 3.8.4 to "cfg"
-		oldnew.add(new File[] { new File(tmpBase, "sources_files.dat"), fileSourcesFiles });
-		oldnew.add(new File[] { new File(tmpBase, "sources_groups.dat"), fileSourcesGroups });
+		if (lastRpwVersion < 384) {
+			// changed in 3.8.4 to "cfg"
+			oldnew.add(new File[] { new File(projDir, "sources_files.dat"), fileSourcesFiles });
+			oldnew.add(new File[] { new File(projDir, "sources_groups.dat"), fileSourcesGroups });
 
-		for (final File[] ff : oldnew) {
-			if (ff[0].exists()) {
-				try {
-					FileUtils.copyFile(ff[0], ff[1]);
-					FileUtils.delete(ff[0], false);
-				} catch (final IOException e) {
-					Log.e(e);
+			for (final File[] ff : oldnew) {
+				if (ff[0].exists()) {
+					try {
+						FileUtils.copyFile(ff[0], ff[1]);
+						FileUtils.delete(ff[0], false);
+					} catch (final IOException e) {
+						Log.e(e);
+					}
 				}
 			}
 		}
 
+		if (lastRpwVersion <= 400) {
+
+			// Delete old readme, so new readme can be created with changed name
+			FileUtils.delete(new File(projDir, "README.txt"), false);
+
+			// Renamed included_files/ to extra_files/
+			File f = new File(projDir, "included_files");
+			if (f.exists() && f.isDirectory()) {
+				f.renameTo(extraIncludesBase);
+			}
+		}
 	}
 
 
@@ -211,7 +214,12 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 
-	public void saveToTmp() throws IOException
+	/**
+	 * Flush project metadata to workdir
+	 * 
+	 * @throws IOException
+	 */
+	public void flushMetadata() throws IOException
 	{
 		SimpleConfig.mapToFile(fileSourcesFiles, files, false);
 		SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
@@ -222,77 +230,76 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 
-	public boolean needsSave()
+	public boolean isWorkdirDirty()
 	{
-		Log.f3(getLogPrefix() + "Finding differences TMP:BASE");
+		// Flush metadata, which may be the only change
+		try {
+			flushMetadata();
+		} catch (final IOException e) {
+			Log.e(e);
+		}
 
-		final DirectoryTreeDifferenceFinder comparator = new DirectoryTreeDifferenceFinder(NoGitFilter);
+		// Compare with backup
+		Log.f3(getLogPrefix() + "Finding differences BACKUP:WORKDIR");
 
-		final boolean retval = !comparator.areEqual(getProjectDirectory(), getRealProjectBase());
+		final DirectoryTreeDifferenceFinder comparator = new DirectoryTreeDifferenceFinder(FileUtils.NoGitFilter);
 
-		Log.f3(getLogPrefix() + (retval ? "Changes detected, needs save." : "No changes found."));
+		final boolean retval = !comparator.areEqual(backupBase, projDir);
+
+		Log.f3(getLogPrefix() + (retval ? "Changes detected" : "No changes found."));
 
 		return retval;
 	}
 
 
 	/**
-	 * Save project to real basedir
+	 * Revert all project changes
 	 */
-	public void save()
+	public void revert()
 	{
-		try {
-			saveToTmp();
-		} catch (final IOException e) {
-			Log.e(e);
-		}
-		
-		if(!needsSave()) {
-			Log.f3("Not saving, no changes found.");
-			return;
-		}
-
-		copyFromTmpToBasedir();
+		Log.f2("Reverting project changes, restoring from backup.");
+		restoreFromBackup();
 	}
 
 
-	private void copyFromBasedirToTmp()
+	public void createBackup()
 	{
-		// delete (if any) workdir in tmp
-		FileUtils.delete(tmpBase, true);
+		// clean target
+		FileUtils.delete(backupBase, true);
 
 		try {
-			Log.f2(getLogPrefix() + "Copying BASE->TMP");
+			Log.f2(getLogPrefix() + "Creating backup copy...");
 
-			FileUtils.copyDirectory(getRealProjectBase(), tmpBase, NoGitFilter, null);
+			FileUtils.copyDirectory(projDir, backupBase, FileUtils.NoGitFilter, null);
 
 			Log.f2(getLogPrefix() + "Copying - done.");
 
 		} catch (final IOException e) {
-			Alerts.error(App.getFrame(), "Error", "An error occured while\nopening the project.");
+			Alerts.error(App.getFrame(), "Error", "An error occured while\ncopying to backup folder.");
 			Log.e(e);
 		}
 	}
 
 
-	private void copyFromTmpToBasedir()
+	private void restoreFromBackup()
 	{
-		final File realBase = getRealProjectBase();
-
 		// Delete all but the git folder, keep the folder itself.
-		FileUtils.delete(realBase, true, NoGitFilter, false);
+		FileUtils.delete(projDir, true, FileUtils.NoGitFilter, false);
 
 		try {
-			Log.f2(getLogPrefix() + "Copying TMP->BASE");
+			Log.f2(getLogPrefix() + "Restoring project files from backup.");
 
-			FileUtils.copyDirectory(tmpBase, realBase);
+			FileUtils.copyDirectory(backupBase, projDir);
 
-			Log.f2(getLogPrefix() + "Copying - done.");
+			Log.f2(getLogPrefix() + "Restoring - done.");
 
 		} catch (final IOException e) {
-			Alerts.error(App.getFrame(), "Error Saving Project", "Failed to save project.\nThe project may have been corrupted.");
+			Alerts.error(App.getFrame(), "Error Reverting Changes", "Failed to revert project from backup.\nThe project may have been corrupted.");
 			return;
 		}
+
+		// Reload project data
+		reload();
 	}
 
 
@@ -343,7 +350,7 @@ public class Project extends Source implements NodeSourceProvider
 
 	public void installDefaultIcon(boolean force)
 	{
-		final File img = new File(tmpBase, "pack.png");
+		final File img = new File(projDir, "pack.png");
 		try {
 			if (img.exists() && !force) {
 				return;
@@ -360,15 +367,15 @@ public class Project extends Source implements NodeSourceProvider
 
 	public void installReadme(boolean force)
 	{
-		final File img = new File(tmpBase, "README.txt");
+		final File file = new File(projDir, "RPW_README.txt");
 		try {
-			if (img.exists() && !force) {
+			if (file.exists() && !force) {
 				return;
 			}
 
-			Log.f3("Adding README.txt to the pack");
+			Log.f3("Adding RPW_README.txt to the pack");
 
-			FileUtils.resourceToFile("/data/export/project-readme.txt", img);
+			FileUtils.resourceToFile("/data/export/project-readme.txt", file);
 		} catch (final IOException e) {
 			Log.e(getLogPrefix() + "Error creating readme file.", e);
 		}
@@ -433,13 +440,13 @@ public class Project extends Source implements NodeSourceProvider
 
 
 	/**
-	 * Working copy directory
+	 * Project main directory
 	 * 
 	 * @return workdir
 	 */
 	public File getProjectDirectory()
 	{
-		return tmpBase;
+		return projDir;
 	}
 
 

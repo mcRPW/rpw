@@ -11,7 +11,7 @@ public class Paths
 	public static final String DIRNAME_VANILLA = "vanilla";
 
 	public static final String DIRNAME_PROJECT_PRIVATE = "project_files";
-	public static final String DIRNAME_PROJECT_INCLUDE = "included_files";
+	public static final String DIRNAME_PROJECT_EXTRA = "extra_files";
 	public static final String DIRNAME_PROJECT_SOUNDS = "custom_sounds";
 	public static final String DIRNAME_PROJECT_LANGUAGES = "custom_languages";
 	public static final String FILENAME_PROJECT_CONFIG = "properties.cfg";
@@ -25,7 +25,7 @@ public class Paths
 	// paths based in workdir
 	public static final String DIR_TMP = "tmp";
 	public static final String DIR_LOGS = "logs";
-	public static final String DIR_PROJECT_WORKING_COPY_TMP = DIR_TMP + "/workdir";
+	public static final String DIR_PROJECT_BACKUP_TMP = DIR_TMP + "/backup";
 	public static final String DIR_LIBRARY = "library";
 	public static final String DIR_VANILLA = DIR_LIBRARY + "/" + DIRNAME_VANILLA;
 	public static final String DIR_RESOURCEPACKS = DIR_LIBRARY + "/" + "resourcepacks";
