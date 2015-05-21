@@ -61,6 +61,9 @@ public class MenuMain
 	private JCheckBoxMenuItem itemOptionFancyTree;
 	private JCheckBoxMenuItem itemOptionLangFiles;
 	private JCheckBoxMenuItem itemOptionFontFiles;
+	private JCheckBoxMenuItem itemOptionSoundFiles;
+	private JCheckBoxMenuItem itemOptionTechFiles;
+	private JCheckBoxMenuItem itemOptionTextFiles;
 	private JCheckBoxMenuItem itemOptionPreviewHover;
 	private JCheckBoxMenuItem itemOptionHiddenFiles;
 	private JCheckBoxMenuItem itemOptionWarningOrphanedNodes;
@@ -291,8 +294,20 @@ public class MenuMain
 			ckitem.setMnemonic(KeyEvent.VK_L);	
 			menu.add(ckitem);
 			
+			ckitem = itemOptionTextFiles = new JCheckBoxMenuItem("Show text files");
+			ckitem.setMnemonic(KeyEvent.VK_T);		
+			menu.add(ckitem);
+			
 			ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font textures");
 			ckitem.setMnemonic(KeyEvent.VK_F);		
+			menu.add(ckitem);
+			
+			ckitem = itemOptionSoundFiles = new JCheckBoxMenuItem("Show audio files");
+			ckitem.setMnemonic(KeyEvent.VK_A);		
+			menu.add(ckitem);
+			
+			ckitem = itemOptionTechFiles = new JCheckBoxMenuItem("Show tech files (shaders etc)");
+			ckitem.setMnemonic(KeyEvent.VK_X);		
 			menu.add(ckitem);
 		
 			menu.addSeparator();
@@ -760,20 +775,6 @@ public class MenuMain
 			}
 		});
 
-		itemUseNimbusTheme.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				final boolean newOpt = itemUseNimbusTheme.isSelected();
-
-				if (Config.USE_NIMBUS != newOpt) {
-					Config.USE_NIMBUS = newOpt;
-					Config.save();
-				}
-			}
-		});
-
 		itemOptionLangFiles.addActionListener(new ActionListener() {
 
 			@Override
@@ -785,6 +786,65 @@ public class MenuMain
 					Config.SHOW_LANG = newOpt;
 					Config.save();
 					Tasks.taskTreeSaveAndRebuild();
+				}
+			}
+		});
+
+		itemOptionSoundFiles.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionSoundFiles.isSelected();
+
+				if (Config.SHOW_SOUNDS != newOpt) {
+					Config.SHOW_SOUNDS = newOpt;
+					Config.save();
+					Tasks.taskTreeSaveAndRebuild();
+				}
+			}
+		});
+
+		itemOptionTechFiles.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionTechFiles.isSelected();
+
+				if (Config.SHOW_TECHNICAL != newOpt) {
+					Config.SHOW_TECHNICAL = newOpt;
+					Config.save();
+					Tasks.taskTreeSaveAndRebuild();
+				}
+			}
+		});
+
+		itemOptionTextFiles.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionTextFiles.isSelected();
+
+				if (Config.SHOW_TEXTS != newOpt) {
+					Config.SHOW_TEXTS = newOpt;
+					Config.save();
+					Tasks.taskTreeSaveAndRebuild();
+				}
+			}
+		});
+
+		itemUseNimbusTheme.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemUseNimbusTheme.isSelected();
+
+				if (Config.USE_NIMBUS != newOpt) {
+					Config.USE_NIMBUS = newOpt;
+					Config.save();
 				}
 			}
 		});
@@ -886,6 +946,9 @@ public class MenuMain
 		itemOptionObsoleteDirs.setSelected(Config.SHOW_OBSOLETE_DIRS);
 		itemOptionLangFiles.setSelected(Config.SHOW_LANG);
 		itemOptionFontFiles.setSelected(Config.SHOW_FONT);
+		itemOptionSoundFiles.setSelected(Config.SHOW_SOUNDS);
+		itemOptionTechFiles.setSelected(Config.SHOW_TECHNICAL);
+		itemOptionTextFiles.setSelected(Config.SHOW_TEXTS);
 		itemOptionWarningOrphanedNodes.setSelected(Config.WARNING_ORPHANED_NODES);
 		itemOptionPreviewHover.setSelected(Config.PREVIEW_HOVER);
 		itemOptionHiddenFiles.setSelected(Config.SHOW_HIDDEN_FILES);

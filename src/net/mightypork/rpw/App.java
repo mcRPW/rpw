@@ -48,10 +48,6 @@ public class App
 	}
 
 
-	public App() {
-	}
-
-
 	public void start()
 	{
 		init();

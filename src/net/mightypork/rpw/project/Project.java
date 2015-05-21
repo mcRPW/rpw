@@ -20,7 +20,7 @@ import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.struct.LangEntryMap;
 import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
-import net.mightypork.rpw.utils.UpdateHelper;
+import net.mightypork.rpw.utils.Fixins;
 import net.mightypork.rpw.utils.files.DirectoryTreeDifferenceFinder;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
@@ -38,11 +38,12 @@ public class Project extends Source implements NodeSourceProvider
 
 	private PropertyManager props;
 
+	private final File projectBase;
 	private final File backupBase;
-	private File privateCopiesBase;
-	private File extraIncludesBase;
+	private File assetsBase;
+	private File extrasBase;
 	private File customSoundsBase;
-	private File customLanguagesBase;
+	private File customLangsBase;
 
 	private File fileSourcesFiles;
 	private File fileSourcesGroups;
@@ -55,25 +56,15 @@ public class Project extends Source implements NodeSourceProvider
 
 	private Integer lastRpwVersion;
 
-	private final File projDir;
-
 
 	public Project(String identifier) {
 		projectName = identifier;
-
 		projectTitle = identifier; // by default
 
-		backupBase = OsUtils.getAppDir(Paths.DIR_PROJECT_BACKUP_TMP + "-" + identifier, true);
-
-		projDir = OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + projectName, false);
+		backupBase = Paths.getProjectBackupFolder(identifier);
+		projectBase = Paths.getProjectFolder(identifier);
 
 		init();
-	}
-
-
-	private File getRealProjectBase()
-	{
-		return projDir;
 	}
 
 
@@ -95,8 +86,65 @@ public class Project extends Source implements NodeSourceProvider
 	{
 		Log.f2(getLogPrefix() + " Loading from TMP");
 
-		fileConfig = new File(projDir, Paths.FILENAME_PROJECT_CONFIG);
+		fileConfig = new File(projectBase, Paths.FILENAME_PROJECT_CONFIG);
 
+		assetsBase = new File(projectBase, Paths.DIRNAME_PROJECT_PRIVATE);
+		extrasBase = new File(projectBase, Paths.DIRNAME_PROJECT_EXTRA);
+		customSoundsBase = new File(projectBase, Paths.DIRNAME_PROJECT_SOUNDS);
+		customLangsBase = new File(projectBase, Paths.DIRNAME_PROJECT_LANGUAGES);
+
+		fileSourcesFiles = new File(projectBase, Paths.FILENAME_PROJECT_FILES);
+		fileSourcesGroups = new File(projectBase, Paths.FILENAME_PROJECT_GROUPS);
+		fileSounds = new File(projectBase, Paths.FILENAME_PROJECT_SOUNDS);
+		fileLangs = new File(projectBase, Paths.FILENAME_PROJECT_LANGS);
+
+		loadProps();
+
+		try {
+			fixProjectStructure();
+
+			// Add new readme and icon
+			installDefaultIcon(false);
+			installReadme(true);
+
+			// Read extra config files
+			if (fileSourcesFiles.exists()) {
+				files = SimpleConfig.mapFromFile(fileSourcesFiles);
+			}
+
+			if (fileSourcesGroups.exists()) {
+				groups = SimpleConfig.mapFromFile(fileSourcesGroups);
+			}
+
+			if (fileSounds.exists()) {
+				sounds = SoundEntryMap.fromJson(FileUtils.fileToString(fileSounds));
+			}
+
+			if (fileLangs.exists()) {
+				langs = LangEntryMap.fromJson(FileUtils.fileToString(fileLangs));
+			}
+
+			assetsBase.mkdirs();
+			extrasBase.mkdirs();
+			customSoundsBase.mkdirs();
+			customLangsBase.mkdirs();
+
+			// Placeholder to show how the folder works
+			new File(extrasBase, "assets/minecraft").mkdirs();
+
+			// Flush config files in case they changed
+			saveConfigFiles();
+
+		} catch (final Exception e) {
+			Log.w(getLogPrefix() + "Project data files could not be loaded.");
+			Alerts.error(App.getFrame(), "An arror occured while loading the project.\nPlease, check the log for details.");
+		}
+
+	}
+
+
+	private void loadProps()
+	{
 		props = new PropertyManager(fileConfig, "Project '" + projectName + "' config file");
 		props.cfgNewlineBeforeComments(false);
 		props.cfgSeparateSections(false);
@@ -110,63 +158,20 @@ public class Project extends Source implements NodeSourceProvider
 
 		projectTitle = props.getString("title");
 		lastRpwVersion = props.getInteger("version");
+	}
 
-		privateCopiesBase = new File(projDir, Paths.DIRNAME_PROJECT_PRIVATE);
-		extraIncludesBase = new File(projDir, Paths.DIRNAME_PROJECT_EXTRA);
-		customSoundsBase = new File(projDir, Paths.DIRNAME_PROJECT_SOUNDS);
-		customLanguagesBase = new File(projDir, Paths.DIRNAME_PROJECT_LANGUAGES);
 
-		fileSourcesFiles = new File(projDir, Paths.FILENAME_PROJECT_FILES);
-		fileSourcesGroups = new File(projDir, Paths.FILENAME_PROJECT_GROUPS);
-		fileSounds = new File(projDir, Paths.FILENAME_PROJECT_SOUNDS);
-		fileLangs = new File(projDir, Paths.FILENAME_PROJECT_LANGS);
+	private void fixFileKeys()
+	{
+		if (Fixins.needFixProjectKeys(lastRpwVersion)) {
+			final Map<String, String> files_fixed = new HashMap<String, String>(files.size());
 
-		try {
-			fixProjectStructure();
-
-			// Add new readme and icon
-			installDefaultIcon(false);
-			installReadme(true);
-
-			if (fileSourcesFiles.exists() && fileSourcesGroups.exists()) {
-				files = SimpleConfig.mapFromFile(fileSourcesFiles);
-				groups = SimpleConfig.mapFromFile(fileSourcesGroups);
-
-				if (UpdateHelper.needFixProjectKeys(lastRpwVersion)) {
-					final Map<String, String> files_fixed = new HashMap<String, String>(files.size());
-
-					for (final Entry<String, String> e : files.entrySet()) {
-						files_fixed.put(UpdateHelper.fixProjectKey(e.getKey()), e.getValue());
-					}
-
-					files = files_fixed;
-				}
+			for (final Entry<String, String> e : files.entrySet()) {
+				files_fixed.put(Fixins.fixProjectKey(e.getKey()), e.getValue());
 			}
 
-			if (fileSounds.exists()) {
-				sounds = SoundEntryMap.fromJson(FileUtils.fileToString(fileSounds));
-			}
-
-			if (fileLangs.exists()) {
-				langs = LangEntryMap.fromJson(FileUtils.fileToString(fileLangs));
-			}
-
-			privateCopiesBase.mkdirs();
-			extraIncludesBase.mkdirs();
-			customSoundsBase.mkdirs();
-			customLanguagesBase.mkdirs();
-
-			// just for convenience, to show how it works
-			final File tmpFile = new File(extraIncludesBase, "assets/minecraft");
-			tmpFile.mkdirs();
-
-			flushMetadata();
-
-		} catch (final Exception e) {
-			Log.w(getLogPrefix() + "Project data files could not be loaded.");
-			Alerts.error(App.getFrame(), "An arror occured while loading the project.\nPlease, check the log for details.");
+			this.files = files_fixed;
 		}
-
 	}
 
 
@@ -179,8 +184,8 @@ public class Project extends Source implements NodeSourceProvider
 
 		if (lastRpwVersion < 384) {
 			// changed in 3.8.4 to "cfg"
-			oldnew.add(new File[] { new File(projDir, "sources_files.dat"), fileSourcesFiles });
-			oldnew.add(new File[] { new File(projDir, "sources_groups.dat"), fileSourcesGroups });
+			oldnew.add(new File[] { new File(projectBase, "sources_files.dat"), fileSourcesFiles });
+			oldnew.add(new File[] { new File(projectBase, "sources_groups.dat"), fileSourcesGroups });
 
 			for (final File[] ff : oldnew) {
 				if (ff[0].exists()) {
@@ -197,12 +202,12 @@ public class Project extends Source implements NodeSourceProvider
 		if (lastRpwVersion <= 400) {
 
 			// Delete old readme, so new readme can be created with changed name
-			FileUtils.delete(new File(projDir, "README.txt"), false);
+			FileUtils.delete(new File(projectBase, "README.txt"), false);
 
 			// Renamed included_files/ to extra_files/
-			File f = new File(projDir, "included_files");
+			File f = new File(projectBase, "included_files");
 			if (f.exists() && f.isDirectory()) {
-				f.renameTo(extraIncludesBase);
+				f.renameTo(extrasBase);
 			}
 		}
 	}
@@ -219,22 +224,32 @@ public class Project extends Source implements NodeSourceProvider
 	 * 
 	 * @throws IOException
 	 */
-	public void flushMetadata() throws IOException
+	public void saveConfigFiles() throws IOException
 	{
 		SimpleConfig.mapToFile(fileSourcesFiles, files, false);
 		SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
 		FileUtils.stringToFile(fileSounds, sounds.toJson());
 		FileUtils.stringToFile(fileLangs, langs.toJson());
 
-		saveProperties();
+		// all properties
+		props.cfgForceSave(true);
+		props.setValue("version", Const.VERSION_SERIAL);
+		props.setValue("title", projectTitle);
+		props.apply();
 	}
 
 
+	/**
+	 * Check if there's a difference between the working directory and the
+	 * backup folder.
+	 * 
+	 * @return
+	 */
 	public boolean isWorkdirDirty()
 	{
 		// Flush metadata, which may be the only change
 		try {
-			flushMetadata();
+			saveConfigFiles();
 		} catch (final IOException e) {
 			Log.e(e);
 		}
@@ -244,7 +259,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		final DirectoryTreeDifferenceFinder comparator = new DirectoryTreeDifferenceFinder(FileUtils.NoGitFilter);
 
-		final boolean retval = !comparator.areEqual(backupBase, projDir);
+		final boolean retval = !comparator.areEqual(backupBase, projectBase);
 
 		Log.f3(getLogPrefix() + (retval ? "Changes detected" : "No changes found."));
 
@@ -262,6 +277,9 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 
+	/**
+	 * Copy workdir to a backup folder
+	 */
 	public void createBackup()
 	{
 		// clean target
@@ -270,7 +288,7 @@ public class Project extends Source implements NodeSourceProvider
 		try {
 			Log.f2(getLogPrefix() + "Creating backup copy...");
 
-			FileUtils.copyDirectory(projDir, backupBase, FileUtils.NoGitFilter, null);
+			FileUtils.copyDirectory(projectBase, backupBase, FileUtils.NoGitFilter, null);
 
 			Log.f2(getLogPrefix() + "Copying - done.");
 
@@ -284,12 +302,12 @@ public class Project extends Source implements NodeSourceProvider
 	private void restoreFromBackup()
 	{
 		// Delete all but the git folder, keep the folder itself.
-		FileUtils.delete(projDir, true, FileUtils.NoGitFilter, false);
+		FileUtils.delete(projectBase, true, FileUtils.NoGitFilter, false);
 
 		try {
 			Log.f2(getLogPrefix() + "Restoring project files from backup.");
 
-			FileUtils.copyDirectory(backupBase, projDir);
+			FileUtils.copyDirectory(backupBase, projectBase);
 
 			Log.f2(getLogPrefix() + "Restoring - done.");
 
@@ -300,19 +318,6 @@ public class Project extends Source implements NodeSourceProvider
 
 		// Reload project data
 		reload();
-	}
-
-
-	/**
-	 * Save project properties (title and RPW version)
-	 */
-	public void saveProperties()
-	{
-		// all properties
-		props.cfgForceSave(true);
-		props.setValue("version", Const.VERSION_SERIAL);
-		props.setValue("title", projectTitle);
-		props.apply();
 	}
 
 
@@ -350,7 +355,7 @@ public class Project extends Source implements NodeSourceProvider
 
 	public void installDefaultIcon(boolean force)
 	{
-		final File img = new File(projDir, "pack.png");
+		final File img = new File(projectBase, "pack.png");
 		try {
 			if (img.exists() && !force) {
 				return;
@@ -365,9 +370,9 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 
-	public void installReadme(boolean force)
+	private void installReadme(boolean force)
 	{
-		final File file = new File(projDir, "RPW_README.txt");
+		final File file = new File(projectBase, "RPW_README.txt");
 		try {
 			if (file.exists() && !force) {
 				return;
@@ -417,7 +422,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		final String path = ae.getPath();
 
-		final File file = new File(privateCopiesBase, path);
+		final File file = new File(assetsBase, path);
 
 		if (!file.exists()) return null;
 
@@ -429,13 +434,13 @@ public class Project extends Source implements NodeSourceProvider
 	@Override
 	public File getAssetsDirectory()
 	{
-		return privateCopiesBase;
+		return assetsBase;
 	}
 
 
 	public File getExtrasDirectory()
 	{
-		return extraIncludesBase;
+		return extrasBase;
 	}
 
 
@@ -446,7 +451,7 @@ public class Project extends Source implements NodeSourceProvider
 	 */
 	public File getProjectDirectory()
 	{
-		return projDir;
+		return projectBase;
 	}
 
 
@@ -458,7 +463,7 @@ public class Project extends Source implements NodeSourceProvider
 
 	public File getCustomLangDirectory()
 	{
-		return customLanguagesBase;
+		return customLangsBase;
 	}
 
 

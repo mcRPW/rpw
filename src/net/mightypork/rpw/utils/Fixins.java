@@ -3,9 +3,14 @@ package net.mightypork.rpw.utils;
 import net.mightypork.rpw.Config;
 
 
-public class UpdateHelper
+/**
+ * Project and library backward compatibility fixes
+ * 
+ * @author ondra
+ *
+ */
+public class Fixins
 {
-
 	public static boolean needFixLibraryKeys()
 	{
 		return (Config.LAST_RUN_VERSION <= 383);

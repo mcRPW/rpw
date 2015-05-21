@@ -245,7 +245,7 @@ public class Tasks
 		}
 
 		try {
-			proj.flushMetadata();
+			proj.saveConfigFiles();
 		} catch (final IOException e) {
 			Log.e(e);
 		}

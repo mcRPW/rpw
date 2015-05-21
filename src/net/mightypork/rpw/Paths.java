@@ -1,8 +1,12 @@
 package net.mightypork.rpw;
 
+import java.io.File;
+
+import net.mightypork.rpw.utils.files.OsUtils;
+
+
 public class Paths
 {
-
 	// in user home
 	public static final String APP_DIR = "mcRPW";
 	public static final String MC_DIR = "minecraft";
@@ -57,5 +61,17 @@ public class Paths
 	public static final String URL_GITHUB_BUGS = "https://github.com/MightyPork/rpw/issues/new";
 
 	public static final String URL_LATEST_DOWNLOAD = "https://dl.dropboxusercontent.com/u/64454818/RPW/RPW-LATEST.jar";
+
+
+	public static File getProjectBackupFolder(String identifier)
+	{
+		return OsUtils.getAppDir(Paths.DIR_PROJECT_BACKUP_TMP + "-" + identifier, true);
+	}
+
+
+	public static File getProjectFolder(String identifier)
+	{
+		return OsUtils.getAppDir(Paths.DIR_PROJECTS + "/" + identifier, true);
+	}
 
 }

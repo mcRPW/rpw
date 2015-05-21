@@ -87,18 +87,32 @@ public class TreeBuilder
 		for (final AssetEntry ae : Sources.vanilla.getAssetEntries()) {
 			if (!fullTree) {
 				if (!Config.SHOW_FONT) {
-					if (DELETE_FONT.matches(ae))
-						continue; // skip fonts
+					if (DELETE_FONT.matches(ae)) continue; // skip fonts
+				}
+				
+				if (!Config.SHOW_TEXTS) {
+					if (ae.getType() == EAsset.TEXT) continue; // skip texts
+				}
+
+				if (!Config.SHOW_TECHNICAL) {
+
+					switch (ae.getType()) {
+					case CFG:
+					case FSH:
+					case UNKNOWN:
+					case INI:
+					case PROPERTIES:
+					case JSON:
+						continue; // skip shit
+					default:
+					}
 				}
 
 				if (!Config.SHOW_OBSOLETE_DIRS) {
 					boolean del = false;
-					if (ae.getKey().startsWith("assets.minecraft.sound") && !ae.getKey().startsWith("assets.minecraft.sounds"))
-						del = true; // sound dir
-					if (ae.getKey().startsWith("assets.minecraft.music"))
-						del = true; // music dir
-					if (ae.getKey().startsWith("assets.minecraft.records"))
-						del = true; // records dir
+					if (ae.getKey().startsWith("assets.minecraft.sound") && !ae.getKey().startsWith("assets.minecraft.sounds")) del = true; // sound dir
+					if (ae.getKey().startsWith("assets.minecraft.music")) del = true; // music dir
+					if (ae.getKey().startsWith("assets.minecraft.records")) del = true; // records dir
 					if (del) {
 						// if(Config.LOG_GROUPS)
 						// Log.f3("IGNORE OBSOLETE: "+ae.getKey());
@@ -107,10 +121,12 @@ public class TreeBuilder
 				}
 
 				if (!Config.SHOW_LANG) {
-					if (ae.getType() == EAsset.LANG)
-						continue; // skip lang files
+					if (ae.getType() == EAsset.LANG) continue; // skip lang files
 				}
 
+				if (!Config.SHOW_SOUNDS) {
+					if (ae.getType() == EAsset.SOUND) continue; // skip sounds
+				}
 			}
 
 			boolean success = false;

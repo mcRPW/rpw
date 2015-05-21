@@ -85,7 +85,7 @@ public class Tasks
 
 			}
 
-			project.flushMetadata();
+			project.saveConfigFiles();
 			net.mightypork.rpw.tasks.Tasks.taskTreeRebuild();
 			return true;
 		} catch (Exception e) {

@@ -13,7 +13,7 @@ import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
-import net.mightypork.rpw.utils.UpdateHelper;
+import net.mightypork.rpw.utils.Fixins;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.SimpleConfig;
@@ -44,7 +44,7 @@ public class TaskLoadVanillaStructure
 
 			// fix changes introduced in 3.8.4
 			Map<String, String> fixedMap = null;
-			final boolean fixing = UpdateHelper.needFixLibraryKeys();
+			final boolean fixing = Fixins.needFixLibraryKeys();
 
 			if (fixing) {
 				Log.f2("Library file is outdated.");
@@ -59,7 +59,7 @@ public class TaskLoadVanillaStructure
 					String k = k1;
 
 					if (fixing) {
-						k = UpdateHelper.fixLibraryKey(k1);
+						k = Fixins.fixLibraryKey(k1);
 						fixedMap.put(k, v);
 					}
 
