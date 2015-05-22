@@ -62,13 +62,11 @@ public class WindowMain
 
 	private Component buildMainPanel()
 	{
-		if (Config.USE_NIMBUS)
-			Gui.useMetal();
+		if (Config.USE_NIMBUS) Gui.useMetal();
 
 		treeDisplay = new TreeDisplay();
 
-		if (Config.USE_NIMBUS)
-			Gui.useNimbus();
+		if (Config.USE_NIMBUS) Gui.useNimbus();
 
 		final JScrollPane scrollpane = new JScrollPane(treeDisplay.treeTable);
 

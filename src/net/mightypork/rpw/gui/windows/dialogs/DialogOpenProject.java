@@ -134,8 +134,7 @@ public class DialogOpenProject extends RpwDialog
 			if (Projects.isOpen() && Projects.getActive().getName().equals(projname)) {
 				final boolean agree = Alerts.askOkCancel(self(), "Project is open", "RPW can't RENAME an open project.\n\nDo you want to close it?");
 
-				if (!agree)
-					return;
+				if (!agree) return;
 
 				Tasks.taskCloseProject();
 			}
@@ -154,16 +153,14 @@ public class DialogOpenProject extends RpwDialog
 			);
 			//@formatter:on
 
-			if (newName == null)
-				return;
+			if (newName == null) return;
 			newName.trim();
 			if (!Utils.isValidFilenameString(newName)) {
 				Alerts.error(self(), "\"" + newName + "\" is not a valid name.");
 				return;
 			}
 
-			if (projname.equals(newName))
-				return;
+			if (projname.equals(newName)) return;
 
 			if (projectNames.contains(newName)) {
 				Alerts.error(self(), "Name \"" + newName + "\" is already used.");
@@ -203,23 +200,20 @@ public class DialogOpenProject extends RpwDialog
 			);
 			//@formatter:on
 
-			if (!yes)
-				return;
+			if (!yes) return;
 
 			if (Projects.isOpen()) {
 				final String openProjectDirname = Projects.getActive().getName();
 
 				boolean isOpen = false;
 				for (final String s : choice) {
-					if (s.equals(openProjectDirname))
-						isOpen = true;
+					if (s.equals(openProjectDirname)) isOpen = true;
 				}
 
 				if (isOpen) {
 					final boolean agree = Alerts.askOkCancel(self(), "Project is open", "RPW can't DELETE an open project.\n\nDo you want to close it?");
 
-					if (!agree)
-						return;
+					if (!agree) return;
 
 					Projects.closeProject();
 					Tasks.taskOnProjectChanged();
@@ -234,11 +228,9 @@ public class DialogOpenProject extends RpwDialog
 			while (true) {
 				int live = 0;
 				for (final int task : tasks) {
-					if (Tasks.isRunning(task))
-						live++;
+					if (Tasks.isRunning(task)) live++;
 				}
-				if (live == 0)
-					break;
+				if (live == 0) break;
 			}
 
 			reloadOptions();

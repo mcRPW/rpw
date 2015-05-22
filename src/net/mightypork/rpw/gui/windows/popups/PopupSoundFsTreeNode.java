@@ -82,8 +82,7 @@ public class PopupSoundFsTreeNode
 
 
 	public PopupSoundFsTreeNode(Container c, int x, int y, List<AbstractFsTreeNode> nodes, DialogSoundWizard wizard) {
-		if (nodes == null || nodes.size() == 0)
-			return;
+		if (nodes == null || nodes.size() == 0) return;
 
 		this.container = c;
 
@@ -96,14 +95,10 @@ public class PopupSoundFsTreeNode
 		final int cnt = nodes.size();
 
 		for (final AbstractFsTreeNode node : nodes) {
-			if (node.getMark() == 1)
-				cnt_mark1++;
-			if (node.isFile())
-				cnt_file++;
-			if (node.isDirectory())
-				cnt_dir++;
-			if (node.isRoot())
-				cnt_root++;
+			if (node.getMark() == 1) cnt_mark1++;
+			if (node.isFile()) cnt_file++;
+			if (node.isDirectory()) cnt_dir++;
+			if (node.isRoot()) cnt_root++;
 		}
 
 		if (cnt_root > 1) {
@@ -186,8 +181,7 @@ public class PopupSoundFsTreeNode
 				);
 				//@formatter:on
 
-				if (!really)
-					return;
+				if (!really) return;
 
 				for (final AbstractFsTreeNode aNode : nodes) {
 					if (aNode.isFile()) {
@@ -235,8 +229,7 @@ public class PopupSoundFsTreeNode
 				if (node.isDirectory()) {
 					final String name = Alerts.askForInput(container, "New Folder", "Enter name for the new folder\ncreated in " + node.getPathRelativeToRoot(), "");
 
-					if (name == null || name.length() == 0)
-						return;
+					if (name == null || name.length() == 0) return;
 
 					final File newDir = new File(node.getPath(), name);
 

@@ -43,8 +43,7 @@ public abstract class Source implements ISource
 	public InputStream getAssetStream(String key) throws IOException
 	{
 		final File f = getAssetFile(key);
-		if (f == null)
-			return null;
+		if (f == null) return null;
 
 		return new FileInputStream(f);
 	}
@@ -60,8 +59,7 @@ public abstract class Source implements ISource
 	@Override
 	public File getAssetFile(String key)
 	{
-		if (!doesProvideAsset(key))
-			return null;
+		if (!doesProvideAsset(key)) return null;
 
 		final AssetEntry asset = Sources.vanilla.getAssetForKey(key);
 
@@ -69,8 +67,7 @@ public abstract class Source implements ISource
 
 		final File file = new File(getAssetsDirectory(), path);
 
-		if (!file.exists())
-			return null;
+		if (!file.exists()) return null;
 
 		return file;
 	}
@@ -80,15 +77,13 @@ public abstract class Source implements ISource
 	public File getAssetMetaFile(String key)
 	{
 		final File f = getAssetFile(key);
-		if (f == null)
-			return null;
+		if (f == null) return null;
 
 		String path = f.getPath();
 		path += ".mcmeta";
 
 		final File metafile = new File(path);
-		if (!metafile.exists())
-			return null;
+		if (!metafile.exists()) return null;
 
 		return metafile;
 	}
@@ -107,15 +102,13 @@ public abstract class Source implements ISource
 	public InputStream getAssetMetaStream(String key) throws IOException
 	{
 		File f = getAssetFile(key);
-		if (f == null)
-			return null;
+		if (f == null) return null;
 
 		String p = f.getPath();
 		p += ".mcmeta";
 		f = new File(p);
 
-		if (!f.exists())
-			return null;
+		if (!f.exists()) return null;
 
 		return new FileInputStream(f);
 	}

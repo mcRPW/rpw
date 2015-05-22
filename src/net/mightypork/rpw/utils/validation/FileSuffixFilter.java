@@ -30,8 +30,7 @@ public class FileSuffixFilter implements FileFilter
 	@Override
 	public boolean accept(File pathname)
 	{
-		if (!pathname.isFile())
-			return false;
+		if (!pathname.isFile()) return false;
 
 		final String fname = pathname.getName().toLowerCase().trim();
 

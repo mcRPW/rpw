@@ -91,8 +91,7 @@ public class TreeDisplay
 					final TreePath[] paths = treeTable.getTreeSelectionModel().getSelectionPaths();
 					final TreePath path = paths[paths.length - 1];
 
-					if (path == null)
-						return;
+					if (path == null) return;
 
 					final AssetTreeNode node = (AssetTreeNode) path.getLastPathComponent();
 
@@ -109,8 +108,7 @@ public class TreeDisplay
 			public void mouseExited(MouseEvent e)
 			{
 				// this fix is useful only when mouse-preview is enabled
-				if (Config.PREVIEW_HOVER)
-					tsl.valueChanged(null);
+				if (Config.PREVIEW_HOVER) tsl.valueChanged(null);
 			}
 
 		});
@@ -127,15 +125,13 @@ public class TreeDisplay
 					return;
 				}
 
-				if (!Config.PREVIEW_HOVER)
-					return;
+				if (!Config.PREVIEW_HOVER) return;
 
 				lastEvent = System.currentTimeMillis();
 
 				final int row = treeTable.rowAtPoint(e.getPoint());
 				final TreePath path = treeTable.getPathForRow(row);
-				if (path == null)
-					return;
+				if (path == null) return;
 
 				final AssetTreeNode node = (AssetTreeNode) path.getLastPathComponent();
 				App.getSidePanel().updatePreview(node);
@@ -204,8 +200,7 @@ public class TreeDisplay
 
 	public void togglePathRecursively(AssetTreeNode node, boolean expand)
 	{
-		if (node.isLeaf())
-			return;
+		if (node.isLeaf()) return;
 
 		final TreeNode[] pathObjs = treeModel.getPathToRoot(node);
 
@@ -217,8 +212,7 @@ public class TreeDisplay
 
 	public void togglePathSimple(AssetTreeNode node, boolean expand)
 	{
-		if (node.isLeaf())
-			return;
+		if (node.isLeaf()) return;
 
 		final TreeNode[] pathObjs = treeModel.getPathToRoot(node);
 
@@ -245,8 +239,7 @@ public class TreeDisplay
 	private static void expandAll(JTree tree, TreePath parent, boolean expand)
 	{
 		final TreeNode node = (TreeNode) parent.getLastPathComponent();
-		if (node == null)
-			return;
+		if (node == null) return;
 		if (node.getChildCount() > 0) {
 			for (final Enumeration<TreeNode> e = node.children(); e.hasMoreElements();) {
 				final TreeNode treeNode = e.nextElement();

@@ -34,7 +34,7 @@ import net.mightypork.rpw.utils.logging.Log;
 public class SequenceDeleteIdenticalToVanilla extends AbstractMonitoredSequence
 {
 	private final Project project;
-	
+
 	private int count = 0;
 
 
@@ -90,8 +90,8 @@ public class SequenceDeleteIdenticalToVanilla extends AbstractMonitoredSequence
 		Collection<AssetEntry> entries = Sources.vanilla.getAssetEntries();
 
 		for (AssetEntry e : entries) {
-			String key = e.getKey();			
-			
+			String key = e.getKey();
+
 			File pro = project.getAssetFile(key);
 			File van = Sources.vanilla.getAssetFile(key);
 
@@ -123,6 +123,6 @@ public class SequenceDeleteIdenticalToVanilla extends AbstractMonitoredSequence
 	@Override
 	protected void doAfter(boolean success)
 	{
-		if(success) Alerts.info(App.getFrame(), "Successfully removed "+count+" Vanilla duplicates from project.");
+		if (success) Alerts.info(App.getFrame(), "Successfully removed " + count + " Vanilla duplicates from project.");
 	}
 }

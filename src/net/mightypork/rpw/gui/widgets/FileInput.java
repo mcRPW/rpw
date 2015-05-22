@@ -74,11 +74,9 @@ public class FileInput extends HBox
 				if (fc.approved()) {
 					final File f = fc.getSelectedFile();
 
-					if (f == null)
-						return;
+					if (f == null) return;
 
-					if (FileInput.this.mustExist && !f.exists())
-						return; // doesn't exist
+					if (FileInput.this.mustExist && !f.exists()) return; // doesn't exist
 
 					FileInput.this.file = f;
 
@@ -93,10 +91,8 @@ public class FileInput extends HBox
 		});
 
 		// can be changed by setFileChooser()
-		if (filter == FileChooser.FOLDERS)
-			this.fc = new FileChooser(parent, pathEnum, title, filter, false, true, false);
-		else
-			this.fc = new FileChooser(parent, pathEnum, title, filter, true, false, false);
+		if (filter == FileChooser.FOLDERS) this.fc = new FileChooser(parent, pathEnum, title, filter, false, true, false);
+		else this.fc = new FileChooser(parent, pathEnum, title, filter, true, false, false);
 
 		// build the GUI
 		add(buttonPickFile);

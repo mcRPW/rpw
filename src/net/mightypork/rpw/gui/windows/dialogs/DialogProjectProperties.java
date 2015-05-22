@@ -201,8 +201,7 @@ public class DialogProjectProperties extends RpwDialog
 			if (fc.approved()) {
 				final File f = fc.getSelectedFile();
 
-				if (f == null)
-					return;
+				if (f == null) return;
 
 				if (f.exists()) {
 					try {

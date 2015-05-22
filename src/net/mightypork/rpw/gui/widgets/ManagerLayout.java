@@ -82,8 +82,7 @@ public class ManagerLayout extends HBox
 
 		// add gaps to remaining slots
 		for (int i = 0; i < bb.length; i++) {
-			if (bb[i] == null)
-				bb[i] = Gui.hgap_large();
+			if (bb[i] == null) bb[i] = Gui.hgap_large();
 
 			right.add(bb[i]);
 		}

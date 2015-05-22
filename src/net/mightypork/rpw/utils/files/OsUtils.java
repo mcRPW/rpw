@@ -45,8 +45,7 @@ public class OsUtils
 	 */
 	public static File getAppDir()
 	{
-		if (OsUtils.appDir == null)
-			OsUtils.appDir = OsUtils.getWorkDir(Paths.APP_DIR, true);
+		if (OsUtils.appDir == null) OsUtils.appDir = OsUtils.getWorkDir(Paths.APP_DIR, true);
 		return OsUtils.appDir;
 	}
 
@@ -98,8 +97,7 @@ public class OsUtils
 	 */
 	public static File getMcDir()
 	{
-		if (OsUtils.mcDir == null)
-			OsUtils.mcDir = OsUtils.getWorkDir(Paths.MC_DIR, false);
+		if (OsUtils.mcDir == null) OsUtils.mcDir = OsUtils.getWorkDir(Paths.MC_DIR, false);
 		return OsUtils.mcDir;
 	}
 
@@ -257,8 +255,7 @@ public class OsUtils
 			if (f.exists() && f.isDirectory()) {
 				final File jar = new File(f, f.getName() + ".jar");
 
-				if (jar.exists() && jar.isFile())
-					valid++;
+				if (jar.exists() && jar.isFile()) valid++;
 			}
 		}
 

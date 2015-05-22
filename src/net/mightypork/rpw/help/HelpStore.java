@@ -26,8 +26,7 @@ public class HelpStore
 		final Map<String, String> pageMap = SimpleConfig.mapFromString(text);
 
 		for (final Entry<String, String> entry : pageMap.entrySet()) {
-			if (Config.LOG_HELP_LOADING)
-				Log.f3("Loading file: " + entry.getKey() + " (\"" + entry.getValue() + "\")");
+			if (Config.LOG_HELP_LOADING) Log.f3("Loading file: " + entry.getKey() + " (\"" + entry.getValue() + "\")");
 
 			try {
 				pages.add(new HelpPage(entry.getValue(), entry.getKey()));

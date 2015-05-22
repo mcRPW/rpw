@@ -36,8 +36,7 @@ public class NullAwareTableCellBooleanRenderer extends JCheckBox implements Tabl
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
 	{
-		if (value == null)
-			return cdr.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+		if (value == null) return cdr.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
 
 		if (isSelected) {
 			setForeground(table.getSelectionForeground());

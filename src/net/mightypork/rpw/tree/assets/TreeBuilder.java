@@ -89,7 +89,7 @@ public class TreeBuilder
 				if (!Config.SHOW_FONT) {
 					if (DELETE_FONT.matches(ae)) continue; // skip fonts
 				}
-				
+
 				if (!Config.SHOW_TEXTS) {
 					if (ae.getType() == EAsset.TEXT) continue; // skip texts
 				}

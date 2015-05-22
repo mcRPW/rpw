@@ -41,10 +41,8 @@ public class AssetLayout implements Iterable<AssetImage>
 		int gw = 64, gh = 64;
 
 		while (!computeLayout(gw, gh)) {
-			if (gw > gh)
-				gh *= 2;
-			else
-				gw *= 2;
+			if (gw > gh) gh *= 2;
+			else gw *= 2;
 		}
 
 		return new Point(gw, gh);
@@ -71,8 +69,7 @@ public class AssetLayout implements Iterable<AssetImage>
 		for (AssetImage asset : entries) {
 			Node n = tree.insert(asset);
 
-			if (n == null)
-				return false;
+			if (n == null) return false;
 
 			// System.out.println("Inserted at "+rectToString(n.rc));
 
@@ -100,20 +97,16 @@ public class AssetLayout implements Iterable<AssetImage>
 			if (element == null && child[0] != null && child[1] != null) {
 				Node newNode = child[0].insert(asset);
 
-				if (newNode != null)
-					return newNode;
+				if (newNode != null) return newNode;
 				else {
 					// System.out.println("Can't fit in "+rectToString(child[0].rc)+", testing other child");
 					return child[1].insert(asset);
 				}
 			} else {
-				if (element != null)
-					return null;
+				if (element != null) return null;
 
-				if (asset.width() > rc.width || asset.height() > rc.height)
-					return null;
-				else if (asset.width() == rc.width && asset.height() == rc.height)
-					return this;
+				if (asset.width() > rc.width || asset.height() > rc.height) return null;
+				else if (asset.width() == rc.width && asset.height() == rc.height) return this;
 
 				int dw = rc.width - asset.width();
 				int dh = rc.height - asset.height();

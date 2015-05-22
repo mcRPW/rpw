@@ -31,12 +31,10 @@ public class ApplyInheritProcessor implements AssetTreeProcessor
 	@Override
 	public void process(AssetTreeNode node)
 	{
-		if (processed.contains(node))
-			return;
+		if (processed.contains(node)) return;
 		processed.add(node);
 
-		if (!node.isLeaf())
-			return; // leave groups alone
+		if (!node.isLeaf()) return; // leave groups alone
 
 		final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 

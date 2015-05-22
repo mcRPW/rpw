@@ -33,8 +33,7 @@ public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNo
 	 */
 	public void setParent(AssetTreeNode parent)
 	{
-		if (parent == null || parent.isLeaf())
-			throw new IllegalArgumentException("Invalid parent node " + parent);
+		if (parent == null || parent.isLeaf()) throw new IllegalArgumentException("Invalid parent node " + parent);
 		this.parent = parent;
 	}
 
@@ -123,8 +122,7 @@ public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNo
 	public void setLibrarySourceIfNeeded(String source)
 	{
 		final String resolved = resolveAssetSource();
-		if (resolved.equals(source))
-			return;
+		if (resolved.equals(source)) return;
 
 		setLibrarySource(source);
 	}
@@ -199,10 +197,8 @@ public abstract class AssetTreeNode implements Comparable<AssetTreeNode>, TreeNo
 	{
 		int i = compareTo_2(o);
 
-		if (i < 0)
-			i = -1;
-		if (i > 0)
-			i = 1;
+		if (i < 0) i = -1;
+		if (i > 0) i = 1;
 
 		return i;
 

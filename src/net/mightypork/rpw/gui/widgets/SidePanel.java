@@ -509,8 +509,7 @@ public class SidePanel
 					return;
 				} finally {
 					try {
-						if (in != null)
-							in.close();
+						if (in != null) in.close();
 					} catch (final IOException e1) {
 						e1.printStackTrace();
 					}
@@ -539,8 +538,7 @@ public class SidePanel
 					return;
 				} finally {
 					try {
-						if (in != null)
-							in.close();
+						if (in != null) in.close();
 					} catch (final IOException e1) {
 						e1.printStackTrace();
 					}

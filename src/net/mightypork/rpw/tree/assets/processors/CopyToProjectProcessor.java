@@ -42,8 +42,7 @@ public class CopyToProjectProcessor implements AssetTreeProcessor
 	@Override
 	public void process(AssetTreeNode node)
 	{
-		if (processed.contains(node))
-			return; // no double-processing
+		if (processed.contains(node)) return; // no double-processing
 		processed.add(node);
 
 		if (node instanceof AssetTreeGroup) {
@@ -56,8 +55,7 @@ public class CopyToProjectProcessor implements AssetTreeProcessor
 			final String source = leaf.resolveAssetSource();
 			final String sourceMeta = leaf.resolveAssetMetaSource();
 
-			if (ignoredSources.contains(source))
-				return;
+			if (ignoredSources.contains(source)) return;
 
 			// prepare files
 			final String path = leaf.getAssetEntry().getPath();

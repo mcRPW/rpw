@@ -28,8 +28,7 @@ public class AssetTableClickListener extends PopupTriggerListener
 	public void onPopupTrigger(MouseEvent e)
 	{
 		final TreePath pathUnderMouse = treeTable.getPathForLocation(e.getX(), e.getY());
-		if (pathUnderMouse == null)
-			return;
+		if (pathUnderMouse == null) return;
 
 		TreePath[] paths = treeTable.getTreeSelectionModel().getSelectionPaths();
 

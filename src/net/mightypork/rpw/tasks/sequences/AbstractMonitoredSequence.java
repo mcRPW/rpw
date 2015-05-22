@@ -69,8 +69,7 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence
 
 	protected void closeMonitor()
 	{
-		if (dpt != null)
-			dpt.closeDialog();
+		if (dpt != null) dpt.closeDialog();
 	}
 
 

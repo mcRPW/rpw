@@ -29,8 +29,8 @@ public class SoundSubEntry
 			try {
 				if (json.isJsonObject()) {
 					final JsonObject jso = json.getAsJsonObject();
-					
-					String name = jso.get("name").getAsString();					
+
+					String name = jso.get("name").getAsString();
 					return new SoundSubEntry(name, jso.get("stream").getAsBoolean());
 				}
 

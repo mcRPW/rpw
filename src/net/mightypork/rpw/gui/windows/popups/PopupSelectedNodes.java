@@ -142,8 +142,7 @@ public class PopupSelectedNodes
 
 			if (nodes.get(0).isLeaf()) {
 				final AssetTreeLeaf leaf = (AssetTreeLeaf) nodes.get(0);
-				if (!leaf.isMetaProvidedByProject())
-					item.setIcon(Icons.MENU_NEW);
+				if (!leaf.isMetaProvidedByProject()) item.setIcon(Icons.MENU_NEW);
 			}
 			popup.add(item);
 		}
@@ -228,35 +227,31 @@ public class PopupSelectedNodes
 	private void addActions()
 	{
 		// selected
-		if (itemCollapse != null)
-			itemCollapse.addActionListener(new ActionListener() {
+		if (itemCollapse != null) itemCollapse.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e)
-				{
-					for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
-						if (node.isLeaf())
-							continue;
-						App.getTreeDisplay().togglePathRecursively(node, false);
-					}
-					Tasks.taskTreeRedraw();
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
+					if (node.isLeaf()) continue;
+					App.getTreeDisplay().togglePathRecursively(node, false);
 				}
-			});
+				Tasks.taskTreeRedraw();
+			}
+		});
 
-		if (itemExpand != null)
-			itemExpand.addActionListener(new ActionListener() {
+		if (itemExpand != null) itemExpand.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e)
-				{
-					for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
-						if (node.isLeaf())
-							continue;
-						App.getTreeDisplay().togglePathRecursively(node, true);
-					}
-					Tasks.taskTreeRedraw();
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
+					if (node.isLeaf()) continue;
+					App.getTreeDisplay().togglePathRecursively(node, true);
 				}
-			});
+				Tasks.taskTreeRedraw();
+			}
+		});
 
 		itemCopyToProject.addActionListener(new ActionListener() {
 
@@ -335,8 +330,7 @@ public class PopupSelectedNodes
 				);
 				//@formatter:on
 
-				if (!really)
-					return;
+				if (!really) return;
 
 				(new Thread(new Runnable() {
 
@@ -358,13 +352,12 @@ public class PopupSelectedNodes
 			}
 		});
 
-		if (itemDeleteMetaFromProject != null)
-			itemDeleteMetaFromProject.addActionListener(new ActionListener() {
+		if (itemDeleteMetaFromProject != null) itemDeleteMetaFromProject.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e)
-				{
-					//@formatter:off
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				//@formatter:off
 				final boolean really = Alerts.askYesNo(
 						App.getFrame(),
 						"Deletion",
@@ -373,28 +366,27 @@ public class PopupSelectedNodes
 				);
 				//@formatter:on
 
-					if (!really)
-						return;
+				if (!really) return;
 
-					(new Thread(new Runnable() {
+				(new Thread(new Runnable() {
 
-						@Override
-						public void run()
-						{
-							Alerts.loading(true);
-							final AssetTreeProcessor proc = new DeleteFromProjectProcessor(false, true);
-							for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
-								node.processThisAndChildren(proc);
-							}
-							Tasks.taskDeleteEmptyDirsFromProject();
-							Tasks.taskTreeRedraw();
-							App.getSidePanel().redrawPreview();
-							Projects.markChange();
-							Alerts.loading(false);
+					@Override
+					public void run()
+					{
+						Alerts.loading(true);
+						final AssetTreeProcessor proc = new DeleteFromProjectProcessor(false, true);
+						for (final AssetTreeNode node : PopupSelectedNodes.this.nodes) {
+							node.processThisAndChildren(proc);
 						}
-					})).start();
-				}
-			});
+						Tasks.taskDeleteEmptyDirsFromProject();
+						Tasks.taskTreeRedraw();
+						App.getSidePanel().redrawPreview();
+						Projects.markChange();
+						Alerts.loading(false);
+					}
+				})).start();
+			}
+		});
 
 		itemImportReplacement.addActionListener(new ActionListener() {
 
@@ -417,15 +409,14 @@ public class PopupSelectedNodes
 			}
 		});
 
-		if (itemEditMeta != null)
-			itemEditMeta.addActionListener(new ActionListener() {
+		if (itemEditMeta != null) itemEditMeta.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e)
-				{
-					Tasks.taskEditMeta((AssetTreeLeaf) nodes.get(0));
-				}
-			});
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Tasks.taskEditMeta((AssetTreeLeaf) nodes.get(0));
+			}
+		});
 	}
 
 

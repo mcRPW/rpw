@@ -57,8 +57,7 @@ public class Sources
 		final File library = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS);
 
 		for (final File f : FileUtils.listDirectory(library)) {
-			if (!f.isDirectory())
-				continue;
+			if (!f.isDirectory()) continue;
 			final String dirName = f.getName();
 
 			Log.f3("Adding Source: " + dirName + " -> " + f);
@@ -90,8 +89,7 @@ public class Sources
 
 	public static boolean doesSourceExist(String source)
 	{
-		if (MagicSources.isMagic(source))
-			return true;
+		if (MagicSources.isMagic(source)) return true;
 
 		return sourceMap.containsKey(source);
 	}
@@ -99,8 +97,7 @@ public class Sources
 
 	public static boolean doesSourceProvideAsset(String source, AssetEntry asset)
 	{
-		if (asset == null || source == null)
-			return false;
+		if (asset == null || source == null) return false;
 
 		if (MagicSources.isMagic(source)) {
 			if (MagicSources.isVanilla(source)) {
@@ -116,8 +113,7 @@ public class Sources
 			}
 		}
 
-		if (!sourceMap.containsKey(source))
-			return false;
+		if (!sourceMap.containsKey(source)) return false;
 
 		return sourceMap.get(source).doesProvideAsset(asset.getKey());
 	}
@@ -125,8 +121,7 @@ public class Sources
 
 	public static boolean doesSourceProvideAssetMeta(String source, AssetEntry asset)
 	{
-		if (asset == null || source == null)
-			return false;
+		if (asset == null || source == null) return false;
 
 		if (MagicSources.isMagic(source)) {
 			if (MagicSources.isVanilla(source)) {
@@ -142,8 +137,7 @@ public class Sources
 			}
 		}
 
-		if (!sourceMap.containsKey(source))
-			return false;
+		if (!sourceMap.containsKey(source)) return false;
 
 		return sourceMap.get(source).doesProvideAssetMeta(asset.getKey());
 	}
@@ -151,16 +145,12 @@ public class Sources
 
 	public static ISource getSource(String source)
 	{
-		if (MagicSources.isVanilla(source))
-			return Sources.vanilla;
-		if (MagicSources.isProject(source))
-			return Projects.getActive();
-		if (MagicSources.isSilence(source))
-			return Sources.silence;
+		if (MagicSources.isVanilla(source)) return Sources.vanilla;
+		if (MagicSources.isProject(source)) return Projects.getActive();
+		if (MagicSources.isSilence(source)) return Sources.silence;
 
 		final ISource src = sourceMap.get(source);
-		if (src == null)
-			Log.w("No source named " + source);
+		if (src == null) Log.w("No source named " + source);
 		return src;
 	}
 
@@ -186,14 +176,10 @@ public class Sources
 	public static String processForDisplay(String source)
 	{
 		if (MagicSources.isMagic(source)) {
-			if (MagicSources.isInherit(source))
-				return "(+)";
-			if (MagicSources.isProject(source))
-				return "PROJECT";
-			if (MagicSources.isSilence(source))
-				return "SILENCE";
-			if (MagicSources.isVanilla(source))
-				return "Vanilla";
+			if (MagicSources.isInherit(source)) return "(+)";
+			if (MagicSources.isProject(source)) return "PROJECT";
+			if (MagicSources.isSilence(source)) return "SILENCE";
+			if (MagicSources.isVanilla(source)) return "Vanilla";
 		}
 
 		return source;

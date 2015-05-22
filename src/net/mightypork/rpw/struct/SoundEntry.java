@@ -19,9 +19,8 @@ public class SoundEntry
 	public SoundEntry(String ctg, List<SoundSubEntry> files) {
 		category = ctg;
 		sounds = new ArrayList<SoundSubEntry>();
-		
-		for (SoundSubEntry sse : files)
-		{
+
+		for (SoundSubEntry sse : files) {
 			sse.name = sse.name.replace('\\', '/'); // WINDOWS SUX
 		}
 		sounds.addAll(files);

@@ -31,8 +31,7 @@ public class CountNodesInProjectProcessor implements AssetTreeProcessor
 	@Override
 	public void process(AssetTreeNode node)
 	{
-		if (processed.contains(node))
-			return; // no double-processing
+		if (processed.contains(node)) return; // no double-processing
 		processed.add(node);
 
 		if (node instanceof AssetTreeGroup) {

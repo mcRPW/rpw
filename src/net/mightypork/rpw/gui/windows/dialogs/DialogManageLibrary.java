@@ -107,8 +107,7 @@ public class DialogManageLibrary extends RpwDialog
 	@Override
 	public void onClose()
 	{
-		if (changedAnything)
-			Tasks.taskReloadSources(null);
+		if (changedAnything) Tasks.taskReloadSources(null);
 	}
 
 
@@ -147,16 +146,14 @@ public class DialogManageLibrary extends RpwDialog
 			);
 			//@formatter:on
 
-			if (newName == null)
-				return;
+			if (newName == null) return;
 			newName.trim();
 			if (!Utils.isValidFilenameString(newName)) {
 				Alerts.error(DialogManageLibrary.this, "\"" + newName + "\" is not a valid name.");
 				return;
 			}
 
-			if (oldName.equals(newName))
-				return;
+			if (oldName.equals(newName)) return;
 
 			if (packNames.contains(newName)) {
 				Alerts.error(DialogManageLibrary.this, "Name \"" + newName + "\" is already used.");
@@ -202,8 +199,7 @@ public class DialogManageLibrary extends RpwDialog
 			);
 			//@formatter:on
 
-			if (!yes)
-				return;
+			if (!yes) return;
 
 			for (final String s : choice) {
 				Tasks.taskDeleteResourcepack(s);

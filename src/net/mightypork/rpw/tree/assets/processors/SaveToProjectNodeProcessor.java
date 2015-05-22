@@ -25,21 +25,18 @@ public class SaveToProjectNodeProcessor implements AssetTreeProcessor
 	@Override
 	public void process(AssetTreeNode node)
 	{
-		if (processed.contains(node))
-			return;
+		if (processed.contains(node)) return;
 		processed.add(node);
 
 		if (node instanceof AssetTreeGroup) {
 			final AssetTreeGroup group = (AssetTreeGroup) node;
-			if (group.getGroupKey() == null)
-				return;
+			if (group.getGroupKey() == null) return;
 
 			project.setSourceForGroup(group.getGroupKey(), group.getLibrarySource());
 
 		} else if (node instanceof AssetTreeLeaf) {
 			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
-			if (leaf.getAssetKey() == null)
-				return;
+			if (leaf.getAssetKey() == null) return;
 
 			project.setSourceForFile(leaf.getAssetKey(), leaf.getLibrarySource());
 		}

@@ -32,8 +32,7 @@ public class SoundFileTreeClickListener extends PopupTriggerListener
 	public void onPopupTrigger(MouseEvent e)
 	{
 		final TreePath pathUnderMouse = tree.getPathForLocation(e.getX(), e.getY());
-		if (pathUnderMouse == null)
-			return;
+		if (pathUnderMouse == null) return;
 
 		TreePath[] paths = tree.getSelectionPaths();
 
@@ -65,8 +64,7 @@ public class SoundFileTreeClickListener extends PopupTriggerListener
 			tmpNodeList.add(fsnode);
 		}
 
-		if (tmpNodeList.size() == 0)
-			return;
+		if (tmpNodeList.size() == 0) return;
 
 		PopupSoundFsTreeNode.open(tree, e.getX(), e.getY(), tmpNodeList, wizard);
 

@@ -22,8 +22,7 @@ public class FolderSource extends Source
 		final AssetEntry ae = Sources.vanilla.getAssetForKey(key);
 		final File file = new File(folder, ae.getPath());
 
-		if (!file.exists())
-			return null;
+		if (!file.exists()) return null;
 		return file;
 	}
 

@@ -48,8 +48,7 @@ public class Log
 		// move old logs
 
 		for (final File f : FileUtils.listDirectory(logfile.getParentFile())) {
-			if (!f.isFile())
-				continue;
+			if (!f.isFile()) continue;
 			if (f.getName().startsWith(Paths.FILENAME_LOG)) {
 				final Date d = new Date(f.lastModified());
 

@@ -34,8 +34,7 @@ public class GroupFilter
 		this.filterSyntax = filterSyntax;
 		this.groupKey = groupKey;
 
-		if (filterSyntax == null)
-			return;
+		if (filterSyntax == null) return;
 
 		final String[] patterns = filterSyntax.split("[|]");
 		for (int i = 0; i < patterns.length; i++) {
@@ -67,8 +66,7 @@ public class GroupFilter
 	public boolean matches(AssetEntry entry)
 	{
 		for (final Matcher m : matchers) {
-			if (m.reset(entry.getKey()).matches())
-				return true;
+			if (m.reset(entry.getKey()).matches()) return true;
 		}
 		return false;
 	}

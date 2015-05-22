@@ -27,8 +27,7 @@ public class Alerts
 
 	public static void error(Component c, String title, String message)
 	{
-		if (c == null)
-			c = App.getFrame();
+		if (c == null) c = App.getFrame();
 
 		Log.e(message);
 
@@ -92,8 +91,7 @@ public class Alerts
 	{
 		loadingState = waiting;
 
-		if (loadingStateDisplayed == loadingState)
-			return; // no change.
+		if (loadingStateDisplayed == loadingState) return; // no change.
 
 		t.schedule(new TimerTask() {
 

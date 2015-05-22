@@ -92,32 +92,28 @@ public class SimpleStringList extends JScrollPane
 
 	public int getSelectedIndex()
 	{
-		if (!selectable)
-			return -1;
+		if (!selectable) return -1;
 		return list.getSelectedIndex();
 	}
 
 
 	public int[] getSelectedIndices()
 	{
-		if (!selectable)
-			return null;
+		if (!selectable) return null;
 		return list.getSelectedIndices();
 	}
 
 
 	public String getSelectedValue()
 	{
-		if (!selectable)
-			return null;
+		if (!selectable) return null;
 		return (String) list.getSelectedValue();
 	}
 
 
 	public List<String> getSelectedValues()
 	{
-		if (!selectable)
-			return null;
+		if (!selectable) return null;
 		final Object[] foo = list.getSelectedValues();
 
 		final List<String> selected = new ArrayList<String>();

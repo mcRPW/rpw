@@ -23,8 +23,7 @@ public class SilenceSource implements ISource
 	@Override
 	public InputStream getAssetStream(String key) throws IOException
 	{
-		if (!doesProvideAsset(key))
-			return null;
+		if (!doesProvideAsset(key)) return null;
 
 		return FileUtils.getResource("/data/export/silence.ogg");
 	}

@@ -22,8 +22,7 @@ public abstract class AssetGrouper
 
 	protected void addGroup(GroupInfo group)
 	{
-		if (Config.LOG_GROUPS)
-			Log.f3("Group: " + group);
+		if (Config.LOG_GROUPS) Log.f3("Group: " + group);
 		groups.add(group);
 	}
 
@@ -36,8 +35,7 @@ public abstract class AssetGrouper
 
 	protected void addFilter(GroupFilter filter)
 	{
-		if (Config.LOG_FILTERS)
-			Log.f3("Filter: " + filter);
+		if (Config.LOG_FILTERS) Log.f3("Filter: " + filter);
 		filters.add(filter);
 	}
 
@@ -45,15 +43,13 @@ public abstract class AssetGrouper
 	public GroupInfo findGroupForAssetEntry(AssetEntry asset)
 	{
 		for (final GroupFilter filter : filters) {
-			if (filter.matches(asset))
-				return findGroupForGroupKey(filter.getGroupKey());
+			if (filter.matches(asset)) return findGroupForGroupKey(filter.getGroupKey());
 		}
 
 		Log.w("No group matches asset '" + asset + "', fallback to root group.");
 
 		for (final GroupInfo g : groups) {
-			if (g.getParent() == null)
-				return g;
+			if (g.getParent() == null) return g;
 		}
 
 		Log.w("No root group found! This is a bug!");
@@ -64,8 +60,7 @@ public abstract class AssetGrouper
 	public GroupInfo findGroupForGroupKey(String groupKey)
 	{
 		for (final GroupInfo g : groups) {
-			if (g.getKey().equals(groupKey))
-				return g;
+			if (g.getKey().equals(groupKey)) return g;
 		}
 
 		Log.w("No group matches key '" + groupKey + "'! This is a bug!");

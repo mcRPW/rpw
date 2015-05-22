@@ -35,25 +35,18 @@ public class TextInputValidator extends KeyAdapter
 			return;
 		}
 
-		if (listener != null)
-			listener.onCharTyped(c);
+		if (listener != null) listener.onCharTyped(c);
 	}
 
 
 	private boolean isCharControl(char c)
 	{
-		if (c == KeyEvent.VK_BACK_SPACE)
-			return true;
-		if (c == KeyEvent.VK_LEFT)
-			return true;
-		if (c == KeyEvent.VK_RIGHT)
-			return true;
-		if (c == KeyEvent.VK_DELETE)
-			return true;
-		if (c == KeyEvent.VK_HOME)
-			return true;
-		if (c == KeyEvent.VK_END)
-			return true;
+		if (c == KeyEvent.VK_BACK_SPACE) return true;
+		if (c == KeyEvent.VK_LEFT) return true;
+		if (c == KeyEvent.VK_RIGHT) return true;
+		if (c == KeyEvent.VK_DELETE) return true;
+		if (c == KeyEvent.VK_HOME) return true;
+		if (c == KeyEvent.VK_END) return true;
 
 		return false;
 	}

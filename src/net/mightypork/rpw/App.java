@@ -192,8 +192,7 @@ public class App
 
 	public static SidePanel getSidePanel()
 	{
-		if (inst == null || inst.window == null)
-			return null;
+		if (inst == null || inst.window == null) return null;
 
 		return inst.window.sidePanel;
 	}
@@ -201,8 +200,7 @@ public class App
 
 	public static TreeDisplay getTreeDisplay()
 	{
-		if (inst == null || inst.window == null)
-			return null;
+		if (inst == null || inst.window == null) return null;
 
 		return inst.window.treeDisplay;
 	}
@@ -210,8 +208,7 @@ public class App
 
 	public static JXFrame getFrame()
 	{
-		if (inst == null || inst.window == null)
-			return null;
+		if (inst == null || inst.window == null) return null;
 
 		return inst.window.frame;
 	}
@@ -219,8 +216,7 @@ public class App
 
 	public static WindowMain getWindow()
 	{
-		if (inst == null)
-			return null;
+		if (inst == null) return null;
 
 		return inst.window;
 	}
@@ -228,8 +224,7 @@ public class App
 
 	public static MenuMain getMenu()
 	{
-		if (inst == null || inst.window == null)
-			return null;
+		if (inst == null || inst.window == null) return null;
 
 		return inst.window.menu;
 	}
@@ -237,8 +232,7 @@ public class App
 
 	public static void setWaiting(boolean state)
 	{
-		if (inst == null || inst.window == null)
-			return;
+		if (inst == null || inst.window == null) return;
 
 		inst.window.setWaiting(state);
 
@@ -248,8 +242,7 @@ public class App
 	public static String getWindowTitle()
 	{
 		String wt = "";
-		if (Projects.isOpen())
-			wt += Projects.getActive().getName() + "  \u2022  ";
+		if (Projects.isOpen()) wt += Projects.getActive().getName() + "  \u2022  ";
 		wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  Created by MightyPork";
 		return wt;
 	}
@@ -257,8 +250,7 @@ public class App
 
 	public static void setTitle(String windowTitle)
 	{
-		if (inst == null || inst.window == null)
-			return;
+		if (inst == null || inst.window == null) return;
 
 		inst.window.frame.setTitle(windowTitle);
 	}

@@ -147,8 +147,7 @@ public class DialogImportStitch extends RpwDialog
 			Set<AssetCategory> categories = new HashSet<AssetCategory>();
 
 			for (int i = 0; i < AssetCategory.values().length; ++i)
-				if (selection[i].isSelected())
-					categories.add(AssetCategory.values()[i]);
+				if (selection[i].isSelected()) categories.add(AssetCategory.values()[i]);
 
 			if (categories.isEmpty()) {
 				Alerts.error(self(), "Category Required", "At least one category is required");

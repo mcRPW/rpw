@@ -43,8 +43,7 @@ public class DialogManageMcPacks extends RpwDialog
 		final List<String> options = new ArrayList<String>();
 
 		for (final File f : aList) {
-			if (f.isDirectory())
-				continue;
+			if (f.isDirectory()) continue;
 			final String[] parts = FileUtils.getFilenameParts(f);
 
 			if (parts[1].equalsIgnoreCase("zip")) {
@@ -158,8 +157,7 @@ public class DialogManageMcPacks extends RpwDialog
 			);
 			//@formatter:on
 
-			if (!yes)
-				return;
+			if (!yes) return;
 
 			for (final String s : choice) {
 				final File f = new File(OsUtils.getMcDir("resourcepacks"), s + ".zip");

@@ -18,8 +18,7 @@ public class TaskExportProject
 
 	public static void showDialog()
 	{
-		if (!Projects.isOpen())
-			return;
+		if (!Projects.isOpen()) return;
 
 		EventQueue.invokeLater(new Runnable() {
 
@@ -51,8 +50,7 @@ public class TaskExportProject
 					);
 					//@formatter:on
 
-					if (overwrite != JOptionPane.YES_OPTION)
-						return;
+					if (overwrite != JOptionPane.YES_OPTION) return;
 				}
 
 				Tasks.taskExportProject(f, null);

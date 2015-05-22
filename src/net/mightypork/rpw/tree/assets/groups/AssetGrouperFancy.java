@@ -46,8 +46,7 @@ public class AssetGrouperFancy extends AssetGrouper
 		// vanilla groups
 
 		text = FileUtils.resourceToString("/data/tree/groupsVanilla.txt");
-		if (text.length() == 0)
-			throw new RuntimeException("Failed to load group list.");
+		if (text.length() == 0) throw new RuntimeException("Failed to load group list.");
 
 		pairs = SimpleConfig.mapFromString(text);
 
@@ -62,13 +61,11 @@ public class AssetGrouperFancy extends AssetGrouper
 		do {
 			for (final GroupInfo g : groups) {
 				final String parent = g.getParent();
-				if (parent == null)
-					continue;
+				if (parent == null) continue;
 				if (!createdGroups.contains(parent)) {
 					final GroupInfo parentGroup = new GroupInfo(parent, Utils.fromLastDot(parent));
 					toAdd.add(parentGroup);
-					if (Config.LOG_GROUPS)
-						Log.f3("Group: " + parentGroup);
+					if (Config.LOG_GROUPS) Log.f3("Group: " + parentGroup);
 
 					createdGroups.add(parent);
 				}
@@ -94,8 +91,7 @@ public class AssetGrouperFancy extends AssetGrouper
 
 		// vanilla filters
 		text = FileUtils.resourceToString("/data/tree/filtersVanilla.txt");
-		if (text.length() == 0)
-			throw new RuntimeException("Failed to load filter list.");
+		if (text.length() == 0) throw new RuntimeException("Failed to load filter list.");
 
 		pairs = SimpleConfig.mapFromString(text);
 

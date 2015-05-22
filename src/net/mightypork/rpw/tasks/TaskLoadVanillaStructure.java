@@ -67,8 +67,7 @@ public class TaskLoadVanillaStructure
 					final AssetEntry ae = new AssetEntry(k, type);
 					assets.put(e.getKey(), ae);
 
-					if (Config.LOG_VANILLA_LOAD_STRUCTURE)
-						Log.f3("+ " + ae);
+					if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("+ " + ae);
 
 				} catch (final IllegalArgumentException iae) {
 					Log.w("Unknown asset type " + e.getValue() + " - skipping entry.");

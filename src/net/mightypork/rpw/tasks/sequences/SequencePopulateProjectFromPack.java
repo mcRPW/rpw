@@ -120,8 +120,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 			if (ze_icon != null) {
 				target = new File(project.getProjectDirectory(), "pack.png");
 				ZipUtils.extractZipEntry(zip, ze_icon, target);
-				if (Config.LOG_EXTRACTED_ASSETS)
-					Log.f3("+ pack.png");
+				if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ pack.png");
 				alreadyExtracted.add("pack.png");
 			}
 
@@ -174,8 +173,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 								// mark as extracted
 								alreadyExtracted.add(entryname);
 
-								if (Config.LOG_EXTRACTED_ASSETS)
-									Log.f3("+ LANG " + entryname);
+								if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ LANG " + entryname);
 							}
 						}
 					}
@@ -234,8 +232,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 								// mark as extracted
 								alreadyExtracted.add(entryname);
 
-								if (Config.LOG_EXTRACTED_ASSETS)
-									Log.f3("+ SOUND " + entryname);
+								if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ SOUND " + entryname);
 							}
 
 						}
@@ -258,20 +255,17 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 		try {
 			for (final String sorig : zipEntries) {
 				String s = sorig;
-				
+
 				if (s.contains("__MACOSX") || s.contains(".DS_Store") || s.contains(".fsevents")) {
-					if (Config.LOG_EXTRACTED_ASSETS)
-						Log.f3("x OSX junk: " + s);
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("x OSX junk: " + s);
 					continue;
 				}
 
-				if (alreadyExtracted.contains(s))
-					continue;
+				if (alreadyExtracted.contains(s)) continue;
 
 				final ZipEntry ze = zip.getEntry(s);
 
-				if (ze == null)
-					continue; // garbage
+				if (ze == null) continue; // garbage
 
 				alreadyExtracted.add(s);
 
@@ -292,11 +286,9 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 					target = new File(project.getAssetsDirectory(), sorig);
 
 					ZipUtils.extractZipEntry(zip, ze, target);
-					if (!mcmeta)
-						project.setSourceForFile(key, MagicSources.PROJECT);
+					if (!mcmeta) project.setSourceForFile(key, MagicSources.PROJECT);
 
-					if (Config.LOG_EXTRACTED_ASSETS)
-						Log.f3("+ PROJ " + (mcmeta ? "M " : "") + s);
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ PROJ " + (mcmeta ? "M " : "") + s);
 
 				} else {
 					// extra included file
@@ -304,8 +296,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 					target = new File(project.getExtrasDirectory(), s);
 					ZipUtils.extractZipEntry(zip, ze, target);
 
-					if (Config.LOG_EXTRACTED_ASSETS)
-						Log.f3("+ EXTRA " + s);
+					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ EXTRA " + s);
 				}
 			}
 

@@ -26,8 +26,7 @@ public class TaskModifyAsset
 
 	public static void edit(AssetTreeLeaf node, boolean editMeta)
 	{
-		if (!assertIsInProject(node, editMeta))
-			return;
+		if (!assertIsInProject(node, editMeta)) return;
 
 		if (editMeta && Config.USE_INTERNAL_META_EDITOR) {
 			Alerts.loading(true);

@@ -24,8 +24,7 @@ public class AssetTreeModel extends AbstractTreeTableModel
 	@Override
 	public Object getValueAt(Object node, int column)
 	{
-		if (node == null)
-			return null;
+		if (node == null) return null;
 
 		if (node instanceof AssetTreeNode) {
 			final AssetTreeNode atn = (AssetTreeNode) node;
@@ -59,8 +58,7 @@ public class AssetTreeModel extends AbstractTreeTableModel
 	@Override
 	public Object getChild(Object parent, int index)
 	{
-		if (parent == null)
-			return null;
+		if (parent == null) return null;
 
 		if (parent instanceof AssetTreeNode) {
 			final AssetTreeNode atn = (AssetTreeNode) parent;
@@ -75,8 +73,7 @@ public class AssetTreeModel extends AbstractTreeTableModel
 	@Override
 	public int getChildCount(Object parent)
 	{
-		if (parent == null)
-			return 0;
+		if (parent == null) return 0;
 
 		if (parent instanceof AssetTreeNode) {
 			final AssetTreeNode atn = (AssetTreeNode) parent;
@@ -91,8 +88,7 @@ public class AssetTreeModel extends AbstractTreeTableModel
 	@Override
 	public int getIndexOfChild(Object parent, Object child)
 	{
-		if (parent == null || child == null)
-			return -1;
+		if (parent == null || child == null) return -1;
 
 		if (parent instanceof AssetTreeNode && child instanceof AssetTreeNode) {
 			final AssetTreeNode atn = (AssetTreeNode) parent;
@@ -177,16 +173,12 @@ public class AssetTreeModel extends AbstractTreeTableModel
 		TreeNode[] retNodes;
 
 		if (aNode == null) {
-			if (depth == 0)
-				return null;
-			else
-				retNodes = new TreeNode[depth];
+			if (depth == 0) return null;
+			else retNodes = new TreeNode[depth];
 		} else {
 			depth++;
-			if (aNode == root)
-				retNodes = new TreeNode[depth];
-			else
-				retNodes = getPathToRoot(aNode.getParent(), depth);
+			if (aNode == root) retNodes = new TreeNode[depth];
+			else retNodes = getPathToRoot(aNode.getParent(), depth);
 			retNodes[retNodes.length - depth] = aNode;
 		}
 		return retNodes;

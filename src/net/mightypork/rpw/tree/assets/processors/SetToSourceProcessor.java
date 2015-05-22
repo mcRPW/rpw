@@ -40,8 +40,7 @@ public class SetToSourceProcessor implements AssetTreeProcessor
 	@Override
 	public void process(AssetTreeNode node)
 	{
-		if (processed.contains(node))
-			return; // no double-processing
+		if (processed.contains(node)) return; // no double-processing
 		processed.add(node);
 
 		if (node instanceof AssetTreeGroup) {
@@ -49,14 +48,12 @@ public class SetToSourceProcessor implements AssetTreeProcessor
 			group.setLibrarySource(source);
 
 		} else if (node instanceof AssetTreeLeaf) {
-			if (!modifyLeaves)
-				return;
+			if (!modifyLeaves) return;
 
 			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
 			if (MagicSources.isSilence(source)) {
-				if (!leaf.getAssetType().isSound())
-					return;
+				if (!leaf.getAssetType().isSound()) return;
 			}
 
 			leaf.setLibrarySource(source);

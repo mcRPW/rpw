@@ -377,7 +377,7 @@ public class Tasks
 				Log.f3("- User choice CANCEL");
 				return; // cancelled
 			} else if (choice == JOptionPane.OK_OPTION) {
-				Log.f3("- User choice SAVE");			
+				Log.f3("- User choice SAVE");
 			} else {
 				Log.f3("- User choice DISCARD");
 
@@ -398,7 +398,6 @@ public class Tasks
 				//@formatter:on
 			}
 		}
-		
 
 		if (afterSave != null) afterSave.run();
 	}

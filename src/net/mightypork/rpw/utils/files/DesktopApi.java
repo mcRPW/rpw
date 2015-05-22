@@ -17,11 +17,9 @@ public class DesktopApi
 
 	public static boolean browse(URI uri)
 	{
-		if (openSystemSpecific(uri.toString()))
-			return true;
+		if (openSystemSpecific(uri.toString())) return true;
 
-		if (browseDESKTOP(uri))
-			return true;
+		if (browseDESKTOP(uri)) return true;
 
 		return false;
 	}
@@ -29,11 +27,9 @@ public class DesktopApi
 
 	public static boolean open(File file)
 	{
-		if (openSystemSpecific(file.getPath()))
-			return true;
+		if (openSystemSpecific(file.getPath())) return true;
 
-		if (openDESKTOP(file))
-			return true;
+		if (openDESKTOP(file)) return true;
 
 		return false;
 	}
@@ -42,15 +38,12 @@ public class DesktopApi
 	public static boolean editText(File file)
 	{
 		if (Config.USE_TEXT_EDITOR) {
-			if (runCommand(Config.TEXT_EDITOR, Config.TEXT_EDITOR_ARGS, file.getPath()))
-				return true;
+			if (runCommand(Config.TEXT_EDITOR, Config.TEXT_EDITOR_ARGS, file.getPath())) return true;
 		}
 
-		if (openSystemSpecific(file.getPath()))
-			return true;
+		if (openSystemSpecific(file.getPath())) return true;
 
-		if (editDESKTOP(file))
-			return true;
+		if (editDESKTOP(file)) return true;
 
 		return false;
 	}
@@ -59,20 +52,16 @@ public class DesktopApi
 	public static boolean editImage(File file)
 	{
 		if (Config.USE_IMAGE_EDITOR) {
-			if (runCommand(Config.IMAGE_EDITOR, Config.IMAGE_EDITOR_ARGS, file.getPath()))
-				return true;
+			if (runCommand(Config.IMAGE_EDITOR, Config.IMAGE_EDITOR_ARGS, file.getPath())) return true;
 		}
 
 		if (OsUtils.getOs().isWindows()) {
-			if (editDESKTOP(file))
-				return true;
+			if (editDESKTOP(file)) return true;
 		}
 
-		if (openSystemSpecific(file.getPath()))
-			return true;
+		if (openSystemSpecific(file.getPath())) return true;
 
-		if (editDESKTOP(file))
-			return true;
+		if (editDESKTOP(file)) return true;
 
 		return false;
 	}
@@ -81,15 +70,12 @@ public class DesktopApi
 	public static boolean editAudio(File file)
 	{
 		if (Config.USE_AUDIO_EDITOR) {
-			if (runCommand(Config.AUDIO_EDITOR, Config.AUDIO_EDITOR_ARGS, file.getPath()))
-				return true;
+			if (runCommand(Config.AUDIO_EDITOR, Config.AUDIO_EDITOR_ARGS, file.getPath())) return true;
 		}
 
-		if (openSystemSpecific(file.getPath()))
-			return true;
+		if (openSystemSpecific(file.getPath())) return true;
 
-		if (editDESKTOP(file))
-			return true;
+		if (editDESKTOP(file)) return true;
 
 		return false;
 	}
@@ -100,24 +86,18 @@ public class DesktopApi
 		final EnumOS os = OsUtils.getOs();
 
 		if (os.isLinux()) {
-			if (runCommand("exo-open", "%s", what))
-				return true;
-			if (runCommand("gnome-open", "%s", what))
-				return true;
-			if (runCommand("kde-open", "%s", what))
-				return true;
-			if (runCommand("xdg-open", "%s", what))
-				return true;
+			if (runCommand("exo-open", "%s", what)) return true;
+			if (runCommand("gnome-open", "%s", what)) return true;
+			if (runCommand("kde-open", "%s", what)) return true;
+			if (runCommand("xdg-open", "%s", what)) return true;
 		}
 
 		if (os.isMac()) {
-			if (runCommand("open", "%s", what))
-				return true;
+			if (runCommand("open", "%s", what)) return true;
 		}
 
 		if (os.isWindows()) {
-			if (runCommand("explorer", "%s", what))
-				return true;
+			if (runCommand("explorer", "%s", what)) return true;
 		}
 
 		return false;
@@ -204,8 +184,7 @@ public class DesktopApi
 
 		try {
 			final Process p = Runtime.getRuntime().exec(parts);
-			if (p == null)
-				return false;
+			if (p == null) return false;
 
 			try {
 				final int retval = p.exitValue();

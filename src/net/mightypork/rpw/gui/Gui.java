@@ -187,12 +187,9 @@ public class Gui
 
 			field.setBorder(bdr);
 		}
-		if (text != null)
-			field.setText(text);
-		if (tooltip != null)
-			field.setToolTipText(tooltip);
-		if (placeholder != null)
-			PromptSupport.setPrompt(placeholder, field);
+		if (text != null) field.setText(text);
+		if (tooltip != null) field.setToolTipText(tooltip);
+		if (placeholder != null) PromptSupport.setPrompt(placeholder, field);
 		return field;
 	}
 
@@ -253,10 +250,8 @@ public class Gui
 	public static JButton sidebarButton(String text, String tooltip, ImageIcon icon)
 	{
 		final JButton jb = new JButton(text);
-		if (icon != null)
-			jb.setIcon(icon);
-		if (tooltip != null)
-			jb.setToolTipText(tooltip);
+		if (icon != null) jb.setIcon(icon);
+		if (tooltip != null) jb.setToolTipText(tooltip);
 
 		jb.setHorizontalAlignment(SwingConstants.LEFT);
 		jb.setIconTextGap(Gui.GAP);
@@ -318,8 +313,7 @@ public class Gui
 	{
 		final JPanel p = new JPanel(new SpringLayout());
 
-		if (labels.length != fields.length)
-			throw new IllegalArgumentException("Nr. of labels doesn't match nr. of fields.");
+		if (labels.length != fields.length) throw new IllegalArgumentException("Nr. of labels doesn't match nr. of fields.");
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel l = null;
@@ -352,8 +346,7 @@ public class Gui
 		} else {
 			Color c = (Color) textfeld.getClientProperty("rpw.originalBackground");
 
-			if (c == null)
-				c = Color.WHITE;
+			if (c == null) c = Color.WHITE;
 			textfeld.setBackground(c);
 		}
 	}
@@ -372,15 +365,12 @@ public class Gui
 	{
 		final HBox hb = new HBox();
 
-		if (buttons == null)
-			return hb;
+		if (buttons == null) return hb;
 
-		if (align == RIGHT || align == CENTER)
-			hb.glue();
+		if (align == RIGHT || align == CENTER) hb.glue();
 
 		for (int i = 0; i < buttons.length; i++) {
-			if (i > 0)
-				hb.gap();
+			if (i > 0) hb.gap();
 
 			if (buttons[i] == null) {
 				hb.gap();
@@ -392,8 +382,7 @@ public class Gui
 			}
 		}
 
-		if (align == LEFT || align == CENTER)
-			hb.glue();
+		if (align == LEFT || align == CENTER) hb.glue();
 
 		return hb;
 	}

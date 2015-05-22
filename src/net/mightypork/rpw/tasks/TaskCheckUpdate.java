@@ -32,18 +32,15 @@ public class TaskCheckUpdate
 					int vs = 0;
 
 					// version name
-					if (!sc.hasNext())
-						return;
+					if (!sc.hasNext()) return;
 					v = sc.nextLine().trim();
 
 					// version serial
-					if (!sc.hasNext())
-						return;
+					if (!sc.hasNext()) return;
 					vs = Integer.valueOf(sc.nextLine().trim());
 
 					// version message
-					if (!sc.hasNext())
-						return;
+					if (!sc.hasNext()) return;
 					msg = "";
 					while (sc.hasNext()) {
 						msg += sc.nextLine() + "\n";
@@ -62,8 +59,7 @@ public class TaskCheckUpdate
 				} catch (final Throwable t) {
 					Log.e("Could not download update info file.", t);
 				} finally {
-					if (sc != null)
-						sc.close();
+					if (sc != null) sc.close();
 				}
 			}
 		})).start();

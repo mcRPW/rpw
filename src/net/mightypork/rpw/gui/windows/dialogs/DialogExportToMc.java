@@ -79,8 +79,7 @@ public class DialogExportToMc extends RpwDialog
 			public void valueChanged(ListSelectionEvent e)
 			{
 				final String s = list.getSelectedValue();
-				if (s != null)
-					field.setText(s);
+				if (s != null) field.setText(s);
 			}
 		});
 
@@ -131,8 +130,7 @@ public class DialogExportToMc extends RpwDialog
 		final List<String> options = new ArrayList<String>();
 
 		for (final File f : aList) {
-			if (f.isDirectory())
-				continue;
+			if (f.isDirectory()) continue;
 			final String[] parts = FileUtils.getFilenameParts(f);
 
 			if (parts[1].equalsIgnoreCase("zip")) {
@@ -173,8 +171,7 @@ public class DialogExportToMc extends RpwDialog
 				);
 				//@formatter:on
 
-				if (!overwrite)
-					return;
+				if (!overwrite) return;
 
 			}
 
@@ -197,8 +194,7 @@ public class DialogExportToMc extends RpwDialog
 						final int choice = Config.CHOICE_EXPORT_TO_MC = mcOptsCombo.getSelectedIndex();
 						Config.save();
 
-						if (choice == MC_NO_CHANGE)
-							return;
+						if (choice == MC_NO_CHANGE) return;
 
 						// TODO take action based on choice
 
@@ -262,10 +258,8 @@ public class DialogExportToMc extends RpwDialog
 
 							// add the unused one (make sure both will be
 							// present when MC starts)
-							if (!b)
-								lines.add(optNew);
-							if (!a)
-								lines.add(optOld);
+							if (!b) lines.add(optNew);
+							if (!a) lines.add(optOld);
 
 							SimpleConfig.listToFile(f, lines);
 							Log.i("Minecraft config file was changed.");

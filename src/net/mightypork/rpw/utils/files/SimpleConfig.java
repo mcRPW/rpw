@@ -70,19 +70,15 @@ public class SimpleConfig
 
 		for (String s : groupsLines) {
 			// ignore invalid lines
-			if (s.length() == 0)
-				continue;
-			
+			if (s.length() == 0) continue;
+
 			// comments
-			if (s.startsWith("#") || s.startsWith("//") || s.startsWith(";"))
-				continue;
+			if (s.startsWith("#") || s.startsWith("//") || s.startsWith(";")) continue;
 
 			// NULL value
-			if (s.equalsIgnoreCase("NULL"))
-				s = null;
+			if (s.equalsIgnoreCase("NULL")) s = null;
 
-			if (s != null)
-				s = s.replace("\\n", "\n");
+			if (s != null) s = s.replace("\\n", "\n");
 
 			// save extracted key-value pair
 			list.add(s);
@@ -107,12 +103,9 @@ public class SimpleConfig
 
 		for (final String s : groupsLines) {
 			// ignore invalid lines
-			if (s.length() == 0)
-				continue;
-			if (s.startsWith("#") || s.startsWith("//") || s.startsWith(";"))
-				continue;
-			if (!s.contains("="))
-				continue;
+			if (s.length() == 0) continue;
+			if (s.startsWith("#") || s.startsWith("//") || s.startsWith(";")) continue;
+			if (!s.contains("=")) continue;
 
 			// split and trim
 			String[] parts = s.split("=");
@@ -136,15 +129,11 @@ public class SimpleConfig
 			}
 
 			// NULL value
-			if (parts[0].equalsIgnoreCase("NULL"))
-				parts[0] = null;
-			if (parts[1].equalsIgnoreCase("NULL"))
-				parts[1] = null;
+			if (parts[0].equalsIgnoreCase("NULL")) parts[0] = null;
+			if (parts[1].equalsIgnoreCase("NULL")) parts[1] = null;
 
-			if (parts[0] != null)
-				parts[0] = parts[0].replace("\\n", "\n");
-			if (parts[1] != null)
-				parts[1] = parts[1].replace("\\n", "\n");
+			if (parts[0] != null) parts[0] = parts[0].replace("\\n", "\n");
+			if (parts[1] != null) parts[1] = parts[1].replace("\\n", "\n");
 
 			// save extracted key-value pair
 			pairs.put(parts[0], parts[1]);
@@ -171,13 +160,10 @@ public class SimpleConfig
 			String key = e.getKey();
 			String value = e.getValue();
 
-			if (!allowNulls && (key == null || value == null || key.length() == 0 || value.length() == 0))
-				continue;
+			if (!allowNulls && (key == null || value == null || key.length() == 0 || value.length() == 0)) continue;
 
-			if (key == null)
-				key = "NULL";
-			if (value == null)
-				value = "NULL";
+			if (key == null) key = "NULL";
+			if (value == null) value = "NULL";
 
 			key = key.replace("\n", "\\n");
 			value = value.replace("\n", "\\n");
@@ -188,8 +174,7 @@ public class SimpleConfig
 		String text = ""; // # File written by SimpleConfig
 
 		for (final String s : lines) {
-			if (text.length() > 0)
-				text += "\n";
+			if (text.length() > 0) text += "\n";
 
 			text += s;
 		}
@@ -211,11 +196,9 @@ public class SimpleConfig
 		String text = ""; // # File written by SimpleConfig
 
 		for (String s : data) {
-			if (text.length() > 0)
-				text += "\n";
+			if (text.length() > 0) text += "\n";
 
-			if (s == null)
-				s = "NULL";
+			if (s == null) s = "NULL";
 
 			s = s.replace("\n", "\\n");
 

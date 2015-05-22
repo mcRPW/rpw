@@ -44,10 +44,8 @@ public class AssetImage implements Comparable<AssetImage>
 		int area1 = element.w * element.h;
 		int area2 = o.element.w * o.element.h;
 
-		if (area1 == area2)
-			return entry.getKey().compareTo(o.entry.getKey());
-		else
-			return area2 - area1;
+		if (area1 == area2) return entry.getKey().compareTo(o.entry.getKey());
+		else return area2 - area1;
 	}
 
 
@@ -92,8 +90,7 @@ public class AssetImage implements Comparable<AssetImage>
 	{
 		BufferedImage tmpImage = ImageIO.read(file);
 
-		if (tmpImage.getWidth() == w && tmpImage.getHeight() == h)
-			image = tmpImage;
+		if (tmpImage.getWidth() == w && tmpImage.getHeight() == h) image = tmpImage;
 		else {
 			image = new BufferedImage(w, h, tmpImage.getType());
 			((Graphics2D) image.getGraphics()).setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);

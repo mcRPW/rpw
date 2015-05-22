@@ -120,14 +120,10 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode
 
 	private AbstractFsTreeNode makeChildForFile(File f)
 	{
-		if (!f.exists())
-			return null;
-		if (filter != null && !filter.accept(f))
-			return null; // filter can remove directories
-		if (f.isDirectory())
-			return new DirectoryFsTreeNode(f, filter);
-		if (f.isFile())
-			return new FileFsTreeNode(f);
+		if (!f.exists()) return null;
+		if (filter != null && !filter.accept(f)) return null; // filter can remove directories
+		if (f.isDirectory()) return new DirectoryFsTreeNode(f, filter);
+		if (f.isFile()) return new FileFsTreeNode(f);
 		return null;
 	}
 
@@ -166,8 +162,7 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode
 	public int getIndex(TreeNode node)
 	{
 		for (int i = 0; i < children.size(); i++) {
-			if (children.get(i) == node)
-				return i;
+			if (children.get(i) == node) return i;
 		}
 
 		return -1;
@@ -271,8 +266,7 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode
 	 */
 	public File getRoot()
 	{
-		if (this.isRoot() || getParent() == null)
-			return path;
+		if (this.isRoot() || getParent() == null) return path;
 
 		return getParent().getRoot();
 	}
@@ -283,8 +277,7 @@ public class DirectoryFsTreeNode extends AbstractFsTreeNode
 	 */
 	public void reload()
 	{
-		if (path == null)
-			return; // can't do this, path wasn't used to init this dir.
+		if (path == null) return; // can't do this, path wasn't used to init this dir.
 
 		children.clear();
 

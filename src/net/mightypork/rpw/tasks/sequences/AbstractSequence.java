@@ -100,14 +100,12 @@ public abstract class AbstractSequence
 			return false;
 		}
 
-		if (step == 0)
-			before();
+		if (step == 0) before();
 
 		beforeStep(step);
 		final boolean success = step(step);
 
-		if (step == getStepCount() - 1 || !success)
-			after(success);
+		if (step == getStepCount() - 1 || !success) after(success);
 
 		return success;
 	}

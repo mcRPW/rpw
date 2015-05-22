@@ -75,8 +75,7 @@ public class ZipBuilder
 	public void addString(String path, String text) throws IOException
 	{
 		path = preparePath(path);
-		if (included.contains(path))
-			return; // ignore
+		if (included.contains(path)) return; // ignore
 		included.add(path);
 
 		out.putNextEntry(new ZipEntry(path));
@@ -98,8 +97,7 @@ public class ZipBuilder
 	public void addResource(String path, String resPath) throws IOException
 	{
 		path = preparePath(path);
-		if (included.contains(path))
-			return; // ignore
+		if (included.contains(path)) return; // ignore
 		included.add(path);
 
 		out.putNextEntry(new ZipEntry(path));
@@ -120,8 +118,7 @@ public class ZipBuilder
 	{
 		path = path.replace("\\", "/");
 
-		if (path.charAt(0) == '/')
-			path = path.substring(1);
+		if (path.charAt(0) == '/') path = path.substring(1);
 
 		return path;
 	}

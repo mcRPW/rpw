@@ -224,8 +224,7 @@ public class FileChooser
 		@Override
 		public boolean accept(File f)
 		{
-			if (f.isDirectory())
-				return true;
+			if (f.isDirectory()) return true;
 			return fsf.accept(f);
 		}
 

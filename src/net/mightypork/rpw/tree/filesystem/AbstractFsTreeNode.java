@@ -76,10 +76,8 @@ public abstract class AbstractFsTreeNode implements TreeNode, Comparable<Abstrac
 	public int compareTo(AbstractFsTreeNode o)
 	{
 		// dirs on top
-		if (o.isDirectory() && !this.isDirectory())
-			return 1;
-		if (!o.isDirectory() && this.isDirectory())
-			return -1;
+		if (o.isDirectory() && !this.isDirectory()) return 1;
+		if (!o.isDirectory() && this.isDirectory()) return -1;
 
 		// sort by name
 		return AlphanumComparator.instance.compare(this.getName(), o.getName());
@@ -143,8 +141,7 @@ public abstract class AbstractFsTreeNode implements TreeNode, Comparable<Abstrac
 	 */
 	public File getPathRelativeToRoot()
 	{
-		if (isRoot() || getParent() == null)
-			return new File("");
+		if (isRoot() || getParent() == null) return new File("");
 
 		final File root = getParent().getRoot();
 

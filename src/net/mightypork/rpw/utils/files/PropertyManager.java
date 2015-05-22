@@ -702,8 +702,7 @@ public class PropertyManager
 			keyList.add(entry.name);
 
 			final String propOrig = pr.getProperty(entry.name);
-			if (!entry.parse(propOrig))
-				needsSave = true;
+			if (!entry.parse(propOrig)) needsSave = true;
 			if (!cfgNoValidate) {
 				entry.validate();
 			}

@@ -81,8 +81,7 @@ public class ZipUtils
 			final File destFile = new File(outputDir, entryPath);
 			final File destinationParent = destFile.getParentFile();
 
-			if (entry.isDirectory() || (filter != null && !filter.accept(entryPath)))
-				continue;
+			if (entry.isDirectory() || (filter != null && !filter.accept(entryPath))) continue;
 
 			// make sure directories exist
 			destinationParent.mkdirs();

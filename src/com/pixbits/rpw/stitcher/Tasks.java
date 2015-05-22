@@ -31,8 +31,7 @@ public class Tasks
 		boolean keep = true;
 
 		for (AssetCategory c : categories)
-			if (keep)
-				keep = importPackFromStitchedPng(inputFolder, project, c);
+			if (keep) keep = importPackFromStitchedPng(inputFolder, project, c);
 	}
 
 
@@ -67,10 +66,8 @@ public class Tasks
 					// overwrite existing asset to new one
 					File outputAsset = project.getAssetFile(element.key);
 
-					if (outputAsset != null)
-						FileUtils.delete(outputAsset, false);
-					else
-						outputAsset = new File(project.getAssetsDirectory() + File.separator + element.key.replaceAll("\\.", File.separator) + ".png");
+					if (outputAsset != null) FileUtils.delete(outputAsset, false);
+					else outputAsset = new File(project.getAssetsDirectory() + File.separator + element.key.replaceAll("\\.", File.separator) + ".png");
 
 					BufferedImage sprite = new BufferedImage(element.w, element.h, image.getType());
 					sprite.getGraphics().drawImage(image, 0, 0, element.w, element.h, element.x, element.y, element.x + element.w, element.y + element.h, null);
@@ -117,8 +114,7 @@ public class Tasks
 		// "assets.minecraft.textures.font.*");
 
 		for (AssetEntry e : totalEntries) {
-			if (filter.matches(e) /* && !fontFilter.matches(e) */)
-				entries.add(e);
+			if (filter.matches(e) /* && !fontFilter.matches(e) */) entries.add(e);
 		}
 
 		try {
@@ -138,21 +134,16 @@ public class Tasks
 				boolean hasCustom = project.getAssetFile(e.getKey()) != null;
 				File file = null;
 
-				if (exportExisting && hasCustom)
-					file = project.getAssetFile(e.getKey());
-				else if (hasCustom)
-					continue;
+				if (exportExisting && hasCustom) file = project.getAssetFile(e.getKey());
+				else if (hasCustom) continue;
 
-				if (file == null && exportMissing)
-					file = vanilla.getAssetFile(e.getKey());
+				if (file == null && exportMissing) file = vanilla.getAssetFile(e.getKey());
 
 				if (file != null) {
 					AssetImage iasset = new AssetImage(file, e);
 
-					if (category == AssetCategory.BLOCKS && blockSize != BlockSize.NO_CHANGE)
-						iasset.cacheImage(blockSize.size, blockSize.size);
-					else
-						iasset.cacheImage();
+					if (category == AssetCategory.BLOCKS && blockSize != BlockSize.NO_CHANGE) iasset.cacheImage(blockSize.size, blockSize.size);
+					else iasset.cacheImage();
 					layout.add(iasset);
 				}
 			}

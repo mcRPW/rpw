@@ -246,12 +246,10 @@ public class DialogNewProject extends RpwDialog
 		public void actionPerformed(ActionEvent e)
 		{
 			String name = nameField.getText();
-			if (name == null)
-				name = "";
+			if (name == null) name = "";
 
 			String title = titleField.getText();
-			if (title == null)
-				title = "";
+			if (title == null) title = "";
 
 			name = name.trim();
 			title = title.trim();

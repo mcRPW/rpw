@@ -55,8 +55,7 @@ public class GroupInfo implements Comparable<GroupInfo>
 	 */
 	public String getParent()
 	{
-		if (key.indexOf('.') == -1)
-			return null; // root group
+		if (key.indexOf('.') == -1) return null; // root group
 		return key.substring(0, key.lastIndexOf('.'));
 	}
 

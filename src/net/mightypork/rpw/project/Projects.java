@@ -68,10 +68,8 @@ public class Projects
 		final List<String> names = new ArrayList<String>();
 
 		for (final File f : dirs) {
-			if (!f.exists())
-				continue;
-			if (!f.isDirectory())
-				continue;
+			if (!f.exists()) continue;
+			if (!f.isDirectory()) continue;
 			names.add(f.getName());
 		}
 
@@ -158,10 +156,8 @@ public class Projects
 		final List<String> allValidProjects = getProjectNames();
 
 		for (final String proj : list) {
-			if (recentProjects.contains(proj))
-				continue; // already added to list
-			if (!allValidProjects.contains(proj))
-				continue; // not a valid project
+			if (recentProjects.contains(proj)) continue; // already added to list
+			if (!allValidProjects.contains(proj)) continue; // not a valid project
 
 			recentProjects.add(proj);
 		}
@@ -197,20 +193,17 @@ public class Projects
 	public static void markActiveProjectAsRecent()
 	{
 		final Project proj = getActive();
-		if (proj == null)
-			return;
+		if (proj == null) return;
 		markProjectAsRecent(proj.getName());
 	}
 
 
 	public static void openLastProject()
 	{
-		if (!Config.CLOSED_WITH_PROJECT_OPEN)
-			return;
+		if (!Config.CLOSED_WITH_PROJECT_OPEN) return;
 
 		final List<String> recentProjects = Projects.getRecentProjects();
-		if (recentProjects.size() == 0)
-			return;
+		if (recentProjects.size() == 0) return;
 
 		Tasks.taskOpenProject(recentProjects.get(0));
 	}

@@ -73,8 +73,7 @@ public class VBox extends RpwBox
 
 	public void buttonRow(int align, JButton... buttons)
 	{
-		if (buttons == null)
-			return;
+		if (buttons == null) return;
 
 		add(Gui.buttonRow(align, buttons));
 

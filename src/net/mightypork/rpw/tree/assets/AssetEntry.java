@@ -74,8 +74,7 @@ public class AssetEntry implements Comparable<AssetEntry>
 	public int compareTo(AssetEntry o)
 	{
 		int c = o.key.compareToIgnoreCase(key);
-		if (c == 0)
-			c = o.type.compareTo(type);
+		if (c == 0) c = o.type.compareTo(type);
 		return -c;
 	}
 
@@ -83,10 +82,8 @@ public class AssetEntry implements Comparable<AssetEntry>
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj == null)
-			return false;
-		if (!(obj instanceof AssetEntry))
-			return false;
+		if (obj == null) return false;
+		if (!(obj instanceof AssetEntry)) return false;
 
 		final AssetEntry other = (AssetEntry) obj;
 

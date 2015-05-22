@@ -33,8 +33,7 @@ public class DeleteFromProjectProcessor implements AssetTreeProcessor
 	@Override
 	public void process(AssetTreeNode node)
 	{
-		if (processed.contains(node))
-			return;
+		if (processed.contains(node)) return;
 		processed.add(node);
 
 		if (assets && MagicSources.isProject(node.getLibrarySource())) {
@@ -57,10 +56,8 @@ public class DeleteFromProjectProcessor implements AssetTreeProcessor
 			final File target = new File(base, path);
 			final File targetMeta = new File(base, path + ".mcmeta");
 
-			if (assets)
-				target.delete();
-			if (meta)
-				targetMeta.delete();
+			if (assets) target.delete();
+			if (meta) targetMeta.delete();
 		}
 	}
 

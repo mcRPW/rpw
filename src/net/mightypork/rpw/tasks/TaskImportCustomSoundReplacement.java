@@ -44,8 +44,7 @@ public class TaskImportCustomSoundReplacement
 
 			FileUtils.copyFile(file, new File(target, file.getName()));
 
-			if (afterImport != null)
-				afterImport.run();
+			if (afterImport != null) afterImport.run();
 
 		} catch (final IOException e) {
 			Log.e(e);

@@ -27,8 +27,7 @@ public class CountNodesWithSourceProcessor implements AssetTreeProcessor
 	@Override
 	public void process(AssetTreeNode node)
 	{
-		if (processed.contains(node))
-			return; // no double-processing
+		if (processed.contains(node)) return; // no double-processing
 		processed.add(node);
 
 		if (node instanceof AssetTreeGroup) {
@@ -37,8 +36,7 @@ public class CountNodesWithSourceProcessor implements AssetTreeProcessor
 		} else if (node instanceof AssetTreeLeaf) {
 			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
-			if (leaf.getLibrarySource().equals(source))
-				count++;
+			if (leaf.getLibrarySource().equals(source)) count++;
 		}
 	}
 

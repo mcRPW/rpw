@@ -129,8 +129,7 @@ public abstract class RpwDialog extends JDialog
 	{
 		final JComponent jc = buildGui();
 
-		if (jc != null)
-			getContentPane().add(jc);
+		if (jc != null) getContentPane().add(jc);
 
 		initGui();
 

@@ -171,8 +171,7 @@ public class AssetTreeLeaf extends AssetTreeNode
 	public boolean isAssetProvidedByProject()
 	{
 		final Project p = Projects.getActive();
-		if (p == null)
-			return false;
+		if (p == null) return false;
 
 		return p.doesProvideAsset(getAssetKey());
 	}
@@ -181,8 +180,7 @@ public class AssetTreeLeaf extends AssetTreeNode
 	public boolean isMetaProvidedByProject()
 	{
 		final Project p = Projects.getActive();
-		if (p == null)
-			return false;
+		if (p == null) return false;
 
 		return p.doesProvideAssetMeta(getAssetKey());
 	}
