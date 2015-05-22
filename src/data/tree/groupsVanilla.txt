@@ -42,7 +42,7 @@ root.image.block.minerals.cubes = Storage Cubes
 root.image.block.minerals.ores = Ores
 
 root.image.entity = Entities
-root.image.entity.armor = Armour
+root.image.entity.armor = Armor
 root.image.entity.banner = Banners
 root.image.entity.player = Player
 root.image.entity.mob = Mobs
@@ -66,6 +66,7 @@ root.image.entity.mob.wither = Wither
 root.image.entity.mob.wolf = Wolf
 root.image.entity.mob.zombie = Zombie
 root.image.entity.misc = Other
+root.image.entity.armorstand = Armor Stand
 root.image.block.chest = Chests
 root.image.gui = GUI & Menu
 root.image.gui.achievement = Achievement Screen

@@ -94,6 +94,10 @@ public class TreeBuilder
 					if (ae.getType() == EAsset.TEXT) continue; // skip texts
 				}
 
+				if (!Config.SHOW_TEXTURES) {
+					if (ae.getType() == EAsset.IMAGE) continue; // skip images
+				}
+
 				if (!Config.SHOW_TECHNICAL) {
 
 					switch (ae.getType()) {

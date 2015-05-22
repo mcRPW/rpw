@@ -64,6 +64,7 @@ public class MenuMain
 	private JCheckBoxMenuItem itemOptionSoundFiles;
 	private JCheckBoxMenuItem itemOptionTechFiles;
 	private JCheckBoxMenuItem itemOptionTextFiles;
+	private JCheckBoxMenuItem itemOptionTextureFiles;
 	private JCheckBoxMenuItem itemOptionPreviewHover;
 	private JCheckBoxMenuItem itemOptionHiddenFiles;
 	private JCheckBoxMenuItem itemOptionWarningOrphanedNodes;
@@ -277,25 +278,17 @@ public class MenuMain
 
 		menu = menuView = new JMenu("View");
 		menu.setMnemonic(KeyEvent.VK_V);
-		
-			ckitem = itemOptionFancyTree = new JCheckBoxMenuItem("Use \"fancy\" tree structure");
-			ckitem.setMnemonic(KeyEvent.VK_S);
-			ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
-			menu.add(ckitem);
 			
-			menu.addSeparator();
-			
-			ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete files");
-			ckitem.setMnemonic(KeyEvent.VK_W);
-			ckitem.setToolTipText("Show assets that are no longer used by the game.");
+			ckitem = itemOptionTextFiles = new JCheckBoxMenuItem("Show text files (splashes...)");
+			ckitem.setMnemonic(KeyEvent.VK_T);		
 			menu.add(ckitem);
 						
 			ckitem = itemOptionLangFiles = new JCheckBoxMenuItem("Show translation files (*.lang)");
 			ckitem.setMnemonic(KeyEvent.VK_L);	
 			menu.add(ckitem);
 			
-			ckitem = itemOptionTextFiles = new JCheckBoxMenuItem("Show text files");
-			ckitem.setMnemonic(KeyEvent.VK_T);		
+			ckitem = itemOptionTextureFiles = new JCheckBoxMenuItem("Show textures (images)");
+			ckitem.setMnemonic(KeyEvent.VK_U);		
 			menu.add(ckitem);
 			
 			ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font textures");
@@ -305,6 +298,13 @@ public class MenuMain
 			ckitem = itemOptionSoundFiles = new JCheckBoxMenuItem("Show audio files");
 			ckitem.setMnemonic(KeyEvent.VK_A);		
 			menu.add(ckitem);
+		
+			menu.addSeparator();
+			
+			ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete files");
+			ckitem.setMnemonic(KeyEvent.VK_W);
+			ckitem.setToolTipText("Show assets that are no longer used by the game.");
+			menu.add(ckitem);		
 			
 			ckitem = itemOptionTechFiles = new JCheckBoxMenuItem("Show tech files (shaders etc)");
 			ckitem.setMnemonic(KeyEvent.VK_X);		
@@ -333,6 +333,12 @@ public class MenuMain
 		menu = menuOptions = new JMenu("Options");
 		menu.setMnemonic(KeyEvent.VK_O);
 			
+			ckitem = itemOptionFancyTree = new JCheckBoxMenuItem("Use \"fancy\" tree structure");
+			ckitem.setMnemonic(KeyEvent.VK_S);
+			ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
+			menu.add(ckitem);
+			
+			menu.addSeparator();			
 			
 			ckitem = itemOptionWarningOrphanedNodes = new JCheckBoxMenuItem("Warn about orphaned files");
 			ckitem.setMnemonic(KeyEvent.VK_O);
@@ -524,7 +530,7 @@ public class MenuMain
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Tasks.taskRevertProject();
+				Tasks.taskAskRevertProject();
 			}
 		});
 
@@ -835,6 +841,22 @@ public class MenuMain
 			}
 		});
 
+		itemOptionTextureFiles.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionTextureFiles.isSelected();
+
+				if (Config.SHOW_TEXTURES != newOpt) {
+					Config.SHOW_TEXTURES = newOpt;
+					Config.save();
+					Tasks.taskTreeSaveAndRebuild();
+					updateEnabledItems();
+				}
+			}
+		});
+
 		itemUseNimbusTheme.addActionListener(new ActionListener() {
 
 			@Override
@@ -895,6 +917,7 @@ public class MenuMain
 		itemProjectExport.setEnabled(open);
 		itemProjectSave.setEnabled(open);
 		itemProjectSaveAs.setEnabled(open);
+		itemProjectRevert.setEnabled(open);
 		itemProjectExportMc.setEnabled(open);
 		itemProjectExportStitch.setEnabled(open);
 		itemProjectImportStitch.setEnabled(open);
@@ -904,6 +927,8 @@ public class MenuMain
 		menuView.setEnabled(open);
 		itemProjectOpenFolder.setEnabled(open);
 		itemCustomSounds.setEnabled(open);
+		
+		itemOptionFontFiles.setEnabled(Config.SHOW_TEXTURES);
 
 	}
 
@@ -949,6 +974,7 @@ public class MenuMain
 		itemOptionSoundFiles.setSelected(Config.SHOW_SOUNDS);
 		itemOptionTechFiles.setSelected(Config.SHOW_TECHNICAL);
 		itemOptionTextFiles.setSelected(Config.SHOW_TEXTS);
+		itemOptionTextureFiles.setSelected(Config.SHOW_TEXTURES);
 		itemOptionWarningOrphanedNodes.setSelected(Config.WARNING_ORPHANED_NODES);
 		itemOptionPreviewHover.setSelected(Config.PREVIEW_HOVER);
 		itemOptionHiddenFiles.setSelected(Config.SHOW_HIDDEN_FILES);

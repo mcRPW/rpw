@@ -261,7 +261,20 @@ public class Tasks
 		TaskExportProject.showDialog();
 
 	}
-
+	
+	public static void taskAskRevertProject()
+	{
+		if (Alerts.askYesNo(
+				App.getFrame(),
+				"Confirm Revert",
+				"This will undo ALL changes in the project since\n"
+				+ "the last save, even done by external programs.\n\n"
+				+ "Are you sure you want to do this?")) {
+			
+			Tasks.taskRevertProject();
+			
+		}
+	}
 
 	public static int taskRevertProject()
 	{
@@ -386,8 +399,8 @@ public class Tasks
 						App.getFrame(),
 						"Confirm Revert",
 						"You selected to discard changes.\n"
-						+ "This will undo ALL changes in the project\n"
-						+ "since the last save, even done by external programs.\n\n"
+						+ "This will undo ALL changes in the project since\n"
+						+ "the last save, even done by external programs.\n\n"
 						+ "Are you sure you want to do this?")) {
 					
 					Tasks.taskRevertProject();

@@ -23,6 +23,7 @@ public class DialogAbout extends RpwDialog
 
 	private JButton buttonOK;
 	private JButton buttonTwitter;
+	private JButton buttonTwitterRpw;
 
 
 	public DialogAbout() {
@@ -45,10 +46,11 @@ public class DialogAbout extends RpwDialog
 		vb.add(image);
 		vb.gapl();
 
+		buttonTwitterRpw = new JButton("@RPWapp", Icons.MENU_TWITTER);
 		buttonTwitter = new JButton("@MightyPork", Icons.MENU_TWITTER);
 		buttonOK = new JButton("Close", Icons.MENU_YES);
 
-		vb.buttonRow(Gui.CENTER, buttonTwitter, buttonOK);
+		vb.buttonRow(Gui.CENTER, buttonTwitterRpw, buttonTwitter, buttonOK);
 		buttonOK.requestFocusInWindow();
 
 		return vb;
@@ -67,6 +69,19 @@ public class DialogAbout extends RpwDialog
 			{
 				try {
 					DesktopApi.browse(new URL("https://twitter.com/MightyPork").toURI());
+				} catch (final Exception err) {
+					Log.e(err);
+				}
+			}
+		});
+		
+		buttonTwitterRpw.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					DesktopApi.browse(new URL("https://twitter.com/RPWapp").toURI());
 				} catch (final Exception err) {
 					Log.e(err);
 				}

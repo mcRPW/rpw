@@ -70,6 +70,7 @@ public class Config
 	public static final boolean def_SHOW_LANG = true;
 	public static final boolean def_SHOW_SOUNDS = true;
 	public static final boolean def_SHOW_TEXTS = true;
+	public static final boolean def_SHOW_TEXTURES = true;
 	public static final boolean def_SHOW_TECHNICAL = false;
 	public static final boolean def_PREVIEW_HOVER = false;
 	public static final boolean def_SHOW_HIDDEN_IN_FILEPICKER = true;
@@ -86,6 +87,7 @@ public class Config
 	public static boolean SHOW_SOUNDS;
 	public static boolean SHOW_TECHNICAL;
 	public static boolean SHOW_TEXTS;
+	public static boolean SHOW_TEXTURES;
 	public static boolean SHOW_LANG;
 	public static boolean SHOW_OBSOLETE_DIRS;
 	public static boolean PREVIEW_HOVER;
@@ -140,6 +142,7 @@ public class Config
 	private static final String PK_SHOW_SOUNDS = "assets.showSounds";
 	private static final String PK_SHOW_TECHNICAL = "assets.showTechnical";
 	private static final String PK_SHOW_TEXTS = "assets.showText";
+	private static final String PK_SHOW_TEXTURES = "assets.showTextures";
 	private static final String PK_SHOW_OBSOLETE_DIRS = "assets.showObsoleteDirs";
 	private static final String PK_PREVIEW_HOVER = "display.previewOnHover";
 	private static final String PK_SHOW_HIDDEN_IN_FILEPICKER = "system.showHiddenFiles";
@@ -195,6 +198,7 @@ public class Config
 		mgr.putBoolean(PK_SHOW_LANG, def_SHOW_LANG, "Show translation files (*.lang)");
 		mgr.putBoolean(PK_SHOW_SOUNDS, def_SHOW_SOUNDS, "Show sound files");
 		mgr.putBoolean(PK_SHOW_TEXTS, def_SHOW_TEXTS, "Show text files in tree view");
+		mgr.putBoolean(PK_SHOW_TEXTURES, def_SHOW_TEXTURES, "Show textures in tree view");
 		mgr.putBoolean(PK_SHOW_TECHNICAL, def_SHOW_TECHNICAL, "Show shaders, blockstates and other weird things");
 		mgr.putBoolean(PK_SHOW_OBSOLETE_DIRS, def_SHOW_OBSOLETE_DIRS, "Show obsolete directories and groups (eg. the pre-1.7 sounds)");
 		mgr.putBoolean(PK_PREVIEW_HOVER, def_PREVIEW_HOVER, "Display preview of item under mouse");
@@ -244,6 +248,7 @@ public class Config
 		mgr.setValue(PK_SHOW_SOUNDS, SHOW_SOUNDS);
 		mgr.setValue(PK_SHOW_TECHNICAL, SHOW_TECHNICAL);
 		mgr.setValue(PK_SHOW_TEXTS, SHOW_TEXTS);
+		mgr.setValue(PK_SHOW_TEXTURES, SHOW_TEXTURES);
 		mgr.setValue(PK_SHOW_OBSOLETE_DIRS, SHOW_OBSOLETE_DIRS);
 		mgr.setValue(PK_PREVIEW_HOVER, PREVIEW_HOVER);
 		mgr.setValue(PK_SHOW_HIDDEN_IN_FILEPICKER, SHOW_HIDDEN_FILES);
@@ -300,6 +305,7 @@ public class Config
 		SHOW_SOUNDS = mgr.getBoolean(PK_SHOW_SOUNDS);
 		SHOW_TECHNICAL = mgr.getBoolean(PK_SHOW_TECHNICAL);
 		SHOW_TEXTS = mgr.getBoolean(PK_SHOW_TEXTS);
+		SHOW_TEXTURES = mgr.getBoolean(PK_SHOW_TEXTURES);
 		SHOW_OBSOLETE_DIRS = mgr.getBoolean(PK_SHOW_OBSOLETE_DIRS);
 		PREVIEW_HOVER = mgr.getBoolean(PK_PREVIEW_HOVER);
 		SHOW_HIDDEN_FILES = mgr.getBoolean(PK_SHOW_HIDDEN_IN_FILEPICKER);
