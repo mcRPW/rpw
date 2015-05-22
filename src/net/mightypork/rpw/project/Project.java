@@ -84,7 +84,7 @@ public class Project extends Source implements NodeSourceProvider
 	 */
 	public void reload()
 	{
-		Log.f2(getLogPrefix() + " Loading from TMP");
+		Log.f2(getLogPrefix() + " Loading from workdir");
 
 		fileConfig = new File(projectBase, Paths.FILENAME_PROJECT_CONFIG);
 
