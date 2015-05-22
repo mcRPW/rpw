@@ -222,6 +222,7 @@ public class FileUtils
 			if (self) return path.delete();
 			else return true;
 		} else {
+			path.delete();
 			return true;
 		}
 	}
