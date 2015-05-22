@@ -1,22 +1,38 @@
 --------------------------------------------------------------------
 
-       ___  ___ _      __
-      / _ \/ _ \ | /| / /
-     / , _/ ___/ |/ |/ / 
-    /_/|_/_/   |__/|__/  
+ This pack was composed using the ResourcePack Workbench (RPW).
 
- This ResourcePack was composed using the ResourcePack Workbench.
+    ____                                       ____             __
+   / __ \___  _________  __  _______________  / __ \____ ______/ /__
+  / /_/ / _ \/ ___/ __ \/ / / / ___/ ___/ _ \/ /_/ / __ `/ ___/ //_/
+ / _, _/  __(__  ) /_/ / /_/ / /  / /__/  __/ ____/ /_/ / /__/ ,<
+/_/ |_|\___/____/\____/\__,_/_/   \___/\___/_/    \__,_/\___/_/|_|
+       _       __           __   __                    __
+      | |     / /___  _____/ /__/ /_  ___  ____  _____/ /_
+      | | /| / / __ \/ ___/ //_/ __ \/ _ \/ __ \/ ___/ __ \
+      | |/ |/ / /_/ / /  / ,< / /_/ /  __/ / / / /__/ / / /
+      |__/|__/\____/_/  /_/|_/_.___/\___/_/ /_/\___/_/ /_/
 
- Please, keep this file to give a credit to it's author, MightyPork.
+ RPW is open and free software, available under the MIT License.
 
 --------------------------------------------------------------------
 
- * MightyPork on twitter    -> @MightyPork
+ [Get RPW] 
+ 
+   * PlanetMinecraft  -> http://goo.gl/BwlCs
+   * Minecraft Forum  -> http://goo.gl/ipbcH
 
- * RPW on Planet Minecraft  -> http://goo.gl/BwlCs
+ [Contribute] 
+ 
+   * RPW on GitHub     -> https://github.com/MightyPork/rpw
 
- * RPW on Minecraft Forum   -> http://goo.gl/ipbcH
+ [Twitter] 
+ 
+   * MightyPork    -> @MightyPork, <ondra@ondrovo.com>
+   * RPW news      -> @RPWapp
 
- * RPW on GitHub            -> https://github.com/MightyPork/rpw
-	 
+--------------------------------------------------------------------
+
+ Please, keep this file to give credit to RPW.
+
 --------------------------------------------------------------------

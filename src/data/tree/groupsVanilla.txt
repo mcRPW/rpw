@@ -56,6 +56,7 @@ root.image.entity.mob.guardian = Guardian
 root.image.entity.mob.horse = Horse
 root.image.entity.mob.horse.armor = Horse Armour
 root.image.entity.mob.pig = Pig
+root.image.entity.mob.rabbit = Rabbit
 root.image.entity.mob.sheep = Sheep
 root.image.entity.mob.skeleton = Skeleton
 root.image.entity.mob.slime = Slime & Magma Cube
@@ -156,7 +157,7 @@ root.audio.sound.mob.zombiepig = Zombie Pigman
 
 # audio post-1.7
 
-root.audio2 = Audio (1.7+)
+root.audio2 = Audio
 root.audio2.music = Music
 root.audio2.music.game = Game Music
 root.audio2.music.game.nether = Nether
@@ -192,6 +193,7 @@ root.audio2.sound.mob.creeper = Creeper
 root.audio2.sound.mob.enderdragon = Ender Dragon
 root.audio2.sound.mob.enderman = Enderman
 root.audio2.sound.mob.ghast = Ghast
+root.audio2.sound.mob.guardian = Guardian
 root.audio2.sound.mob.horse = Horse & Co.
 root.audio2.sound.mob.horse.donkey = Donkey
 root.audio2.sound.mob.horse.skeleton = Skeletal Horse
@@ -199,6 +201,7 @@ root.audio2.sound.mob.horse.zombie = Zombie Horse
 root.audio2.sound.mob.irongolem = Iron Golem
 root.audio2.sound.mob.magmacube = Magma Cube
 root.audio2.sound.mob.pig = Pig
+root.audio2.sound.mob.rabbit = Rabbit
 root.audio2.sound.mob.sheep = Sheep
 root.audio2.sound.mob.silverfish = Silverfish
 root.audio2.sound.mob.skeleton = Skeleton

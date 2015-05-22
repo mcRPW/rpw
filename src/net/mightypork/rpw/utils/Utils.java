@@ -2,9 +2,12 @@ package net.mightypork.rpw.utils;
 
 import java.io.Closeable;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,12 +25,18 @@ import net.mightypork.rpw.utils.logging.Log;
  */
 public class Utils
 {
+	public static String getDate()
+	{
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date date = new Date();
+		return dateFormat.format(date);
+	}
+
 
 	public static Object fallback(Object... options)
 	{
 		for (final Object o : options) {
-			if (o != null)
-				return o;
+			if (o != null) return o;
 		}
 		return null; // error
 	}
@@ -47,16 +56,14 @@ public class Utils
 
 	public static String fromLastChar(String s, char c)
 	{
-		if (s == null)
-			return null;
+		if (s == null) return null;
 		return s.substring(s.lastIndexOf(c) + 1, s.length());
 	}
 
 
 	public static String toLastChar(String s, char c)
 	{
-		if (s == null)
-			return null;
+		if (s == null) return null;
 		return s.substring(0, s.lastIndexOf(c));
 	}
 
@@ -201,8 +208,7 @@ public class Utils
 		sb.append('[');
 		final boolean first = true;
 		for (final Object o : sounds) {
-			if (!first)
-				sb.append(',');
+			if (!first) sb.append(',');
 			sb.append(o.toString());
 		}
 		sb.append(']');
@@ -223,11 +229,9 @@ public class Utils
 
 	public static void close(Object... something)
 	{
-		if (something == null || something.length == 0)
-			return;
+		if (something == null || something.length == 0) return;
 		for (final Object o : something) {
-			if (o == null)
-				continue;
+			if (o == null) continue;
 			try {
 				if (o instanceof Closeable) {
 					((Closeable) o).close();

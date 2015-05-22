@@ -10,6 +10,7 @@ import java.util.List;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
+import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
@@ -144,8 +145,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 	private boolean stepAddConfigFiles() throws IOException
 	{
 		// pack.png
-		if (Config.LOG_EXPORT_FILES)
-			Log.f3("+ pack.png");
+		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.png");
 		InputStream in = null;
 		try {
 			final File f = new File(project.getProjectDirectory(), "pack.png");
@@ -160,17 +160,16 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 			Utils.close(in);
 		}
 
-		if (Config.LOG_EXPORT_FILES)
-			Log.f3("+ readme.txt");
+		if (Config.LOG_EXPORT_FILES) Log.f3("+ readme.txt");
 		zb.addResource("readme.txt", "/data/export/pack-readme.txt");
 
-		if (Config.LOG_EXPORT_FILES)
-			Log.f3("+ assets/minecraft/sounds.json");
+		zb.addString("rpw-version.txt", Const.getGeneratorStamp());
+
+		if (Config.LOG_EXPORT_FILES) Log.f3("+ assets/minecraft/sounds.json");
 		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
 
 		// json mcmeta
-		if (Config.LOG_EXPORT_FILES)
-			Log.f3("+ pack.mcmeta");
+		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");
 		final String desc = project.getTitle();
 
 		final PackMcmeta pim = new PackMcmeta();
@@ -233,8 +232,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 			return;
 		}
 
-		if (successRunnable != null)
-			successRunnable.run();
+		if (successRunnable != null) successRunnable.run();
 
 		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target + " - done.");
 
@@ -249,8 +247,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		FileUtils.listDirectoryRecursive(dir, null, filesToAdd);
 
 		for (final File file : filesToAdd) {
-			if (!file.isFile())
-				return;
+			if (!file.isFile()) return;
 
 			String path = file.getAbsolutePath();
 			path = pathPrefix + path.replace(dir.getAbsolutePath(), "");
@@ -264,8 +261,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 				Utils.close(in);
 			}
 
-			if (Config.LOG_EXPORT_FILES)
-				Log.f3("+ " + path);
+			if (Config.LOG_EXPORT_FILES) Log.f3("+ " + path);
 		}
 
 	}
@@ -285,19 +281,15 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 				boolean fileSaved = false;
 				do {
 					final String srcName = leaf.resolveAssetSource();
-					if (srcName == null)
-						break;
-					if (MagicSources.isVanilla(srcName))
-						break;
-					if (MagicSources.isInherit(srcName))
-						break;
+					if (srcName == null) break;
+					if (MagicSources.isVanilla(srcName)) break;
+					if (MagicSources.isInherit(srcName)) break;
 
 					InputStream data = null;
 
 					try {
 						data = Sources.getAssetStream(srcName, leaf.getAssetKey());
-						if (data == null)
-							break;
+						if (data == null) break;
 
 						final String path = leaf.getAssetEntry().getPath();
 						logEntry = "+ " + path;
@@ -315,18 +307,14 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 				} while (false);
 
-				if (!fileSaved)
-					return;
+				if (!fileSaved) return;
 
 				// meta
 				do {
 					final String srcName = node.resolveAssetMetaSource();
-					if (srcName == null)
-						break;
-					if (MagicSources.isVanilla(srcName))
-						break;
-					if (MagicSources.isInherit(srcName))
-						break;
+					if (srcName == null) break;
+					if (MagicSources.isVanilla(srcName)) break;
+					if (MagicSources.isInherit(srcName)) break;
 
 					InputStream data = null;
 

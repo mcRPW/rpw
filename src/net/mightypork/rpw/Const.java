@@ -6,6 +6,7 @@ import javax.swing.BorderFactory;
 
 import net.mightypork.rpw.help.VersionUtils;
 import net.mightypork.rpw.struct.SoundSubEntry;
+import net.mightypork.rpw.utils.Utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,4 +51,22 @@ public class Const
 			)
 	);
 	//@formatter:on
+
+	/**
+	 * Get debug string to be put into exported pack
+	 * 
+	 * @return
+	 */
+	public static String getGeneratorStamp()
+	{
+		String txt = "";
+		txt += "Generator debug info\n";
+		txt += "--------------------\n\n";
+		txt += "RPW version:  " + Const.VERSION + " on " + System.getProperty("os.name") + "\n";
+		txt += "Java version: " + System.getProperty("java.runtime.name") + " " + System.getProperty("java.version") + "\n";
+		txt += "MC+assets v.: " + Config.LIBRARY_VERSION + "\n\n";
+		txt += "Generated:    " + Utils.getDate() + "\n";
+
+		return txt;
+	}
 }
