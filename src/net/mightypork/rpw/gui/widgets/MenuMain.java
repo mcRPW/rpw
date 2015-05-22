@@ -59,7 +59,7 @@ public class MenuMain
 	private JMenuItem itemTreeRefreshTree;
 
 	private JCheckBoxMenuItem itemOptionFancyTree;
-	private JCheckBoxMenuItem itemOptionAskSave;
+	private JCheckBoxMenuItem itemOptionAutoSave;
 	private JCheckBoxMenuItem itemOptionLangFiles;
 	private JCheckBoxMenuItem itemOptionFontFiles;
 	private JCheckBoxMenuItem itemOptionSoundFiles;
@@ -358,9 +358,8 @@ public class MenuMain
 			ckitem.setMnemonic(KeyEvent.VK_N);	
 			menu.add(ckitem);
 			
-			ckitem = itemOptionAskSave = new JCheckBoxMenuItem("Ask to save on close");
+			ckitem = itemOptionAutoSave = new JCheckBoxMenuItem("Auto save on close (don't ask)");
 			ckitem.setMnemonic(KeyEvent.VK_A);
-			ckitem.setToolTipText("If disabled, saves automatically.");
 			menu.add(ckitem);
 			
 			menu.addSeparator();
@@ -877,15 +876,15 @@ public class MenuMain
 			}
 		});
 
-		itemOptionAskSave.addActionListener(new ActionListener() {
+		itemOptionAutoSave.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				final boolean newOpt = itemOptionAskSave.isSelected();
+				final boolean newOpt = itemOptionAutoSave.isSelected();
 
-				if (Config.ASK_SAVE != newOpt) {
-					Config.ASK_SAVE = newOpt;
+				if (Config.AUTO_SAVE != newOpt) {
+					Config.AUTO_SAVE = newOpt;
 					Config.save();
 				}
 			}
@@ -988,7 +987,7 @@ public class MenuMain
 	public void updateOptionCheckboxes()
 	{
 		itemOptionFancyTree.setSelected(Config.FANCY_TREE);
-		itemOptionAskSave.setSelected(Config.ASK_SAVE);
+		itemOptionAutoSave.setSelected(Config.AUTO_SAVE);
 		itemOptionObsoleteDirs.setSelected(Config.SHOW_OBSOLETE_DIRS);
 		itemOptionLangFiles.setSelected(Config.SHOW_LANG);
 		itemOptionFontFiles.setSelected(Config.SHOW_FONT);

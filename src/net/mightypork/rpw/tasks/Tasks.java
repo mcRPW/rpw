@@ -261,20 +261,18 @@ public class Tasks
 		TaskExportProject.showDialog();
 
 	}
-	
+
+
 	public static void taskAskRevertProject()
 	{
-		if (Alerts.askYesNo(
-				App.getFrame(),
-				"Confirm Revert",
-				"This will undo ALL changes in the project since\n"
-				+ "the last save, even done by external programs.\n\n"
+		if (Alerts.askYesNo(App.getFrame(), "Confirm Revert", "This will undo ALL changes in the project since\n" + "the last save, even done by external programs.\n\n"
 				+ "Are you sure you want to do this?")) {
-			
+
 			Tasks.taskRevertProject();
-			
+
 		}
 	}
+
 
 	public static int taskRevertProject()
 	{
@@ -362,7 +360,7 @@ public class Tasks
 			return;
 		}
 
-		// Save temporary changes
+		// Save temporary changes, to enable difference finding
 		taskStoreProjectChanges();
 
 		boolean anyChanges = false;
@@ -376,9 +374,14 @@ public class Tasks
 
 		if (anyChanges) {
 			Log.f3("Asking to save.");
-			
-			if (Config.ASK_SAVE) {
-	
+
+			if (Config.AUTO_SAVE) {
+				
+				Log.f3("- Config option AUTO_SAVE enabled, saving.");
+				taskSaveProject();
+				
+			} else {
+
 				//@formatter:off
 				final int choice = Alerts.askYesNoCancel(
 						App.getFrame(),
@@ -387,7 +390,7 @@ public class Tasks
 						+ "Do you want to keep those changes (\"save\")?\n"
 				);
 				//@formatter:on
-	
+
 				if (choice == JOptionPane.CANCEL_OPTION) {
 					Log.f3("- User choice CANCEL");
 					return; // cancelled
@@ -396,7 +399,7 @@ public class Tasks
 					taskSaveProject();
 				} else {
 					Log.f3("- User choice DISCARD");
-	
+
 					//@formatter:off
 					if (Alerts.askOkCancel(
 							App.getFrame(),
@@ -413,10 +416,7 @@ public class Tasks
 					}
 					//@formatter:on
 				}
-			} else {
-				Log.f3("- Config option AUTO_SAVE enabled, saving.");
-				taskSaveProject();
-			}			
+			}
 		}
 
 		if (afterSave != null) afterSave.run();
