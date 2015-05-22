@@ -2,6 +2,7 @@ package net.mightypork.rpw.gui.windows;
 
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
+import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.helpers.WindowCloseListener;
 import net.mightypork.rpw.utils.logging.Log;
@@ -73,6 +75,22 @@ public abstract class RpwDialog extends JDialog
 	}
 
 
+	public void forceGetFocus()
+	{
+		requestFocus();
+
+		ModalityType mt = getModalityType();
+
+		setModalityType(ModalityType.APPLICATION_MODAL);
+		setModalityType(mt);
+
+		if (!isFocused()) {
+			setVisible(false);
+			setVisible(true);
+		}
+	}
+
+
 	/**
 	 * @param parent
 	 *            parent frame
@@ -93,6 +111,8 @@ public abstract class RpwDialog extends JDialog
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		addWindowListener(closeWindowListener);
+
+		App.activeDialog = this;
 	}
 
 
@@ -110,6 +130,8 @@ public abstract class RpwDialog extends JDialog
 			onClose();
 			afterOnClose();
 		}
+
+		App.activeDialog = null;
 	}
 
 

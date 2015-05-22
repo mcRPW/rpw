@@ -59,6 +59,7 @@ public class MenuMain
 	private JMenuItem itemTreeRefreshTree;
 
 	private JCheckBoxMenuItem itemOptionFancyTree;
+	private JCheckBoxMenuItem itemOptionAskSave;
 	private JCheckBoxMenuItem itemOptionLangFiles;
 	private JCheckBoxMenuItem itemOptionFontFiles;
 	private JCheckBoxMenuItem itemOptionSoundFiles;
@@ -149,12 +150,12 @@ public class MenuMain
 			menu.addSeparator();
 			
 			item = itemProjectExport = new JMenuItem("Export pack to...", KeyEvent.VK_E);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 			item.setIcon(Icons.MENU_EXPORT_BOX);
 			menu.add(item);		
 						
 			item = itemProjectExportMc = new JMenuItem("Export pack to Minecraft", KeyEvent.VK_M);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
+			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 			item.setIcon(Icons.MENU_EXPORT_BOX);
 			menu.add(item);
 			
@@ -355,6 +356,11 @@ public class MenuMain
 									
 			ckitem = itemUseNimbusTheme = new JCheckBoxMenuItem("Use Nimbus theme (needs restart)");
 			ckitem.setMnemonic(KeyEvent.VK_N);	
+			menu.add(ckitem);
+			
+			ckitem = itemOptionAskSave = new JCheckBoxMenuItem("Ask to save on close");
+			ckitem.setMnemonic(KeyEvent.VK_A);
+			ckitem.setToolTipText("If disabled, saves automatically.");
 			menu.add(ckitem);
 			
 			menu.addSeparator();
@@ -871,6 +877,20 @@ public class MenuMain
 			}
 		});
 
+		itemOptionAskSave.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemOptionAskSave.isSelected();
+
+				if (Config.ASK_SAVE != newOpt) {
+					Config.ASK_SAVE = newOpt;
+					Config.save();
+				}
+			}
+		});
+
 		itemConfigureEditors.addActionListener(new ActionListener() {
 
 			@Override
@@ -968,6 +988,7 @@ public class MenuMain
 	public void updateOptionCheckboxes()
 	{
 		itemOptionFancyTree.setSelected(Config.FANCY_TREE);
+		itemOptionAskSave.setSelected(Config.ASK_SAVE);
 		itemOptionObsoleteDirs.setSelected(Config.SHOW_OBSOLETE_DIRS);
 		itemOptionLangFiles.setSelected(Config.SHOW_LANG);
 		itemOptionFontFiles.setSelected(Config.SHOW_FONT);

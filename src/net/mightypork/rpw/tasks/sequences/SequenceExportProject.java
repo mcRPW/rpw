@@ -223,7 +223,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 			//@formatter:off
 			Alerts.error(
-					App.getFrame(),
+					App.activeDialog,
 					"An error occured while exporting.\n" +
 					"Check log file for details."
 			);
@@ -236,7 +236,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target + " - done.");
 
-		Alerts.info(App.getFrame(), "Export successful.");
+		Alerts.info(App.activeDialog, "Export successful.");
 	}
 
 

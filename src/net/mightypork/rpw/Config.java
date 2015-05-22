@@ -73,6 +73,7 @@ public class Config
 	public static final boolean def_SHOW_TEXTURES = true;
 	public static final boolean def_SHOW_TECHNICAL = false;
 	public static final boolean def_PREVIEW_HOVER = false;
+	public static final boolean def_ASK_SAVE = true;
 	public static final boolean def_SHOW_HIDDEN_IN_FILEPICKER = true;
 	public static final boolean def_CLOSED_WITH_PROJECT_OPEN = false;
 	public static final int def_LAST_RUN_VERSION = 0;
@@ -90,6 +91,7 @@ public class Config
 	public static boolean SHOW_TEXTURES;
 	public static boolean SHOW_LANG;
 	public static boolean SHOW_OBSOLETE_DIRS;
+	public static boolean ASK_SAVE;
 	public static boolean PREVIEW_HOVER;
 	public static boolean SHOW_HIDDEN_FILES;
 	public static boolean USE_INTERNAL_META_EDITOR;
@@ -159,6 +161,7 @@ public class Config
 	private static final String PK_USE_TEXT_EDITOR = "system.editor.text.enabled";
 
 	private static final String PK_USE_NIMBUS = "display.nimbusTheme";
+	private static final String PK_ASK_SAVE = "system.askToSave";
 
 	private static final String PK_AUDIO_EDITOR = "system.editor.audio.command";
 	private static final String PK_AUDIO_EDITOR_ARGS = "system.editor.audio.command.args";
@@ -207,6 +210,8 @@ public class Config
 		mgr.putBoolean(PK_USE_INTERNAL_META_EDITOR, def_USE_INTERNAL_META_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_USE_INTERNAL_TEXT_EDITOR, def_USE_INTERNAL_TEXT_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_WARNING_ORPHANED_NODES, def_WARNING_ORPHANED_NODES, "Warn when some assets could not be displayed.");
+		
+		mgr.putBoolean(PK_ASK_SAVE, def_ASK_SAVE, "Ask to save changes on close? If false, saves automatically.");
 
 		mgr.putString(PK_IMAGE_EDITOR, def_IMAGE_EDITOR);
 		mgr.putString(PK_IMAGE_EDITOR_ARGS, def_IMAGE_EDITOR_ARGS);
@@ -256,6 +261,8 @@ public class Config
 		mgr.setValue(PK_USE_INTERNAL_TEXT_EDITOR, USE_INTERNAL_TEXT_EDITOR);
 		mgr.setValue(PK_WARNING_ORPHANED_NODES, WARNING_ORPHANED_NODES);
 
+		mgr.setValue(PK_ASK_SAVE, ASK_SAVE);
+		
 		mgr.setValue(PK_IMAGE_EDITOR, IMAGE_EDITOR);
 		mgr.setValue(PK_IMAGE_EDITOR_ARGS, IMAGE_EDITOR_ARGS);
 		mgr.setValue(PK_USE_IMAGE_EDITOR, USE_IMAGE_EDITOR);
@@ -313,6 +320,8 @@ public class Config
 		USE_INTERNAL_META_EDITOR = mgr.getBoolean(PK_USE_INTERNAL_META_EDITOR);
 		USE_INTERNAL_TEXT_EDITOR = mgr.getBoolean(PK_USE_INTERNAL_TEXT_EDITOR);
 		WARNING_ORPHANED_NODES = mgr.getBoolean(PK_WARNING_ORPHANED_NODES);
+
+		ASK_SAVE = mgr.getBoolean(PK_ASK_SAVE);
 
 		IMAGE_EDITOR = mgr.getString(PK_IMAGE_EDITOR);
 		IMAGE_EDITOR_ARGS = mgr.getString(PK_IMAGE_EDITOR_ARGS);

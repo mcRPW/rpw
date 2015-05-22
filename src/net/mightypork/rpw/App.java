@@ -16,7 +16,6 @@ import net.mightypork.rpw.help.VersionUtils;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.NodeSourceProvider;
 import net.mightypork.rpw.project.Projects;
-import net.mightypork.rpw.tasks.TaskDevel;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.HtmlBuilder;
 import net.mightypork.rpw.utils.files.OsUtils;
@@ -31,6 +30,8 @@ public class App
 
 	public static App inst;
 
+	public volatile static RpwDialog activeDialog;
+
 	/** Main App Window */
 	public WindowMain window;
 	public MenuMain menu;
@@ -40,7 +41,6 @@ public class App
 
 	public static void main(String[] args)
 	{
-		// use crash dialog to uncaught errors
 		Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
 
 		inst = new App();
@@ -91,8 +91,6 @@ public class App
 		if (Config.USE_NIMBUS) {
 			Gui.useNimbus();
 		}
-
-		TaskDevel.run();
 
 		Log.f3("Last run version: " + VersionUtils.getVersionString(Config.LAST_RUN_VERSION) + " (#" + Config.LAST_RUN_VERSION + ")");
 		Log.i("Using library version: " + Config.LIBRARY_VERSION);

@@ -376,40 +376,47 @@ public class Tasks
 
 		if (anyChanges) {
 			Log.f3("Asking to save.");
-
-			//@formatter:off
-			final int choice = Alerts.askYesNoCancel(
-					App.getFrame(),
-					"Confirm changes", 
-					"There are some changes in the project.\n"
-					+ "Do you want to keep those changes (\"save\")?\n"
-			);
-			//@formatter:on
-
-			if (choice == JOptionPane.CANCEL_OPTION) {
-				Log.f3("- User choice CANCEL");
-				return; // cancelled
-			} else if (choice == JOptionPane.OK_OPTION) {
-				Log.f3("- User choice SAVE");
-			} else {
-				Log.f3("- User choice DISCARD");
-
+			
+			if (Config.ASK_SAVE) {
+	
 				//@formatter:off
-				if (Alerts.askOkCancel(
+				final int choice = Alerts.askYesNoCancel(
 						App.getFrame(),
-						"Confirm Revert",
-						"You selected to discard changes.\n"
-						+ "This will undo ALL changes in the project since\n"
-						+ "the last save, even done by external programs.\n\n"
-						+ "Are you sure you want to do this?")) {
-					
-					Tasks.taskRevertProject();
-					
-				} else {
-					return; // do not call handler
-				}
+						"Confirm changes", 
+						"There are some changes in the project.\n"
+						+ "Do you want to keep those changes (\"save\")?\n"
+				);
 				//@formatter:on
-			}
+	
+				if (choice == JOptionPane.CANCEL_OPTION) {
+					Log.f3("- User choice CANCEL");
+					return; // cancelled
+				} else if (choice == JOptionPane.OK_OPTION) {
+					Log.f3("- User choice SAVE");
+					taskSaveProject();
+				} else {
+					Log.f3("- User choice DISCARD");
+	
+					//@formatter:off
+					if (Alerts.askOkCancel(
+							App.getFrame(),
+							"Confirm Revert",
+							"You selected to discard changes.\n"
+							+ "This will undo ALL changes in the project since\n"
+							+ "the last save, even done by external programs.\n\n"
+							+ "Are you sure you want to do this?")) {
+						
+						Tasks.taskRevertProject();
+						
+					} else {
+						return; // do not call handler
+					}
+					//@formatter:on
+				}
+			} else {
+				Log.f3("- Config option AUTO_SAVE enabled, saving.");
+				taskSaveProject();
+			}			
 		}
 
 		if (afterSave != null) afterSave.run();
@@ -533,7 +540,7 @@ public class Tasks
 
 	public static void taskSaveProject()
 	{
-		taskTreeSaveAndRebuild();
+		Tasks.taskStoreProjectChanges();
 		// Saved -> overwrite the backup.
 		Projects.getActive().createBackup();
 	}

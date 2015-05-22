@@ -1,5 +1,7 @@
 package net.mightypork.rpw.tasks.sequences;
 
+import java.awt.Dialog.ModalityType;
+
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogProgressTerminal;
 import net.mightypork.rpw.utils.logging.Log;
@@ -63,7 +65,11 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence
 		}
 
 		doAfter(success);
-		dpt.stopMonitoring();
+		
+		dpt.stopMonitoring();		
+		
+		dpt.setModalityType(ModalityType.APPLICATION_MODAL);
+		dpt.forceGetFocus();
 	}
 
 
