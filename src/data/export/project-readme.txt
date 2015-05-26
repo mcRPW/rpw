@@ -20,20 +20,20 @@ useful for co-op work or versioning your project.
  ########################
     
     |
-    +- custom_languages/   custom language files
+    +- custom_languages/   custom language files (Chinese, Polish, etc)
     |
-    +- custom_sounds/      custom sounds (put your ogg's here)
+    +- custom_sounds/      custom sounds (put your .ogg sound files here)
     |
-    +- extra_files/        YOUR extra files included when exporting
+    +- extra_files/        YOUR extra files included when exporting (Readmes, licenses, etc)
     |
-    +- project_files/      project files that replace Vanilla ones
+    +- project_files/      resource pack project files that replace Vanilla ones (DO NOT ADD VANILLA FILES HERE)
     |
     |
     +- languages.json      custom languages config files
     |
     +- pack.png            pack icon shown in Minecraft
     |
-    +- properties.cfg      project config file
+    +- properties.cfg     resource pack project config file
     |
     +- sounds.json         custom sounds config file
     |
@@ -41,5 +41,5 @@ useful for co-op work or versioning your project.
     |
     +- sources_groups.cfg  tree groups config file
  
-
+Note: This file tree MUST be exactly as stated above, or it WILL not work, and MC will reject the pack.
  End of file.
