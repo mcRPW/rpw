@@ -82,11 +82,14 @@ public class DialogCrash extends DialogTerminalBase
 		txt += "### SYSTEM INFO ###\n";
 		txt += "\n\n";
 
-		txt += " Key               | Value \n";
+	txt += " Key               | Value \n";
 		txt += "-------------------|-------------------------------\n";
 		txt += " Runtime name      | " + System.getProperty("java.runtime.name") + "\n";
 		txt += " Java version      | " + System.getProperty("java.version") + "\n";
+		txt += " Java vendor"      | " + System.getProperty("java.vendor") + "\n"
+		txt += " Java path"	   | " + System.getProperty("java.home") + "\n"
 		txt += " OS name           | " + System.getProperty("os.name") + "\n";
+		txt += " OS arch	   | " + System.getProperty("os.arch") + "\n"
 		txt += " File encoding     | " + System.getProperty("file.encoding") + "\n";
 		txt += " Launch dir        | " + System.getProperty("user.dir") + "\n";
 		txt += " RPW version       | " + Const.VERSION + "\n";
@@ -193,8 +196,8 @@ public class DialogCrash extends DialogTerminalBase
 	@Override
 	protected JButton[] makeButtons()
 	{
-		buttonGH = new JButton("Report issue", Icons.MENU_GITHUB);
-		buttonCopy = new JButton("Copy text", Icons.MENU_COPY);
+		buttonGH = new JButton("Report Issue", Icons.MENU_GITHUB);
+		buttonCopy = new JButton("Copy Text", Icons.MENU_COPY);
 		buttonContinue = new JButton("Carry On", Icons.MENU_CANCEL);
 		buttonQuit = new JButton("Close RPW", Icons.MENU_EXIT);
 
