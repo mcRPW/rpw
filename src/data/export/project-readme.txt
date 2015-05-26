@@ -20,12 +20,11 @@ useful for co-op work or versioning your project.
  ########################
     
     |
-    +- custom_languages/   custom language files (Chinese, Polish, etc)
+    +- custom_languages/   custom language files 
     |
     +- custom_sounds/      custom sounds (put your .ogg sound files here)
     |
-    +- extra_files/        YOUR extra files included when exporting (Readmes, licenses, etc)
-    |
+    +- extra_files/        files included when exporting 
     +- project_files/      resource pack project files that replace Vanilla ones (DO NOT ADD VANILLA FILES HERE)
     |
     |
@@ -33,7 +32,7 @@ useful for co-op work or versioning your project.
     |
     +- pack.png            pack icon shown in Minecraft
     |
-    +- properties.cfg     resource pack project config file
+    +- properties.cfg      project config file
     |
     +- sounds.json         custom sounds config file
     |
