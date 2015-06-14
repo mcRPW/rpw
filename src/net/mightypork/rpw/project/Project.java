@@ -228,7 +228,7 @@ public class Project extends Source implements NodeSourceProvider
 	{
 		SimpleConfig.mapToFile(fileSourcesFiles, files, false);
 		SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
-		FileUtils.stringToFile(fileSounds, sounds.toJson());
+		FileUtils.stringToFile(fileSounds, sounds.toJson()); // NPE here. Why, how??? #45
 		FileUtils.stringToFile(fileLangs, langs.toJson());
 
 		// all properties
