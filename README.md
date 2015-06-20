@@ -1,5 +1,7 @@
 # ResourcePack Workbench
 
+[![Join the chat at https://gitter.im/MightyPork/rpw](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MightyPork/rpw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This project is a standalone application for manupulating Minecraft resource packs.
 
 RPW's "home page" is here: [ondrovo.com/rpw](http://www.ondrovo.com/20130927-rpw)
