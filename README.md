@@ -1,22 +1,23 @@
-# ResourcePack Workbench
+# Resource Pack Workbench
 
-This project is an application for creating and editing Minecraft resource packs.
+RPW is a tool for editing Minecraft resource packs.
 
-Please wisit **RPW's website** at [rpw.ondrovo.com](http://rpw.ondrovo.com)!
+## Links
 
-If you have question(s), please use our Support channel on Gitter: 
+- [**Official RPW website**](http://rpw.ondrovo.com)
+- [MightyPork on Twitter](https://twitter.com/MightyPork)
+- [RPW on Twitter](https://twitter.com/RPWapp)
+- [Planet Minecraft post](http://www.planetminecraft.com/mod/tool-resourcepack-workbench---the-ultimate-pack-creator/)
+
+## Support?
+
+For help with using RPW, please use our Gitter channel:
+
 [![Join the chat at https://gitter.im/MightyPork/rpw](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MightyPork/rpw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Setting up RPW for development
 
-Here's some links where you can find more:
-
-- [Planet Minecraft](http://www.planetminecraft.com/mod/tool-resourcepack-workbench---the-ultimate-pack-creator/)
-- [MightyPork on Twitter](https://twitter.com/MightyPork)
-- [RPW updates on Twitter](https://twitter.com/RPWapp)
-
-If you'd like to help, please go ahead!
-
-## Setting RPW up for development
+*If you plan to work on RPW's source code:*
 
 The project repends on Maven, from which it takes some libraries.
 
