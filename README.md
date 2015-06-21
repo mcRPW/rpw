@@ -1,34 +1,27 @@
 # ResourcePack Workbench
 
+This project is an application for creating and editing Minecraft resource packs.
+
+Please wisit **RPW's website** at [rpw.ondrovo.com](http://rpw.ondrovo.com)!
+
+If you have question(s), please use our Support channel on Gitter: 
 [![Join the chat at https://gitter.im/MightyPork/rpw](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MightyPork/rpw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This project is a standalone application for manupulating Minecraft resource packs.
-
-RPW's "home page" is here: [ondrovo.com/rpw](http://www.ondrovo.com/20130927-rpw)
 
 Here's some links where you can find more:
 
-- [Minecraft Forum](http://www.minecraftforum.net/topic/1897669-tool-resourcepack-workbench-v1-the-ultimate-composition-tool/)
 - [Planet Minecraft](http://www.planetminecraft.com/mod/tool-resourcepack-workbench---the-ultimate-pack-creator/)
 - [MightyPork on Twitter](https://twitter.com/MightyPork)
+- [RPW updates on Twitter](https://twitter.com/RPWapp)
 
+If you'd like to help, please go ahead!
 
-If you want to help, you are welcome. Feel free to fork it!
+## Setting RPW up for development
 
+The project repends on Maven, from which it takes some libraries.
 
-## Getting it work with eclipse / netbeans / whatever
+First, make sure your eclipse / other IDE has Maven plugin. Then you should be able to import RPW as a Maven Project, and it'll set everything up for you.
 
-* Install some Maven plugin (!important)
-* Checkout the repo to some folder
-
-   ```
-   git init
-   git remote add origin https://github.com/MightyPork/rpw.git
-   git pull origin master
-   ```
-  Or use some Eclipse GIT plugin
-
-* Import as a Maven project
-* Add any jars in the `/libs` folder to build path (those could not be taken from Maven)
+Make sure you add all jars in the `/libs` folder to build path (those could not be taken from Maven).
 
 
