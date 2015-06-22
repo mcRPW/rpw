@@ -71,7 +71,7 @@ public class Config
 	public static final boolean def_SHOW_SOUNDS = true;
 	public static final boolean def_SHOW_TEXTS = true;
 	public static final boolean def_SHOW_TEXTURES = true;
-	public static final boolean def_SHOW_TECHNICAL = false;
+	public static final boolean def_SHOW_TECHNICAL = true;
 	public static final boolean def_PREVIEW_HOVER = false;
 	public static final boolean def_AUTO_SAVE = false;
 	public static final boolean def_SHOW_HIDDEN_IN_FILEPICKER = true;

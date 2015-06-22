@@ -251,6 +251,8 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 			String path = file.getAbsolutePath();
 			path = pathPrefix + path.replace(dir.getAbsolutePath(), "");
+			
+			path = path.replace('\\', '/'); // Windoze shit
 
 			FileInputStream in = null;
 
@@ -292,6 +294,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 						if (data == null) break;
 
 						final String path = leaf.getAssetEntry().getPath();
+						
 						logEntry = "+ " + path;
 						zb.addStream(path, data);
 

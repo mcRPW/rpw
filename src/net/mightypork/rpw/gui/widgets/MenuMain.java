@@ -279,37 +279,44 @@ public class MenuMain
 
 		menu = menuView = new JMenu("View");
 		menu.setMnemonic(KeyEvent.VK_V);
-			
-			ckitem = itemOptionTextFiles = new JCheckBoxMenuItem("Show text files (splashes...)");
-			ckitem.setMnemonic(KeyEvent.VK_T);		
-			menu.add(ckitem);
-						
-			ckitem = itemOptionLangFiles = new JCheckBoxMenuItem("Show translation files (*.lang)");
-			ckitem.setMnemonic(KeyEvent.VK_L);	
-			menu.add(ckitem);
-			
-			ckitem = itemOptionTextureFiles = new JCheckBoxMenuItem("Show textures (images)");
+		
+			ckitem = itemOptionTextureFiles = new JCheckBoxMenuItem("Show textures");
+			ckitem.setIcon(Icons.TREE_FILE_IMAGE);
 			ckitem.setMnemonic(KeyEvent.VK_U);		
 			menu.add(ckitem);
 			
-			ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font textures");
+			ckitem = itemOptionSoundFiles = new JCheckBoxMenuItem("Show sounds");
+			ckitem.setIcon(Icons.TREE_FILE_AUDIO);
+			ckitem.setMnemonic(KeyEvent.VK_A);		
+			menu.add(ckitem);
+			
+			ckitem = itemOptionTextFiles = new JCheckBoxMenuItem("Show text files");
+			ckitem.setIcon(Icons.TREE_FILE_TEXT);
+			ckitem.setMnemonic(KeyEvent.VK_T);		
+			menu.add(ckitem);
+						
+			ckitem = itemOptionLangFiles = new JCheckBoxMenuItem("Show language files");
+			ckitem.setIcon(Icons.TREE_FILE_TEXT);
+			ckitem.setMnemonic(KeyEvent.VK_L);	
+			menu.add(ckitem);
+			
+			ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font");
+			ckitem.setIcon(Icons.TREE_FILE_FONT);
 			ckitem.setMnemonic(KeyEvent.VK_F);		
 			menu.add(ckitem);
 			
-			ckitem = itemOptionSoundFiles = new JCheckBoxMenuItem("Show audio files");
-			ckitem.setMnemonic(KeyEvent.VK_A);		
+			ckitem = itemOptionTechFiles = new JCheckBoxMenuItem("Show shaders, models etc.");
+			ckitem.setIcon(Icons.TREE_FILE_TECH);
+			ckitem.setMnemonic(KeyEvent.VK_X);		
 			menu.add(ckitem);
 		
 			menu.addSeparator();
 			
-			ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete files");
+			ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete (useless) files");
+			ckitem.setIcon(Icons.TREE_FILE_GENERIC);
 			ckitem.setMnemonic(KeyEvent.VK_W);
 			ckitem.setToolTipText("Show assets that are no longer used by the game.");
 			menu.add(ckitem);		
-			
-			ckitem = itemOptionTechFiles = new JCheckBoxMenuItem("Show tech files (shaders etc)");
-			ckitem.setMnemonic(KeyEvent.VK_X);		
-			menu.add(ckitem);
 		
 			menu.addSeparator();
 		
@@ -398,19 +405,25 @@ public class MenuMain
 			
 			menu.addSeparator();
 			
-			item = new JMenuItem("RPW on Planet Minecraft");
+			item = new JMenuItem("Official website");
+			item.setIcon(Icons.MENU_WEBSITE);// FIXME
+			item.addActionListener(Gui.openUrlListener);
+			item.setActionCommand(Paths.URL_RPW_WEB);
+			menu.add(item);	
+			
+			item = new JMenuItem("PMC post");
 			item.setIcon(Icons.MENU_PMC);
 			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
 			menu.add(item);	
 			
-			item = new JMenuItem("RPW on Minecraft Forum");
-			item.setIcon(Icons.MENU_MCF);
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
-			menu.add(item);
+//			item = new JMenuItem("RPW on Minecraft Forum");
+//			item.setIcon(Icons.MENU_MCF);
+//			item.addActionListener(Gui.openUrlListener);
+//			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
+//			menu.add(item);
 			
-			item = new JMenuItem("RPW on GitHub");
+			item = new JMenuItem("GitHub");
 			item.setIcon(Icons.MENU_GITHUB);
 			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_GITHUB_WEB);
