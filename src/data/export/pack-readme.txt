@@ -13,23 +13,20 @@
       | |/ |/ / /_/ / /  / ,< / /_/ /  __/ / / / /__/ / / /
       |__/|__/\____/_/  /_/|_/_.___/\___/_/ /_/\___/_/ /_/
 
- RPW is open and free software, available under the MIT License.
-
 --------------------------------------------------------------------
 
  [Get RPW] 
  
-   * PlanetMinecraft  -> http://goo.gl/BwlCs
-   * Minecraft Forum  -> http://goo.gl/ipbcH
+   * Official website  -> rpw.ondrovo.com
 
  [Contribute] 
  
-   * RPW on GitHub     -> https://github.com/MightyPork/rpw
+   * RPW on GitHub     -> github.com/MightyPork/rpw
 
  [Twitter] 
  
-   * MightyPork    -> @MightyPork, <ondra@ondrovo.com>
    * RPW news      -> @RPWapp
+   * MightyPork    -> @MightyPork
 
 --------------------------------------------------------------------
 
