@@ -307,7 +307,7 @@ public class MenuMain
 			ckitem.setToolTipText("Show assets that are no longer used by the game.");
 			menu.add(ckitem);		
 			
-			ckitem = itemOptionTechFiles = new JCheckBoxMenuItem("Show tech files (shaders etc)");
+			ckitem = itemOptionTechFiles = new JCheckBoxMenuItem("Show shaders, models etc");
 			ckitem.setMnemonic(KeyEvent.VK_X);		
 			menu.add(ckitem);
 		
