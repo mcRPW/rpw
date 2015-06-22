@@ -87,6 +87,8 @@ public class Icons
 	public static ImageIcon TREE_FILE_SHADER;
 	public static ImageIcon TREE_FILE_JSON;
 	public static ImageIcon TREE_FILE_GENERIC;
+	public static ImageIcon TREE_FILE_TECH;
+	public static ImageIcon TREE_FILE_FONT;
 
 	public static ImageIcon LOADING;
 	public static ImageIcon MENU_YES;
@@ -187,6 +189,8 @@ public class Icons
 		TREE_FILE_SHADER 	= loadImage(imgPath + "tree/file-shader.png");
 		TREE_FILE_JSON 		= loadImage(imgPath + "tree/file-json.png");
 		TREE_FILE_GENERIC	= loadImage(imgPath + "tree/file-unknown.png");
+		TREE_FILE_FONT		= loadImage(imgPath + "tree/file-font.png");
+		TREE_FILE_TECH		= loadImage(imgPath + "tree/file-tech.png");
 
 
 		IMAGE_NOT_FOUND		= IMAGE_ERROR_64;
