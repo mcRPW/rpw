@@ -672,7 +672,7 @@ public class DialogSoundWizard extends RpwDialog
 					String path = Utils.toLastDot(node.getPathRelativeToRoot().getPath());
 
 					// Fix Windoze backslashes
-					path = path.replaceAll("\\", "/");
+					path = path.replace('\\', '/');
 
 					if (!fileList.contains(path)) {
 						fileList.addItemNoSort(path);
