@@ -2,7 +2,7 @@
 
 RPW is a tool for editing Minecraft resource packs.
 
-** Plase work on DEV branch, not MASTER! **
+**Please work on DEV branch, not MASTER!**<br>
 Master is for released code and patches only.
 
 ## Links
