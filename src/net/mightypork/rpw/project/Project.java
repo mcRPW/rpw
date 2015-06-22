@@ -226,10 +226,14 @@ public class Project extends Source implements NodeSourceProvider
 	 */
 	public void saveConfigFiles() throws IOException
 	{
-		SimpleConfig.mapToFile(fileSourcesFiles, files, false);
-		SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
-		FileUtils.stringToFile(fileSounds, sounds.toJson()); // NPE here. Why, how??? #45
-		FileUtils.stringToFile(fileLangs, langs.toJson());
+		try {
+			SimpleConfig.mapToFile(fileSourcesFiles, files, false);
+			SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
+			FileUtils.stringToFile(fileSounds, sounds.toJson()); // NPE here. Why, how??? #45
+			FileUtils.stringToFile(fileLangs, langs.toJson());
+		} catch (NullPointerException e) {
+			Log.e("NPE from issue #45 happened again", e);
+		}
 
 		// all properties
 		props.cfgForceSave(true);

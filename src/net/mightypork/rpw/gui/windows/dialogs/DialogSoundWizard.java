@@ -185,8 +185,7 @@ public class DialogSoundWizard extends RpwDialog
 		fieldKey = Gui.textField();
 		fieldKey.setDragEnabled(false);
 		fieldKey.addKeyListener(TextInputValidator.identifiers());
-		fieldKey.setTransferHandler(new TransferHandler() {
-		});
+		fieldKey.setTransferHandler(new TransferHandler() {});
 		middlePanelComponents.add(fieldKey);
 
 		fieldCategory = new JComboBox(Const.SOUND_CATEGORIES);
@@ -251,7 +250,7 @@ public class DialogSoundWizard extends RpwDialog
 	@Override
 	protected void addActions()
 	{
-		setEnterButton(buttonOK);
+		setEnterButton(buttonSave);
 
 		// DEL key handler
 		fileList.list.addKeyListener(new KeyListener() {

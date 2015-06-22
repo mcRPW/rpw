@@ -33,7 +33,6 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class Icons
 {
-
 	public static ImageIcon MENU_NEW;
 	public static ImageIcon MENU_REVERT;
 	public static ImageIcon MENU_SAVE;
@@ -77,6 +76,7 @@ public class Icons
 	public static ImageIcon MENU_MCF;
 	public static ImageIcon MENU_PMC;
 	public static ImageIcon MENU_DOWNLOAD;
+	public static ImageIcon MENU_WEBSITE;
 
 	public static ImageIcon TREE_CLOSE;
 	public static ImageIcon TREE_OPEN;
@@ -173,8 +173,10 @@ public class Icons
 		MENU_PMC			= loadImage(imgPath + "menu/pmc.png");
 		MENU_MCF			= loadImage(imgPath + "menu/mcf.png");
 		MENU_DOWNLOAD		= loadImage(imgPath + "menu/download.png");
+		
+		MENU_WEBSITE		= loadImage(imgPath + "menu/website.png");
 
-		WINDOW				= loadImage(imgPath + "window-icon.png");
+		WINDOW				= loadImage(imgPath + "window-icon-2.png");
 
 		TREE_CLOSE			= loadImage(imgPath + "tree/close.png");
 		TREE_OPEN 			= loadImage(imgPath + "tree/open.png");

@@ -398,19 +398,25 @@ public class MenuMain
 			
 			menu.addSeparator();
 			
-			item = new JMenuItem("RPW on Planet Minecraft");
+			item = new JMenuItem("Official website");
+			item.setIcon(Icons.MENU_WEBSITE);// FIXME
+			item.addActionListener(Gui.openUrlListener);
+			item.setActionCommand(Paths.URL_RPW_WEB);
+			menu.add(item);	
+			
+			item = new JMenuItem("PMC post");
 			item.setIcon(Icons.MENU_PMC);
 			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
 			menu.add(item);	
 			
-			item = new JMenuItem("RPW on Minecraft Forum");
-			item.setIcon(Icons.MENU_MCF);
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
-			menu.add(item);
+//			item = new JMenuItem("RPW on Minecraft Forum");
+//			item.setIcon(Icons.MENU_MCF);
+//			item.addActionListener(Gui.openUrlListener);
+//			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
+//			menu.add(item);
 			
-			item = new JMenuItem("RPW on GitHub");
+			item = new JMenuItem("GitHub");
 			item.setIcon(Icons.MENU_GITHUB);
 			item.addActionListener(Gui.openUrlListener);
 			item.setActionCommand(Paths.URL_GITHUB_WEB);
