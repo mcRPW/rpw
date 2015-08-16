@@ -27,7 +27,6 @@ import org.jdesktop.swingx.JXFrame;
 
 public class App
 {
-
 	public static App inst;
 
 	public volatile static RpwDialog activeDialog;

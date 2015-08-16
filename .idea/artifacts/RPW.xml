@@ -8,7 +8,7 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.2.4/gson-2.2.4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/coobird/thumbnailator/0.4.6/thumbnailator-0.4.6.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/swinglabs/swingx/swingx-all/1.6.5-1/swingx-all-1.6.5-1.jar" path-in-jar="/" />
-      <element id="dir-copy" path="$USER_HOME$/git/rpw/src/resources" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/resources" />
     </root>
   </artifact>
 </component>
