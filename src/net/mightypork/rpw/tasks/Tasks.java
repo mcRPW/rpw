@@ -34,6 +34,7 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogChangelog;
 import net.mightypork.rpw.gui.windows.messages.DialogRuntimeLog;
 import net.mightypork.rpw.help.HelpStore;
+import net.mightypork.rpw.help.VersionUtils;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
@@ -928,7 +929,7 @@ public class Tasks
 
 	public static void taskShowChangelog()
 	{
-		if (Config.LAST_RUN_VERSION != Const.VERSION_SERIAL) {
+		if (VersionUtils.shouldShowChangelog()) {
 			Gui.open(new DialogChangelog());
 		}
 	}

@@ -13,32 +13,45 @@ public class VersionUtils
 
 	public static boolean shouldShowChangelog()
 	{
-		return Config.LAST_RUN_VERSION < Const.VERSION_SERIAL;
+		// Do not show changelog on first run
+		if (Config.LAST_RUN_VERSION == Config.def_LAST_RUN_VERSION) return false;
+
+		// Same version as last time - no show
+		if (Config.LAST_RUN_VERSION >= Const.VERSION_SERIAL) return false;
+
+		// verify that there's anything to show
+		final String chlg = getChangelogForVersion(Const.VERSION_SERIAL);
+		return !chlg.isEmpty();
 	}
 
 
 	public static String buildChangelogMd()
 	{
-		String document = "";
+		// markdown document
+		String md = "";
 
-		for (int i = Config.LAST_RUN_VERSION + 1; i <= Const.VERSION_SERIAL; i++) {
+		int startVersion = Math.min(Config.LAST_RUN_VERSION + 1, Const.VERSION_SERIAL - 2);
+
+		Log.f3("Building changelog for versions " + startVersion + " .. " + Const.VERSION_SERIAL);
+
+		for (int i = startVersion; i <= Const.VERSION_SERIAL; i++) {
 
 			final String chl = getChangelogForVersion(i);
 
-			if (chl == null || chl.equals("")) continue;
+			if (chl.isEmpty()) continue;
 
-			document += "\n\n<p class=\"littleHeading\">" + getVersionString(i) + "</p>\n\n";
+			md += "\n\n<p class=\"littleHeading\">" + getVersionString(i) + "</p>\n\n";
 
-			document += chl.trim() + "\n";
+			md += chl.trim() + "\n";
 		}
 
-		document = document.trim();
+		md = md.trim();
 
-		if (document.length() == 0) {
-			document = "\n*No changelog found.*\n";
+		if (md.length() == 0) {
+			md = "\n*No changelog found.*\n";
 		}
 
-		return document;
+		return md;
 	}
 
 

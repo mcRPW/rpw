@@ -32,7 +32,7 @@ public class App
 
 	public volatile static RpwDialog activeDialog;
 
-	/** Main App Window */
+	/** Main App Why does eWindow */
 	public WindowMain window;
 	public MenuMain menu;
 
@@ -103,7 +103,6 @@ public class App
 		Log.f3("Initializing RSyntaxTextArea");
 		@SuppressWarnings("unused")
 		RSyntaxTextArea rsa = new RSyntaxTextArea();
-		rsa = null;
 
 		Tasks.taskLoadHelp();
 		Tasks.taskCreateModConfigFiles();
@@ -131,6 +130,7 @@ public class App
 		try {
 			window.frame.dispose();
 		} catch (final Throwable t) {
+			Log.e(t);
 		}
 	}
 

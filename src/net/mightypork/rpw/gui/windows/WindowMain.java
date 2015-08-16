@@ -19,6 +19,7 @@ import net.mightypork.rpw.gui.widgets.SidePanel;
 import net.mightypork.rpw.gui.widgets.TreeDisplay;
 import net.mightypork.rpw.tasks.Tasks;
 
+import net.mightypork.rpw.utils.logging.Log;
 import org.jdesktop.swingx.JXFrame;
 
 
@@ -87,9 +88,13 @@ public class WindowMain
 
 	public void setWaiting(boolean state)
 	{
-		App.getFrame().setWaitCursorVisible(state);
-		App.getFrame().setWaiting(state);
-		App.getFrame().setWaitPaneVisible(state);
+		try {
+			App.getFrame().setWaitCursorVisible(state);
+			App.getFrame().setWaiting(state);
+			App.getFrame().setWaitPaneVisible(state);
+		} catch(NullPointerException npe) {
+			Log.e(npe);
+		}
 	}
 
 }

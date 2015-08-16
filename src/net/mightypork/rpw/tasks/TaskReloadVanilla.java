@@ -84,7 +84,7 @@ public class TaskReloadVanilla
 					continue;
 				}
 
-				if (s == null || s.length() == 0) {
+				if (s.isEmpty()) {
 					Log.w("- Empty or missing version file, skipping.");
 					continue;
 				}

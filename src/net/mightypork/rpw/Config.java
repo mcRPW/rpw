@@ -1,5 +1,6 @@
 package net.mightypork.rpw;
 
+import net.mightypork.rpw.gui.widgets.MenuMain;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.PropertyManager;
 import net.mightypork.rpw.utils.logging.Log;
@@ -12,27 +13,27 @@ import net.mightypork.rpw.utils.logging.Log;
  */
 public class Config
 {
-
-	public static enum FilePath {
+	public enum FilePath
+	{
 		IMPORT_FILE, IMPORT_SOUND, IMPORT_PACK, EXPORT, DEFAULT;
 
 		public String getPath()
 		{
 			switch (this) {
-			case IMPORT_FILE:
-				return Config.FILECHOOSER_PATH_IMPORT_FILE;
+				case IMPORT_FILE:
+					return Config.FILECHOOSER_PATH_IMPORT_FILE;
 
-			case IMPORT_SOUND:
-				return Config.FILECHOOSER_PATH_IMPORT_SOUND;
+				case IMPORT_SOUND:
+					return Config.FILECHOOSER_PATH_IMPORT_SOUND;
 
-			case IMPORT_PACK:
-				return Config.FILECHOOSER_PATH_IMPORT_PACK;
+				case IMPORT_PACK:
+					return Config.FILECHOOSER_PATH_IMPORT_PACK;
 
-			case EXPORT:
-				return Config.FILECHOOSER_PATH_EXPORT;
+				case EXPORT:
+					return Config.FILECHOOSER_PATH_EXPORT;
 
-			default:
-				return System.getProperty("user.home");
+				default:
+					return System.getProperty("user.home");
 			}
 		}
 
@@ -40,23 +41,23 @@ public class Config
 		public void savePath(String path)
 		{
 			switch (this) {
-			case IMPORT_FILE:
-				Config.FILECHOOSER_PATH_IMPORT_FILE = path;
-				break;
+				case IMPORT_FILE:
+					Config.FILECHOOSER_PATH_IMPORT_FILE = path;
+					break;
 
-			case IMPORT_SOUND:
-				Config.FILECHOOSER_PATH_IMPORT_SOUND = path;
-				break;
+				case IMPORT_SOUND:
+					Config.FILECHOOSER_PATH_IMPORT_SOUND = path;
+					break;
 
-			case IMPORT_PACK:
-				Config.FILECHOOSER_PATH_IMPORT_PACK = path;
-				break;
+				case IMPORT_PACK:
+					Config.FILECHOOSER_PATH_IMPORT_PACK = path;
+					break;
 
-			case EXPORT:
-				Config.FILECHOOSER_PATH_EXPORT = path;
-				break;
-			default:
-				// can't do anything
+				case EXPORT:
+					Config.FILECHOOSER_PATH_EXPORT = path;
+					break;
+				default:
+					// can't do anything
 			}
 
 			Config.save();
@@ -210,7 +211,7 @@ public class Config
 		mgr.putBoolean(PK_USE_INTERNAL_META_EDITOR, def_USE_INTERNAL_META_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_USE_INTERNAL_TEXT_EDITOR, def_USE_INTERNAL_TEXT_EDITOR, "Use internal editor, ignore configured command.");
 		mgr.putBoolean(PK_WARNING_ORPHANED_NODES, def_WARNING_ORPHANED_NODES, "Warn when some assets could not be displayed.");
-		
+
 		mgr.putBoolean(PK_AUTO_SAVE, def_AUTO_SAVE, "Save automatically on close, don't ask.");
 
 		mgr.putString(PK_IMAGE_EDITOR, def_IMAGE_EDITOR);
@@ -262,7 +263,7 @@ public class Config
 		mgr.setValue(PK_WARNING_ORPHANED_NODES, WARNING_ORPHANED_NODES);
 
 		mgr.setValue(PK_AUTO_SAVE, AUTO_SAVE);
-		
+
 		mgr.setValue(PK_IMAGE_EDITOR, IMAGE_EDITOR);
 		mgr.setValue(PK_IMAGE_EDITOR_ARGS, IMAGE_EDITOR_ARGS);
 		mgr.setValue(PK_USE_IMAGE_EDITOR, USE_IMAGE_EDITOR);
@@ -282,19 +283,15 @@ public class Config
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_PACK, FILECHOOSER_PATH_IMPORT_PACK);
 		mgr.setValue(PK_FILECHOOSER_PATH_EXPORT, FILECHOOSER_PATH_EXPORT);
 		mgr.setValue(PK_CLOSED_WITH_PROJECT_OPEN, CLOSED_WITH_PROJECT_OPEN);
-		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL); // LAST_RUN_VERSION
-																	// field
-																	// stays
-																	// unchanged
-																	// until
-																	// restart.
+		mgr.setValue(PK_LAST_RUN_VERSION, Const.VERSION_SERIAL); // LAST_RUN_VERSION field stays unchanged until restart.
 		mgr.setValue(PK_LIBRARY_VERSION, LIBRARY_VERSION);
 		mgr.setValue(PK_CHOICE_EXPORT_TO_MC, CHOICE_EXPORT_TO_MC);
 
 		mgr.apply();
 
-		if (App.getMenu() != null) {
-			App.getMenu().updateOptionCheckboxes();
+		MenuMain m = App.getMenu();
+		if (m != null) {
+			m.updateOptionCheckboxes();
 		}
 	}
 

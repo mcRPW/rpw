@@ -282,9 +282,7 @@ public class Gui
 					defaults.put("Table.alternateRowColor", Const.TABLE_ALT_COLOR);
 					defaults.put("Table.focusCellHighlightBorder", Const.TABLE_CELL_INSETS);
 					defaults.put("TableHeader.cellBorder", Const.TABLE_HEADER_BORDERS);
-					defaults.put("nimbusOrange", new Color(0x1F87B5)); // override
-																		// for
-																		// progressbar
+					defaults.put("nimbusOrange", new Color(0x1F87B5)); // override for progressbar
 					break;
 				}
 			}

@@ -3,3 +3,6 @@
 /images/
 /target/
 /README.txt
+.idea
+*.iml
+*.eml
