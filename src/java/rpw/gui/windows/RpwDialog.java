@@ -102,7 +102,8 @@ public abstract class RpwDialog extends JDialog
 
 		this.dlgParent = parent;
 
-		setAlwaysOnTop(parent == null); // initial load dialog
+		// don't use -> fix weird windoze bug (?)
+		//setAlwaysOnTop(parent == null); // initial load dialog
 
 		setModal(true);
 		setResizable(false);

@@ -19,39 +19,29 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class TaskReloadVanilla
 {
-
 	public static void run(String version)
 	{
 		(new SequenceReloadVanilla(version)).run();
-
 	}
 
 
 	/**
 	 * Ask user for the level to use
-	 * 
-	 * @param isInitial
-	 *            is this the first startup?
+	 *
+	 * @param isInitial is this the first startup?
 	 * @return MC version selected
 	 */
 	public static String getUserChoice(boolean isInitial)
 	{
-		//@formatter:off
-		final String initial = 
-				"To start a ResourcePack Workbench, the\n" +
+		final String initial = "To start a ResourcePack Workbench, the\n" +
 				"default pack must be extracted from\n" +
-				"your Minecraft folder.\n" +
-				"\n" +
+				"your Minecraft folder.\n\n" +
 				"Please, select a Minecraft version to use:";
 
-		final String user = 
-				"Minecraft assets will be re-extracted.\n" +
-				"\n" +
-				"If you have any mods installed, you'll be\n" + 
-				"offered to extract their assets too.\n" +
-				"\n" +
+		final String user = "Minecraft assets will be re-extracted.\n\n" +
+				"If you have any mods installed, you'll be\n" +
+				"offered to extract their assets too.\n\n" +
 				"Please, select a Minecraft version to use:";
-		//@formatter:on
 
 		// obtain applicable versions
 		final List<File> list = FileUtils.listDirectory(OsUtils.getMcDir("versions"));
@@ -106,12 +96,7 @@ public class TaskReloadVanilla
 		}
 
 		if (opts.size() == 0) {
-			//@formatter:off
-			App.die(
-				"Your .minecraft/versions folder is empty.\n" +
-				"Run Minecraft and try again."
-			);
-			//@formatter:on
+			App.die("Your .minecraft/versions folder is empty.\nRun Minecraft and try again.");
 		}
 
 		Collections.sort(opts);
@@ -122,17 +107,15 @@ public class TaskReloadVanilla
 
 		final String defChoice = possibilities[0];
 
-		//@formatter:off
 		final String s = (String) JOptionPane.showInputDialog(
 				App.getFrame(),
-				isInitial?initial:user,
+				isInitial ? initial : user,
 				"Extracting Vanilla ResourcePack",
 				JOptionPane.QUESTION_MESSAGE,
 				Icons.DIALOG_QUESTION,
 				possibilities,
 				defChoice
-			);
-		//@formatter:on
+		);
 
 		return s;
 	}

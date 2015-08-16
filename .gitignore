@@ -1,8 +1,10 @@
-/bin/
-/data/
-/images/
-/target/
+/bin
+/data
+/images
+/target
 /README.txt
-.idea
 *.iml
 *.eml
+/out
+/.idea/workspace.xml
+/.idea/tasks.xml
