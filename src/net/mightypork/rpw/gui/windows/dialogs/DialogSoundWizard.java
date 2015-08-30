@@ -57,7 +57,6 @@ import net.mightypork.rpw.tree.filesystem.FileFsTreeNode;
 import net.mightypork.rpw.utils.AlphanumComparator;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.OsUtils;
-import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXTitledSeparator;
 

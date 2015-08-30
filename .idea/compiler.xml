@@ -17,16 +17,16 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
-      <profile default="false" name="Annotation profile for ResourcePackWorkbench" enabled="true">
+      <profile default="false" name="Annotation profile for rpw-new" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="ResourcePackWorkbench" />
+        <module name="rpw-new" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ResourcePackWorkbench" target="1.6" />
+      <module name="rpw-new" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>

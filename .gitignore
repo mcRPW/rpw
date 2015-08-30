@@ -1,10 +1,13 @@
-/bin
-/data
-/images
-/target
-/README.txt
+# Local Idea project stuff (?)
 *.iml
 *.eml
+
+# Folders for binaries
+/target
 /out
+/bin
+
+# Frequently changed Idea files
 /.idea/workspace.xml
 /.idea/tasks.xml
+

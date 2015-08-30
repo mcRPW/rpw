@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/git/rpw/RPW.iml" filepath="$USER_HOME$/git/rpw/RPW.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rpw-new.iml" filepath="$PROJECT_DIR$/rpw-new.iml" />
     </modules>
   </component>
 </project>

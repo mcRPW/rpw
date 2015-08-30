@@ -1,7 +1,6 @@
 package net.mightypork.rpw.project;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +22,6 @@ import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.Fixins;
 import net.mightypork.rpw.utils.files.DirectoryTreeDifferenceFinder;
 import net.mightypork.rpw.utils.files.FileUtils;
-import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.PropertyManager;
 import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;

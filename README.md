@@ -12,6 +12,16 @@ Master is for released code and patches only.
 - [RPW on Twitter](https://twitter.com/RPWapp)
 - [Planet Minecraft post](http://www.planetminecraft.com/mod/tool-resourcepack-workbench---the-ultimate-pack-creator/)
 
+## FAQ
+
+**Q: RPW opens images in Paint instead of Gimp. How to fix?**
+
+Please see issues #53 and #58.
+
+**Q: How to import an existing pack?**
+
+Either add it to library so you can remix it (library menu), or create a new project (project menu) and select "From existing pack".
+
 ## Support?
 
 For help with using RPW, please use our Gitter channel:
@@ -22,10 +32,10 @@ For help with using RPW, please use our Gitter channel:
 
 *If you plan to work on RPW's source code:*
 
-The project repends on Maven, from which it takes some libraries.
+Currently RPW is set up as an IntelliJ IDEA project, but what IDE to use is up to you.
 
-First, make sure your eclipse / other IDE has Maven plugin. Then you should be able to import RPW as a Maven Project, and it'll set everything up for you.
+It's a Maven project, so all libraries should be downloaded by the IDE automatically.
 
-Make sure you add all jars in the `/libs` folder to build path (those could not be taken from Maven).
+**Please send pull requests to the "dev" branch.** Master is for finished stuff waiting for the next release.
 
 

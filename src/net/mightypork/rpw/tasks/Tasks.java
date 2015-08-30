@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
-import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Gui;

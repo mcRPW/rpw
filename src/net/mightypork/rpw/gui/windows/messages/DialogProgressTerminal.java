@@ -1,6 +1,5 @@
 package net.mightypork.rpw.gui.windows.messages;
 
-import java.awt.Dialog.ModalityType;
 import java.util.logging.Level;
 
 import javax.swing.Box;

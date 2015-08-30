@@ -1,33 +1,18 @@
 package net.mightypork.rpw.tasks.sequences;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import net.mightypork.rpw.App;
-import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
-import net.mightypork.rpw.struct.PackInfo;
-import net.mightypork.rpw.struct.PackMcmeta;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.tree.assets.AssetEntry;
-import net.mightypork.rpw.tree.assets.TreeBuilder;
-import net.mightypork.rpw.tree.assets.tree.AssetTreeLeaf;
-import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
-import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
-import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.DirectoryTreeDifferenceFinder;
-import net.mightypork.rpw.utils.files.FileUtils;
-import net.mightypork.rpw.utils.files.ZipBuilder;
 import net.mightypork.rpw.utils.logging.Log;
 
 
