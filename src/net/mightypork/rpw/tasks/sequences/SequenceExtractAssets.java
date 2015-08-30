@@ -73,7 +73,6 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence
 			final String fname = FileUtils.escapeFilename(filename);
 			final String[] split = FileUtils.getFilenameParts(fname);
 
-			// String name = split[0];
 			final String ext = split[1];
 
 			// discard crap we don't want
@@ -471,7 +470,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence
 
 			//@formatter:off
 			final int n = JOptionPane.showOptionDialog(
-				App.getFrame(), //parent
+				monitorDialog, //parent
 				params, //message
 				"Mods found", //title
 				JOptionPane.DEFAULT_OPTION, //option type
@@ -560,9 +559,9 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence
 
 			//@formatter:off
 			Alerts.error(
-					App.getFrame(),
+					monitorDialog,
 					"Extraction failed", 
-					"Something went wrong: check the log for details.\n"+
+					"Something went wrong: LOOK IN THE LOG for details.\n"+
 					"\n"+
 					"If you think this is a bug, please report it to MightyPork."
 			);
@@ -582,7 +581,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence
 		if (Config.FANCY_TREE && modsLoaded) {
 			//@formatter:off
 			final boolean yeah = Alerts.askYesNo(
-					App.getFrame(),
+					monitorDialog,
 					"Mods installed",
 					"It is recommended to disable Fancy Tree display\n" + 
 					"when mods are installed. You can toggle it in\n" + 
@@ -598,6 +597,10 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence
 			}
 		}
 
-		Alerts.info(App.getFrame(), "Minecraft assets reloaded.");
+		// The dialog likes to jump to background - this brings it to front.
+		monitorDialog.setAlwaysOnTop(true);
+		monitorDialog.setAlwaysOnTop(false);
+
+		Alerts.info(monitorDialog, "Minecraft assets reloaded.");
 	}
 }

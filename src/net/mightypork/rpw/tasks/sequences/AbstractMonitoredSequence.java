@@ -10,7 +10,7 @@ import net.mightypork.rpw.utils.logging.Log;
 public abstract class AbstractMonitoredSequence extends AbstractSequence
 {
 
-	private DialogProgressTerminal dpt = null;
+	protected DialogProgressTerminal monitorDialog = null;
 
 
 	@Override
@@ -26,8 +26,8 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence
 	{
 		Alerts.loading(true);
 
-		dpt = new DialogProgressTerminal(getMonitorTitle(), getMonitorHeading());
-		dpt.openDialog();
+		monitorDialog = new DialogProgressTerminal(getMonitorTitle(), getMonitorHeading());
+		monitorDialog.openDialog();
 
 		doBefore();
 	}
@@ -45,9 +45,9 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence
 	@Override
 	protected void beforeStep(int index)
 	{
-		if (dpt != null) {
+		if (monitorDialog != null) {
 			Log.f2(getStepName(index));
-			dpt.onStepStarted(index, getStepCount(), getStepName(index));
+			monitorDialog.onStepStarted(index, getStepCount(), getStepName(index));
 		}
 	}
 
@@ -60,22 +60,22 @@ public abstract class AbstractMonitoredSequence extends AbstractSequence
 	{
 		Alerts.loading(false);
 
-		if (dpt != null) {
-			dpt.allowClose(true, success);
+		if (monitorDialog != null) {
+			monitorDialog.allowClose(true, success);
 		}
 
 		doAfter(success);
 		
-		dpt.stopMonitoring();		
+		monitorDialog.stopMonitoring();
 		
-		dpt.setModalityType(ModalityType.APPLICATION_MODAL);
-		dpt.forceGetFocus();
+		monitorDialog.setModalityType(ModalityType.APPLICATION_MODAL);
+		monitorDialog.forceGetFocus();
 	}
 
 
 	protected void closeMonitor()
 	{
-		if (dpt != null) dpt.closeDialog();
+		if (monitorDialog != null) monitorDialog.closeDialog();
 	}
 
 
