@@ -2,9 +2,8 @@ package net.mightypork.rpw.project;
 
 public interface NodeSourceProvider
 {
+	String getSourceForGroup(String groupKey);
 
-	public String getSourceForGroup(String groupKey);
 
-
-	public String getSourceForFile(String assetKey);
+	String getSourceForFile(String assetKey);
 }

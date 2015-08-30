@@ -3,6 +3,7 @@ package net.mightypork.rpw;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
+
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.widgets.MenuMain;
@@ -34,8 +35,6 @@ public class App
 	/** Main App Why does eWindow */
 	public WindowMain window;
 	public MenuMain menu;
-
-	public NodeSourceProvider activeProject;
 
 
 	public static void main(String[] args)
@@ -98,10 +97,11 @@ public class App
 
 		Icons.init();
 
-		// preload RSyntaxTextArea (it's big and causes lag otherwise)
-		Log.f3("Initializing RSyntaxTextArea");
-		@SuppressWarnings("unused")
-		RSyntaxTextArea rsa = new RSyntaxTextArea();
+		/* RSyntaxTextArea is needed only when editing meta / text, which is rare. Can speed up start. */
+//		// preload RSyntaxTextArea (it's big and causes lag otherwise)
+//		Log.f3("Initializing RSyntaxTextArea");
+//		@SuppressWarnings("unused")
+//		RSyntaxTextArea rsa = new RSyntaxTextArea();
 
 		Tasks.taskLoadHelp();
 		Tasks.taskCreateModConfigFiles();
@@ -150,7 +150,8 @@ public class App
 			final RandomAccessFile randomAccessFile = new RandomAccessFile(lockFile, "rw");
 			final FileLock fileLock = randomAccessFile.getChannel().tryLock();
 			if (fileLock != null) {
-				Runtime.getRuntime().addShutdownHook(new Thread() {
+				Runtime.getRuntime().addShutdownHook(new Thread()
+				{
 
 					@Override
 					public void run()
@@ -177,7 +178,7 @@ public class App
 
 	/**
 	 * Show crash report dialog with error stack trace.
-	 * 
+	 *
 	 * @param error
 	 */
 	public static void onCrash(final Throwable error)
@@ -232,7 +233,6 @@ public class App
 		if (inst == null || inst.window == null) return;
 
 		inst.window.setWaiting(state);
-
 	}
 
 
