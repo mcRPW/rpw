@@ -51,9 +51,8 @@ import net.mightypork.rpw.utils.validation.StringFilter;
  * 
  * @author MightyPork
  */
-public class SequenceReloadVanilla extends AbstractMonitoredSequence
+public class SequenceExtractAssets extends AbstractMonitoredSequence
 {
-
 	private final String version;
 	private boolean modsLoaded = false;
 	private String assetsVersion;
@@ -88,7 +87,7 @@ public class SequenceReloadVanilla extends AbstractMonitoredSequence
 	};
 
 
-	public SequenceReloadVanilla(String version) {
+	public SequenceExtractAssets(String version) {
 		this.version = version;
 	}
 

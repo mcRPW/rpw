@@ -11,17 +11,17 @@ import javax.swing.JOptionPane;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.struct.VersionInfo;
-import net.mightypork.rpw.tasks.sequences.SequenceReloadVanilla;
+import net.mightypork.rpw.tasks.sequences.SequenceExtractAssets;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class TaskReloadVanilla
+public class TaskExtractAssets
 {
 	public static void run(String version)
 	{
-		(new SequenceReloadVanilla(version)).run();
+		(new SequenceExtractAssets(version)).run();
 	}
 
 

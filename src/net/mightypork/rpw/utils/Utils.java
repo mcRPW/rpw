@@ -131,6 +131,7 @@ public class Utils
 	}
 
 
+	/** Sleep without throwing anything */
 	public static void sleep(int milis)
 	{
 		try {

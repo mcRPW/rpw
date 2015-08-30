@@ -79,7 +79,7 @@ public class Sources
 		if (Flags.MUST_RELOAD_VANILLA || Flags.VANILLA_STRUCTURE_LOAD_OK == false) {
 			Flags.MUST_RELOAD_VANILLA = false;
 
-			final int task = Tasks.taskReloadVanillaOrDie();
+			final int task = Tasks.taskExtractAssetsOrDie();
 			while (Tasks.isRunning(task)) {
 				Utils.sleep(100);
 			}

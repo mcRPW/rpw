@@ -15,14 +15,13 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogCrash;
 import net.mightypork.rpw.help.VersionUtils;
 import net.mightypork.rpw.library.Sources;
-import net.mightypork.rpw.project.NodeSourceProvider;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.HtmlBuilder;
+import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.jdesktop.swingx.JXFrame;
 
 
@@ -55,15 +54,11 @@ public class App
 	public void init()
 	{
 		if (!lockInstance()) {
-			//@formatter:off
 			Alerts.error(
 					null,
 					"Couldn't lock workdir",
-					"The application is already running.\n" +
-					"\n" +
-					"No more than one instance can run at a time."
+					"The application is already running.\n\nNo more than one instance can run at a time."
 			);
-			//@formatter:on
 
 			System.exit(1);
 		}
@@ -112,6 +107,7 @@ public class App
 
 		final int t = Tasks.taskBuildMainWindow();
 		while (Tasks.isRunning(t)) {
+			Utils.sleep(10);
 		} // wait for completion on EDT
 
 		Tasks.checkUpdate();

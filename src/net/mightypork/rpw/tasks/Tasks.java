@@ -626,9 +626,9 @@ public class Tasks
 	}
 
 
-	public static int taskReloadVanilla()
+	public static int taskExtractAssets()
 	{
-		final String version = TaskReloadVanilla.getUserChoice(false);
+		final String version = TaskExtractAssets.getUserChoice(false);
 
 		if (version == null) return -1;
 
@@ -641,7 +641,7 @@ public class Tasks
 			{
 				// -- task begin --
 
-				TaskReloadVanilla.run(version);
+				TaskExtractAssets.run(version);
 				Tasks.taskTreeSaveAndRebuild();
 
 				Tasks.stopTask(task);
@@ -655,9 +655,9 @@ public class Tasks
 	}
 
 
-	public static int taskReloadVanillaOrDie()
+	public static int taskExtractAssetsOrDie()
 	{
-		final String version = TaskReloadVanilla.getUserChoice(true);
+		final String version = TaskExtractAssets.getUserChoice(true);
 
 		if (version == null || version.length() == 0) {
 			//@formatter:off
@@ -679,7 +679,7 @@ public class Tasks
 			{
 				// -- task begin --
 
-				TaskReloadVanilla.run(version);
+				TaskExtractAssets.run(version);
 
 				Tasks.stopTask(task);
 

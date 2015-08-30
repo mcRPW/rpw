@@ -513,7 +513,7 @@ public class MenuMain
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskStoreProjectChanges();
-				Tasks.taskReloadVanilla();
+				Tasks.taskExtractAssets();
 			}
 		});
 
