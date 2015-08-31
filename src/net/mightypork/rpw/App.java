@@ -40,7 +40,14 @@ public class App
 
 	public static void main(String[] args)
 	{
-		//Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
+		Thread.setDefaultUncaughtExceptionHandler(new CrashHandler());
+
+		// Fix the menubar "name" on OSX
+		try {
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", Const.APP_NAME_SHORT);
+		} catch (Exception e) {
+			/* dontGiveAFuck() */
+		}
 
 		inst = new App();
 		inst.start();
@@ -78,11 +85,6 @@ public class App
 			System.setProperty("awt.useSystemAAFontSettings", "on");
 			System.setProperty("swing.aatext", "true");
 			System.setProperty("sun.java2d.xrender", "true");
-
-			// Fix the menubar "name" on OSX
-			if (OsUtils.isMac()) {
-				System.setProperty("com.apple.mrj.application.apple.menu.about.name", Const.APP_NAME_SHORT);
-			}
 		} catch (Exception e) {
 			Log.e(e);
 		}

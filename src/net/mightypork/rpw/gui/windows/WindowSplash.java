@@ -39,12 +39,12 @@ public class WindowSplash
 		JXLabel icn = new JXLabel(Icons.WINDOW);
 		icn.setAlignmentX(.5f);
 		vb.add(icn);
-		vb.gap_small();
+		vb.add(Box.createVerticalStrut(6));
 		JXLabel lbl = new JXLabel(Const.APP_NAME_SHORT + " loading...");
 		lbl.setForeground(new Color(192, 192, 192));
 		lbl.setAlignmentX(.5f);
 		vb.add(lbl);
-		vb.setBorder(Gui.winbdr());
+		vb.setBorder(BorderFactory.createEmptyBorder(10, 10, 6, 10));
 		frame.add(vb);
 
 		// pack frame
