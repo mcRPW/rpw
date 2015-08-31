@@ -284,8 +284,14 @@ public class Gui
 	public static void useNativeLaF() {
 		try {
 			if(OsUtils.getOs().isLinux()) {
+				// Use GTK
 				System.setProperty("swing.defaultlaf", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 				System.setProperty("swing.crossplatformlaf", "com.sun.java.swing.plaf.gtk.GTKLookAndFee");
+			}
+
+			if(OsUtils.getOs().isMac()) {
+				// Use the global menubar
+				System.setProperty("apple.laf.useScreenMenuBar", "true");
 			}
 
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
