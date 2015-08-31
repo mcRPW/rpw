@@ -76,12 +76,12 @@ public class Sources
 			Utils.sleep(100);
 		}
 
-		if (Flags.MUST_RELOAD_VANILLA || Flags.VANILLA_STRUCTURE_LOAD_OK == false) {
-			Flags.MUST_RELOAD_VANILLA = false;
+		if (Flags.MUST_EXTRACT || !Flags.VANILLA_STRUCTURE_LOAD_OK) {
+			Flags.MUST_EXTRACT = false;
 
 			final int task = Tasks.taskExtractAssetsOrDie();
 			while (Tasks.isRunning(task)) {
-				Utils.sleep(100);
+				Utils.sleep(10);
 			}
 		}
 	}

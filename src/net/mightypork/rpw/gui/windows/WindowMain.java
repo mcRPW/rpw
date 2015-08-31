@@ -25,7 +25,6 @@ import org.jdesktop.swingx.JXFrame;
 
 public class WindowMain
 {
-
 	public JXFrame frame;
 	public MenuMain menu;
 	public TreeDisplay treeDisplay;
@@ -36,7 +35,7 @@ public class WindowMain
 		frame = new JXFrame(App.getWindowTitle());
 		frame.setIconImage(Icons.WINDOW.getImage());
 
-		App.inst.menu = menu = new MenuMain();
+		menu = new MenuMain();
 
 		frame.add(buildMainPanel());
 		frame.setJMenuBar(menu.menuBar);
@@ -50,7 +49,8 @@ public class WindowMain
 
 		frame.setVisible(true);
 
-		frame.addWindowListener(new WindowCloseListener() {
+		frame.addWindowListener(new WindowCloseListener()
+		{
 
 			@Override
 			public void onClose(WindowEvent e)
@@ -58,6 +58,8 @@ public class WindowMain
 				Tasks.taskExit();
 			}
 		});
+
+		App.inst.mainFrame = frame;
 	}
 
 

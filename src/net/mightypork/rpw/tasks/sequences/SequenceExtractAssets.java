@@ -598,8 +598,6 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence
 		}
 
 		// The dialog likes to jump to background - this brings it to front.
-		monitorDialog.setAlwaysOnTop(true);
-		monitorDialog.setAlwaysOnTop(false);
 
 		Alerts.info(monitorDialog, "Minecraft assets reloaded.");
 	}

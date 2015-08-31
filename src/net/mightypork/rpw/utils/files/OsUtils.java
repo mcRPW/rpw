@@ -294,7 +294,7 @@ public class OsUtils
 		final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA + "/assets", false);
 
 		if (vanilla.list().length == 0 || !vanillaAssets.exists()) {
-			Flags.MUST_RELOAD_VANILLA = true;
+			Flags.MUST_EXTRACT = true;
 		}
 
 		OsUtils.getAppDir("projects", true);

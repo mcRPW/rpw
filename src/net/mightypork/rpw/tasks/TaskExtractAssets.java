@@ -110,7 +110,7 @@ public class TaskExtractAssets
 		final String s = (String) JOptionPane.showInputDialog(
 				App.getFrame(),
 				isInitial ? initial : user,
-				"Extracting Vanilla ResourcePack",
+				"Extracting Minecraft Assets",
 				JOptionPane.QUESTION_MESSAGE,
 				Icons.DIALOG_QUESTION,
 				possibilities,

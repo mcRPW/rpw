@@ -41,7 +41,6 @@ public class HackedJXTreeTable extends JXTreeTable
 		if (returnComp.getBackground().equals(whiteColor)) {
 			Color bg = (row % 2 == 0 ? whiteColor : alternateColor);
 			returnComp.setBackground(bg);
-			bg = null;
 		}
 
 		return returnComp;

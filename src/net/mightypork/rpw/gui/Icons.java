@@ -111,6 +111,12 @@ public class Icons
 
 	public static ImageIcon IMAGE_NOT_FOUND;
 
+	/** Init only what's needed for error dialog etc */
+	public static void initWindowIcon()
+	{
+		WINDOW = loadImage(Paths.DATA_DIR_IMAGES + "window-icon-2.png");
+	}
+
 
 	public static void init()
 	{
@@ -177,8 +183,6 @@ public class Icons
 		MENU_DOWNLOAD		= loadImage(imgPath + "menu/download.png");
 		
 		MENU_WEBSITE		= loadImage(imgPath + "menu/website.png");
-
-		WINDOW				= loadImage(imgPath + "window-icon-2.png");
 
 		TREE_CLOSE			= loadImage(imgPath + "tree/close.png");
 		TREE_OPEN 			= loadImage(imgPath + "tree/open.png");

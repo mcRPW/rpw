@@ -13,6 +13,7 @@ import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Gui;
+import net.mightypork.rpw.gui.windows.WindowSplash;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.WindowMain;
 import net.mightypork.rpw.gui.windows.dialogs.DialogAbout;
@@ -55,7 +56,7 @@ import net.mightypork.rpw.utils.logging.Log;
 /**
  * Tasks class<br>
  * Each task returns ID, to be checked with isRunning().
- * 
+ *
  * @author Ondřej Hruška (MightyPork)
  */
 public class Tasks
@@ -83,7 +84,7 @@ public class Tasks
 
 	/**
 	 * Is task still running?
-	 * 
+	 *
 	 * @param task
 	 *            task ID
 	 * @return is running
@@ -103,13 +104,15 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
 			{
 				try {
-					EventQueue.invokeLater(new Runnable() {
+					EventQueue.invokeLater(new Runnable()
+					{
 
 						@Override
 						public void run()
@@ -120,6 +123,43 @@ public class Tasks
 
 							Flags.PROJECT_CHANGED = !Config.CLOSED_WITH_PROJECT_OPEN;
 							Tasks.taskOnProjectChanged();
+
+							App.inst.splashWindow.hide();
+
+							Tasks.stopTask(task);
+
+							// -- task end --
+						}
+					});
+				} catch (final Exception e) {
+					Log.e(e);
+				}
+			}
+		}).start();
+
+		return task;
+	}
+
+	public static int taskBuildPlaceholderMainWindow()
+	{
+		final int task = Tasks.startTask();
+
+		new Thread(new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
+				try {
+					EventQueue.invokeLater(new Runnable()
+					{
+
+						@Override
+						public void run()
+						{
+							// -- task begin --
+
+							App.inst.splashWindow = new WindowSplash();
 
 							Tasks.stopTask(task);
 
@@ -140,7 +180,8 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -259,7 +300,6 @@ public class Tasks
 		if (!Projects.isOpen()) return;
 
 		TaskExportProject.showDialog();
-
 	}
 
 
@@ -269,7 +309,6 @@ public class Tasks
 				+ "Are you sure you want to do this?")) {
 
 			Tasks.taskRevertProject();
-
 		}
 	}
 
@@ -278,7 +317,8 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -306,7 +346,8 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -332,7 +373,8 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -376,10 +418,9 @@ public class Tasks
 			Log.f3("Asking to save.");
 
 			if (Config.AUTO_SAVE) {
-				
+
 				Log.f3("- Config option AUTO_SAVE enabled, saving.");
 				taskSaveProject();
-				
 			} else {
 
 				//@formatter:off
@@ -427,13 +468,15 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
 			{
 				// -- task begin --
-				TaskImportReplacement.run(node.getAssetEntry(), new Runnable() {
+				TaskImportReplacement.run(node.getAssetEntry(), new Runnable()
+				{
 
 					@Override
 					public void run()
@@ -457,7 +500,8 @@ public class Tasks
 
 	public static void taskCloseProject()
 	{
-		taskAskToSaveIfChanged(new Runnable() {
+		taskAskToSaveIfChanged(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -471,7 +515,8 @@ public class Tasks
 
 	public static void taskCloseProjectNoRebuild()
 	{
-		taskAskToSaveIfChanged(new Runnable() {
+		taskAskToSaveIfChanged(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -563,7 +608,8 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -586,7 +632,8 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -608,7 +655,8 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -634,7 +682,8 @@ public class Tasks
 
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -648,7 +697,6 @@ public class Tasks
 
 				// -- task end --
 			}
-
 		}).start();
 
 		return task;
@@ -672,7 +720,8 @@ public class Tasks
 
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -685,7 +734,6 @@ public class Tasks
 
 				// -- task end --
 			}
-
 		}).start();
 
 		return task;
@@ -694,7 +742,8 @@ public class Tasks
 
 	public static void taskExit()
 	{
-		taskAskToSaveIfChanged(new Runnable() {
+		taskAskToSaveIfChanged(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -712,7 +761,6 @@ public class Tasks
 	public static void taskNewProject()
 	{
 		taskDialogNewProject();
-
 	}
 
 
@@ -724,12 +772,14 @@ public class Tasks
 
 	public static void taskOpenProject(final String name)
 	{
-		taskAskToSaveIfChanged(new Runnable() {
+		taskAskToSaveIfChanged(new Runnable()
+		{
 
 			@Override
 			public void run()
 			{
-				new Thread(new Runnable() {
+				new Thread(new Runnable()
+				{
 
 					@Override
 					public void run()
@@ -746,9 +796,7 @@ public class Tasks
 
 						// -- task end --
 					}
-
 				}).start();
-
 			}
 		});
 	}
@@ -889,7 +937,6 @@ public class Tasks
 			);
 			//@formatter:on
 		}
-
 	}
 
 
@@ -901,16 +948,15 @@ public class Tasks
 
 	public static void taskLoadHelp()
 	{
-		(new Thread(new Runnable() {
+		(new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
 			{
 				HelpStore.load();
-
 			}
 		})).start();
-
 	}
 
 
@@ -922,7 +968,6 @@ public class Tasks
 		final DialogSoundWizard dlg = new DialogSoundWizard();
 		Alerts.loading(false);
 		dlg.setVisible(true);
-
 	}
 
 
@@ -938,7 +983,8 @@ public class Tasks
 	{
 		final int task = Tasks.startTask();
 
-		new Thread(new Runnable() {
+		new Thread(new Runnable()
+		{
 
 			@Override
 			public void run()
@@ -954,7 +1000,6 @@ public class Tasks
 		}).start();
 
 		return task;
-
 	}
 
 
@@ -967,6 +1012,5 @@ public class Tasks
 	public static void taskDialogImportFromStitch()
 	{
 		Gui.open(new com.pixbits.rpw.stitcher.DialogImportStitch());
-
 	}
 }

@@ -9,6 +9,7 @@ import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.widgets.MenuMain;
 import net.mightypork.rpw.gui.widgets.SidePanel;
 import net.mightypork.rpw.gui.widgets.TreeDisplay;
+import net.mightypork.rpw.gui.windows.WindowSplash;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.WindowMain;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
@@ -22,6 +23,7 @@ import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.jdesktop.swingx.JXFrame;
 
 
@@ -31,9 +33,9 @@ public class App
 
 	public volatile static RpwDialog activeDialog;
 
-	/** Main App Why does eWindow */
 	public WindowMain window;
-	public MenuMain menu;
+	public WindowSplash splashWindow;
+	public JXFrame mainFrame; // always the active frame
 
 
 	public static void main(String[] args)
@@ -67,6 +69,11 @@ public class App
 
 		Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
+		// Placeholder main frame
+		Icons.initWindowIcon();
+		splashWindow = new WindowSplash();
+
+
 		Log.f1("Init started...");
 		OsUtils.initDirs();
 		Config.init();
@@ -92,11 +99,10 @@ public class App
 
 		Icons.init();
 
-		/* RSyntaxTextArea is needed only when editing meta / text, which is rare. Can speed up start. */
-//		// preload RSyntaxTextArea (it's big and causes lag otherwise)
-//		Log.f3("Initializing RSyntaxTextArea");
-//		@SuppressWarnings("unused")
-//		RSyntaxTextArea rsa = new RSyntaxTextArea();
+		// preload RSyntaxTextArea (it's big and causes lag otherwise)
+		Log.f3("Initializing RSyntaxTextArea");
+		@SuppressWarnings("unused")
+		RSyntaxTextArea rsa = new RSyntaxTextArea();
 
 		Tasks.taskLoadHelp();
 		Tasks.taskCreateModConfigFiles();
@@ -105,6 +111,7 @@ public class App
 
 		Log.f2("Building main window.");
 
+		// Build main window, hide placeholder & set mainFrame
 		final int t = Tasks.taskBuildMainWindow();
 		while (Tasks.isRunning(t)) {
 			Utils.sleep(10);
@@ -123,6 +130,7 @@ public class App
 	public void deinit()
 	{
 		try {
+			splashWindow.frame.dispose();
 			window.frame.dispose();
 		} catch (final Throwable t) {
 			Log.e(t);
@@ -202,17 +210,8 @@ public class App
 
 	public static JXFrame getFrame()
 	{
-		if (inst == null || inst.window == null) return null;
-
-		return inst.window.frame;
-	}
-
-
-	public static WindowMain getWindow()
-	{
-		if (inst == null) return null;
-
-		return inst.window;
+		if (inst == null || inst.mainFrame == null) return null;
+		return inst.mainFrame;
 	}
 
 

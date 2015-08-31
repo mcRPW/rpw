@@ -6,7 +6,7 @@ package net.mightypork.rpw;
  */
 public class Flags
 {
-	public static boolean MUST_RELOAD_VANILLA = false;
+	public static boolean MUST_EXTRACT = false;
 	public static boolean VANILLA_STRUCTURE_LOAD_OK = false;
 
 	public static boolean PROJECT_EDITED = false;
