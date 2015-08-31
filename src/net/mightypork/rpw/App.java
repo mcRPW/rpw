@@ -69,11 +69,6 @@ public class App
 
 		Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
-		// Placeholder main frame
-		Icons.initWindowIcon();
-		splashWindow = new WindowSplash();
-
-
 		Log.f1("Init started...");
 		OsUtils.initDirs();
 		Config.init();
@@ -94,6 +89,9 @@ public class App
 			Gui.useNativeLaF();
 		}
 
+		// Placeholder main frame
+		Icons.initWindowIcon();
+		splashWindow = new WindowSplash();
 
 		Log.f3("Last run version: " + VersionUtils.getVersionString(Config.LAST_RUN_VERSION) + " (#" + Config.LAST_RUN_VERSION + ")");
 		Log.i("Using library version: " + Config.LIBRARY_VERSION);

@@ -21,6 +21,7 @@ import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.utils.SpringUtilities;
 import net.mightypork.rpw.utils.files.DesktopApi;
+import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 import org.jdesktop.swingx.JXLabel;
@@ -276,15 +277,20 @@ public class Gui
 				}
 			}
 		} catch (final Exception e) {
-			Log.e("Could not select Look&Feel: Nimbus", e);
+			Log.e("Error selecting Nimbus Look&Feel.", e);
 		}
 	}
 
 	public static void useNativeLaF() {
 		try {
+			if(OsUtils.getOs().isLinux()) {
+				System.setProperty("swing.defaultlaf", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+				System.setProperty("swing.crossplatformlaf", "com.sun.java.swing.plaf.gtk.GTKLookAndFee");
+			}
+
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
-			Log.e("Failed to native deflaut LaF.");
+			Log.e("Error selecting native Look&Feel.");
 		}
 	}
 
