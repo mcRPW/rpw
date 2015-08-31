@@ -33,7 +33,7 @@ public class DialogCrash extends DialogTerminalBase
 
 
 	public DialogCrash(Throwable error) {
-		super(App.getFrame(), Const.APP_NAME + " has crashed!");
+		super(App.getFrame(), Const.APP_NAME_SHORT + " has crashed!");
 
 		Log.e("Unhandled error, opening error screen.", error);
 

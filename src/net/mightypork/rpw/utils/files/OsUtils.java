@@ -11,8 +11,8 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class OsUtils
 {
-
-	public static enum EnumOS {
+	public enum EnumOS
+	{
 		linux, macos, solaris, unknown, windows;
 
 		public boolean isLinux()
@@ -33,14 +33,34 @@ public class OsUtils
 		}
 	}
 
-	private static File appDir = null;
+	private static EnumOS _os;
 
-	private static File mcDir = null;
+	private static File appDir;
+
+	private static File mcDir;
+
+
+	public static boolean isLinux()
+	{
+		return getOs().isLinux();
+	}
+
+
+	public static boolean isMac()
+	{
+		return getOs().isMac();
+	}
+
+
+	public static boolean isWindows()
+	{
+		return getOs().isWindows();
+	}
 
 
 	/**
 	 * Get App dir, ensure it exists
-	 * 
+	 *
 	 * @return app dir
 	 */
 	public static File getAppDir()
@@ -52,7 +72,7 @@ public class OsUtils
 
 	/**
 	 * Get App sub-folder, don't try to create
-	 * 
+	 *
 	 * @param subfolderName
 	 * @return the folder
 	 */
@@ -64,10 +84,9 @@ public class OsUtils
 
 	/**
 	 * Get App sub-folder
-	 * 
+	 *
 	 * @param subfolderName
-	 * @param create
-	 *            whether create it if not exists
+	 * @param create        whether create it if not exists
 	 * @return the folder
 	 */
 	public static File getAppDir(String subfolderName, boolean create)
@@ -92,7 +111,7 @@ public class OsUtils
 
 	/**
 	 * Get MC dir
-	 * 
+	 *
 	 * @return mc dir
 	 */
 	public static File getMcDir()
@@ -104,7 +123,7 @@ public class OsUtils
 
 	/**
 	 * Get MC sub-folder, don't try to create
-	 * 
+	 *
 	 * @param subfolderName
 	 * @return the folder
 	 */
@@ -116,10 +135,9 @@ public class OsUtils
 
 	/**
 	 * Get MC sub-folder
-	 * 
+	 *
 	 * @param subfolderName
-	 * @param create
-	 *            whether create it if not exists
+	 * @param create        whether create it if not exists
 	 * @return the folder
 	 */
 	public static File getMcDir(String subfolderName, boolean create)
@@ -141,8 +159,16 @@ public class OsUtils
 		return f;
 	}
 
-
 	public static EnumOS getOs()
+	{
+		if (_os == null) {
+			_os = getOs_do();
+		}
+
+		return _os;
+	}
+
+	private static EnumOS getOs_do()
 	{
 		final String s = System.getProperty("os.name").toLowerCase();
 
@@ -180,29 +206,29 @@ public class OsUtils
 		File file;
 
 		switch (getOs()) {
-		case linux:
-		case solaris:
-			file = new File(userhome, "." + dirname + '/');
-			break;
-
-		case windows:
-			final String appdata = System.getenv("APPDATA");
-
-			if (appdata != null) {
-				file = new File(appdata, "." + dirname + '/');
-			} else {
+			case linux:
+			case solaris:
 				file = new File(userhome, "." + dirname + '/');
-			}
+				break;
 
-			break;
+			case windows:
+				final String appdata = System.getenv("APPDATA");
 
-		case macos:
-			file = new File(userhome, "Library/Application Support/" + dirname);
-			break;
+				if (appdata != null) {
+					file = new File(appdata, "." + dirname + '/');
+				} else {
+					file = new File(userhome, "." + dirname + '/');
+				}
 
-		default:
-			file = new File(userhome, dirname + "/");
-			break;
+				break;
+
+			case macos:
+				file = new File(userhome, "Library/Application Support/" + dirname);
+				break;
+
+			default:
+				file = new File(userhome, dirname + "/");
+				break;
 		}
 
 		if (!file.exists() || !file.isDirectory()) {
@@ -278,7 +304,6 @@ public class OsUtils
 
 		Log.f2("Checking working directory.");
 		OsUtils.initWorkdir();
-
 	}
 
 
@@ -304,5 +329,4 @@ public class OsUtils
 
 		OsUtils.getAppDir(Paths.DIR_TMP, true); // create TMP
 	}
-
 }

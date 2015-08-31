@@ -25,14 +25,14 @@ public class WindowSplash
 
 	public WindowSplash()
 	{
-		frame = new JXFrame("RPW " + Const.VERSION);
+		frame = new JXFrame(Const.APP_NAME_SHORT + " " + Const.VERSION);
 		frame.setIconImage(Icons.WINDOW.getImage());
 
 		// prevent default close operation
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frame.setResizable(false);
 
-		frame.getContentPane().setBackground(new Color(60,60,60));
+		frame.getContentPane().setBackground(new Color(60, 60, 60));
 
 		// Create the splash stuff
 		final VBox vb = new VBox();
@@ -40,7 +40,7 @@ public class WindowSplash
 		icn.setAlignmentX(.5f);
 		vb.add(icn);
 		vb.gap_small();
-		JXLabel lbl = new JXLabel("RPW loading...");
+		JXLabel lbl = new JXLabel(Const.APP_NAME_SHORT + " loading...");
 		lbl.setForeground(new Color(192, 192, 192));
 		lbl.setAlignmentX(.5f);
 		vb.add(lbl);

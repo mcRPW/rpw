@@ -55,7 +55,7 @@ public class DesktopApi
 			if (runCommand(Config.IMAGE_EDITOR, Config.IMAGE_EDITOR_ARGS, file.getPath())) return true;
 		}
 
-		if (OsUtils.getOs().isWindows()) {
+		if (OsUtils.isWindows()) {
 			if (editDESKTOP(file)) return true;
 		}
 
@@ -83,20 +83,18 @@ public class DesktopApi
 
 	private static boolean openSystemSpecific(String what)
 	{
-		final EnumOS os = OsUtils.getOs();
-
-		if (os.isLinux()) {
+		if (OsUtils.isLinux()) {
 			if (runCommand("exo-open", "%s", what)) return true;
 			if (runCommand("gnome-open", "%s", what)) return true;
 			if (runCommand("kde-open", "%s", what)) return true;
 			if (runCommand("xdg-open", "%s", what)) return true;
 		}
 
-		if (os.isMac()) {
+		if (OsUtils.isMac()) {
 			if (runCommand("open", "%s", what)) return true;
 		}
 
-		if (os.isWindows()) {
+		if (OsUtils.isWindows()) {
 			if (runCommand("explorer", "%s", what)) return true;
 		}
 

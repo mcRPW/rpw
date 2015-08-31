@@ -19,7 +19,8 @@ public class Const
 	public static final String VERSION = VersionUtils.getVersionString(VERSION_SERIAL);
 	public static final int VERSION_MAJOR = VersionUtils.getVersionMajor(VERSION_SERIAL);
 
-	public static final String APP_NAME = "ResourcePack Workbench";
+	public static final String APP_NAME = "Resource Pack Workbench";
+	public static final String APP_NAME_SHORT = "RPW";
 
 	//@formatter:off
 	public static final String[] SOUND_CATEGORIES = new String[] {

@@ -1,5 +1,6 @@
 package net.mightypork.rpw.gui.widgets;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,11 +21,11 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.utils.files.OsUtils;
 
 
 public class MenuMain
 {
-
 	public JMenuBar menuBar;
 
 	private JMenuItem itemProjectNew;
@@ -39,8 +40,6 @@ public class MenuMain
 	private JMenuItem itemProjectExport;
 	private JMenuItem itemProjectExportStitch;
 	private JMenuItem itemProjectImportStitch;
-	//	private JMenuItem itemProjectDataExport;
-	//	private JMenuItem itemProjectDataImport;
 	private JMenuItem itemDeleteVanillaCopies;
 	private JMenuItem itemExit;
 	private JMenuItem itemProjectClose;
@@ -78,390 +77,393 @@ public class MenuMain
 	private JMenuItem itemRuntimeLog;
 	private JMenuItem itemAbout;
 
-	@SuppressWarnings("unused")
 	private JMenu menuProject;
-	@SuppressWarnings("unused")
 	private JMenu menuLibrary;
 	private final JMenu menuRecentProjects;
 	private JMenu menuView;
-	@SuppressWarnings("unused")
 	private JMenu menuOptions;
-	@SuppressWarnings("unused")
 	private JMenu menuHelp;
-	@SuppressWarnings("unused")
 	private JMenu menuTools;
 
 
-	public MenuMain() {
+	public MenuMain()
+	{
+		final int CTRL = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+		final int SHIFT = ActionEvent.SHIFT_MASK;
+
+		// Mac doesn't have menu icons in native mode
+		final boolean ICNS = !(OsUtils.isMac() && Config.USE_NATIVE_THEME);
+
 		menuBar = new JMenuBar();
 		JMenu menu, menu2;
+		JMenuItem item;
 		JCheckBoxMenuItem ckitem;
 
-		//@formatter:off
+// --- PROJECT MENU ---
+
 		menu = menuProject = new JMenu("Project");
 		menu.setMnemonic(KeyEvent.VK_P);
-		
-			JMenuItem item;
-		
-			item = itemProjectNew = new JMenuItem("Create new project", KeyEvent.VK_N);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_NEW);
-			menu.add(item);	
-			
-			menu.addSeparator();			
-			
-			item = itemProjectOpen = new JMenuItem("My projects", KeyEvent.VK_L);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_OPEN);
-			menu.add(item);
-			
-			
-			menuRecentProjects = new JMenu("Recent projects");
-			menuRecentProjects.setIcon(Icons.MENU_RECENT);
-			menu.add(menuRecentProjects);
-			
-			
-			menu.addSeparator();
-			
-			item = itemProjectClose = new JMenuItem("Close project", KeyEvent.VK_C);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_CANCEL);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
-			item = itemProjectSave = new JMenuItem("Save project", KeyEvent.VK_S);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_SAVE);
-			menu.add(item);
-			
-			item = itemProjectSaveAs = new JMenuItem("Save project as...", KeyEvent.VK_A);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_SAVE_AS);
-			menu.add(item);
-			
-			menu.addSeparator();
 
-			
-			item = itemProjectRevert = new JMenuItem("REVERT ALL CHANGES", KeyEvent.VK_R);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.SHIFT_MASK + ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_REVERT);
-			menu.add(item);
-						
-			menu.addSeparator();
-			
-			item = itemProjectExport = new JMenuItem("Export pack to...", KeyEvent.VK_E);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-			item.setIcon(Icons.MENU_EXPORT_BOX);
-			menu.add(item);		
-						
-			item = itemProjectExportMc = new JMenuItem("Export pack to Minecraft", KeyEvent.VK_M);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_EXPORT_BOX);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
-			item = itemProjectExportStitch = new JMenuItem("Export stitched PNG to...", KeyEvent.VK_X);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-			item.setIcon(Icons.MENU_EXPORT_BOX);
-			menu.add(item);
-			
-			item = itemProjectImportStitch = new JMenuItem("Import stitched PNG from...", KeyEvent.VK_P);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-			item.setIcon(Icons.MENU_IMPORT_BOX);
-			menu.add(item);
-			
-//			menu.addSeparator();
-//			
-//			item = itemProjectDataExport = new JMenuItem("Export RPW project");
-//			item.setIcon(Icons.MENU_EXPORT_BOX);
-//			menu.add(item);
-//			
-//			item = itemProjectImportStitch = new JMenuItem("Import RPW project");
-//			item.setIcon(Icons.MENU_IMPORT_BOX);
-//			menu.add(item);
-			
-			menu.addSeparator();
-			
-			item = itemProjectSetup = new JMenuItem("Project properties", KeyEvent.VK_P);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
-			item.setIcon(Icons.MENU_SETUP);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
-			item = itemExit = new JMenuItem("Exit", KeyEvent.VK_X);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_EXIT);
-			menu.add(item);
-			
+
+		item = itemProjectNew = new JMenuItem("Create new project", KeyEvent.VK_N);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_NEW);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemProjectOpen = new JMenuItem("My projects", KeyEvent.VK_L);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_OPEN);
+		menu.add(item);
+
+
+		menuRecentProjects = new JMenu("Recent projects");
+		menuRecentProjects.setIcon(Icons.MENU_RECENT);
+		menu.add(menuRecentProjects);
+
+
+		menu.addSeparator();
+
+		item = itemProjectClose = new JMenuItem("Close project", KeyEvent.VK_C);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_CANCEL);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemProjectSave = new JMenuItem("Save project", KeyEvent.VK_S);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_SAVE);
+		menu.add(item);
+
+		item = itemProjectSaveAs = new JMenuItem("Save project as...", KeyEvent.VK_A);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, CTRL | SHIFT));
+		if (ICNS) item.setIcon(Icons.MENU_SAVE_AS);
+		menu.add(item);
+
+		menu.addSeparator();
+
+
+		item = itemProjectRevert = new JMenuItem("REVERT ALL CHANGES", KeyEvent.VK_R);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, CTRL | SHIFT));
+		if (ICNS) item.setIcon(Icons.MENU_REVERT);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemProjectExport = new JMenuItem("Export pack to...", KeyEvent.VK_E);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL | SHIFT));
+		if (ICNS) item.setIcon(Icons.MENU_EXPORT_BOX);
+		menu.add(item);
+
+		item = itemProjectExportMc = new JMenuItem("Export pack to Minecraft", KeyEvent.VK_M);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_EXPORT_BOX);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemProjectExportStitch = new JMenuItem("Export stitched PNG to...", KeyEvent.VK_X);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, CTRL | SHIFT));
+		if (ICNS) item.setIcon(Icons.MENU_EXPORT_BOX);
+		menu.add(item);
+
+		item = itemProjectImportStitch = new JMenuItem("Import stitched PNG from...", KeyEvent.VK_P);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, CTRL | SHIFT));
+		if (ICNS) item.setIcon(Icons.MENU_IMPORT_BOX);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemProjectSetup = new JMenuItem("Project properties", KeyEvent.VK_P);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
+		if (ICNS) item.setIcon(Icons.MENU_SETUP);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemExit = new JMenuItem("Exit", KeyEvent.VK_X);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_EXIT);
+		menu.add(item);
+
 		menuBar.add(menu);
-		
+
+
+// --- TOOLS MENU ---
 
 		menu = menuTools = new JMenu("Tools");
 		menu.setMnemonic(KeyEvent.VK_T);
-		
-			item = itemProjectSummary = new JMenuItem("Project summary", KeyEvent.VK_J);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_INFO);
-			menu.add(item);
-			
-			item = itemCustomSounds = new JMenuItem("Manage custom sounds", KeyEvent.VK_S);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_SOUND_WIZARD);
-			menu.add(item);
-			
-			item = itemProjectOpenFolder = new JMenuItem("Open project folder", KeyEvent.VK_I);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_OPEN);
-			menu.add(item);
-			
-			item = itemDeleteVanillaCopies = new JMenuItem("Delete unchanged vanilla copies", KeyEvent.VK_U);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_DELETE_ASSET);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
-			item = itemManageMcPacks = new JMenuItem("Manage packs in MC", KeyEvent.VK_D);
-			item.setIcon(Icons.MENU_MANAGE);
-			menu.add(item);
 
-		menuBar.add(menu);	
-		
+		item = itemProjectSummary = new JMenuItem("Project summary", KeyEvent.VK_J);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_INFO);
+		menu.add(item);
 
+		item = itemCustomSounds = new JMenuItem("Manage custom sounds", KeyEvent.VK_S);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_SOUND_WIZARD);
+		menu.add(item);
+
+		item = itemProjectOpenFolder = new JMenuItem("Open project folder", KeyEvent.VK_I);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_OPEN);
+		menu.add(item);
+
+		item = itemDeleteVanillaCopies = new JMenuItem("Delete unchanged vanilla copies", KeyEvent.VK_U);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_DELETE_ASSET);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemManageMcPacks = new JMenuItem("Manage packs in MC", KeyEvent.VK_D);
+		if (ICNS) item.setIcon(Icons.MENU_MANAGE);
+		menu.add(item);
+
+		menuBar.add(menu);
+
+
+// --- LIBRARY MENU ---
 
 		menu = menuLibrary = new JMenu("Library");
 		menu.setMnemonic(KeyEvent.VK_L);
-			
-			item = itemLibraryImport = new JMenuItem("Import resource pack...", KeyEvent.VK_I);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_OPEN);
-			menu.add(item);
-			
-			menu.addSeparator();
-		
-			item = itemLibraryManage = new JMenuItem("Manage library", KeyEvent.VK_M);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_MANAGE);
-			menu.add(item);	
-			
-			item = itemLibraryRefreshSources = new JMenuItem("Reload library", KeyEvent.VK_B);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.MENU_RELOAD);
-			menu.add(item);
-			
-			menu.addSeparator();		
-			
-			item = itemLibraryRefreshVanilla = new JMenuItem("Re-extract Minecraft assets", KeyEvent.VK_R);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, ActionEvent.CTRL_MASK | ActionEvent.SHIFT_MASK));
-			item.setIcon(Icons.MENU_RELOAD2);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
-			menu2 = new JMenu("Fancy Tree mod support");
-			menu2.setMnemonic(KeyEvent.VK_T);
-			menu2.setIcon(Icons.MENU_TREE);
-		
-				item = itemLibraryManageModGroups = new JMenuItem("Edit mod Groups", KeyEvent.VK_G);
-				item.setIcon(Icons.MENU_EDIT);
-				menu2.add(item);
-			
-				item = itemLibraryManageModFilters = new JMenuItem("Edit mod Filters", KeyEvent.VK_F);
-				item.setIcon(Icons.MENU_EDIT);
-				menu2.add(item);
-			
-			menu.add(menu2);
-		
+
+		item = itemLibraryImport = new JMenuItem("Import resource pack...", KeyEvent.VK_I);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_OPEN);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemLibraryManage = new JMenuItem("Manage library", KeyEvent.VK_M);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_MANAGE);
+		menu.add(item);
+
+		item = itemLibraryRefreshSources = new JMenuItem("Reload library", KeyEvent.VK_B);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, CTRL));
+		if (ICNS) item.setIcon(Icons.MENU_RELOAD);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemLibraryRefreshVanilla = new JMenuItem("Re-extract Minecraft assets", KeyEvent.VK_R);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, CTRL | SHIFT));
+		if (ICNS) item.setIcon(Icons.MENU_RELOAD2);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		menu2 = new JMenu("Fancy Tree mod support");
+		menu2.setMnemonic(KeyEvent.VK_T);
+		if (ICNS) menu2.setIcon(Icons.MENU_TREE);
+
+		// submenu items
+
+		item = itemLibraryManageModGroups = new JMenuItem("Edit mod Groups", KeyEvent.VK_G);
+		if (ICNS) item.setIcon(Icons.MENU_EDIT);
+		menu2.add(item);
+
+		item = itemLibraryManageModFilters = new JMenuItem("Edit mod Filters", KeyEvent.VK_F);
+		if (ICNS) item.setIcon(Icons.MENU_EDIT);
+		menu2.add(item);
+
+		menu.add(menu2);
+
 		menuBar.add(menu);
-		
+
+
+// --- VIEW MENU ---
 
 		menu = menuView = new JMenu("View");
 		menu.setMnemonic(KeyEvent.VK_V);
-		
-			ckitem = itemOptionTextureFiles = new JCheckBoxMenuItem("Show textures");
-			ckitem.setIcon(Icons.TREE_FILE_IMAGE);
-			ckitem.setMnemonic(KeyEvent.VK_U);		
-			menu.add(ckitem);
-			
-			ckitem = itemOptionSoundFiles = new JCheckBoxMenuItem("Show sounds");
-			ckitem.setIcon(Icons.TREE_FILE_AUDIO);
-			ckitem.setMnemonic(KeyEvent.VK_A);		
-			menu.add(ckitem);
-			
-			ckitem = itemOptionTextFiles = new JCheckBoxMenuItem("Show text files");
-			ckitem.setIcon(Icons.TREE_FILE_TEXT);
-			ckitem.setMnemonic(KeyEvent.VK_T);		
-			menu.add(ckitem);
-						
-			ckitem = itemOptionLangFiles = new JCheckBoxMenuItem("Show language files");
-			ckitem.setIcon(Icons.TREE_FILE_TEXT);
-			ckitem.setMnemonic(KeyEvent.VK_L);	
-			menu.add(ckitem);
-			
-			ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font");
-			ckitem.setIcon(Icons.TREE_FILE_FONT);
-			ckitem.setMnemonic(KeyEvent.VK_F);		
-			menu.add(ckitem);
-			
-			ckitem = itemOptionTechFiles = new JCheckBoxMenuItem("Show shaders, models etc.");
-			ckitem.setIcon(Icons.TREE_FILE_TECH);
-			ckitem.setMnemonic(KeyEvent.VK_X);		
-			menu.add(ckitem);
-		
-			menu.addSeparator();
-			
-			ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete (useless) files");
-			ckitem.setIcon(Icons.TREE_FILE_GENERIC);
-			ckitem.setMnemonic(KeyEvent.VK_W);
-			ckitem.setToolTipText("Show assets that are no longer used by the game.");
-			menu.add(ckitem);		
-		
-			menu.addSeparator();
-		
-			item = itemTreeCollapseAll = new JMenuItem("Collapse tree", KeyEvent.VK_C);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.TREE_CLOSE);
-			menu.add(item);
-		
-			item = itemTreeExpandAll = new JMenuItem("Expand tree", KeyEvent.VK_E);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK));
-			item.setIcon(Icons.TREE_OPEN);
-			menu.add(item);
-						
-			item = itemTreeRefreshTree = new JMenuItem("Refresh tree display", KeyEvent.VK_T);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-			item.setIcon(Icons.MENU_RELOAD);
-			menu.add(item);			
-			
-		menuBar.add(menu);	
-		
+
+		ckitem = itemOptionTextureFiles = new JCheckBoxMenuItem("Show textures");
+		if (ICNS) ckitem.setIcon(Icons.TREE_FILE_IMAGE);
+		ckitem.setMnemonic(KeyEvent.VK_U);
+		menu.add(ckitem);
+
+		ckitem = itemOptionSoundFiles = new JCheckBoxMenuItem("Show sounds");
+		if (ICNS) ckitem.setIcon(Icons.TREE_FILE_AUDIO);
+		ckitem.setMnemonic(KeyEvent.VK_A);
+		menu.add(ckitem);
+
+		ckitem = itemOptionTextFiles = new JCheckBoxMenuItem("Show text files");
+		if (ICNS) ckitem.setIcon(Icons.TREE_FILE_TEXT);
+		ckitem.setMnemonic(KeyEvent.VK_T);
+		menu.add(ckitem);
+
+		ckitem = itemOptionLangFiles = new JCheckBoxMenuItem("Show language files");
+		if (ICNS) ckitem.setIcon(Icons.TREE_FILE_TEXT);
+		ckitem.setMnemonic(KeyEvent.VK_L);
+		menu.add(ckitem);
+
+		ckitem = itemOptionFontFiles = new JCheckBoxMenuItem("Show unicode font");
+		if (ICNS) ckitem.setIcon(Icons.TREE_FILE_FONT);
+		ckitem.setMnemonic(KeyEvent.VK_F);
+		menu.add(ckitem);
+
+		ckitem = itemOptionTechFiles = new JCheckBoxMenuItem("Show shaders, models etc.");
+		if (ICNS) ckitem.setIcon(Icons.TREE_FILE_TECH);
+		ckitem.setMnemonic(KeyEvent.VK_X);
+		menu.add(ckitem);
+
+		menu.addSeparator();
+
+		ckitem = itemOptionObsoleteDirs = new JCheckBoxMenuItem("Show obsolete (useless) files");
+		if (ICNS) ckitem.setIcon(Icons.TREE_FILE_GENERIC);
+		ckitem.setMnemonic(KeyEvent.VK_W);
+		ckitem.setToolTipText("Show assets that are no longer used by the game.");
+		menu.add(ckitem);
+
+		menu.addSeparator();
+
+		item = itemTreeCollapseAll = new JMenuItem("Collapse tree", KeyEvent.VK_C);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, CTRL));
+		if (ICNS) item.setIcon(Icons.TREE_CLOSE);
+		menu.add(item);
+
+		item = itemTreeExpandAll = new JMenuItem("Expand tree", KeyEvent.VK_E);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, CTRL));
+		if (ICNS) item.setIcon(Icons.TREE_OPEN);
+		menu.add(item);
+
+		item = itemTreeRefreshTree = new JMenuItem("Refresh tree display", KeyEvent.VK_T);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+		if (ICNS) item.setIcon(Icons.MENU_RELOAD);
+		menu.add(item);
+
+		menuBar.add(menu);
+
+// --- OPTIONS MENU ---
 
 		menu = menuOptions = new JMenu("Options");
 		menu.setMnemonic(KeyEvent.VK_O);
-			
-			ckitem = itemOptionFancyTree = new JCheckBoxMenuItem("Use \"fancy\" tree structure");
-			ckitem.setMnemonic(KeyEvent.VK_S);
-			ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
-			menu.add(ckitem);
-			
-			menu.addSeparator();			
-			
-			ckitem = itemOptionWarningOrphanedNodes = new JCheckBoxMenuItem("Warn about orphaned files");
-			ckitem.setMnemonic(KeyEvent.VK_O);
-			ckitem.setToolTipText("Show warning when Fancy Tree prevents some files from being displayed.");
-			menu.add(ckitem);
-			
-			ckitem = itemOptionPreviewHover = new JCheckBoxMenuItem("Preview when mousing over");
-			ckitem.setMnemonic(KeyEvent.VK_P);
-			menu.add(ckitem);
-									
-			ckitem = itemOptionHiddenFiles = new JCheckBoxMenuItem("Show hidden files in file pickers");
-			ckitem.setMnemonic(KeyEvent.VK_H);	
-			menu.add(ckitem);
 
-			menu.addSeparator();
-									
-			ckitem = itemUseNimbusTheme = new JCheckBoxMenuItem("Use Nimbus theme (needs restart)");
-			ckitem.setMnemonic(KeyEvent.VK_N);	
-			menu.add(ckitem);
+		ckitem = itemOptionFancyTree = new JCheckBoxMenuItem("Use \"fancy\" tree structure");
+		ckitem.setMnemonic(KeyEvent.VK_S);
+		ckitem.setToolTipText("Use neat groups instead of the real pack structure.");
+		menu.add(ckitem);
 
-			ckitem = itemUseNativeTheme = new JCheckBoxMenuItem("Try to use system theme (needs restart)");
-			ckitem.setMnemonic(KeyEvent.VK_Y);
-			menu.add(ckitem);
+		menu.addSeparator();
 
-			menu.addSeparator();
-			
-			ckitem = itemOptionAutoSave = new JCheckBoxMenuItem("Auto save on close (don't ask)");
-			ckitem.setMnemonic(KeyEvent.VK_A);
-			menu.add(ckitem);
-			
-			menu.addSeparator();
-						
-			item = itemConfigureEditors = new JMenuItem("Configure editors");
-			item.setMnemonic(KeyEvent.VK_E);
-			item.setIcon(Icons.MENU_SETUP);		
-			menu.add(item);
-			
+		ckitem = itemOptionWarningOrphanedNodes = new JCheckBoxMenuItem("Warn about orphaned files");
+		ckitem.setMnemonic(KeyEvent.VK_O);
+		ckitem.setToolTipText("Show warning when Fancy Tree prevents some files from being displayed.");
+		menu.add(ckitem);
+
+		ckitem = itemOptionPreviewHover = new JCheckBoxMenuItem("Preview when mousing over");
+		ckitem.setMnemonic(KeyEvent.VK_P);
+		menu.add(ckitem);
+
+		ckitem = itemOptionHiddenFiles = new JCheckBoxMenuItem("Show hidden files in file pickers");
+		ckitem.setMnemonic(KeyEvent.VK_H);
+		menu.add(ckitem);
+
+		menu.addSeparator();
+
+		ckitem = itemUseNimbusTheme = new JCheckBoxMenuItem("Use Nimbus theme (needs restart)");
+		ckitem.setMnemonic(KeyEvent.VK_N);
+		menu.add(ckitem);
+
+		ckitem = itemUseNativeTheme = new JCheckBoxMenuItem("Try to use system theme (needs restart)");
+		ckitem.setMnemonic(KeyEvent.VK_Y);
+		menu.add(ckitem);
+
+		menu.addSeparator();
+
+		ckitem = itemOptionAutoSave = new JCheckBoxMenuItem("Auto save on close (don't ask)");
+		ckitem.setMnemonic(KeyEvent.VK_A);
+		menu.add(ckitem);
+
+		menu.addSeparator();
+
+		item = itemConfigureEditors = new JMenuItem("Configure editors");
+		item.setMnemonic(KeyEvent.VK_E);
+		if (ICNS) item.setIcon(Icons.MENU_SETUP);
+		menu.add(item);
+
 		menuBar.add(menu);
-		
-		
+
+
 		//menuBar.add(Box.createHorizontalGlue());
+
+// ---- HELP MENU ---
 
 		menu = menuHelp = new JMenu("Help");
 		menu.setMnemonic(KeyEvent.VK_H);
-					
-			item = itemHelp = new JMenuItem("Guide Book", KeyEvent.VK_G);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-			item.setIcon(Icons.MENU_HELP);
-			menu.add(item);
 
-			menu.addSeparator();
+		item = itemHelp = new JMenuItem("Guide Book", KeyEvent.VK_G);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		if (ICNS) item.setIcon(Icons.MENU_HELP);
+		menu.add(item);
 
-			item = itemRuntimeLog = new JMenuItem("Show runtime log", KeyEvent.VK_L);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-			item.setIcon(Icons.MENU_LOG);
-			menu.add(item);
+		menu.addSeparator();
 
-			item = new JMenuItem("Report a bug");
-			item.setIcon(Icons.MENU_BUG);
-			item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, ActionEvent.CTRL_MASK));
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_GITHUB_BUGS);
-			menu.add(item);	
-			
-			menu.addSeparator();
-			
-			item = new JMenuItem("Official website");
-			item.setIcon(Icons.MENU_WEBSITE);// FIXME
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_RPW_WEB);
-			menu.add(item);	
-			
-			item = new JMenuItem("PMC post");
-			item.setIcon(Icons.MENU_PMC);
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
-			menu.add(item);	
-			
+		item = itemRuntimeLog = new JMenuItem("Show runtime log", KeyEvent.VK_L);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+		if (ICNS) item.setIcon(Icons.MENU_LOG);
+		menu.add(item);
+
+		item = new JMenuItem("Report a bug");
+		if (ICNS) item.setIcon(Icons.MENU_BUG);
+		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, CTRL));
+		item.addActionListener(Gui.openUrlListener);
+		item.setActionCommand(Paths.URL_GITHUB_BUGS);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = new JMenuItem("Official website");
+		if (ICNS) item.setIcon(Icons.MENU_WEBSITE);
+		item.addActionListener(Gui.openUrlListener);
+		item.setActionCommand(Paths.URL_RPW_WEB);
+		menu.add(item);
+
+		item = new JMenuItem("PMC post");
+		if (ICNS) item.setIcon(Icons.MENU_PMC);
+		item.addActionListener(Gui.openUrlListener);
+		item.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
+		menu.add(item);
+
 //			item = new JMenuItem("RPW on Minecraft Forum");
-//			item.setIcon(Icons.MENU_MCF);
+//			if(USE_ICONS) item.setIcon(Icons.MENU_MCF);
 //			item.addActionListener(Gui.openUrlListener);
 //			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
 //			menu.add(item);
-			
-			item = new JMenuItem("GitHub");
-			item.setIcon(Icons.MENU_GITHUB);
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_GITHUB_WEB);
-			menu.add(item);	
-			
-			menu.addSeparator();
-			
-			item = new JMenuItem("Download latest version");
-			item.setIcon(Icons.MENU_DOWNLOAD);
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
-			menu.add(item);
-			
-			menu.addSeparator();
-			
-			item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
-			item.setIcon(Icons.MENU_DONATE);
-			item.addActionListener(Gui.openUrlListener);
-			item.setActionCommand(Paths.URL_DONATE);
-			menu.add(item);
-			
-			menu.addSeparator();
-		
-			item = itemAbout = new JMenuItem("About", KeyEvent.VK_A);
-			item.setIcon(Icons.MENU_ABOUT);
-			menu.add(item);
-		
+
+		item = new JMenuItem("GitHub");
+		if (ICNS) item.setIcon(Icons.MENU_GITHUB);
+		item.addActionListener(Gui.openUrlListener);
+		item.setActionCommand(Paths.URL_GITHUB_WEB);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = new JMenuItem("Download latest version");
+		if (ICNS) item.setIcon(Icons.MENU_DOWNLOAD);
+		item.addActionListener(Gui.openUrlListener);
+		item.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
+		if (ICNS) item.setIcon(Icons.MENU_DONATE);
+		item.addActionListener(Gui.openUrlListener);
+		item.setActionCommand(Paths.URL_DONATE);
+		menu.add(item);
+
+		menu.addSeparator();
+
+		item = itemAbout = new JMenuItem("About", KeyEvent.VK_A);
+		if (ICNS) item.setIcon(Icons.MENU_ABOUT);
+		menu.add(item);
+
 		menuBar.add(menu);
-		//@formatter:on
+
 
 		addActions();
 
@@ -471,7 +473,8 @@ public class MenuMain
 
 	public void addActions()
 	{
-		itemProjectNew.addActionListener(new ActionListener() {
+		itemProjectNew.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -480,7 +483,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectOpen.addActionListener(new ActionListener() {
+		itemProjectOpen.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -489,7 +493,8 @@ public class MenuMain
 			}
 		});
 
-		itemExit.addActionListener(new ActionListener() {
+		itemExit.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -498,7 +503,8 @@ public class MenuMain
 			}
 		});
 
-		itemTreeCollapseAll.addActionListener(new ActionListener() {
+		itemTreeCollapseAll.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -507,7 +513,8 @@ public class MenuMain
 			}
 		});
 
-		itemTreeExpandAll.addActionListener(new ActionListener() {
+		itemTreeExpandAll.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -516,7 +523,8 @@ public class MenuMain
 			}
 		});
 
-		itemLibraryRefreshVanilla.addActionListener(new ActionListener() {
+		itemLibraryRefreshVanilla.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -526,7 +534,8 @@ public class MenuMain
 			}
 		});
 
-		itemLibraryRefreshSources.addActionListener(new ActionListener() {
+		itemLibraryRefreshSources.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -544,7 +553,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectSave.addActionListener(new ActionListener() {
+		itemProjectSave.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -553,7 +563,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectRevert.addActionListener(new ActionListener() {
+		itemProjectRevert.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -562,7 +573,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectExport.addActionListener(new ActionListener() {
+		itemProjectExport.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -571,7 +583,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectExportMc.addActionListener(new ActionListener() {
+		itemProjectExportMc.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -580,27 +593,28 @@ public class MenuMain
 			}
 		});
 
-		itemProjectExportStitch.addActionListener(new ActionListener() {
+		itemProjectExportStitch.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskDialogExportToStitch();
 			}
-
 		});
 
-		itemProjectImportStitch.addActionListener(new ActionListener() {
+		itemProjectImportStitch.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskDialogImportFromStitch();
 			}
-
 		});
 
-		itemProjectClose.addActionListener(new ActionListener() {
+		itemProjectClose.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -609,7 +623,8 @@ public class MenuMain
 			}
 		});
 
-		itemManageMcPacks.addActionListener(new ActionListener() {
+		itemManageMcPacks.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -618,7 +633,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectSaveAs.addActionListener(new ActionListener() {
+		itemProjectSaveAs.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -627,7 +643,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectSetup.addActionListener(new ActionListener() {
+		itemProjectSetup.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -636,7 +653,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectSummary.addActionListener(new ActionListener() {
+		itemProjectSummary.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -645,7 +663,8 @@ public class MenuMain
 			}
 		});
 
-		itemAbout.addActionListener(new ActionListener() {
+		itemAbout.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -654,7 +673,8 @@ public class MenuMain
 			}
 		});
 
-		itemRuntimeLog.addActionListener(new ActionListener() {
+		itemRuntimeLog.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -663,7 +683,8 @@ public class MenuMain
 			}
 		});
 
-		itemLibraryManageModFilters.addActionListener(new ActionListener() {
+		itemLibraryManageModFilters.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -672,7 +693,8 @@ public class MenuMain
 			}
 		});
 
-		itemLibraryManageModGroups.addActionListener(new ActionListener() {
+		itemLibraryManageModGroups.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -681,7 +703,8 @@ public class MenuMain
 			}
 		});
 
-		itemLibraryImport.addActionListener(new ActionListener() {
+		itemLibraryImport.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -690,7 +713,8 @@ public class MenuMain
 			}
 		});
 
-		itemLibraryManage.addActionListener(new ActionListener() {
+		itemLibraryManage.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -699,7 +723,8 @@ public class MenuMain
 			}
 		});
 
-		itemHelp.addActionListener(new ActionListener() {
+		itemHelp.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -708,7 +733,8 @@ public class MenuMain
 			}
 		});
 
-		itemTreeRefreshTree.addActionListener(new ActionListener() {
+		itemTreeRefreshTree.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -717,7 +743,8 @@ public class MenuMain
 			}
 		});
 
-		itemOptionFancyTree.addActionListener(new ActionListener() {
+		itemOptionFancyTree.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -730,11 +757,11 @@ public class MenuMain
 					Tasks.taskTreeSaveAndRebuild();
 					updateEnabledItems();
 				}
-
 			}
 		});
 
-		itemOptionWarningOrphanedNodes.addActionListener(new ActionListener() {
+		itemOptionWarningOrphanedNodes.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -745,11 +772,11 @@ public class MenuMain
 					Config.WARNING_ORPHANED_NODES = newOpt;
 					Config.save();
 				}
-
 			}
 		});
 
-		itemOptionObsoleteDirs.addActionListener(new ActionListener() {
+		itemOptionObsoleteDirs.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -761,11 +788,11 @@ public class MenuMain
 					Config.save();
 					Tasks.taskTreeSaveAndRebuild();
 				}
-
 			}
 		});
 
-		itemOptionPreviewHover.addActionListener(new ActionListener() {
+		itemOptionPreviewHover.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -776,11 +803,11 @@ public class MenuMain
 					Config.PREVIEW_HOVER = newOpt;
 					Config.save();
 				}
-
 			}
 		});
 
-		itemOptionFontFiles.addActionListener(new ActionListener() {
+		itemOptionFontFiles.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -795,7 +822,8 @@ public class MenuMain
 			}
 		});
 
-		itemOptionHiddenFiles.addActionListener(new ActionListener() {
+		itemOptionHiddenFiles.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -809,7 +837,8 @@ public class MenuMain
 			}
 		});
 
-		itemOptionLangFiles.addActionListener(new ActionListener() {
+		itemOptionLangFiles.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -824,7 +853,8 @@ public class MenuMain
 			}
 		});
 
-		itemOptionSoundFiles.addActionListener(new ActionListener() {
+		itemOptionSoundFiles.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -839,7 +869,8 @@ public class MenuMain
 			}
 		});
 
-		itemOptionTechFiles.addActionListener(new ActionListener() {
+		itemOptionTechFiles.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -854,7 +885,8 @@ public class MenuMain
 			}
 		});
 
-		itemOptionTextFiles.addActionListener(new ActionListener() {
+		itemOptionTextFiles.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -869,7 +901,8 @@ public class MenuMain
 			}
 		});
 
-		itemOptionTextureFiles.addActionListener(new ActionListener() {
+		itemOptionTextureFiles.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -885,7 +918,8 @@ public class MenuMain
 			}
 		});
 
-		itemUseNimbusTheme.addActionListener(new ActionListener() {
+		itemUseNimbusTheme.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -895,7 +929,7 @@ public class MenuMain
 				if (Config.USE_NIMBUS != newOpt) {
 					Config.USE_NIMBUS = newOpt;
 
-					if(newOpt) {
+					if (newOpt) {
 						Config.USE_NATIVE_THEME = false;
 						itemUseNativeTheme.setSelected(false);
 					}
@@ -905,7 +939,8 @@ public class MenuMain
 			}
 		});
 
-		itemUseNativeTheme.addActionListener(new ActionListener() {
+		itemUseNativeTheme.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -915,7 +950,7 @@ public class MenuMain
 				if (Config.USE_NATIVE_THEME != newOpt) {
 					Config.USE_NATIVE_THEME = newOpt;
 
-					if(newOpt) {
+					if (newOpt) {
 						Config.USE_NIMBUS = false;
 						itemUseNimbusTheme.setSelected(false);
 					}
@@ -925,7 +960,8 @@ public class MenuMain
 			}
 		});
 
-		itemOptionAutoSave.addActionListener(new ActionListener() {
+		itemOptionAutoSave.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -939,7 +975,8 @@ public class MenuMain
 			}
 		});
 
-		itemConfigureEditors.addActionListener(new ActionListener() {
+		itemConfigureEditors.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -948,7 +985,8 @@ public class MenuMain
 			}
 		});
 
-		itemProjectOpenFolder.addActionListener(new ActionListener() {
+		itemProjectOpenFolder.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -957,7 +995,8 @@ public class MenuMain
 			}
 		});
 
-		itemCustomSounds.addActionListener(new ActionListener() {
+		itemCustomSounds.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -966,7 +1005,8 @@ public class MenuMain
 			}
 		});
 
-		itemDeleteVanillaCopies.addActionListener(new ActionListener() {
+		itemDeleteVanillaCopies.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -974,7 +1014,6 @@ public class MenuMain
 				Tasks.taskDeleteIdenticalToVanilla();
 			}
 		});
-
 	}
 
 
@@ -995,12 +1034,12 @@ public class MenuMain
 		menuView.setEnabled(open);
 		itemProjectOpenFolder.setEnabled(open);
 		itemCustomSounds.setEnabled(open);
-		
-		itemOptionFontFiles.setEnabled(Config.SHOW_TEXTURES);
 
+		itemOptionFontFiles.setEnabled(Config.SHOW_TEXTURES);
 	}
 
-	private final ActionListener openRecentProjectListener = new ActionListener() {
+	private final ActionListener openRecentProjectListener = new ActionListener()
+	{
 
 		@Override
 		public void actionPerformed(ActionEvent e)
