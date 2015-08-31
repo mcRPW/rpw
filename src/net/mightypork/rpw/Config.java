@@ -84,6 +84,7 @@ public class Config
 	public static final boolean def_USE_INTERNAL_TEXT_EDITOR = true;
 	public static final boolean def_WARNING_ORPHANED_NODES = true;
 	public static final boolean def_USE_NIMBUS = true;
+	public static final boolean def_USE_NATIVE_THEME = false;
 	public static boolean FANCY_TREE;
 	public static boolean SHOW_FONT;
 	public static boolean SHOW_SOUNDS;
@@ -103,6 +104,7 @@ public class Config
 	public static int CHOICE_EXPORT_TO_MC;
 	public static String LIBRARY_VERSION;
 	public static boolean USE_NIMBUS;
+	public static boolean USE_NATIVE_THEME;
 
 	// filechooser paths
 	public static final String def_FILECHOOSER_PATH_IMPORT_FILE = System.getProperty("user.home");
@@ -162,6 +164,7 @@ public class Config
 	private static final String PK_USE_TEXT_EDITOR = "system.editor.text.enabled";
 
 	private static final String PK_USE_NIMBUS = "display.nimbusTheme";
+	private static final String PK_USE_NATIVE_THEME = "display.nativeTheme";
 	private static final String PK_AUTO_SAVE = "system.autoSave";
 
 	private static final String PK_AUDIO_EDITOR = "system.editor.audio.command";
@@ -237,6 +240,7 @@ public class Config
 		mgr.putString(PK_FILECHOOSER_PATH_EXPORT, def_FILECHOOSER_PATH_EXPORT);
 
 		mgr.putBoolean(PK_USE_NIMBUS, def_USE_NIMBUS, "Use the Nimbus theme instead of Metal (default).");
+		mgr.putBoolean(PK_USE_NATIVE_THEME, def_USE_NATIVE_THEME, "Use the system native theme if available (if Nimbus is not selected).");
 		mgr.putInteger(PK_CHOICE_EXPORT_TO_MC, def_CHOICE_EXPORT_TO_MC);
 
 		load(); // load what has been "put"
@@ -277,6 +281,7 @@ public class Config
 		mgr.setValue(PK_USE_TEXT_EDITOR, USE_TEXT_EDITOR);
 
 		mgr.setValue(PK_USE_NIMBUS, USE_NIMBUS);
+		mgr.setValue(PK_USE_NATIVE_THEME, USE_NATIVE_THEME);
 
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_FILE, FILECHOOSER_PATH_IMPORT_FILE);
 		mgr.setValue(PK_FILECHOOSER_PATH_IMPORT_SOUND, FILECHOOSER_PATH_IMPORT_SOUND);
@@ -333,6 +338,7 @@ public class Config
 		USE_TEXT_EDITOR = mgr.getBoolean(PK_USE_TEXT_EDITOR);
 
 		USE_NIMBUS = mgr.getBoolean(PK_USE_NIMBUS);
+		USE_NATIVE_THEME = mgr.getBoolean(PK_USE_NATIVE_THEME);
 
 		FILECHOOSER_PATH_IMPORT_FILE = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_FILE);
 		FILECHOOSER_PATH_IMPORT_SOUND = mgr.getString(PK_FILECHOOSER_PATH_IMPORT_SOUND);

@@ -10,18 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -272,7 +261,7 @@ public class Gui
 	}
 
 
-	public static void useNimbus()
+	public static void useNimbusLaF()
 	{
 		try {
 			for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -288,6 +277,14 @@ public class Gui
 			}
 		} catch (final Exception e) {
 			Log.e("Could not select Look&Feel: Nimbus", e);
+		}
+	}
+
+	public static void useNativeLaF() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			Log.e("Failed to native deflaut LaF.");
 		}
 	}
 

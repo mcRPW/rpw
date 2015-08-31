@@ -71,6 +71,7 @@ public class MenuMain
 	private JCheckBoxMenuItem itemOptionWarningOrphanedNodes;
 	private JCheckBoxMenuItem itemOptionObsoleteDirs;
 	private JCheckBoxMenuItem itemUseNimbusTheme;
+	private JCheckBoxMenuItem itemUseNativeTheme;
 	private JMenuItem itemConfigureEditors;
 
 	private JMenuItem itemHelp;
@@ -360,10 +361,18 @@ public class MenuMain
 			ckitem = itemOptionHiddenFiles = new JCheckBoxMenuItem("Show hidden files in file pickers");
 			ckitem.setMnemonic(KeyEvent.VK_H);	
 			menu.add(ckitem);
+
+			menu.addSeparator();
 									
 			ckitem = itemUseNimbusTheme = new JCheckBoxMenuItem("Use Nimbus theme (needs restart)");
 			ckitem.setMnemonic(KeyEvent.VK_N);	
 			menu.add(ckitem);
+
+			ckitem = itemUseNativeTheme = new JCheckBoxMenuItem("Try to use system theme (needs restart)");
+			ckitem.setMnemonic(KeyEvent.VK_Y);
+			menu.add(ckitem);
+
+			menu.addSeparator();
 			
 			ckitem = itemOptionAutoSave = new JCheckBoxMenuItem("Auto save on close (don't ask)");
 			ckitem.setMnemonic(KeyEvent.VK_A);
@@ -523,7 +532,8 @@ public class MenuMain
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskStoreProjectChanges();
-				Tasks.taskReloadSources(new Runnable() {
+				Tasks.taskReloadSources(new Runnable()
+				{
 
 					@Override
 					public void run()
@@ -884,6 +894,32 @@ public class MenuMain
 
 				if (Config.USE_NIMBUS != newOpt) {
 					Config.USE_NIMBUS = newOpt;
+
+					if(newOpt) {
+						Config.USE_NATIVE_THEME = false;
+						itemUseNativeTheme.setSelected(false);
+					}
+
+					Config.save();
+				}
+			}
+		});
+
+		itemUseNativeTheme.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				final boolean newOpt = itemUseNativeTheme.isSelected();
+
+				if (Config.USE_NATIVE_THEME != newOpt) {
+					Config.USE_NATIVE_THEME = newOpt;
+
+					if(newOpt) {
+						Config.USE_NIMBUS = false;
+						itemUseNimbusTheme.setSelected(false);
+					}
+
 					Config.save();
 				}
 			}
@@ -1012,5 +1048,6 @@ public class MenuMain
 		itemOptionPreviewHover.setSelected(Config.PREVIEW_HOVER);
 		itemOptionHiddenFiles.setSelected(Config.SHOW_HIDDEN_FILES);
 		itemUseNimbusTheme.setSelected(Config.USE_NIMBUS);
+		itemUseNativeTheme.setSelected(Config.USE_NATIVE_THEME);
 	}
 }

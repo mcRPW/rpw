@@ -231,7 +231,7 @@ public class DialogSoundWizard extends RpwDialog
 
 		if (Config.USE_NIMBUS) Gui.useMetal();
 		treeDisplay = new SoundFileTreeDisplay(null, this);
-		if (Config.USE_NIMBUS) Gui.useNimbus();
+		if (Config.USE_NIMBUS) Gui.useNimbusLaF();
 
 		vb.glue();
 		final JComponent c = treeDisplay.getComponent();

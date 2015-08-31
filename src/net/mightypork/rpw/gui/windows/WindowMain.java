@@ -69,7 +69,7 @@ public class WindowMain
 
 		treeDisplay = new TreeDisplay();
 
-		if (Config.USE_NIMBUS) Gui.useNimbus();
+		if (Config.USE_NIMBUS) Gui.useNimbusLaF();
 
 		final JScrollPane scrollpane = new JScrollPane(treeDisplay.treeTable);
 

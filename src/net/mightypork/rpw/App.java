@@ -87,10 +87,13 @@ public class App
 			Log.e(e);
 		}
 
-		// attempt to enable NUMBUS
+		// attempt to enable NIMBUS / NATIVE
 		if (Config.USE_NIMBUS) {
-			Gui.useNimbus();
+			Gui.useNimbusLaF();
+		} else if (Config.USE_NATIVE_THEME) {
+			Gui.useNativeLaF();
 		}
+
 
 		Log.f3("Last run version: " + VersionUtils.getVersionString(Config.LAST_RUN_VERSION) + " (#" + Config.LAST_RUN_VERSION + ")");
 		Log.i("Using library version: " + Config.LIBRARY_VERSION);
