@@ -7,6 +7,8 @@ import net.mightypork.rpw.utils.HtmlBuilder;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
+import java.util.ArrayList;
+
 
 public class VersionUtils
 {
@@ -30,19 +32,24 @@ public class VersionUtils
 		// markdown document
 		String md = "";
 
-		int startVersion = Math.min(Config.LAST_RUN_VERSION + 1, Const.VERSION_SERIAL - 2);
 
-		Log.f3("Building changelog for versions " + startVersion + " .. " + Const.VERSION_SERIAL);
+		Log.f3("Building changelog...");
 
+		// Collect all the changelogs
+		ArrayList<String> versions = new ArrayList<String>();
+		int startVersion =Config.LAST_RUN_VERSION;
 		for (int i = startVersion; i <= Const.VERSION_SERIAL; i++) {
-
 			final String chl = getChangelogForVersion(i);
-
 			if (chl.isEmpty()) continue;
 
-			md += "\n\n<p class=\"littleHeading\">" + getVersionString(i) + "</p>\n\n";
+			String frag = "\n\n<p class=\"littleHeading\">" + getVersionString(i) + "</p>\n\n";
+			frag += chl.trim() + "\n";
+			versions.add(frag);
+		}
 
-			md += chl.trim() + "\n";
+		// Get last 2
+		for (int i = Math.max(0, versions.size() - 2); i < versions.size(); i++) {
+			md += versions.get(i);
 		}
 
 		md = md.trim();

@@ -14,10 +14,10 @@ import com.google.gson.GsonBuilder;
 
 public class Const
 {
-	public static final int VERSION_SERIAL = 421;
+	public static final int VERSION_SERIAL = 430;
 
 	public static final String VERSION = VersionUtils.getVersionString(VERSION_SERIAL);
-	public static final int VERSION_MAJOR = VersionUtils.getVersionMajor(VERSION_SERIAL);
+	//public static final int VERSION_MAJOR = VersionUtils.getVersionMajor(VERSION_SERIAL);
 
 	public static final String APP_NAME = "Resource Pack Workbench";
 	public static final String APP_NAME_SHORT = "RPW";
@@ -55,7 +55,7 @@ public class Const
 
 	/**
 	 * Get debug string to be put into exported pack
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getGeneratorStamp()

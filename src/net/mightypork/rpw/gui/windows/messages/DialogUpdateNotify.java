@@ -68,23 +68,21 @@ public class DialogUpdateNotify extends RpwDialog
 		hb.add(btn = new JButton("Official website", Icons.MENU_WEBSITE));
 		btn.setActionCommand(Paths.URL_RPW_WEB);
 		btn.addActionListener(Gui.openUrlListener);
-		btn.addActionListener(closeListener);
+		//btn.addActionListener(closeListener);
 		
 		hb.gap();
 
 		hb.add(btn = new JButton("PMC", Icons.MENU_PMC));
 		btn.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
 		btn.addActionListener(Gui.openUrlListener);
-		btn.addActionListener(closeListener);
-
-		hb.gap();
+		//btn.addActionListener(closeListener);
 
 		hb.gap();
 
 		hb.add(btn = new JButton("Direct", Icons.MENU_DOWNLOAD));
 		btn.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
-		btn.addActionListener(closeListener);
 		btn.addActionListener(Gui.openUrlListener);
+		//btn.addActionListener(closeListener);
 
 		hb.glue();
 
