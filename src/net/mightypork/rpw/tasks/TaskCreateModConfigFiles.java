@@ -19,7 +19,7 @@ public class TaskCreateModConfigFiles
 
 		if (!groups.exists()) {
 			try {
-				FileUtils.resourceToFile("/data/tree/groupsMod.txt", groups);
+				FileUtils.resourceToFile("/data/tree/groupsMod.ini", groups);
 			} catch (final IOException e) {
 				Log.e(e);
 			}
@@ -27,7 +27,7 @@ public class TaskCreateModConfigFiles
 
 		if (!filters.exists()) {
 			try {
-				FileUtils.resourceToFile("/data/tree/filtersMod.txt", filters);
+				FileUtils.resourceToFile("/data/tree/filtersMod.ini", filters);
 			} catch (final IOException e) {
 				Log.e(e);
 			}

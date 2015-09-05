@@ -19,7 +19,8 @@ import net.mightypork.rpw.utils.logging.Log;
 public class AssetGrouperFancy extends AssetGrouper
 {
 
-	public AssetGrouperFancy() {
+	public AssetGrouperFancy()
+	{
 		groups.clear();
 		filters.clear();
 
@@ -45,7 +46,7 @@ public class AssetGrouperFancy extends AssetGrouper
 
 		// vanilla groups
 
-		text = FileUtils.resourceToString("/data/tree/groupsVanilla.txt");
+		text = FileUtils.resourceToString("/data/tree/groupsVanilla.ini");
 		if (text.length() == 0) throw new RuntimeException("Failed to load group list.");
 
 		pairs = SimpleConfig.mapFromString(text);
@@ -71,7 +72,6 @@ public class AssetGrouperFancy extends AssetGrouper
 				}
 			}
 			groups.addAll(toAdd);
-
 		} while (toAdd.size() > 0);
 
 		Collections.sort(groups, new DotComparator<GroupInfo>());
@@ -90,14 +90,26 @@ public class AssetGrouperFancy extends AssetGrouper
 		}
 
 		// vanilla filters
-		text = FileUtils.resourceToString("/data/tree/filtersVanilla.txt");
+		text = FileUtils.resourceToString("/data/tree/filtersVanilla.ini");
 		if (text.length() == 0) throw new RuntimeException("Failed to load filter list.");
 
 		pairs = SimpleConfig.mapFromString(text);
 
 		for (final Entry<String, String> pair : pairs.entrySet()) {
-			addFilter(pair.getKey(), pair.getValue());
+
+			String v = pair.getValue();
+
+			if (v != null) {
+				// handle abbreviations
+				v = v.replace("^tb", "assets.minecraft.textures.blocks");
+				v = v.replace("^ti", "assets.minecraft.textures.items");
+				v = v.replace("^te", "assets.minecraft.textures.entity");
+				v = v.replace("^t", "assets.minecraft.textures");
+				v = v.replace("^s", "assets.minecraft.sounds");
+				v = v.replace("^", "assets.minecraft");
+			}
+
+			addFilter(pair.getKey(), v);
 		}
 	}
-
 }
