@@ -426,9 +426,9 @@ public class Tasks
 				//@formatter:off
 				final int choice = Alerts.askYesNoCancel(
 						App.getFrame(),
-						"Confirm changes", 
-						"There are some changes in the project.\n"
-						+ "Do you want to keep those changes (\"save\")?\n"
+						"Save changes",
+						"There are some changes in the project. Save?\n\n"
+						+ "(Hate this? Enable auto-save in Options.)\n"
 				);
 				//@formatter:on
 
