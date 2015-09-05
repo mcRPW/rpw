@@ -1,13 +1,15 @@
 package net.mightypork.rpw.utils.files;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
+import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.utils.files.OsUtils.EnumOS;
 import net.mightypork.rpw.utils.logging.Log;
 
@@ -39,6 +41,11 @@ public class DesktopApi
 	{
 		if (Config.USE_TEXT_EDITOR) {
 			if (runCommand(Config.TEXT_EDITOR, Config.TEXT_EDITOR_ARGS, file.getPath())) return true;
+			Alerts.warning(App.getFrame(),
+					"Your configured text editor \"" + Config.IMAGE_EDITOR + "\" could not be launched.\n" +
+							"Please review your settings in [Options > Configure editors].\n\n" +
+							"RPW will now try to use your system default editor."
+			);
 		}
 
 		if (openSystemSpecific(file.getPath())) return true;
@@ -53,6 +60,11 @@ public class DesktopApi
 	{
 		if (Config.USE_IMAGE_EDITOR) {
 			if (runCommand(Config.IMAGE_EDITOR, Config.IMAGE_EDITOR_ARGS, file.getPath())) return true;
+			Alerts.warning(App.getFrame(),
+					"Your configured image editor \"" + Config.IMAGE_EDITOR + "\" could not be launched.\n" +
+							"Please review your settings in [Options > Configure editors].\n\n" +
+							"RPW will now try to use your system default editor."
+			);
 		}
 
 		if (OsUtils.isWindows()) {
@@ -71,6 +83,11 @@ public class DesktopApi
 	{
 		if (Config.USE_AUDIO_EDITOR) {
 			if (runCommand(Config.AUDIO_EDITOR, Config.AUDIO_EDITOR_ARGS, file.getPath())) return true;
+			Alerts.warning(App.getFrame(),
+					"Your configured audio editor \"" + Config.IMAGE_EDITOR + "\" could not be launched.\n" +
+							"Please review your settings in [Options > Configure editors].\n\n" +
+							"RPW will now try to use your system default editor."
+			);
 		}
 
 		if (openSystemSpecific(file.getPath())) return true;

@@ -3,6 +3,8 @@ package net.mightypork.rpw;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
@@ -37,12 +39,12 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 	private final Runnable successRunnable;
 
 
-	public SequenceExportProject(File target, Runnable onSuccess) {
+	public SequenceExportProject(File target, Runnable onSuccess)
+	{
 		this.target = target;
 		this.successRunnable = onSuccess;
 
 		this.project = Projects.getActive();
-
 	}
 
 
@@ -155,7 +157,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 				in = FileUtils.getResource("/data/export/pack.png");
 			}
 			zb.addStream("pack.png", in);
-
 		} finally {
 			Utils.close(in);
 		}
@@ -173,7 +174,34 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		final String desc = project.getTitle();
 
 		final PackMcmeta pim = new PackMcmeta();
-		pim.setPackInfo(new PackInfo(1, desc));
+
+		String vers = Config.LIBRARY_VERSION.split("\\+")[0];
+		int format = 1;
+
+		// Determine format from version
+
+		Pattern p = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*");
+		Matcher m = p.matcher(vers);
+
+		if (m.find()) {
+			// Regular release
+			int vers_numeric = Integer.valueOf(m.group(1))*10000 + Integer.valueOf(m.group(2))*100 + Integer.valueOf(m.group(3));
+			if (vers_numeric > 10900) format = 2;
+		} else {
+			p = Pattern.compile("^(\\d{2}w\\d{2}).*");
+			m = p.matcher(vers);
+
+			if(m.find()) {
+				// Snapshot
+				if (m.group(1).compareTo("15w31") >= 0) format = 2;
+			} else {
+				Log.e("Unexpected MC version name, cannot determine pack format.");
+			}
+		}
+
+		Log.i("Using resource pack format: " + format);
+
+		pim.setPackInfo(new PackInfo(format, desc));
 
 		zb.addString("pack.mcmeta", pim.toJson());
 
@@ -201,7 +229,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		Alerts.loading(true);
 
 		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target);
-
 	}
 
 
@@ -251,7 +278,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 			String path = file.getAbsolutePath();
 			path = pathPrefix + path.replace(dir.getAbsolutePath(), "");
-			
+
 			path = path.replace('\\', '/'); // Windoze shit
 
 			FileInputStream in = null;
@@ -265,7 +292,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 			if (Config.LOG_EXPORT_FILES) Log.f3("+ " + path);
 		}
-
 	}
 
 	private class ExportProcessor implements AssetTreeProcessor
@@ -277,7 +303,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 			if (node instanceof AssetTreeLeaf) {
 				final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
-				String logEntry = null;
+				String logEntry = "";
 
 				// file
 				boolean fileSaved = false;
@@ -294,20 +320,18 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 						if (data == null) break;
 
 						final String path = leaf.getAssetEntry().getPath();
-						
-						logEntry = "+ " + path;
+
+						logEntry += "+ " + path;
 						zb.addStream(path, data);
 
 						logEntry += " <- \"" + srcName + "\"";
 
 						fileSaved = true;
-
 					} catch (final IOException e) {
 						Log.e("Error getting asset stream.", e);
 					} finally {
 						Utils.close(data);
 					}
-
 				} while (false);
 
 				if (!fileSaved) return;
@@ -332,23 +356,19 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 						zb.addStream(path, data);
 
 						logEntry += ", m: \"" + srcName + "\"";
-
 					} catch (final IOException e) {
 						Log.e("Error getting asset meta stream.", e);
 					} finally {
 						Utils.close(data);
 					}
-
 				} while (false);
 
 				if (Config.LOG_EXPORT_FILES) {
-					if (logEntry != null) {
-						Log.f3(logEntry);
-					}
+					Log.f3(logEntry);
 				}
-
 			}
 		}
-	};
+	}
 
+	;
 }

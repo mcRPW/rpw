@@ -87,7 +87,7 @@ public class DialogConfigureEditors extends RpwDialog
 
 		vbox.heading("Configure Editors");
 		
-		vbox.titsep("External Editors");
+		vbox.titsep("Custom External Editors");
 		
 		vbox.gapl();
 		
@@ -95,7 +95,7 @@ public class DialogConfigureEditors extends RpwDialog
 			section_vb.padding(0, Gui.GAPL, 0, Gui.GAPL);
 		
 			hb = new HBox();	
-				hb.add(ckI = new JCheckBox("External Image Editor"));
+				hb.add(ckI = new JCheckBox("Custom Image Editor"));
 				ckI.setForeground(Gui.SUBHEADING_COLOR);
 				hb.glue();
 			section_vb.add(hb);		
@@ -104,7 +104,7 @@ public class DialogConfigureEditors extends RpwDialog
 			boxI = new HBox();
 				boxI.padding(0, Gui.GAPL, 0, 0);
 				
-				boxI.add(labelExI = new JLabel("Executable:"));
+				boxI.add(labelExI = new JLabel("Exec. file:"));
 					labelExI.setHorizontalAlignment(SwingConstants.RIGHT);		
 				boxI.gap();
 				
@@ -127,7 +127,7 @@ public class DialogConfigureEditors extends RpwDialog
 			section_vb.gapl();
 	
 			hb = new HBox();	
-				hb.add(ckT = new JCheckBox("External Text Editor"));
+				hb.add(ckT = new JCheckBox("Custom Text Editor"));
 				ckT.setForeground(Gui.SUBHEADING_COLOR);
 				hb.glue();
 			section_vb.add(hb);
@@ -135,7 +135,7 @@ public class DialogConfigureEditors extends RpwDialog
 	
 			boxT = new HBox();
 				boxT.padding(0, Gui.GAPL, 0, 0);
-				boxT.add(labelExT = new JLabel("Executable:"));
+				boxT.add(labelExT = new JLabel("Exec. file:"));
 					labelExT.setHorizontalAlignment(SwingConstants.RIGHT);		
 				boxT.gap();
 				
@@ -158,7 +158,7 @@ public class DialogConfigureEditors extends RpwDialog
 			section_vb.gapl();
 	
 			hb = new HBox();	
-				hb.add(ckA = new JCheckBox("External Audio Editor"));
+				hb.add(ckA = new JCheckBox("Custom Audio Editor"));
 				ckA.setForeground(Gui.SUBHEADING_COLOR);
 				hb.glue();
 			section_vb.add(hb);
@@ -166,7 +166,7 @@ public class DialogConfigureEditors extends RpwDialog
 	
 			boxA = new HBox();
 				boxA.padding(0, Gui.GAPL, 0, 0);
-				boxA.add(labelExA = new JLabel("Executable:"));
+				boxA.add(labelExA = new JLabel("Exec. file:"));
 					labelExA.setHorizontalAlignment(SwingConstants.RIGHT);		
 				boxA.gap();
 				
