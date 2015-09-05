@@ -40,7 +40,9 @@ public class WindowSplash
 		icn.setAlignmentX(.5f);
 		vb.add(icn);
 		vb.add(Box.createVerticalStrut(6));
-		JXLabel lbl = new JXLabel(Const.APP_NAME_SHORT + " loading...");
+		JXLabel lbl = new JXLabel("RPW is loading...");
+		Font f = lbl.getFont();
+		lbl.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
 		lbl.setForeground(new Color(192, 192, 192));
 		lbl.setAlignmentX(.5f);
 		vb.add(lbl);
