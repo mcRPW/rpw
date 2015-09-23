@@ -214,6 +214,10 @@ public class FileUtils
 		}
 
 		final String[] list = path.list();
+
+		// handle rare NPE crash (issue #62)
+		if (list == null) return false;
+
 		for (int i = 0; i < list.length; i++) {
 			if (!delete_do(new File(path, list[i]), true, filter, self, depth + 1)) return false;
 		}
