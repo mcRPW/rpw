@@ -16,7 +16,7 @@ Master is for released code and patches only.
 
 **Q: RPW opens images in Paint instead of Gimp. How to fix?**
 
-Please see issues #53 and #58.
+Please see issues [#53](https://github.com/MightyPork/rpw/issues/53) and [#58](https://github.com/MightyPork/rpw/issues/58).
 
 **Q: How to import an existing pack?**
 
