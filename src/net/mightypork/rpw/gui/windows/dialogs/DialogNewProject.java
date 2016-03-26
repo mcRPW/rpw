@@ -1,9 +1,6 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,7 @@ import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.helpers.CharInputListener;
 import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
 import net.mightypork.rpw.gui.widgets.FileInput;
@@ -53,11 +51,16 @@ public class DialogNewProject extends RpwDialog
 
 	private FileInput filepicker;
 
+	/** Name has not been changed manually yet */
+	private boolean nameIsPristine;
+
 
 	public DialogNewProject() {
 		super(App.getFrame(), "New Project");
 
 		projectNames = Projects.getProjectNames();
+
+		nameIsPristine = true;
 
 		createDialog();
 	}
@@ -130,14 +133,30 @@ public class DialogNewProject extends RpwDialog
 		vbox.titsep("Project settings");
 		vbox.gap();
 
-		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
-		nameField.addKeyListener(TextInputValidator.filenames());
-
 		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
 		titleFieldGroup.add(titleField);
+		titleField.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				if (nameIsPristine) {
+					nameField.setText(titleField.getText().replaceAll("[^a-zA-Z0-9_-]", "_"));
+				}
+			}
+		});
 
-		vbox.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField });
+		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
+		nameField.addKeyListener(TextInputValidator.strictFilenames(new CharInputListener()
+		{
+			@Override
+			public void onCharTyped(char c)
+			{
+				nameIsPristine = nameField.getText().isEmpty();
+			}
+		}));
 
+		vbox.springForm(new String[] { "Title:", "Name:" }, new JComponent[] { titleField, nameField });
+
+		vbox.gap();
+		vbox.add(Gui.commentLine("Title - shown in MC. Name - file name."));
 		vbox.gapl();
 
 		buttonOK = new JButton("Create", Icons.MENU_NEW);

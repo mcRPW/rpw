@@ -25,7 +25,7 @@ import net.mightypork.rpw.gui.windows.dialogs.DialogImportPack;
 import net.mightypork.rpw.gui.windows.dialogs.DialogManageLibrary;
 import net.mightypork.rpw.gui.windows.dialogs.DialogManageMcPacks;
 import net.mightypork.rpw.gui.windows.dialogs.DialogNewProject;
-import net.mightypork.rpw.gui.windows.dialogs.DialogOpenProject;
+import net.mightypork.rpw.gui.windows.dialogs.DialogManageProjects;
 import net.mightypork.rpw.gui.windows.dialogs.DialogProjectProperties;
 import net.mightypork.rpw.gui.windows.dialogs.DialogProjectSummary;
 import net.mightypork.rpw.gui.windows.dialogs.DialogSaveAs;
@@ -865,7 +865,7 @@ public class Tasks
 
 	public static void taskDialogManageProjects()
 	{
-		Gui.open(new DialogOpenProject());
+		Gui.open(new DialogManageProjects());
 	}
 
 

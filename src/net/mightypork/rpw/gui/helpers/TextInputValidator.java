@@ -64,6 +64,18 @@ public class TextInputValidator extends KeyAdapter
 	}
 
 
+	public static TextInputValidator strictFilenames()
+	{
+		return new TextInputValidator(strictFilenameCharValidator);
+	}
+
+
+	public static TextInputValidator strictFilenames(CharInputListener listener)
+	{
+		return new TextInputValidator(strictFilenameCharValidator, listener);
+	}
+
+
 	public static TextInputValidator identifiers(CharInputListener listener)
 	{
 		return new TextInputValidator(identifierCharValidator, listener);
@@ -81,6 +93,16 @@ public class TextInputValidator extends KeyAdapter
 		public boolean isValid(char c)
 		{
 			return Utils.isValidFilenameChar(c);
+		}
+
+	};
+
+	private static final CharValidator strictFilenameCharValidator = new CharValidator() {
+
+		@Override
+		public boolean isValid(char c)
+		{
+			return String.valueOf(c).matches("[a-zA-Z0-9_-]+");
 		}
 
 	};

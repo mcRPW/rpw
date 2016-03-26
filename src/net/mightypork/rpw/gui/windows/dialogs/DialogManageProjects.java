@@ -27,7 +27,7 @@ import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 
 
-public class DialogOpenProject extends RpwDialog
+public class DialogManageProjects extends RpwDialog
 {
 
 	private List<String> projectNames;
@@ -46,7 +46,7 @@ public class DialogOpenProject extends RpwDialog
 	}
 
 
-	public DialogOpenProject() {
+	public DialogManageProjects() {
 		super(App.getFrame(), "Manage Projects");
 
 		projectNames = Projects.getProjectNames();
@@ -155,7 +155,7 @@ public class DialogOpenProject extends RpwDialog
 
 			if (newName == null) return;
 			newName.trim();
-			if (!Utils.isValidFilenameString(newName)) {
+			if (!newName.matches("^[a-zA-Z0-9_-]+$")) {
 				Alerts.error(self(), "\"" + newName + "\" is not a valid name.");
 				return;
 			}

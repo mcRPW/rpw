@@ -173,37 +173,65 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");
 		final String desc = project.getTitle();
 
-		final PackMcmeta pim = new PackMcmeta();
+		final PackMcmeta packMeta = new PackMcmeta();
 
 		String vers = Config.LIBRARY_VERSION.split("\\+")[0];
-		int format = 1;
 
 		// Determine format from version
 
-		Pattern p = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*");
-		Matcher m = p.matcher(vers);
+		Matcher matcher_mnp = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*").matcher(vers);
+		Matcher matcher_mn = Pattern.compile("^(\\d+)\\.(\\d+).*").matcher(vers);
+		Matcher matcher_snapshot = Pattern.compile("^(\\d{2}w\\d{2}).*").matcher(vers);
 
-		if (m.find()) {
-			// Regular release
-			int vers_numeric = Integer.valueOf(m.group(1))*10000 + Integer.valueOf(m.group(2))*100 + Integer.valueOf(m.group(3));
-			if (vers_numeric > 10900) format = 2;
-		} else {
-			p = Pattern.compile("^(\\d{2}w\\d{2}).*");
-			m = p.matcher(vers);
+		Matcher m;
 
-			if(m.find()) {
-				// Snapshot
-				if (m.group(1).compareTo("15w31") >= 0) format = 2;
-			} else {
-				Log.e("Unexpected MC version name, cannot determine pack format.");
+		int format = 2;
+
+		do {
+			m = matcher_mnp;
+			if (m.find()) {
+				// Regular release
+				int major = Integer.valueOf(m.group(1));
+				int minor = Integer.valueOf(m.group(2));
+				int patch = Integer.valueOf(m.group(3));
+
+				if (major > 1 || (major == 1 && minor >= 9)) {
+					format = 2;
+				} else {
+					format = 1;
+				}
+				break;
 			}
-		}
+
+			m = matcher_mn;
+			if (m.find()) {
+				// Regular release
+				int major = Integer.valueOf(m.group(1));
+				int minor = Integer.valueOf(m.group(2));
+
+				if (major > 1 || (major == 1 && minor >= 9)) {
+					format = 2;
+				} else {
+					format = 1;
+				}
+				break;
+			}
+
+			m = matcher_snapshot;
+			if (m.find()) {
+				// Snapshot
+				format = 2; // just assume it's the newest...
+				break;
+			}
+
+			Log.e("Unexpected MC version name, cannot determine pack format.");
+		} while(false);
 
 		Log.i("Using resource pack format: " + format);
 
-		pim.setPackInfo(new PackInfo(format, desc));
+		packMeta.setPackInfo(new PackInfo(format, desc));
 
-		zb.addString("pack.mcmeta", pim.toJson());
+		zb.addString("pack.mcmeta", packMeta.toJson());
 
 		return true;
 	}
