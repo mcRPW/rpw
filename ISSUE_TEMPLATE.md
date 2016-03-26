@@ -1,4 +1,4 @@
-Please follow those steps and check the boxes before submitting:
+Please follow those steps and check all the boxes `[x]` before submitting:
 
 - [ ] I can reproduce the issue. *If you can't, then we likely can't either.*
 - [ ] My RPW is up to date.
