@@ -167,7 +167,9 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		zb.addString("rpw-version.txt", Const.getGeneratorStamp());
 
 		if (Config.LOG_EXPORT_FILES) Log.f3("+ assets/minecraft/sounds.json");
-		zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
+		if (project.getSoundsMap() != null) {
+			zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
+		}
 
 		// json mcmeta
 		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");

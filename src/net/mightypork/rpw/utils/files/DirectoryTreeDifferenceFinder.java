@@ -118,7 +118,17 @@ public class DirectoryTreeDifferenceFinder
 		if ((a == null) != (b == null)) return false;
 		if ((a == null) && (b == null)) return true;
 
-		if (!a.isFile() || !b.isFile()) throw new IllegalArgumentException("Arguments must be files!");
+		if (!a.isFile() || !b.isFile()) {
+			// To address issue #54
+			// No idea what is causing that, but better not to crash.
+
+			Log.e("\"Arguments must be files!\" error from issue #54 happened again.");
+			Log.e("File A: " + a);
+			Log.e("File B: " + b);
+
+			return false;
+			//throw new IllegalArgumentException("Arguments must be files!");
+		}
 
 		CheckedInputStream cin1 = null, cin2 = null;
 
