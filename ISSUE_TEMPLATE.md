@@ -8,6 +8,9 @@ Please follow those steps and check all the boxes `[x]` before submitting:
 
 Thank you!
 
+*You can delete this "questionaire" if all boxes are checked - it's here 
+to make sure people give some thought to their bug reports.*
+
 ---
 
 **What happened?**
