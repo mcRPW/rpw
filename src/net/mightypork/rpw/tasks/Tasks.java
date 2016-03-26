@@ -85,8 +85,7 @@ public class Tasks
 	/**
 	 * Is task still running?
 	 *
-	 * @param task
-	 *            task ID
+	 * @param task task ID
 	 * @return is running
 	 */
 	public static boolean isRunning(int task)
@@ -139,6 +138,7 @@ public class Tasks
 
 		return task;
 	}
+
 
 	public static int taskBuildPlaceholderMainWindow()
 	{
@@ -918,6 +918,27 @@ public class Tasks
 	}
 
 
+	public static void taskOpenInFileManager(AssetTreeLeaf node)
+	{
+		if (node == null) {
+			Log.e("Tried to open folder for null leaf.");
+			return;
+		}
+		if (!node.isAssetProvidedByProject()) {
+			Log.e("Tried to open node for leaf not in project");
+			return;
+		}
+
+		File f = Projects.getActive().getAssetFile(node.getAssetKey());
+
+		File dir = f.getParentFile();
+
+		if (!DesktopApi.open(dir)) {
+			Alerts.error(App.getFrame(), "Failed to open folder, platform not\nsupported by the Java API. Sorry.");
+		}
+	}
+
+
 	public static void taskDialogManageMcPacks()
 	{
 		Gui.open(new DialogManageMcPacks());
@@ -930,8 +951,8 @@ public class Tasks
 			//@formatter:off
 			Alerts.error(
 					App.getFrame(),
-					"Could not open directory, your\n" +
-					"platform is not supported.\n" +
+					"Could not open directory, platform\n" +
+					"not supported by the Java API.\n" +
 					"\n" +
 					"Check log file for details."
 			);

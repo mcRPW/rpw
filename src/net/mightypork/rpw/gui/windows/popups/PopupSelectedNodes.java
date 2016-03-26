@@ -56,6 +56,7 @@ public class PopupSelectedNodes
 	private JMenuItem itemImportReplacement;
 	private JMenuItem itemApplyResolved;
 	private JMenuItem itemApplyResolvedOrInherit;
+	private JMenuItem itemOpenInFM;
 
 	private JMenuItem itemCopyToProjectSkipVanilla;
 
@@ -90,6 +91,8 @@ public class PopupSelectedNodes
 		final int allLeaves = proc.getLeaves();
 		final int vanillaLeaves = proc.getVanillaLeaves();
 		final int metaLeaves = proc.getMetaLeaves();
+
+		final int selectedCount = nodes.size();
 
 		JMenuItem item;
 		JPopupMenu popup;
@@ -131,14 +134,14 @@ public class PopupSelectedNodes
 
 		item = itemEditAsset = new JMenuItem("Open in editor");
 		item.setIcon(Icons.MENU_EDIT);
-		item.setEnabled(allLeaves == 1 && nodes.size() == 1);
+		item.setEnabled(allLeaves == 1 && selectedCount == 1);
 		popup.add(item);
 
 		if (metaLeaves > 0) {
 			item = itemEditMeta = new JMenuItem("Edit \".mcmeta\"");
 
 			item.setIcon(Icons.MENU_EDIT);
-			item.setEnabled(allLeaves == 1 && nodes.size() == 1);
+			item.setEnabled(allLeaves == 1 && selectedCount == 1);
 
 			if (nodes.get(0).isLeaf()) {
 				final AssetTreeLeaf leaf = (AssetTreeLeaf) nodes.get(0);
@@ -149,7 +152,7 @@ public class PopupSelectedNodes
 
 		item = itemImportReplacement = new JMenuItem("Import replacement");
 		item.setIcon(Icons.MENU_IMPORT_BOX);
-		item.setEnabled(allLeaves == 1 && nodes.size() == 1);
+		item.setEnabled(allLeaves == 1 && selectedCount == 1);
 		popup.add(item);
 
 		if (groups > 0) {
@@ -168,6 +171,11 @@ public class PopupSelectedNodes
 
 			popup.add(submenu);
 		}
+
+		item = itemOpenInFM = new JMenuItem("Open in file manager");
+		item.setIcon(Icons.MENU_OPEN);
+		item.setEnabled(inProject == 1 && selectedCount == 1);
+		popup.add(item);
 
 		popup.addSeparator();
 
@@ -195,7 +203,6 @@ public class PopupSelectedNodes
 			for (final Component cmp : list) {
 				if (cmp == null) {
 					submenu.addSeparator();
-					continue;
 				} else {
 					submenu.add(cmp);
 				}
@@ -210,7 +217,6 @@ public class PopupSelectedNodes
 		for (final Component cmp : list) {
 			if (cmp == null) {
 				popup.addSeparator();
-				continue;
 			} else {
 				popup.add(cmp);
 			}
@@ -415,6 +421,15 @@ public class PopupSelectedNodes
 			public void actionPerformed(ActionEvent e)
 			{
 				Tasks.taskEditMeta((AssetTreeLeaf) nodes.get(0));
+			}
+		});
+
+		itemOpenInFM.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Tasks.taskOpenInFileManager((AssetTreeLeaf) nodes.get(0));
 			}
 		});
 	}
