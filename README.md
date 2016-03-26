@@ -2,8 +2,9 @@
 
 RPW is a tool for editing Minecraft resource packs.
 
-**Please work on DEV branch, not MASTER!**<br>
-Master is for released code and patches only.
+**Pull Requests are welcome!**
+
+Please read the help before asking questions, and go through the RPW menus.
 
 ## Links
 
@@ -35,7 +36,3 @@ For help with using RPW, please use our Gitter channel:
 Currently RPW is set up as an IntelliJ IDEA project, but what IDE to use is up to you.
 
 It's a Maven project, so all libraries should be downloaded by the IDE automatically.
-
-**Please send pull requests to the "dev" branch.** Master is for finished stuff waiting for the next release.
-
-
