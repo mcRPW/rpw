@@ -210,7 +210,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 				break;
 			}
 
-			m = matcher_mnp;
+			m = matcher_mn;
 			if (m.find()) {
 				// Regular release
 				int major = Integer.valueOf(m.group(1));
