@@ -24,7 +24,7 @@
         <processorPath useClasspath="true" />
         <module name="rpw-new" />
       </profile>
-      <profile default="false" name="Annotation profile for rpw" enabled="true">
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -33,7 +33,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.7">
-      <module name="rpw" target="1.6" />
+      <module name="rpw" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
