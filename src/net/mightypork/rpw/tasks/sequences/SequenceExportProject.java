@@ -187,7 +187,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 		Matcher m;
 
-		int format = 2;
+		int format = 3;
 
 		do {
 			m = matcher_mnp;
@@ -197,32 +197,42 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 				int minor = Integer.valueOf(m.group(2));
 				int patch = Integer.valueOf(m.group(3));
 
-				if (major > 1 || (major == 1 && minor >= 9)) {
+				if(major > 1 || (major == 1 && minor > 10)){
+					format = 3;
+				}
+				else if (major == 1 && (minor == 9 || minor == 10)) {
 					format = 2;
-				} else {
+				}
+				else{
 					format = 1;
 				}
+
 				break;
 			}
 
-			m = matcher_mn;
+			m = matcher_mnp;
 			if (m.find()) {
 				// Regular release
 				int major = Integer.valueOf(m.group(1));
 				int minor = Integer.valueOf(m.group(2));
 
-				if (major > 1 || (major == 1 && minor >= 9)) {
+				if(major > 1 || (major == 1 && minor > 10)){
+					format = 3;
+				}
+				else if (major == 1 && (minor == 9 || minor == 10)) {
 					format = 2;
-				} else {
+				}
+				else{
 					format = 1;
 				}
+
 				break;
 			}
 
 			m = matcher_snapshot;
 			if (m.find()) {
 				// Snapshot
-				format = 2; // just assume it's the newest...
+				format = 3; // just assume it's the newest...
 				break;
 			}
 
