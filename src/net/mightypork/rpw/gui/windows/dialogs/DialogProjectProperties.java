@@ -80,7 +80,7 @@ public class DialogProjectProperties extends RpwDialog
 		nameField.setEditable(false);
 		nameField.setBackground(new Color(0xeeeeee));
 
-		vbox.springForm(new String[] { "Title:", "Name:" }, new JComponent[] { titleField, nameField });
+		vbox.springForm(new String[] { "Description:", "Name:" }, new JComponent[] { titleField, nameField });
 
 		vbox.gap();
 		vbox.add(Gui.commentLine("Use \"My Projects\" dialog to rename project."));
