@@ -42,7 +42,6 @@ public class Project extends Source implements NodeSourceProvider
 	private File extrasBase;
 	private File customSoundsBase;
 	private File customLangsBase;
-
 	private File fileSourcesFiles;
 	private File fileSourcesGroups;
 	private File fileSounds;
@@ -82,7 +81,7 @@ public class Project extends Source implements NodeSourceProvider
 	 */
 	public void reload()
 	{
-		Log.f2(getLogPrefix() + " Loading from workdir");
+		Log.f2(getLogPrefix() + "Loading from workdir");
 
 		fileConfig = new File(projectBase, Paths.FILENAME_PROJECT_CONFIG);
 
