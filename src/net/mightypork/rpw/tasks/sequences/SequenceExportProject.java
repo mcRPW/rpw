@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
+import net.mightypork.rpw.gui.windows.dialogs.DialogExportToMc;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
@@ -29,6 +30,8 @@ import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.ZipBuilder;
 import net.mightypork.rpw.utils.logging.Log;
 
+import javax.swing.*;
+
 
 public class SequenceExportProject extends AbstractMonitoredSequence
 {
@@ -37,8 +40,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 	private ZipBuilder zb;
 	private final Project project;
 	private final Runnable successRunnable;
-	private int pack_format;
-
 
 	public SequenceExportProject(File target, Runnable onSuccess)
 	{
@@ -59,7 +60,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 	@Override
 	public int getStepCount()
 	{
-		return 7;
+		return 6;
 	}
 
 
@@ -68,13 +69,12 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 	{
 		//@formatter:off
 		switch (step) {
-			case 0: return "Determining pack format.";
-			case 1: return "Preparing zip builder.";
-			case 2: return "Exporting included extra files.";
-			case 3: return "Exporting custom sounds.";
-			case 4: return "Exporting custom languages.";
-			case 5: return "Exporting configuration files.";
-			case 6: return "Exporting project assets.";
+			case 0: return "Preparing zip builder.";
+			case 1: return "Exporting included extra files.";
+			case 2: return "Exporting custom sounds.";
+			case 3: return "Exporting custom languages.";
+			case 4: return "Exporting configuration files.";
+			case 5: return "Exporting project assets.";
 		}
 		//@formatter:on
 
@@ -88,13 +88,12 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		try {
 			//@formatter:off
 			switch (step) {
-				case 0: return determinePackFormat();
-				case 1: return stepPrepareOutput();
-				case 2: return stepAddIncludedExtras();
-				case 3: return stepAddCustomSounds();
-				case 4: return stepAddCustomLanguages();
-				case 5: return stepAddConfigFiles();
-				case 6: return stepExportProjectAssets();
+				case 0: return stepPrepareOutput();
+				case 1: return stepAddIncludedExtras();
+				case 2: return stepAddCustomSounds();
+				case 3: return stepAddCustomLanguages();
+				case 4: return stepAddConfigFiles();
+				case 5: return stepExportProjectAssets();
 			}
 			//@formatter:on
 
@@ -147,57 +146,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 	}
 
 
-	private boolean determinePackFormat()
-	{
-		// Determine format from version
-		String vers = Config.LIBRARY_VERSION.split("\\+")[0];
-
-		Matcher matcher_mnp = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*").matcher(vers);
-		Matcher matcher_mn = Pattern.compile("^(\\d+)\\.(\\d+).*").matcher(vers);
-		Matcher matcher_snapshot = Pattern.compile("^(\\d{2}w\\d{2}).*").matcher(vers);
-
-		Matcher m;
-
-		int format = 3; // the newest format
-
-		boolean is_mnp = matcher_mnp.find();
-		boolean is_mn = matcher_mn.find();
-		boolean is_snap = matcher_snapshot.find();
-
-		if (is_mnp || is_mn) {
-			m = is_mnp ? matcher_mnp : matcher_mn;
-
-			int major = Integer.valueOf(m.group(1));
-			int minor = Integer.valueOf(m.group(2));
-			int patch = is_mnp ? Integer.valueOf(m.group(3)) : 0;
-
-			int mnp = major * 10000 + minor * 100 + patch;
-
-			if (mnp >= 1_11_00) {
-				// 1.11+
-				format = 3;
-			} else if (mnp >= 1_09_00 && mnp < 1_11_00) {
-				// 1.9 - 1.10
-				format = 2;
-			} else {
-				// pre 1.9
-				format = 1;
-			}
-		} else if (is_snap) {
-			// Snapshot
-			// just assume it's the newest...
-		} else {
-			Log.e("Unexpected MC version name, cannot determine pack format. Assuming " + format);
-		}
-
-		this.pack_format = format;
-
-		Log.i("Using resource pack format: " + format);
-
-		return true;
-	}
-
-
 	private boolean stepAddConfigFiles() throws IOException
 	{
 		// pack.png
@@ -230,7 +178,13 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		final String desc = project.getTitle();
 
 		final PackMcmeta packMeta = new PackMcmeta();
-		packMeta.setPackInfo(new PackInfo(this.pack_format, desc));
+
+		int format = Projects.getActive().getPackMeta();
+
+		Log.i("Using resource pack format: " + format);
+
+            packMeta.setPackInfo(new PackInfo(format, desc));
+
 		zb.addString("pack.mcmeta", packMeta.toJson());
 
 		return true;
@@ -322,7 +276,6 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		}
 	}
 
-
 	private class ExportProcessor implements AssetTreeProcessor
 	{
 
@@ -399,5 +352,33 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 		}
 	}
 
-	;
+	public static int getPackMetaNumber(){
+		String vers = Config.LIBRARY_VERSION.split("\\+")[0];
+
+		Matcher matcher_mnp = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*").matcher(vers);
+		Matcher matcher_mn = Pattern.compile("^(\\d+)\\.(\\d+).*").matcher(vers);
+		Matcher matcher_snapshot = Pattern.compile("^(\\d{2}w\\d{2}).*").matcher(vers);
+
+		Matcher m;
+
+			m = matcher_mn;
+			if (m.find()) {
+				// Regular release
+				int major = Integer.valueOf(m.group(1));
+				int minor = Integer.valueOf(m.group(2));
+
+                if(major == 1 && minor < 9){
+                    return 1;
+                }else if(major > 1 || (major == 1 && minor > 10)){
+					return 3;
+				}
+				else if (major == 1 && (minor == 9 || minor == 10)) {
+					return 2;
+				}else{
+                    return 3;
+                }
+			}
+			return 3;
+	}
+
 }
