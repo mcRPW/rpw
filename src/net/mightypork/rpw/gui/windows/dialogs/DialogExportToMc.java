@@ -8,10 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -27,6 +24,7 @@ import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
+import net.mightypork.rpw.tasks.sequences.SequenceExportProject;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.SimpleConfig;
@@ -40,12 +38,14 @@ public class DialogExportToMc extends RpwDialog
 
 	private final List<String> installedPackNames;
 
-	private JTextField field;
+	private JTextField nameField;
+	private JTextField descriptionField;
 	private JButton buttonOK;
 	private SimpleStringList list;
 	private JButton buttonCancel;
 
 	private JComboBox mcOptsCombo;
+	private JComboBox packMeta;
 
 	private static final int MC_ALONE = 0;
 	private static final int MC_ADD = 1;
@@ -69,7 +69,7 @@ public class DialogExportToMc extends RpwDialog
 
 		vbox.heading("Export to Minecraft");
 
-		vbox.titsep("Installed ResourcePacks");
+		vbox.titsep("Installed Resourcepacks");
 		vbox.gap();
 
 		vbox.add(list = new SimpleStringList(installedPackNames, true));
@@ -79,7 +79,7 @@ public class DialogExportToMc extends RpwDialog
 			public void valueChanged(ListSelectionEvent e)
 			{
 				final String s = list.getSelectedValue();
-				if (s != null) field.setText(s);
+				if (s != null) nameField.setText(s);
 			}
 		});
 
@@ -88,8 +88,9 @@ public class DialogExportToMc extends RpwDialog
 		vbox.titsep("Export options");
 		vbox.gap();
 
-		field = Gui.textField("", "Output file name", "Output file name (without extension)");
-		field.addKeyListener(TextInputValidator.filenames());
+		nameField = Gui.textField("", "Output file name", "Output file name (without extension)");
+		nameField.addKeyListener(TextInputValidator.filenames());
+		descriptionField = Gui.textField("", "Output file description", "Output file description");
 
 		final String[] choices = new String[3];
 		choices[MC_ALONE] = "Use this pack alone";
@@ -100,8 +101,10 @@ public class DialogExportToMc extends RpwDialog
 
 		mcOptsCombo = new JComboBox(choices);
 		mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
+        packMeta = new JComboBox(new String[]{"1","2","3"});
+        packMeta.setSelectedIndex(SequenceExportProject.getPackMetaNumber()-1);
 
-		vbox.springForm(new String[] { "Pack name:", "In Minecraft:" }, new JComponent[] { field, mcOptsCombo });
+		vbox.springForm(new String[] { "Resourcepack Name:", "Resourcepack Description:", "Resourcepack Format:", "In Minecraft:"  }, new JComponent[] { nameField, descriptionField, packMeta,mcOptsCombo  });
 
 		vbox.gapl();
 
@@ -147,7 +150,8 @@ public class DialogExportToMc extends RpwDialog
 	@Override
 	protected void onShown()
 	{
-		field.setText(Projects.getActive().getName());
+		nameField.setText(Projects.getActive().getTitle());
+		descriptionField.setText(Projects.getActive().getDescription());
 	}
 
 	private final ActionListener exportListener = new ActionListener() {
@@ -155,7 +159,9 @@ public class DialogExportToMc extends RpwDialog
 		@Override
 		public void actionPerformed(ActionEvent evt)
 		{
-			final String name = field.getText().trim();
+			Projects.getActive().setPackMeta(packMeta.getSelectedIndex()+1);
+            Projects.getActive().setTitle(descriptionField.getText());
+            final String name = nameField.getText().trim();
 			if (name.length() == 0) {
 				Alerts.error(self(), "Invalid name", "Missing file name!");
 				return;
@@ -276,4 +282,5 @@ public class DialogExportToMc extends RpwDialog
 			}
 		}
 	};
+
 }
