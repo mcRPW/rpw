@@ -152,12 +152,12 @@ public class MenuMain
 
 		menu.addSeparator();
 
-		item = itemProjectExport = new JMenuItem("Export pack to...", KeyEvent.VK_E);
+		item = itemProjectExport = new JMenuItem("Export resourcepack to...", KeyEvent.VK_E);
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL | SHIFT));
 		if (ICNS) item.setIcon(Icons.MENU_EXPORT_BOX);
 		menu.add(item);
 
-		item = itemProjectExportMc = new JMenuItem("Export pack to Minecraft", KeyEvent.VK_M);
+		item = itemProjectExportMc = new JMenuItem("Export resourcepack to Minecraft", KeyEvent.VK_M);
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL));
 		if (ICNS) item.setIcon(Icons.MENU_EXPORT_BOX);
 		menu.add(item);
@@ -218,7 +218,7 @@ public class MenuMain
 
 		menu.addSeparator();
 
-		item = itemManageMcPacks = new JMenuItem("Manage packs in MC", KeyEvent.VK_D);
+		item = itemManageMcPacks = new JMenuItem("Manage resoucepacks in Minecraft", KeyEvent.VK_D);
 		if (ICNS) item.setIcon(Icons.MENU_MANAGE);
 		menu.add(item);
 
@@ -230,7 +230,7 @@ public class MenuMain
 		menu = menuLibrary = new JMenu("Library");
 		menu.setMnemonic(KeyEvent.VK_L);
 
-		item = itemLibraryImport = new JMenuItem("Import resource pack...", KeyEvent.VK_I);
+		item = itemLibraryImport = new JMenuItem("Import resourcepack...", KeyEvent.VK_I);
 		item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, CTRL));
 		if (ICNS) item.setIcon(Icons.MENU_OPEN);
 		menu.add(item);
