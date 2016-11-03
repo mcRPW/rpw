@@ -129,7 +129,7 @@ public class DialogProjectProperties extends RpwDialog
 
 	@Override
 	protected void initGui()
-	{
+Projects.getActive().setDescription(descriptionField.getText());	{
 		fc = new FileChooser(this, FilePath.IMPORT_FILE, "Import Project Icon (128x128 PNG)", FileChooser.PNG, true, false, false);
 	}
 
@@ -140,10 +140,10 @@ public class DialogProjectProperties extends RpwDialog
 	}
 
 
+
 	@Override
 	public void onClose()
-	{
-		Projects.getActive().setDescription(descriptionField.getText());
+	{		
         Tasks.taskOnProjectPropertiesChanged();
 	}
 
@@ -165,7 +165,8 @@ public class DialogProjectProperties extends RpwDialog
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-            closeDialog();
+            	Projects.getActive().setDescription(descriptionField.getText());
+	   	closeDialog();
 		}
 	};
 
