@@ -427,7 +427,7 @@ public class SidePanel
 
 		if (p != null) {
 			showCard("project");
-			String name = p.getTitle();
+			String name = p.getName();
 			final int length_name = (panel.getWidth() - 75) / 11;
 			name = Utils.cropStringAtEnd(name, length_name);
 			projectName.setText(name);
