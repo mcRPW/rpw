@@ -60,7 +60,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 	@Override
 	public int getStepCount()
 	{
-		return 6;
+		return 7;
 	}
 
 
