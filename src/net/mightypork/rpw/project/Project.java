@@ -1,4 +1,4 @@
- package net.mightypork.rpw.project;
+package net.mightypork.rpw.project;
 
 import java.io.File;
 import java.io.IOException;
