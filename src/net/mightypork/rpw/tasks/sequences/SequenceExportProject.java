@@ -175,7 +175,8 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 		// json mcmeta
 		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");
-		final String desc = project.getTitle();
+		final String desc = project.getDescription();
+		final String title = project.getTitle();
 
 		final PackMcmeta packMeta = new PackMcmeta();
 
@@ -183,7 +184,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 		Log.i("Using resource pack format: " + format);
 
-            packMeta.setPackInfo(new PackInfo(format, desc));
+            packMeta.setPackInfo(new PackInfo(format, title, desc));
 
 		zb.addString("pack.mcmeta", packMeta.toJson());
 
