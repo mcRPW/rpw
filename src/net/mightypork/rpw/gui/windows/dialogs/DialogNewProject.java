@@ -41,6 +41,8 @@ public class DialogNewProject extends RpwDialog
 	private JRadioButton radioBlank;
 	private JRadioButton radioResourcePack;
 
+    private final List<JComponent> nameFieldGroup = new ArrayList<JComponent>();
+
 	private boolean usePackFile = false;
 
 	private final List<JComponent> respackGroup = new ArrayList<JComponent>();
@@ -92,7 +94,7 @@ public class DialogNewProject extends RpwDialog
 			radioResourcePack.setForeground(Gui.SUBHEADING_COLOR);
 			hb.glue();
 		vbox.add(hb);
-		
+
 		vbox.gap();
 		hb = new HBox();
 			hb.gapl();
@@ -132,6 +134,7 @@ public class DialogNewProject extends RpwDialog
 		vbox.gap();
 
 		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
+        nameFieldGroup.add(nameField);
 		nameField.addKeyListener(TextInputValidator.strictFilenames(new CharInputListener()
 		{
 			@Override
@@ -140,6 +143,15 @@ public class DialogNewProject extends RpwDialog
 				nameIsPristine = nameField.getText().isEmpty();
 			}
 		}));
+
+        radioResourcePack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radioResourcePack.isSelected()){
+                    enableNameField(false);
+                }
+            }
+        });
 
 		vbox.springForm(new String[] {"Name:" }, new JComponent[] {nameField });
 
@@ -175,12 +187,26 @@ public class DialogNewProject extends RpwDialog
 		// do nothing
 	}
 
+    private void enableNameField(boolean enable)
+    {
+        for (final JComponent j : nameFieldGroup) {
+            j.setEnabled(enable);
+        }
+    }
 
 	@Override
 	protected void addActions()
 	{
 		buttonOK.addActionListener(createListener);
 		buttonCancel.addActionListener(closeListener);
+
+        ckKeepTitle.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e)
+            {
+                enableNameField(e.getStateChange() == ItemEvent.DESELECTED);
+            }
+        });
 
 		radioBlank.addItemListener(new ItemListener() {
 
@@ -231,8 +257,11 @@ public class DialogNewProject extends RpwDialog
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			String name = nameField.getText();
-			if (name == null) name = "";
+            String name = nameField.getText();
+
+            if(name == null){
+                name = "";
+            }
 
 			name = name.trim();
 			if (name.length() == 0) {
@@ -295,4 +324,5 @@ public class DialogNewProject extends RpwDialog
 
 		}
 	};
+
 }
