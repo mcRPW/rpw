@@ -53,7 +53,6 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 		this.packFile = packFile;
 		this.after = after;
 		this.project = Projects.getActive();
-
 	}
 
 
@@ -133,7 +132,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 				alreadyExtracted.add("pack.mcmeta");
 
 				if (mcmeta.pack != null) {
-					final String title = mcmeta.pack.description;
+					final String title = mcmeta.pack.title;
 					if (title != null && project.getTitle().length() == 0) { // empty
 																				// ==
 																				// keep
@@ -142,6 +141,8 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
 						project.setTitle(title);
 					}
 				}
+
+				project.setDescription(mcmeta.pack.description);
 
 				if (mcmeta.language != null) {
 					// copy custom languages
