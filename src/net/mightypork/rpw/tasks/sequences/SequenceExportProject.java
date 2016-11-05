@@ -179,7 +179,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 		final PackMcmeta packMeta = new PackMcmeta();
 
-		int format = Projects.getActive().getPackMeta();
+		int format = Projects.getActive().getExportPackVersion();
 
 		Log.i("Using resource pack format: " + format);
 
