@@ -159,7 +159,7 @@ public class DialogExportToMc extends RpwDialog
 		@Override
 		public void actionPerformed(ActionEvent evt)
 		{
-			Projects.getActive().setPackMeta(packMeta.getSelectedIndex()+1);
+			Projects.getActive().setExportPackVersion(packMeta.getSelectedIndex()+1);
             Projects.getActive().setTitle(descriptionField.getText());
             final String name = nameField.getText().trim();
 			if (name.length() == 0) {
