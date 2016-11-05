@@ -1,3 +1,4 @@
+### This is a development branch, it's highly recommended not to download or use it as it may crash and features may be broken.
 # Resource Pack Workbench
 
 RPW is a tool for editing Minecraft resource packs.
