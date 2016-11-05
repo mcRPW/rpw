@@ -50,13 +50,16 @@ public class Project extends Source implements NodeSourceProvider
 
 	private final String projectName;
 	private String projectTitle;
+    private String projectDescription;
 
 	private Integer lastRpwVersion;
 
+    private int exportPackVersion;
 
 	public Project(String identifier) {
 		projectName = identifier;
 		projectTitle = identifier; // by default
+        projectDescription = "";
 
 		backupBase = Paths.getProjectBackupFolder(identifier);
 		projectBase = Paths.getProjectFolder(identifier);
@@ -147,6 +150,7 @@ public class Project extends Source implements NodeSourceProvider
 		props.cfgSeparateSections(false);
 
 		props.putString("title", projectTitle);
+        props.putString("description", projectDescription);
 		props.putInteger("version", Const.VERSION_SERIAL);
 
 		props.renameKey("name", "title"); // change 3.8.3 -> 3.8.4
@@ -154,6 +158,7 @@ public class Project extends Source implements NodeSourceProvider
 		props.apply();
 
 		projectTitle = props.getString("title");
+        projectDescription = props.getString("description");
 		lastRpwVersion = props.getInteger("version");
 	}
 
@@ -236,6 +241,7 @@ public class Project extends Source implements NodeSourceProvider
 		props.cfgForceSave(true);
 		props.setValue("version", Const.VERSION_SERIAL);
 		props.setValue("title", projectTitle);
+        props.setValue("description", projectDescription);
 		props.apply();
 	}
 
@@ -353,6 +359,21 @@ public class Project extends Source implements NodeSourceProvider
 		return projectTitle;
 	}
 
+    public void setDescription(String description){
+        projectDescription = description;
+    }
+
+    public String getDescription(){
+        return projectDescription;
+    }
+
+    public void setExportPackVersion(int packVersion){
+        exportPackVersion = packVersion;
+    }
+
+    public int getExportPackVersion(){
+        return exportPackVersion;
+    }
 
 	public void installDefaultIcon(boolean force)
 	{
@@ -502,3 +523,4 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 }
+
