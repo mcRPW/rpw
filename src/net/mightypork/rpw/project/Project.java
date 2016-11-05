@@ -1,4 +1,4 @@
-package net.mightypork.rpw.project;
+ package net.mightypork.rpw.project;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,11 +50,11 @@ public class Project extends Source implements NodeSourceProvider
 
 	private final String projectName;
 	private String projectTitle;
-    private String projectDescription;
+    	private String projectDescription;
 
 	private Integer lastRpwVersion;
 
-    private int exportPackVersion;
+    	private int exportPackVersion;
 
 	public Project(String identifier) {
 		projectName = identifier;
