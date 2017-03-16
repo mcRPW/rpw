@@ -153,6 +153,15 @@ public class DialogNewProject extends RpwDialog
             }
         });
 
+        radioBlank.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (radioBlank.isSelected()) {
+					enableNameField(true);
+				}
+			}
+		});
+
 		vbox.springForm(new String[] {"Name:" }, new JComponent[] {nameField });
 
 		vbox.gap();
