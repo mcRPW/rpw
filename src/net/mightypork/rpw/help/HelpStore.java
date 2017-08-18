@@ -12,37 +12,34 @@ import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class HelpStore
-{
+public class HelpStore {
 
-	private static List<HelpPage> pages = new ArrayList<HelpPage>();
-
-
-	public static void load()
-	{
-		Log.f2("Loading help pages");
-
-		final String text = FileUtils.resourceToString(Paths.DATA_DIR_HELP + "index.txt");
-		final Map<String, String> pageMap = SimpleConfig.mapFromString(text);
-
-		for (final Entry<String, String> entry : pageMap.entrySet()) {
-			if (Config.LOG_HELP_LOADING) Log.f3("Loading file: " + entry.getKey() + " (\"" + entry.getValue() + "\")");
-
-			try {
-				pages.add(new HelpPage(entry.getValue(), entry.getKey()));
-
-			} catch (final Exception e) {
-				Log.w("Error while loading a help page " + entry.getKey());
-			}
-
-		}
-
-		Log.f2("Loading help pages - done.");
-	}
+    private static List<HelpPage> pages = new ArrayList<HelpPage>();
 
 
-	public static List<HelpPage> getPages()
-	{
-		return pages;
-	}
+    public static void load() {
+        Log.f2("Loading help pages");
+
+        final String text = FileUtils.resourceToString(Paths.DATA_DIR_HELP + "index.txt");
+        final Map<String, String> pageMap = SimpleConfig.mapFromString(text);
+
+        for (final Entry<String, String> entry : pageMap.entrySet()) {
+            if (Config.LOG_HELP_LOADING) Log.f3("Loading file: " + entry.getKey() + " (\"" + entry.getValue() + "\")");
+
+            try {
+                pages.add(new HelpPage(entry.getValue(), entry.getKey()));
+
+            } catch (final Exception e) {
+                Log.w("Error while loading a help page " + entry.getKey());
+            }
+
+        }
+
+        Log.f2("Loading help pages - done.");
+    }
+
+
+    public static List<HelpPage> getPages() {
+        return pages;
+    }
 }

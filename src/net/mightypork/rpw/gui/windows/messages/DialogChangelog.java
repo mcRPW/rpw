@@ -15,51 +15,48 @@ import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.help.VersionUtils;
 
 
-public class DialogChangelog extends RpwDialog
-{
+public class DialogChangelog extends RpwDialog {
 
-	private JButton buttonOK;
-
-
-	public DialogChangelog() {
-		super(App.getFrame(), "What's new");
-
-		createDialog();
-	}
+    private JButton buttonOK;
 
 
-	@Override
-	protected JComponent buildGui()
-	{
-		final VBox vbox = new VBox();
+    public DialogChangelog() {
+        super(App.getFrame(), "What's new");
 
-		vbox.windowPadding();
-
-		vbox.heading("What's new in RPW");
-
-		final String text = VersionUtils.buildChangelogHtml();
-
-		final JLabel content = new JLabel(text);
-		content.setAlignmentX(0.5f);
-		content.setMinimumSize(new Dimension(200, 100));
-		content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL * 2, Gui.GAP, Gui.GAPL * 2));
-		vbox.add(content);
-
-		vbox.gapl();
-
-		buttonOK = new JButton("Close", Icons.MENU_YES);
-		vbox.buttonRow(Gui.RIGHT, buttonOK);
-
-		return vbox;
-	}
+        createDialog();
+    }
 
 
-	@Override
-	protected void addActions()
-	{
-		buttonOK.addActionListener(closeListener);
+    @Override
+    protected JComponent buildGui() {
+        final VBox vbox = new VBox();
 
-		setEnterButton(buttonOK);
-	}
+        vbox.windowPadding();
+
+        vbox.heading("What's new in RPW");
+
+        final String text = VersionUtils.buildChangelogHtml();
+
+        final JLabel content = new JLabel(text);
+        content.setAlignmentX(0.5f);
+        content.setMinimumSize(new Dimension(200, 100));
+        content.setBorder(BorderFactory.createEmptyBorder(Gui.GAP, Gui.GAPL * 2, Gui.GAP, Gui.GAPL * 2));
+        vbox.add(content);
+
+        vbox.gapl();
+
+        buttonOK = new JButton("Close", Icons.MENU_YES);
+        vbox.buttonRow(Gui.RIGHT, buttonOK);
+
+        return vbox;
+    }
+
+
+    @Override
+    protected void addActions() {
+        buttonOK.addActionListener(closeListener);
+
+        setEnterButton(buttonOK);
+    }
 
 }

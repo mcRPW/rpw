@@ -23,80 +23,75 @@ import net.mightypork.rpw.utils.logging.Log;
 import org.jdesktop.swingx.JXFrame;
 
 
-public class WindowMain
-{
-	public JXFrame frame;
-	public MenuMain menu;
-	public TreeDisplay treeDisplay;
-	public SidePanel sidePanel;
+public class WindowMain {
+    public JXFrame frame;
+    public MenuMain menu;
+    public TreeDisplay treeDisplay;
+    public SidePanel sidePanel;
 
 
-	public WindowMain() {
-		frame = new JXFrame(App.getWindowTitle());
-		frame.setIconImage(Icons.WINDOW.getImage());
+    public WindowMain() {
+        frame = new JXFrame(App.getWindowTitle());
+        frame.setIconImage(Icons.WINDOW.getImage());
 
-		menu = new MenuMain();
+        menu = new MenuMain();
 
-		frame.add(buildMainPanel());
-		frame.setJMenuBar(menu.menuBar);
+        frame.add(buildMainPanel());
+        frame.setJMenuBar(menu.menuBar);
 
-		// prevent default close operation
-		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		frame.pack();
+        // prevent default close operation
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frame.pack();
 
-		final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setLocation((dim.width - frame.getWidth()) / 2, (dim.height - frame.getHeight()) / 2);
+        final Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation((dim.width - frame.getWidth()) / 2, (dim.height - frame.getHeight()) / 2);
 
-		frame.setVisible(true);
+        frame.setVisible(true);
 
-		frame.addWindowListener(new WindowCloseListener()
-		{
+        frame.addWindowListener(new WindowCloseListener() {
 
-			@Override
-			public void onClose(WindowEvent e)
-			{
-				Tasks.taskExit();
-			}
-		});
+            @Override
+            public void onClose(WindowEvent e) {
+                Tasks.taskExit();
+            }
+        });
 
-		App.inst.mainFrame = frame;
-	}
+        App.inst.mainFrame = frame;
+    }
 
 
-	private Component buildMainPanel()
-	{
-		if (Config.USE_NIMBUS) Gui.useMetal();
+    private Component buildMainPanel() {
+        if (Config.USE_NIMBUS) Gui.useMetal();
 
-		treeDisplay = new TreeDisplay();
+        treeDisplay = new TreeDisplay();
 
-		if (Config.USE_NIMBUS) Gui.useNimbusLaF();
+        if (Config.USE_NIMBUS) Gui.useNimbusLaF();
 
-		final JScrollPane scrollpane = new JScrollPane(treeDisplay.treeTable);
+        final JScrollPane scrollpane = new JScrollPane(treeDisplay.treeTable);
 
-		scrollpane.setPreferredSize(new Dimension(700, 600));
-		scrollpane.setMinimumSize(new Dimension(500, 300));
+        scrollpane.setPreferredSize(new Dimension(700, 600));
+        scrollpane.setMinimumSize(new Dimension(500, 300));
 
-		sidePanel = new SidePanel();
+        sidePanel = new SidePanel();
 
-		final JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, scrollpane, sidePanel.panel);
+        final JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, scrollpane, sidePanel.panel);
 
-		split.setOneTouchExpandable(true);
-		split.setEnabled(false); // no dragging
-		split.setResizeWeight(1);
+        split.setOneTouchExpandable(true);
+        split.setEnabled(false); // no dragging
+        split.setResizeWeight(1);
 
-		return split;
-	}
+        return split;
+    }
 
 
-	public void setWaiting(boolean state)
-	{
-		try {
-			App.getFrame().setWaitCursorVisible(state);
-			App.getFrame().setWaiting(state);
-			App.getFrame().setWaitPaneVisible(state);
-		} catch(NullPointerException npe) {
-			Log.e(npe);
-		}
-	}
+    public void setWaiting(boolean state) {
+        try {
+            App.getFrame().setWaitCursorVisible(state);
+            App.getFrame().setWaiting(state);
+            App.getFrame().setWaitPaneVisible(state);
+        } catch (NullPointerException npe) {
+            Log.e(npe);
+        }
+    }
 
 }

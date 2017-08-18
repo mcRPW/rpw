@@ -29,311 +29,295 @@ import net.mightypork.rpw.utils.logging.Log;
 
 /**
  * Import pack as current project (assuming the project is newly created)
- * 
+ *
  * @author Ondřej Hruška (MightyPork)
  */
-public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence
-{
-
-	private final File packFile;
-	private final Runnable after;
-	private List<String> zipEntries;
-	private ZipFile zip;
-	private final Project project;
-	private final HashSet<String> alreadyExtracted = new HashSet<String>();
-
-
-	/**
-	 * @param packFile
-	 *            file to load
-	 * @param after
-	 *            runnable executed after it's done
-	 */
-	public SequencePopulateProjectFromPack(File packFile, Runnable after) {
-		this.packFile = packFile;
-		this.after = after;
-		this.project = Projects.getActive();
-	}
-
-
-	@Override
-	public int getStepCount()
-	{
-		return 4; // TODO
-	}
-
-
-	@Override
-	public String getStepName(int step)
-	{
-		//@formatter:off
-		switch (step) {
-			case 0: return "Listing pack file";
-			case 1: return "Loading custom languages";
-			case 2: return "Loading custom sounds";
-			case 3: return "Loading project files";
-		}
-		//@formatter:on
-
-		return null;
-	}
-
-
-	@Override
-	protected boolean step(int step)
-	{
-		//@formatter:off
-		switch (step) {
-			case 0: return stepListFile();
-			case 1: return stepMcmetaAndLanguages();
-			case 2: return stepCustomSounds();
-			case 3: return stepOtherAssets();
-		}
-		//@formatter:on
-
-		return false;
-	}
-
-
-	private boolean stepListFile()
-	{
-		try {
-			zip = new ZipFile(packFile);
-			zipEntries = ZipUtils.listZip(zip);
-		} catch (final Exception e) {
-			Log.e(e);
-			return false;
-		}
-
-		return true;
-	}
-
-
-	private boolean stepMcmetaAndLanguages()
-	{
-		File target;
-
-		try {
-			// pack icon
-			final ZipEntry ze_icon = zip.getEntry("pack.png");
-			if (ze_icon != null) {
-				target = new File(project.getProjectDirectory(), "pack.png");
-				ZipUtils.extractZipEntry(zip, ze_icon, target);
-				if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ pack.png");
-				alreadyExtracted.add("pack.png");
-			}
-
-			// get title and custom languages
-			final ZipEntry ze_mcmeta = zip.getEntry("pack.mcmeta");
-			if (ze_mcmeta != null) {
-				final String json_mcmeta = ZipUtils.zipEntryToString(zip, ze_mcmeta);
-				final PackMcmeta mcmeta = PackMcmeta.fromJson(json_mcmeta);
-
-				alreadyExtracted.add("pack.mcmeta");
-
-				if (mcmeta.pack != null) {
-					final String title = mcmeta.pack.title;
-					if (title != null && project.getTitle().length() == 0) { // empty
-																				// ==
-																				// keep
-																				// original
-																				// title
-						project.setTitle(title);
-					}
-				}
-
-				project.setDescription(mcmeta.pack.description);
-
-				if (mcmeta.language != null) {
-					// copy custom languages
-					for (final Entry<String, LangEntry> entry : mcmeta.language.entrySet()) {
-						final String key = entry.getKey();
-
-						final String assetKey = "assets.minecraft.lang." + key;
-
-						final AssetEntry ae = new AssetEntry(assetKey, EAsset.LANG);
-
-						if (Sources.vanilla.doesProvideAsset(ae.getKey())) {
-							// vanilla language, skip (why was it there
-							// anyway??)
-						} else {
-							// new language
-							final String entryname = ae.getPath();
-							final ZipEntry ze_langfile = zip.getEntry(entryname);
-
-							if (ze_langfile != null) {
-								// copy lang to langs folder
-								target = new File(project.getCustomLangDirectory(), key + ".lang");
-								ZipUtils.extractZipEntry(zip, ze_langfile, target);
-
-								// register in project
-								// doing this here ensures there's no crap in
-								// the lang map
-								project.getLangMap().put(key, entry.getValue());
+public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
+
+    private final File packFile;
+    private final Runnable after;
+    private List<String> zipEntries;
+    private ZipFile zip;
+    private final Project project;
+    private final HashSet<String> alreadyExtracted = new HashSet<String>();
+
+
+    /**
+     * @param packFile file to load
+     * @param after    runnable executed after it's done
+     */
+    public SequencePopulateProjectFromPack(File packFile, Runnable after) {
+        this.packFile = packFile;
+        this.after = after;
+        this.project = Projects.getActive();
+    }
+
+
+    @Override
+    public int getStepCount() {
+        return 4; // TODO
+    }
+
+
+    @Override
+    public String getStepName(int step) {
+        //@formatter:off
+        switch (step) {
+            case 0:
+                return "Listing pack file";
+            case 1:
+                return "Loading custom languages";
+            case 2:
+                return "Loading custom sounds";
+            case 3:
+                return "Loading project files";
+        }
+        //@formatter:on
+
+        return null;
+    }
+
+
+    @Override
+    protected boolean step(int step) {
+        //@formatter:off
+        switch (step) {
+            case 0:
+                return stepListFile();
+            case 1:
+                return stepMcmetaAndLanguages();
+            case 2:
+                return stepCustomSounds();
+            case 3:
+                return stepOtherAssets();
+        }
+        //@formatter:on
+
+        return false;
+    }
+
+
+    private boolean stepListFile() {
+        try {
+            zip = new ZipFile(packFile);
+            zipEntries = ZipUtils.listZip(zip);
+        } catch (final Exception e) {
+            Log.e(e);
+            return false;
+        }
+
+        return true;
+    }
+
+
+    private boolean stepMcmetaAndLanguages() {
+        File target;
+
+        try {
+            // pack icon
+            final ZipEntry ze_icon = zip.getEntry("pack.png");
+            if (ze_icon != null) {
+                target = new File(project.getProjectDirectory(), "pack.png");
+                ZipUtils.extractZipEntry(zip, ze_icon, target);
+                if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ pack.png");
+                alreadyExtracted.add("pack.png");
+            }
+
+            // get title and custom languages
+            final ZipEntry ze_mcmeta = zip.getEntry("pack.mcmeta");
+            if (ze_mcmeta != null) {
+                final String json_mcmeta = ZipUtils.zipEntryToString(zip, ze_mcmeta);
+                final PackMcmeta mcmeta = PackMcmeta.fromJson(json_mcmeta);
+
+                alreadyExtracted.add("pack.mcmeta");
+
+                project.setDescription(mcmeta.pack.description);
+
+                if (mcmeta.language != null) {
+                    // copy custom languages
+                    for (final Entry<String, LangEntry> entry : mcmeta.language.entrySet()) {
+                        final String key = entry.getKey();
 
-								// mark as extracted
-								alreadyExtracted.add(entryname);
+                        final String assetKey = "assets.minecraft.lang." + key;
 
-								if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ LANG " + entryname);
-							}
-						}
-					}
-				}
-			}
+                        final AssetEntry ae = new AssetEntry(assetKey, EAsset.LANG);
 
-		} catch (final Exception e) {
-			Log.e(e);
-			return false;
-		}
-		return true;
-	}
+                        if (Sources.vanilla.doesProvideAsset(ae.getKey())) {
+                            // vanilla language, skip (why was it there
+                            // anyway??)
+                        } else {
+                            // new language
+                            final String entryname = ae.getPath();
+                            final ZipEntry ze_langfile = zip.getEntry(entryname);
 
+                            if (ze_langfile != null) {
+                                // copy lang to langs folder
+                                target = new File(project.getCustomLangDirectory(), key + ".lang");
+                                ZipUtils.extractZipEntry(zip, ze_langfile, target);
 
-	private boolean stepCustomSounds()
-	{
-		File target;
+                                // register in project
+                                // doing this here ensures there's no crap in
+                                // the lang map
+                                project.getLangMap().put(key, entry.getValue());
 
-		try {
-			// get title and custom languages
-			final String sndfile = "assets/minecraft/sounds.json";
-			final ZipEntry ze_sounds = zip.getEntry(sndfile);
+                                // mark as extracted
+                                alreadyExtracted.add(entryname);
 
-			if (ze_sounds != null) {
-				final String json_sounds = ZipUtils.zipEntryToString(zip, ze_sounds);
-				final SoundEntryMap soundmap = SoundEntryMap.fromJson(json_sounds);
+                                if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ LANG " + entryname);
+                            }
+                        }
+                    }
+                }
+            }
 
-				alreadyExtracted.add(sndfile); // don't extract again
+        } catch (final Exception e) {
+            Log.e(e);
+            return false;
+        }
+        return true;
+    }
 
-				project.setSoundMap(soundmap); // add to the project
 
-				for (final Entry<String, SoundEntry> entry : soundmap.entrySet()) {
-					// got through entry sounds
-					for (final SoundSubEntry s : entry.getValue().sounds) {
-						// s = relative path to sound file from "sounds"
-						// directory, without suffix
+    private boolean stepCustomSounds() {
+        File target;
 
-						final String assetKey = "assets.minecraft.sounds." + s.name.replace('/', '.');
+        try {
+            // get title and custom languages
+            final String sndfile = "assets/minecraft/sounds.json";
+            final ZipEntry ze_sounds = zip.getEntry(sndfile);
 
-						final AssetEntry ae = new AssetEntry(assetKey, EAsset.SOUND);
+            if (ze_sounds != null) {
+                final String json_sounds = ZipUtils.zipEntryToString(zip, ze_sounds);
+                final SoundEntryMap soundmap = SoundEntryMap.fromJson(json_sounds);
 
-						if (Sources.vanilla.doesProvideAsset(ae.getKey())) {
-							// vanilla sound, skip
-						} else {
-							// new sound
+                alreadyExtracted.add(sndfile); // don't extract again
 
-							final String entryname = ae.getPath();
+                project.setSoundMap(soundmap); // add to the project
 
-							final ZipEntry ze_soundfile = zip.getEntry(entryname);
+                for (final Entry<String, SoundEntry> entry : soundmap.entrySet()) {
+                    // got through entry sounds
+                    for (final SoundSubEntry s : entry.getValue().sounds) {
+                        // s = relative path to sound file from "sounds"
+                        // directory, without suffix
 
-							if (ze_soundfile != null) {
-								// copy to sounds folder
-								target = new File(project.getCustomSoundsDirectory(), s + ".ogg");
-								ZipUtils.extractZipEntry(zip, ze_soundfile, target);
+                        final String assetKey = "assets.minecraft.sounds." + s.name.replace('/', '.');
 
-								// mark as extracted
-								alreadyExtracted.add(entryname);
+                        final AssetEntry ae = new AssetEntry(assetKey, EAsset.SOUND);
 
-								if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ SOUND " + entryname);
-							}
+                        if (Sources.vanilla.doesProvideAsset(ae.getKey())) {
+                            // vanilla sound, skip
+                        } else {
+                            // new sound
 
-						}
-					}
-				}
-			}
+                            final String entryname = ae.getPath();
 
-		} catch (final Exception e) {
-			Log.e(e);
-			return false;
-		}
-		return true;
-	}
+                            final ZipEntry ze_soundfile = zip.getEntry(entryname);
 
+                            if (ze_soundfile != null) {
+                                // copy to sounds folder
+                                target = new File(project.getCustomSoundsDirectory(), s + ".ogg");
+                                ZipUtils.extractZipEntry(zip, ze_soundfile, target);
 
-	private boolean stepOtherAssets()
-	{
-		File target;
+                                // mark as extracted
+                                alreadyExtracted.add(entryname);
 
-		try {
-			for (final String sorig : zipEntries) {
-				String s = sorig;
+                                if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ SOUND " + entryname);
+                            }
 
-				if (s.contains("__MACOSX") || s.contains(".DS_Store") || s.contains(".fsevents")) {
-					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("x OSX junk: " + s);
-					continue;
-				}
+                        }
+                    }
+                }
+            }
 
-				if (alreadyExtracted.contains(s)) continue;
+        } catch (final Exception e) {
+            Log.e(e);
+            return false;
+        }
+        return true;
+    }
 
-				final ZipEntry ze = zip.getEntry(s);
 
-				if (ze == null) continue; // garbage
+    private boolean stepOtherAssets() {
+        File target;
 
-				alreadyExtracted.add(s);
+        try {
+            for (final String sorig : zipEntries) {
+                String s = sorig;
 
-				boolean mcmeta = false;
+                if (s.contains("__MACOSX") || s.contains(".DS_Store") || s.contains(".fsevents")) {
+                    if (Config.LOG_EXTRACTED_ASSETS) Log.f3("x OSX junk: " + s);
+                    continue;
+                }
 
-				if (s.endsWith(".mcmeta")) {
-					mcmeta = true;
-					s = Utils.toLastDot(s);
-				}
+                if (alreadyExtracted.contains(s)) continue;
 
-				final String s2 = FileUtils.escapeFilename(s);
-				final String[] parts = FileUtils.getFilenameParts(s2);
-				final String key = parts[0].replace('\\', '.').replace('/', '.');
+                final ZipEntry ze = zip.getEntry(s);
 
-				if (Sources.vanilla.doesProvideAsset(key)) {
-					// override for vanilla
+                if (ze == null) continue; // garbage
 
-					target = new File(project.getAssetsDirectory(), sorig);
+                alreadyExtracted.add(s);
 
-					ZipUtils.extractZipEntry(zip, ze, target);
-					if (!mcmeta) project.setSourceForFile(key, MagicSources.PROJECT);
+                boolean mcmeta = false;
 
-					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ PROJ " + (mcmeta ? "M " : "") + s);
+                if (s.endsWith(".mcmeta")) {
+                    mcmeta = true;
+                    s = Utils.toLastDot(s);
+                }
 
-				} else {
-					// extra included file
+                final String s2 = FileUtils.escapeFilename(s);
+                final String[] parts = FileUtils.getFilenameParts(s2);
+                final String key = parts[0].replace('\\', '.').replace('/', '.');
 
-					target = new File(project.getExtrasDirectory(), s);
-					ZipUtils.extractZipEntry(zip, ze, target);
+                if (Sources.vanilla.doesProvideAsset(key)) {
+                    // override for vanilla
 
-					if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ EXTRA " + s);
-				}
-			}
+                    target = new File(project.getAssetsDirectory(), sorig);
 
-		} catch (final Exception e) {
-			Log.e(e);
-			return false;
-		}
-		return true;
-	}
+                    ZipUtils.extractZipEntry(zip, ze, target);
+                    if (!mcmeta) project.setSourceForFile(key, MagicSources.PROJECT);
 
+                    if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ PROJ " + (mcmeta ? "M " : "") + s);
 
-	@Override
-	protected String getMonitorHeading()
-	{
-		return "Loading Resource Pack";
-	}
+                } else {
+                    // extra included file
 
+                    target = new File(project.getExtrasDirectory(), s);
+                    ZipUtils.extractZipEntry(zip, ze, target);
 
-	@Override
-	protected void doBefore()
-	{
-		Log.f1("Loading resource pack to project");
-		Log.f3("Pack file: " + packFile);
-	}
+                    if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ EXTRA " + s);
+                }
+            }
 
+        } catch (final Exception e) {
+            Log.e(e);
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	protected void doAfter(boolean success)
-	{
-		Log.f1("Loading resource pack to project - done.");
 
-		Utils.close(zip);
+    @Override
+    protected String getMonitorHeading() {
+        return "Loading Resource Pack";
+    }
 
-		after.run();
 
-		Alerts.info(App.getFrame(), "Import successful.");
-	}
+    @Override
+    protected void doBefore() {
+        Log.f1("Loading resource pack to project");
+        Log.f3("Pack file: " + packFile);
+    }
+
+
+    @Override
+    protected void doAfter(boolean success) {
+        Log.f1("Loading resource pack to project - done.");
+
+        Utils.close(zip);
+
+        after.run();
+
+        Alerts.info(App.getFrame(), "Import successful.");
+    }
 
 }

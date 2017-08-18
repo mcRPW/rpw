@@ -11,149 +11,143 @@ import net.mightypork.rpw.utils.AlphanumComparator;
 
 /**
  * Abstract filesystem tree node
- * 
+ *
  * @author Ondřej Hruška (MightyPork)
  */
-public abstract class AbstractFsTreeNode implements TreeNode, Comparable<AbstractFsTreeNode>, IFileTreeNode
-{
+public abstract class AbstractFsTreeNode implements TreeNode, Comparable<AbstractFsTreeNode>, IFileTreeNode {
 
-	/** Reference to a parent node */
-	protected DirectoryFsTreeNode parent;
+    /**
+     * Reference to a parent node
+     */
+    protected DirectoryFsTreeNode parent;
 
-	/** Mark used to identify different file trees */
-	protected int mark;
+    /**
+     * Mark used to identify different file trees
+     */
+    protected int mark;
 
-	/** Path (may or may not be used */
-	protected File path;
-
-
-	@Override
-	public abstract Enumeration children();
-
-
-	@Override
-	public boolean getAllowsChildren()
-	{
-		return !isLeaf();
-	}
+    /**
+     * Path (may or may not be used
+     */
+    protected File path;
 
 
-	@Override
-	public abstract AbstractFsTreeNode getChildAt(int childIndex);
+    @Override
+    public abstract Enumeration children();
 
 
-	@Override
-	public abstract int getChildCount();
+    @Override
+    public boolean getAllowsChildren() {
+        return !isLeaf();
+    }
 
 
-	@Override
-	public abstract int getIndex(TreeNode node);
+    @Override
+    public abstract AbstractFsTreeNode getChildAt(int childIndex);
 
 
-	@Override
-	public DirectoryFsTreeNode getParent()
-	{
-		return parent;
-	}
+    @Override
+    public abstract int getChildCount();
 
 
-	@Override
-	public boolean isLeaf()
-	{
-		return !isDirectory() || getChildCount() == 0;
-	}
+    @Override
+    public abstract int getIndex(TreeNode node);
 
 
-	/**
-	 * Get name for display
-	 * 
-	 * @return name
-	 */
-	public abstract String getName();
+    @Override
+    public DirectoryFsTreeNode getParent() {
+        return parent;
+    }
 
 
-	@Override
-	public int compareTo(AbstractFsTreeNode o)
-	{
-		// dirs on top
-		if (o.isDirectory() && !this.isDirectory()) return 1;
-		if (!o.isDirectory() && this.isDirectory()) return -1;
-
-		// sort by name
-		return AlphanumComparator.instance.compare(this.getName(), o.getName());
-	}
+    @Override
+    public boolean isLeaf() {
+        return !isDirectory() || getChildCount() == 0;
+    }
 
 
-	/**
-	 * Sort children
-	 */
-	public void sort()
-	{
-	}
+    /**
+     * Get name for display
+     *
+     * @return name
+     */
+    public abstract String getName();
 
 
-	/**
-	 * Get represented path. Null for virtual directory nodes.
-	 * 
-	 * @return the path
-	 */
-	public abstract File getPath();
+    @Override
+    public int compareTo(AbstractFsTreeNode o) {
+        // dirs on top
+        if (o.isDirectory() && !this.isDirectory()) return 1;
+        if (!o.isDirectory() && this.isDirectory()) return -1;
+
+        // sort by name
+        return AlphanumComparator.instance.compare(this.getName(), o.getName());
+    }
 
 
-	@Override
-	public String toString()
-	{
-		return getName();
-	}
+    /**
+     * Sort children
+     */
+    public void sort() {
+    }
 
 
-	/**
-	 * Set a mark to this and children
-	 * 
-	 * @param newMark
-	 *            the new mark
-	 */
-	public void setMark(int newMark)
-	{
-		this.mark = newMark;
-
-		for (int i = 0; i < getChildCount(); i++) {
-			getChildAt(i).setMark(newMark);
-		}
-	}
+    /**
+     * Get represented path. Null for virtual directory nodes.
+     *
+     * @return the path
+     */
+    public abstract File getPath();
 
 
-	/**
-	 * Get inherited or assigned mark
-	 * 
-	 * @return mark
-	 */
-	public int getMark()
-	{
-		return mark;
-	}
+    @Override
+    public String toString() {
+        return getName();
+    }
 
 
-	/**
-	 * Get path from the root path (relative)
-	 * 
-	 * @return relative path from root
-	 */
-	public File getPathRelativeToRoot()
-	{
-		if (isRoot() || getParent() == null) return new File("");
+    /**
+     * Set a mark to this and children
+     *
+     * @param newMark the new mark
+     */
+    public void setMark(int newMark) {
+        this.mark = newMark;
 
-		final File root = getParent().getRoot();
+        for (int i = 0; i < getChildCount(); i++) {
+            getChildAt(i).setMark(newMark);
+        }
+    }
 
-		return new File(root.toURI().relativize(getPath().toURI()).getPath());
-	}
+
+    /**
+     * Get inherited or assigned mark
+     *
+     * @return mark
+     */
+    public int getMark() {
+        return mark;
+    }
 
 
-	/**
-	 * @return if this is the root node
-	 */
-	public boolean isRoot()
-	{
-		return false;
-	}
+    /**
+     * Get path from the root path (relative)
+     *
+     * @return relative path from root
+     */
+    public File getPathRelativeToRoot() {
+        if (isRoot() || getParent() == null) return new File("");
+
+        final File root = getParent().getRoot();
+
+        return new File(root.toURI().relativize(getPath().toURI()).getPath());
+    }
+
+
+    /**
+     * @return if this is the root node
+     */
+    public boolean isRoot() {
+        return false;
+    }
 }

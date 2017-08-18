@@ -20,242 +20,221 @@ import net.mightypork.rpw.gui.helpers.WindowCloseListener;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public abstract class RpwDialog extends JDialog
-{
+public abstract class RpwDialog extends JDialog {
 
-	private boolean onCloseCalled = false;
-	private boolean closingByCommand = false;
+    private boolean onCloseCalled = false;
+    private boolean closingByCommand = false;
 
-	private boolean closeable = true;
+    private boolean closeable = true;
 
-	private final List<Runnable> closeHooks = new ArrayList<Runnable>();
+    private final List<Runnable> closeHooks = new ArrayList<Runnable>();
 
 
-	public void addCloseHook(Runnable hook)
-	{
-		this.closeHooks.add(hook);
-	}
+    public void addCloseHook(Runnable hook) {
+        this.closeHooks.add(hook);
+    }
 
-	protected final ActionListener closeListener = new ActionListener() {
+    protected final ActionListener closeListener = new ActionListener() {
 
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			closeDialog();
-		}
-	};
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            closeDialog();
+        }
+    };
 
-	private final WindowCloseListener closeWindowListener = new WindowCloseListener() {
+    private final WindowCloseListener closeWindowListener = new WindowCloseListener() {
 
-		@Override
-		public void onClose(WindowEvent e)
-		{
-			if (!onCloseCalled && (closeable || closingByCommand)) {
-				onCloseCalled = true;
-				RpwDialog.this.onClose();
-				afterOnClose();
-			}
-		}
-	};
-	private final Frame dlgParent;
+        @Override
+        public void onClose(WindowEvent e) {
+            if (!onCloseCalled && (closeable || closingByCommand)) {
+                onCloseCalled = true;
+                RpwDialog.this.onClose();
+                afterOnClose();
+            }
+        }
+    };
+    private final Frame dlgParent;
 
 
-	public void setCloseable(boolean closeable)
-	{
-		this.closeable = closeable;
+    public void setCloseable(boolean closeable) {
+        this.closeable = closeable;
 
-		setDefaultCloseOperation(closeable ? DISPOSE_ON_CLOSE : DO_NOTHING_ON_CLOSE);
-	}
+        setDefaultCloseOperation(closeable ? DISPOSE_ON_CLOSE : DO_NOTHING_ON_CLOSE);
+    }
 
 
-	public boolean isCloseable()
-	{
-		return closeable;
-	}
+    public boolean isCloseable() {
+        return closeable;
+    }
 
 
-	public void forceGetFocus()
-	{
-		requestFocus();
+    public void forceGetFocus() {
+        requestFocus();
 
-		ModalityType mt = getModalityType();
+        ModalityType mt = getModalityType();
 
-		setModalityType(ModalityType.APPLICATION_MODAL);
-		setModalityType(mt);
+        setModalityType(ModalityType.APPLICATION_MODAL);
+        setModalityType(mt);
 
-		if (!isFocused()) {
-			setVisible(false);
-			setVisible(true);
-		}
-	}
+        if (!isFocused()) {
+            setVisible(false);
+            setVisible(true);
+        }
+    }
 
 
-	/**
-	 * @param parent
-	 *            parent frame
-	 * @param title
-	 *            window title
-	 */
-	public RpwDialog(Frame parent, String title) {
-		super(parent, title);
+    /**
+     * @param parent parent frame
+     * @param title  window title
+     */
+    public RpwDialog(Frame parent, String title) {
+        super(parent, title);
 
-		this.dlgParent = parent;
+        this.dlgParent = parent;
 
-		// don't use -> fix weird windoze bug (?)
-		//setAlwaysOnTop(parent == null); // initial load dialog
+        // don't use -> fix weird windoze bug (?)
+        //setAlwaysOnTop(parent == null); // initial load dialog
 
-		setModal(true);
-		setResizable(false);
-		setLocationRelativeTo(parent);
+        setModal(true);
+        setResizable(false);
+        setLocationRelativeTo(parent);
 
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-		addWindowListener(closeWindowListener);
+        addWindowListener(closeWindowListener);
 
-		App.activeDialog = this;
-	}
+        App.activeDialog = this;
+    }
 
 
-	/**
-	 * Close it
-	 */
-	public final void closeDialog()
-	{
-		closingByCommand = true;
+    /**
+     * Close it
+     */
+    public final void closeDialog() {
+        closingByCommand = true;
 
-		dispose();
+        dispose();
 
-		if (!onCloseCalled) {
-			onCloseCalled = true;
-			onClose();
-			afterOnClose();
-		}
+        if (!onCloseCalled) {
+            onCloseCalled = true;
+            onClose();
+            afterOnClose();
+        }
 
-		App.activeDialog = null;
-	}
+        App.activeDialog = null;
+    }
 
 
-	/**
-	 * Convention method to set visible
-	 */
-	public final void openDialog()
-	{
-		setVisible(true);
-	}
+    /**
+     * Convention method to set visible
+     */
+    public final void openDialog() {
+        setVisible(true);
+    }
 
 
-	/**
-	 * Create dialog: build GUI, center dialog, set visible etc
-	 */
-	public final void createDialog()
-	{
-		final JComponent jc = buildGui();
+    /**
+     * Create dialog: build GUI, center dialog, set visible etc
+     */
+    public final void createDialog() {
+        final JComponent jc = buildGui();
 
-		if (jc != null) getContentPane().add(jc);
+        if (jc != null) getContentPane().add(jc);
 
-		initGui();
+        initGui();
 
-		pack();
+        pack();
 
-		Gui.centerWindow(this, dlgParent);
+        Gui.centerWindow(this, dlgParent);
 
-		addActions();
+        addActions();
 
-		getRootPane().registerKeyboardAction(closeListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
-	}
+        getRootPane().registerKeyboardAction(closeListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+    }
 
 
-	/**
-	 * Build the GUI
-	 * 
-	 * @return root component (typically JPanel or Box), or null if the GUI
-	 *         elements were already added to the content pane
-	 */
-	protected abstract JComponent buildGui();
+    /**
+     * Build the GUI
+     *
+     * @return root component (typically JPanel or Box), or null if the GUI
+     * elements were already added to the content pane
+     */
+    protected abstract JComponent buildGui();
 
 
-	/**
-	 * Called after buildGui() and before pack()
-	 */
-	protected void initGui()
-	{
-	}
+    /**
+     * Called after buildGui() and before pack()
+     */
+    protected void initGui() {
+    }
 
 
-	/**
-	 * Set button pressed on ENTER press
-	 * 
-	 * @param button
-	 *            btn
-	 */
-	protected void setEnterButton(JButton button)
-	{
-		getRootPane().setDefaultButton(button);
-	}
+    /**
+     * Set button pressed on ENTER press
+     *
+     * @param button btn
+     */
+    protected void setEnterButton(JButton button) {
+        getRootPane().setDefaultButton(button);
+    }
 
 
-	@Override
-	public void setVisible(boolean b)
-	{
-		onShown();
+    @Override
+    public void setVisible(boolean b) {
+        onShown();
 
-		Log.f3("Dialog open: " + getTitle());
-		super.setVisible(b);
+        Log.f3("Dialog open: " + getTitle());
+        super.setVisible(b);
 
 
-	}
+    }
 
 
-	/**
-	 * Called after setVisible was executed
-	 */
-	protected void onShown()
-	{
-	}
+    /**
+     * Called after setVisible was executed
+     */
+    protected void onShown() {
+    }
 
 
-	/**
-	 * Here the dialog should add actions to the UI components
-	 */
-	protected abstract void addActions();
+    /**
+     * Here the dialog should add actions to the UI components
+     */
+    protected abstract void addActions();
 
 
-	/**
-	 * To be used in enclosed types instead of weird stuff with
-	 * DialogXXX.this.something()
-	 * 
-	 * @return this
-	 */
-	protected final RpwDialog self()
-	{
-		return this;
-	}
+    /**
+     * To be used in enclosed types instead of weird stuff with
+     * DialogXXX.this.something()
+     *
+     * @return this
+     */
+    protected final RpwDialog self() {
+        return this;
+    }
 
 
-	/**
-	 * Called after onClose - run the hooks
-	 */
-	private void afterOnClose()
-	{
-		Log.f3("Dialog closed: " + getTitle());
+    /**
+     * Called after onClose - run the hooks
+     */
+    private void afterOnClose() {
+        Log.f3("Dialog closed: " + getTitle());
 
-		for (final Runnable hook : closeHooks) {
-			hook.run();
-		}
-	}
+        for (final Runnable hook : closeHooks) {
+            hook.run();
+        }
+    }
 
 
-	/**
-	 * Called right after dialog closes
-	 */
-	protected void onClose()
-	{
-	}
+    /**
+     * Called right after dialog closes
+     */
+    protected void onClose() {
+    }
 
 
-	protected void setPreferredSize(int i, int j)
-	{
-		setPreferredSize(new Dimension(i, j));
-	}
+    protected void setPreferredSize(int i, int j) {
+        setPreferredSize(new Dimension(i, j));
+    }
 
 }

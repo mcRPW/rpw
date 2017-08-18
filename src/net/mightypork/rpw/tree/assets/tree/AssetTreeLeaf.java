@@ -13,224 +13,199 @@ import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 
 
-public class AssetTreeLeaf extends AssetTreeNode
-{
+public class AssetTreeLeaf extends AssetTreeNode {
 
-	/**
-	 * Create leaf node
-	 * 
-	 * @param asset
-	 *            asset entry for this leaf
-	 * @param librarySource
-	 *            asset source
-	 */
-	public AssetTreeLeaf(AssetEntry asset, String librarySource) {
-		super(asset.getLabel(), librarySource);
-		this.asset = asset;
-	}
+    /**
+     * Create leaf node
+     *
+     * @param asset         asset entry for this leaf
+     * @param librarySource asset source
+     */
+    public AssetTreeLeaf(AssetEntry asset, String librarySource) {
+        super(asset.getLabel(), librarySource);
+        this.asset = asset;
+    }
 
-	private AssetEntry asset = null;
+    private AssetEntry asset = null;
 
 
-	@Override
-	public boolean isLeaf()
-	{
-		return true;
-	}
+    @Override
+    public boolean isLeaf() {
+        return true;
+    }
 
 
-	@Override
-	public int getChildCount()
-	{
-		return 0;
-	}
+    @Override
+    public int getChildCount() {
+        return 0;
+    }
 
 
-	@Override
-	public int getIndex(TreeNode child)
-	{
-		return -1;
-	}
+    @Override
+    public int getIndex(TreeNode child) {
+        return -1;
+    }
 
 
-	@Override
-	public AssetTreeNode getChildAt(int index)
-	{
-		return null;
-	}
+    @Override
+    public AssetTreeNode getChildAt(int index) {
+        return null;
+    }
 
 
-	/**
-	 * Get asset key
-	 * 
-	 * @return asset key
-	 */
-	public String getAssetKey()
-	{
-		return asset.getKey();
-	}
+    /**
+     * Get asset key
+     *
+     * @return asset key
+     */
+    public String getAssetKey() {
+        return asset.getKey();
+    }
 
 
-	/**
-	 * Get asset key
-	 * 
-	 * @return asset key
-	 */
-	public EAsset getAssetType()
-	{
-		return asset.getType();
-	}
+    /**
+     * Get asset key
+     *
+     * @return asset key
+     */
+    public EAsset getAssetType() {
+        return asset.getType();
+    }
 
 
-	@Override
-	public String resolveAssetSource()
-	{
-		String source = librarySource;
+    @Override
+    public String resolveAssetSource() {
+        String source = librarySource;
 
-		if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAsset(source, asset)) {
-			source = MagicSources.INHERIT;
-		}
+        if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAsset(source, asset)) {
+            source = MagicSources.INHERIT;
+        }
 
-		if (MagicSources.isInherit(source)) {
-			if (parent != null) {
-				source = parent.resolveAssetSource();
+        if (MagicSources.isInherit(source)) {
+            if (parent != null) {
+                source = parent.resolveAssetSource();
 
-				if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAsset(source, asset)) {
-					source = MagicSources.VANILLA;
-				}
+                if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAsset(source, asset)) {
+                    source = MagicSources.VANILLA;
+                }
 
-			} else {
-				return MagicSources.VANILLA;
-			}
-		}
+            } else {
+                return MagicSources.VANILLA;
+            }
+        }
 
-		return source;
+        return source;
 
-	}
-
-
-	@Override
-	public String resolveAssetMetaSource()
-	{
-		String source = librarySource;
-
-		if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAssetMeta(source, asset)) {
-			source = MagicSources.INHERIT;
-		}
-
-		if (MagicSources.isInherit(source)) {
-			if (parent != null) {
-				source = parent.resolveAssetMetaSource();
-
-				if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAssetMeta(source, asset)) {
-					source = MagicSources.VANILLA;
-				}
-
-			} else {
-				return MagicSources.VANILLA;
-			}
-		}
-
-		return source;
-	}
+    }
 
 
-	@Override
-	public void prepareForDisplay()
-	{
-	}
+    @Override
+    public String resolveAssetMetaSource() {
+        String source = librarySource;
+
+        if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAssetMeta(source, asset)) {
+            source = MagicSources.INHERIT;
+        }
+
+        if (MagicSources.isInherit(source)) {
+            if (parent != null) {
+                source = parent.resolveAssetMetaSource();
+
+                if (!Sources.doesSourceExist(source) || !Sources.doesSourceProvideAssetMeta(source, asset)) {
+                    source = MagicSources.VANILLA;
+                }
+
+            } else {
+                return MagicSources.VANILLA;
+            }
+        }
+
+        return source;
+    }
 
 
-	@Override
-	public void processThisAndChildren(AssetTreeProcessor processor)
-	{
-		processor.process(this);
-	}
+    @Override
+    public void prepareForDisplay() {
+    }
 
 
-	@Override
-	public Enumeration children()
-	{
-		return null;
-	}
+    @Override
+    public void processThisAndChildren(AssetTreeProcessor processor) {
+        processor.process(this);
+    }
 
 
-	public AssetEntry getAssetEntry()
-	{
-		return asset;
-	}
+    @Override
+    public Enumeration children() {
+        return null;
+    }
 
 
-	@Override
-	public List<AssetTreeNode> getChildrenList()
-	{
-		return null;
-	}
+    public AssetEntry getAssetEntry() {
+        return asset;
+    }
 
 
-	public boolean isAssetProvidedByProject()
-	{
-		final Project p = Projects.getActive();
-		if (p == null) return false;
-
-		return p.doesProvideAsset(getAssetKey());
-	}
+    @Override
+    public List<AssetTreeNode> getChildrenList() {
+        return null;
+    }
 
 
-	public boolean isMetaProvidedByProject()
-	{
-		final Project p = Projects.getActive();
-		if (p == null) return false;
+    public boolean isAssetProvidedByProject() {
+        final Project p = Projects.getActive();
+        if (p == null) return false;
 
-		return p.doesProvideAssetMeta(getAssetKey());
-	}
-
-
-	@Override
-	public boolean isDirectory()
-	{
-		return false;
-	}
+        return p.doesProvideAsset(getAssetKey());
+    }
 
 
-	@Override
-	public boolean isFile()
-	{
-		return true;
-	}
+    public boolean isMetaProvidedByProject() {
+        final Project p = Projects.getActive();
+        if (p == null) return false;
+
+        return p.doesProvideAssetMeta(getAssetKey());
+    }
 
 
-	@Override
-	public boolean isSound()
-	{
-		return getAssetType().isSound();
-	}
+    @Override
+    public boolean isDirectory() {
+        return false;
+    }
 
 
-	@Override
-	public boolean isImage()
-	{
-		return getAssetType().isImage();
-	}
+    @Override
+    public boolean isFile() {
+        return true;
+    }
 
 
-	@Override
-	public boolean isText()
-	{
-		return getAssetType().isText();
-	}
+    @Override
+    public boolean isSound() {
+        return getAssetType().isSound();
+    }
 
 
-	@Override
-	public boolean isJson()
-	{
-		return getAssetType().isJson();
-	}
+    @Override
+    public boolean isImage() {
+        return getAssetType().isImage();
+    }
 
 
-	@Override
-	public boolean canHaveMeta()
-	{
-		return isImage();
-	}
+    @Override
+    public boolean isText() {
+        return getAssetType().isText();
+    }
+
+
+    @Override
+    public boolean isJson() {
+        return getAssetType().isJson();
+    }
+
+
+    @Override
+    public boolean canHaveMeta() {
+        return isImage();
+    }
 }

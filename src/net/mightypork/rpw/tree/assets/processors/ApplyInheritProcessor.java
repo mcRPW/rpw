@@ -10,46 +10,44 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 
 
-public class ApplyInheritProcessor implements AssetTreeProcessor
-{
+public class ApplyInheritProcessor implements AssetTreeProcessor {
 
-	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
+    private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 
-	private final String defaultSource;
-
-
-	public ApplyInheritProcessor() {
-		this.defaultSource = MagicSources.VANILLA;
-	}
+    private final String defaultSource;
 
 
-	public ApplyInheritProcessor(String defaultSource) {
-		this.defaultSource = defaultSource;
-	}
+    public ApplyInheritProcessor() {
+        this.defaultSource = MagicSources.VANILLA;
+    }
 
 
-	@Override
-	public void process(AssetTreeNode node)
-	{
-		if (processed.contains(node)) return;
-		processed.add(node);
+    public ApplyInheritProcessor(String defaultSource) {
+        this.defaultSource = defaultSource;
+    }
 
-		if (!node.isLeaf()) return; // leave groups alone
 
-		final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+    @Override
+    public void process(AssetTreeNode node) {
+        if (processed.contains(node)) return;
+        processed.add(node);
 
-		final String assigned = leaf.getLibrarySource();
-		String resolved = leaf.resolveAssetSource();
+        if (!node.isLeaf()) return; // leave groups alone
 
-		if (!assigned.equals(resolved)) {
-			if (MagicSources.isInherit(resolved) || MagicSources.isVanilla(resolved)) {
-				if (MagicSources.isInherit(defaultSource) || Sources.doesSourceProvideAsset(defaultSource, leaf.getAssetEntry())) {
-					resolved = defaultSource;
-				}
-			}
+        final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
-			node.setLibrarySource(resolved);
-		}
-	}
+        final String assigned = leaf.getLibrarySource();
+        String resolved = leaf.resolveAssetSource();
+
+        if (!assigned.equals(resolved)) {
+            if (MagicSources.isInherit(resolved) || MagicSources.isVanilla(resolved)) {
+                if (MagicSources.isInherit(defaultSource) || Sources.doesSourceProvideAsset(defaultSource, leaf.getAssetEntry())) {
+                    resolved = defaultSource;
+                }
+            }
+
+            node.setLibrarySource(resolved);
+        }
+    }
 
 }

@@ -13,49 +13,46 @@ import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 
 
-public class TaskExportProject
-{
+public class TaskExportProject {
 
-	public static void showDialog()
-	{
-		if (!Projects.isOpen()) return;
+    public static void showDialog() {
+        if (!Projects.isOpen()) return;
 
-		EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
 
-			@Override
-			public void run()
-			{
-				final Project project = Projects.getActive();
+            @Override
+            public void run() {
+                final Project project = Projects.getActive();
 
-				final FileChooser fc = new FileChooser(App.getFrame(), FilePath.EXPORT, "Export project", FileChooser.ZIP, true, false, false);
+                final FileChooser fc = new FileChooser(App.getFrame(), FilePath.EXPORT, "Export project", FileChooser.ZIP, true, false, false);
 
-				final File dir = fc.getCurrentDirectory();
-				final File file = new File(dir, project.getName() + ".zip");
-				fc.setSelectedFile(file);
+                final File dir = fc.getCurrentDirectory();
+                final File file = new File(dir, project.getName() + ".zip");
+                fc.setSelectedFile(file);
 
-				fc.showDialog("Export");
-				if (!fc.approved()) {
-					return;
-				}
+                fc.showDialog("Export");
+                if (!fc.approved()) {
+                    return;
+                }
 
-				final File f = fc.getSelectedFile();
+                final File f = fc.getSelectedFile();
 
-				if (f.exists()) {
-					//@formatter:off
-					final int overwrite = Alerts.askYesNoCancel(
-							App.getFrame(),
-							"File Exists",
-							"File \"" + f.getName() + "\" already exists.\n" +
-							"Do you want to overwrite it?"
-					);
-					//@formatter:on
+                if (f.exists()) {
+                    //@formatter:off
+                    final int overwrite = Alerts.askYesNoCancel(
+                            App.getFrame(),
+                            "File Exists",
+                            "File \"" + f.getName() + "\" already exists.\n" +
+                                    "Do you want to overwrite it?"
+                    );
+                    //@formatter:on
 
-					if (overwrite != JOptionPane.YES_OPTION) return;
-				}
+                    if (overwrite != JOptionPane.YES_OPTION) return;
+                }
 
-				Tasks.taskExportProject(f, null);
-			}
-		});
+                Tasks.taskExportProject(f, null);
+            }
+        });
 
-	}
+    }
 }

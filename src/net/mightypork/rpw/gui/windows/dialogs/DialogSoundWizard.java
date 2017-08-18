@@ -61,753 +61,709 @@ import net.mightypork.rpw.utils.files.OsUtils;
 import org.jdesktop.swingx.JXTitledSeparator;
 
 
-public class DialogSoundWizard extends RpwDialog
-{
+public class DialogSoundWizard extends RpwDialog {
 
-	private static final DataFlavor FLAVOR_FSTREE_FILE = new DataFlavor(FileFsTreeNode.class, "FSTREE_FILE_NODE");
+    private static final DataFlavor FLAVOR_FSTREE_FILE = new DataFlavor(FileFsTreeNode.class, "FSTREE_FILE_NODE");
 
-	private JButton buttonDeleteKey;
-	private JButton buttonDiscard;
-	private JButton buttonNewKey;
-	private JButton buttonOK;
-	private JButton buttonSave;
+    private JButton buttonDeleteKey;
+    private JButton buttonDiscard;
+    private JButton buttonNewKey;
+    private JButton buttonOK;
+    private JButton buttonSave;
 
-	private JComboBox fieldCategory;
-	private JTextField fieldKey;
-	private JCheckBox ckStreamed;
+    private JComboBox fieldCategory;
+    private JTextField fieldKey;
+    private JCheckBox ckStreamed;
 
-	private SimpleStringList fileList;
-	private SimpleStringList keyList;
-	private SoundFileTreeDisplay treeDisplay;
+    private SimpleStringList fileList;
+    private SimpleStringList keyList;
+    private SoundFileTreeDisplay treeDisplay;
 
-	private String editedKey = null;
-	private boolean flagEntryChanged = false;
-	private boolean suppressEditCheck = false;
-	protected boolean editStateValid = false;
+    private String editedKey = null;
+    private boolean flagEntryChanged = false;
+    private boolean suppressEditCheck = false;
+    protected boolean editStateValid = false;
 
-	private SoundEntryMap soundMap;
-	private ArrayList<Component> middlePanelComponents;
+    private SoundEntryMap soundMap;
+    private ArrayList<Component> middlePanelComponents;
 
 
-	public DialogSoundWizard() {
-		super(App.getFrame(), "Sound Wizard");
+    public DialogSoundWizard() {
+        super(App.getFrame(), "Sound Wizard");
 
-		createDialog();
-	}
+        createDialog();
+    }
 
 
-	@Override
-	protected JComponent buildGui()
-	{
-		HBox hbMain, hb;
-		VBox vbMain;
+    @Override
+    protected JComponent buildGui() {
+        HBox hbMain, hb;
+        VBox vbMain;
 
-		vbMain = new VBox();
+        vbMain = new VBox();
 
-		vbMain.windowPadding();
-		vbMain.heading("Sound Wizard");
+        vbMain.windowPadding();
+        vbMain.heading("Sound Wizard");
 
-		//@formatter:off
-		hbMain = new HBox();
-	
-			// box with keys and editing current key
-			hb = new HBox();
-		
-				Gui.titledBorder(hb, "Sound Entries", Gui.GAP);
+        //@formatter:off
+        hbMain = new HBox();
 
-				hb.add(createLeftPanel());		
-				hb.gapl();
-				
-				hb.sep();
-				
-				hb.gapl();		
-				hb.add(createMiddlePanel());
-	
-			hbMain.add(hb);
-	
-			hbMain.add(createRightPanel());
-		vbMain.add(hbMain);
-		//@formatter:on
+        // box with keys and editing current key
+        hb = new HBox();
 
-		vbMain.gap();
+        Gui.titledBorder(hb, "Sound Entries", Gui.GAP);
 
-		// buttons row
-		buttonOK = new JButton("Close", Icons.MENU_EXIT);
-		vbMain.buttonRow(Gui.RIGHT, buttonOK);
+        hb.add(createLeftPanel());
+        hb.gapl();
 
-		fileList.setMultiSelect(true);
-		fileList.getList().setDragEnabled(true);
-		treeDisplay.tree.setDragEnabled(true);
+        hb.sep();
 
-		return vbMain;
-	}
+        hb.gapl();
+        hb.add(createMiddlePanel());
 
+        hbMain.add(hb);
 
-	private Component createLeftPanel()
-	{
-		final VBox vb = new VBox();
+        hbMain.add(createRightPanel());
+        vbMain.add(hbMain);
+        //@formatter:on
 
-		// box for the list of keys
-		keyList = new SimpleStringList();
-		keyList.setPreferredSize(new Dimension(300, 400));
+        vbMain.gap();
 
-		vb.glue();
-		vb.add(keyList);
+        // buttons row
+        buttonOK = new JButton("Close", Icons.MENU_EXIT);
+        vbMain.buttonRow(Gui.RIGHT, buttonOK);
 
-		// box with buttons under the list
-		buttonNewKey = new JButton("New", Icons.MENU_NEW);
-		buttonDeleteKey = new JButton("Delete", Icons.MENU_DELETE);
+        fileList.setMultiSelect(true);
+        fileList.getList().setDragEnabled(true);
+        treeDisplay.tree.setDragEnabled(true);
 
-		vb.gap();
-		vb.buttonRow(Gui.LEFT, buttonNewKey, buttonDeleteKey);
+        return vbMain;
+    }
 
-		return vb;
-	}
 
+    private Component createLeftPanel() {
+        final VBox vb = new VBox();
 
-	private Component createMiddlePanel()
-	{
-		middlePanelComponents = new ArrayList<Component>();
+        // box for the list of keys
+        keyList = new SimpleStringList();
+        keyList.setPreferredSize(new Dimension(300, 400));
 
-		// box for editing a key
+        vb.glue();
+        vb.add(keyList);
 
-		final VBox vb = new VBox();
+        // box with buttons under the list
+        buttonNewKey = new JButton("New", Icons.MENU_NEW);
+        buttonDeleteKey = new JButton("Delete", Icons.MENU_DELETE);
 
-		// fields
-		final JLabel l1 = new JLabel("Name:");
-		final JLabel l2 = new JLabel("Category:");
-		final JLabel l3 = new JLabel("Playback:");
-		middlePanelComponents.add(l1);
-		middlePanelComponents.add(l2);
-		middlePanelComponents.add(l3);
+        vb.gap();
+        vb.buttonRow(Gui.LEFT, buttonNewKey, buttonDeleteKey);
 
-		fieldKey = Gui.textField();
-		fieldKey.setDragEnabled(false);
-		fieldKey.addKeyListener(TextInputValidator.identifiers());
-		fieldKey.setTransferHandler(new TransferHandler() {});
-		middlePanelComponents.add(fieldKey);
+        return vb;
+    }
 
-		fieldCategory = new JComboBox(Const.SOUND_CATEGORIES);
-		middlePanelComponents.add(fieldCategory);
 
-		ckStreamed = new JCheckBox("Streamed (use for music)");
-		ckStreamed.setToolTipText("Use for long sounds and music, to avoid lag while playing the sound.");
-		middlePanelComponents.add(ckStreamed);
+    private Component createMiddlePanel() {
+        middlePanelComponents = new ArrayList<Component>();
 
-		vb.springForm(new Object[] { l1, l2, l3 }, new JComponent[] { fieldKey, fieldCategory, ckStreamed });
+        // box for editing a key
 
-		// file list
-		JXTitledSeparator sep;
-		vb.glue();
-		sep = vb.titsep("Selected files");
-		middlePanelComponents.add(sep);
+        final VBox vb = new VBox();
 
-		fileList = new SimpleStringList();
-		fileList.setPreferredSize(new Dimension(300, 300));
+        // fields
+        final JLabel l1 = new JLabel("Name:");
+        final JLabel l2 = new JLabel("Category:");
+        final JLabel l3 = new JLabel("Playback:");
+        middlePanelComponents.add(l1);
+        middlePanelComponents.add(l2);
+        middlePanelComponents.add(l3);
 
-		vb.add(fileList);
-		middlePanelComponents.add(fileList);
+        fieldKey = Gui.textField();
+        fieldKey.setDragEnabled(false);
+        fieldKey.addKeyListener(TextInputValidator.identifiers());
+        fieldKey.setTransferHandler(new TransferHandler() {
+        });
+        middlePanelComponents.add(fieldKey);
 
-		// box with buttons under the list
-		buttonSave = new JButton("Save", Icons.MENU_SAVE);
-		buttonDiscard = new JButton("Discard", Icons.MENU_CANCEL);
+        fieldCategory = new JComboBox(Const.SOUND_CATEGORIES);
+        middlePanelComponents.add(fieldCategory);
 
-		middlePanelComponents.add(buttonSave);
-		middlePanelComponents.add(buttonDiscard);
+        ckStreamed = new JCheckBox("Streamed (use for music)");
+        ckStreamed.setToolTipText("Use for long sounds and music, to avoid lag while playing the sound.");
+        middlePanelComponents.add(ckStreamed);
 
-		vb.gap();
-		vb.buttonRow(Gui.RIGHT, buttonSave, buttonDiscard);
+        vb.springForm(new Object[]{l1, l2, l3}, new JComponent[]{fieldKey, fieldCategory, ckStreamed});
 
-		return vb;
-	}
+        // file list
+        JXTitledSeparator sep;
+        vb.glue();
+        sep = vb.titsep("Selected files");
+        middlePanelComponents.add(sep);
 
+        fileList = new SimpleStringList();
+        fileList.setPreferredSize(new Dimension(300, 300));
 
-	private Component createRightPanel()
-	{
-		final VBox vb = new VBox();
+        vb.add(fileList);
+        middlePanelComponents.add(fileList);
 
-		// file list
-		Gui.titledBorder(vb, "All Audio Files", Gui.GAP);
+        // box with buttons under the list
+        buttonSave = new JButton("Save", Icons.MENU_SAVE);
+        buttonDiscard = new JButton("Discard", Icons.MENU_CANCEL);
 
-		if (Config.USE_NIMBUS) Gui.useMetal();
-		treeDisplay = new SoundFileTreeDisplay(null, this);
-		if (Config.USE_NIMBUS) Gui.useNimbusLaF();
+        middlePanelComponents.add(buttonSave);
+        middlePanelComponents.add(buttonDiscard);
 
-		vb.glue();
-		final JComponent c = treeDisplay.getComponent();
-		c.setPreferredSize(new Dimension(300, 400));
-		vb.add(c);
+        vb.gap();
+        vb.buttonRow(Gui.RIGHT, buttonSave, buttonDiscard);
 
-		// comment
-		vb.gap();
-		vb.add(Gui.commentLine("<html><center>Drag to <i>Selected Files</i> to select.<br>Right-click for options.</center></html>"));
+        return vb;
+    }
 
-		return vb;
-	}
 
+    private Component createRightPanel() {
+        final VBox vb = new VBox();
 
-	@Override
-	protected void addActions()
-	{
-		setEnterButton(buttonSave);
+        // file list
+        Gui.titledBorder(vb, "All Audio Files", Gui.GAP);
 
-		// DEL key handler
-		fileList.list.addKeyListener(new KeyListener() {
+        if (Config.USE_NIMBUS) Gui.useMetal();
+        treeDisplay = new SoundFileTreeDisplay(null, this);
+        if (Config.USE_NIMBUS) Gui.useNimbusLaF();
 
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					for (final String val : fileList.getSelectedValues()) {
-						fileList.removeItemNoSort(val);
-						if (val.equals(editedKey)) enableMiddlePanel(false);
-					}
-					fileList.sortAndUpdate();
-				}
-			}
+        vb.glue();
+        final JComponent c = treeDisplay.getComponent();
+        c.setPreferredSize(new Dimension(300, 400));
+        vb.add(c);
 
+        // comment
+        vb.gap();
+        vb.add(Gui.commentLine("<html><center>Drag to <i>Selected Files</i> to select.<br>Right-click for options.</center></html>"));
 
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-			}
+        return vb;
+    }
 
 
-			@Override
-			public void keyTyped(KeyEvent e)
-			{
-			}
-		});
+    @Override
+    protected void addActions() {
+        setEnterButton(buttonSave);
 
-		// create key (not save yet)
-		buttonNewKey.addActionListener(new ActionListener() {
+        // DEL key handler
+        fileList.list.addKeyListener(new KeyListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				fileList.empty();
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+                    for (final String val : fileList.getSelectedValues()) {
+                        fileList.removeItemNoSort(val);
+                        if (val.equals(editedKey)) enableMiddlePanel(false);
+                    }
+                    fileList.sortAndUpdate();
+                }
+            }
 
-				editedKey = "";
 
-				enableMiddlePanel(true);
-				clearChange();
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
 
-				keyList.list.setSelectedIndices(new int[] {});
 
-				fieldKey.requestFocusInWindow();
-			}
-		});
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+        });
 
-		// delete button
-		buttonDeleteKey.addActionListener(new ActionListener() {
+        // create key (not save yet)
+        buttonNewKey.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				final String key = keyList.getSelectedValue();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fileList.empty();
 
-				if (key == null) return;
+                editedKey = "";
 
-				//@formatter:off
-				final boolean y = Alerts.askYesNo(
-						DialogSoundWizard.this,
-						"Delete Entry",
-						"Really want to to delete\n"
-						+ "sound entry \"" + editedKey + "\"?"
-				);
-				//@formatter:on
+                enableMiddlePanel(true);
+                clearChange();
 
-				if (!y) return;
+                keyList.list.setSelectedIndices(new int[]{});
 
-				keyList.removeItem(key);
+                fieldKey.requestFocusInWindow();
+            }
+        });
 
-				soundMap.remove(key);
+        // delete button
+        buttonDeleteKey.addActionListener(new ActionListener() {
 
-				if (key.equals(editedKey)) {
-					clearChange();
-					enableMiddlePanel(false);
-				}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final String key = keyList.getSelectedValue();
 
-				Projects.markChange();
+                if (key == null) return;
 
-			}
-		});
+                //@formatter:off
+                final boolean y = Alerts.askYesNo(
+                        DialogSoundWizard.this,
+                        "Delete Entry",
+                        "Really want to to delete\n"
+                                + "sound entry \"" + editedKey + "\"?"
+                );
+                //@formatter:on
 
-		keyList.list.addMouseListener(new ClickListener() {
+                if (!y) return;
 
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				onKeyListSelection();
-			}
-		});
+                keyList.removeItem(key);
 
-		// disable "delete" for zero selection
-		keyList.list.addListSelectionListener(new ListSelectionListener() {
+                soundMap.remove(key);
 
-			@Override
-			public void valueChanged(ListSelectionEvent e)
-			{
-				onKeyListSelection();
-			}
-		});
+                if (key.equals(editedKey)) {
+                    clearChange();
+                    enableMiddlePanel(false);
+                }
 
-		fieldKey.getDocument().addDocumentListener(new DocumentListener() {
+                Projects.markChange();
 
-			@Override
-			public void changedUpdate(DocumentEvent e)
-			{
-				final String txt = fieldKey.getText().trim();
+            }
+        });
 
-				editStateValid = txt.length() > 0 && (!keyList.contains(txt) || txt.equals(editedKey));
+        keyList.list.addMouseListener(new ClickListener() {
 
-				if (!txt.equals(editedKey)) markChange();
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                onKeyListSelection();
+            }
+        });
 
-			}
+        // disable "delete" for zero selection
+        keyList.list.addListSelectionListener(new ListSelectionListener() {
 
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                onKeyListSelection();
+            }
+        });
 
-			@Override
-			public void insertUpdate(DocumentEvent e)
-			{
-				changedUpdate(e);
-			}
+        fieldKey.getDocument().addDocumentListener(new DocumentListener() {
 
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                final String txt = fieldKey.getText().trim();
 
-			@Override
-			public void removeUpdate(DocumentEvent e)
-			{
-				changedUpdate(e);
-			}
-		});
+                editStateValid = txt.length() > 0 && (!keyList.contains(txt) || txt.equals(editedKey));
 
-		fieldCategory.addActionListener(new ActionListener() {
+                if (!txt.equals(editedKey)) markChange();
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				markChange();
+            }
 
-			}
-		});
 
-		buttonSave.addActionListener(new ActionListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				final String key = fieldKey.getText().trim();
-				final String ctg = (String) fieldCategory.getSelectedItem();
 
-				if (!editStateValid) return;
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changedUpdate(e);
+            }
+        });
 
-				keyList.removeItem(editedKey);
-				keyList.addItem(key);
+        fieldCategory.addActionListener(new ActionListener() {
 
-				final boolean streamed = ckStreamed.isSelected();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                markChange();
 
-				final List<String> soundsAdded = fileList.getItems();
-				final List<SoundSubEntry> subentries = new ArrayList<SoundSubEntry>();
+            }
+        });
 
-				for (final String s : soundsAdded) {
-					subentries.add(new SoundSubEntry(s, streamed));
-				}
+        buttonSave.addActionListener(new ActionListener() {
 
-				final SoundEntry newSoundEntry = new SoundEntry(ctg, subentries);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final String key = fieldKey.getText().trim();
+                final String ctg = (String) fieldCategory.getSelectedItem();
 
-				soundMap.remove(editedKey);
-				soundMap.put(key, newSoundEntry);
+                if (!editStateValid) return;
 
-				keyList.list.setSelectedValue(editedKey, true);
+                keyList.removeItem(editedKey);
+                keyList.addItem(key);
 
-				Projects.markChange();
+                final boolean streamed = ckStreamed.isSelected();
 
-				clearChange();
+                final List<String> soundsAdded = fileList.getItems();
+                final List<SoundSubEntry> subentries = new ArrayList<SoundSubEntry>();
 
-				enableMiddlePanel(false);
+                for (final String s : soundsAdded) {
+                    subentries.add(new SoundSubEntry(s, streamed));
+                }
 
-			}
-		});
+                final SoundEntry newSoundEntry = new SoundEntry(ctg, subentries);
 
-		buttonDiscard.addActionListener(new ActionListener() {
+                soundMap.remove(editedKey);
+                soundMap.put(key, newSoundEntry);
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				clearChange();
-				enableMiddlePanel(false);
-			}
-		});
+                keyList.list.setSelectedValue(editedKey, true);
 
-		buttonOK.addActionListener(closeListener);
-	}
+                Projects.markChange();
 
+                clearChange();
 
-	private void enableMiddlePanel(boolean yes)
-	{
-		suppressEditCheck = true;
+                enableMiddlePanel(false);
 
-		for (final Component c : middlePanelComponents) {
-			c.setEnabled(yes);
-			if (c instanceof JXTitledSeparator) c.setForeground(yes ? Color.BLACK : Color.GRAY);
-			if (c instanceof JTextField) ((JTextField) c).setText("");
-			if (c instanceof JComboBox) ((JComboBox) c).setSelectedItem("");
-			if (c instanceof SimpleStringList) ((SimpleStringList) c).empty();
-		}
+            }
+        });
 
-		suppressEditCheck = false;
+        buttonDiscard.addActionListener(new ActionListener() {
 
-	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearChange();
+                enableMiddlePanel(false);
+            }
+        });
 
+        buttonOK.addActionListener(closeListener);
+    }
 
-	private void clearChange()
-	{
-		flagEntryChanged = false;
-		editStateValid = false;
-		editedKey = null;
-	}
 
+    private void enableMiddlePanel(boolean yes) {
+        suppressEditCheck = true;
 
-	private boolean hasChange()
-	{
-		return editedKey != null && flagEntryChanged;
-	}
+        for (final Component c : middlePanelComponents) {
+            c.setEnabled(yes);
+            if (c instanceof JXTitledSeparator) c.setForeground(yes ? Color.BLACK : Color.GRAY);
+            if (c instanceof JTextField) ((JTextField) c).setText("");
+            if (c instanceof JComboBox) ((JComboBox) c).setSelectedItem("");
+            if (c instanceof SimpleStringList) ((SimpleStringList) c).empty();
+        }
 
+        suppressEditCheck = false;
 
-	@Override
-	protected void initGui()
-	{
-		fileList.setTransferHandler(new FileListTransferHandler());
-		treeDisplay.tree.setTransferHandler(new FileTreeTransferHandler());
+    }
 
-		initLists();
-	}
 
+    private void clearChange() {
+        flagEntryChanged = false;
+        editStateValid = false;
+        editedKey = null;
+    }
 
-	private void initLists()
-	{
-		rebuildFileTree();
 
-		soundMap = Projects.getActive().getSoundsMap();
+    private boolean hasChange() {
+        return editedKey != null && flagEntryChanged;
+    }
 
-		rebuildEntryList();
 
-		enableMiddlePanel(false);
+    @Override
+    protected void initGui() {
+        fileList.setTransferHandler(new FileListTransferHandler());
+        treeDisplay.tree.setTransferHandler(new FileTreeTransferHandler());
 
-		buttonDeleteKey.setEnabled(false);
+        initLists();
+    }
 
-	}
 
+    private void initLists() {
+        rebuildFileTree();
 
-	private void markChange()
-	{
-		if (suppressEditCheck) {
-			return;
-		}
+        soundMap = Projects.getActive().getSoundsMap();
 
-		flagEntryChanged = true;
+        rebuildEntryList();
 
-		buttonDiscard.setEnabled(true);
-		buttonSave.setEnabled(editStateValid);
-	}
+        enableMiddlePanel(false);
 
+        buttonDeleteKey.setEnabled(false);
 
-	public void nodeRemoved(AbstractFsTreeNode node)
-	{
-		node.getParent().reload();
-		treeDisplay.model.nodeStructureChanged(node.getParent());
-	}
+    }
 
 
-	@Override
-	public void onClose()
-	{
-	}
+    private void markChange() {
+        if (suppressEditCheck) {
+            return;
+        }
 
+        flagEntryChanged = true;
 
-	protected void onKeyListSelection()
-	{
-		final int i = keyList.getSelectedIndex();
-		buttonDeleteKey.setEnabled(i != -1);
+        buttonDiscard.setEnabled(true);
+        buttonSave.setEnabled(editStateValid);
+    }
 
-		if (i != -1) {
-			final String sel = keyList.getSelectedValue();
 
-			if (sel.equals(editedKey)) return;
+    public void nodeRemoved(AbstractFsTreeNode node) {
+        node.getParent().reload();
+        treeDisplay.model.nodeStructureChanged(node.getParent());
+    }
 
-			if (hasChange()) {
-				final boolean y = Alerts.askYesNo(DialogSoundWizard.this, "Discard Changes", "Discard changes in \"" + editedKey + "\"?");
 
-				if (!y) {
-					keyList.list.setSelectedValue(editedKey, true);
-					return;
-				}
-			}
+    @Override
+    public void onClose() {
+    }
 
-			clearChange();
 
-			suppressEditCheck = true;
+    protected void onKeyListSelection() {
+        final int i = keyList.getSelectedIndex();
+        buttonDeleteKey.setEnabled(i != -1);
 
-			editedKey = keyList.getSelectedValue();
+        if (i != -1) {
+            final String sel = keyList.getSelectedValue();
 
-			final SoundEntry se = soundMap.get(editedKey);
+            if (sel.equals(editedKey)) return;
 
-			enableMiddlePanel(true);
+            if (hasChange()) {
+                final boolean y = Alerts.askYesNo(DialogSoundWizard.this, "Discard Changes", "Discard changes in \"" + editedKey + "\"?");
 
-			fieldKey.setText(editedKey);
-			fieldCategory.setSelectedItem(se.category);
+                if (!y) {
+                    keyList.list.setSelectedValue(editedKey, true);
+                    return;
+                }
+            }
 
-			final ArrayList<String> snames = new ArrayList<String>();
-			boolean streamed = false; // if at least one is streamed, make all  streamed (simplifying things)
-			for (final SoundSubEntry sse : se.sounds) {
-				snames.add(sse.name);
-				streamed |= sse.stream;
-			}
+            clearChange();
 
-			fileList.setItems(snames);
+            suppressEditCheck = true;
 
-			ckStreamed.setSelected(streamed);
+            editedKey = keyList.getSelectedValue();
 
-			suppressEditCheck = false;
+            final SoundEntry se = soundMap.get(editedKey);
 
-			flagEntryChanged = false;
+            enableMiddlePanel(true);
 
-			editStateValid = true;
-		}
-	}
+            fieldKey.setText(editedKey);
+            fieldCategory.setSelectedItem(se.category);
 
+            final ArrayList<String> snames = new ArrayList<String>();
+            boolean streamed = false; // if at least one is streamed, make all  streamed (simplifying things)
+            for (final SoundSubEntry sse : se.sounds) {
+                snames.add(sse.name);
+                streamed |= sse.stream;
+            }
 
-	public void pathChanged(AbstractFsTreeNode node)
-	{
-		if (node instanceof DirectoryFsTreeNode) ((DirectoryFsTreeNode) node).reload();
-		treeDisplay.model.nodeStructureChanged(node);
-	}
+            fileList.setItems(snames);
 
+            ckStreamed.setSelected(streamed);
 
-	private void rebuildEntryList()
-	{
-		final List<String> opts = new ArrayList<String>();
+            suppressEditCheck = false;
 
-		for (final String key : soundMap.keySet()) {
-			opts.add(key);
-		}
+            flagEntryChanged = false;
 
-		Collections.sort(opts, AlphanumComparator.instance);
+            editStateValid = true;
+        }
+    }
 
-		keyList.setItems(opts);
-	}
 
+    public void pathChanged(AbstractFsTreeNode node) {
+        if (node instanceof DirectoryFsTreeNode) ((DirectoryFsTreeNode) node).reload();
+        treeDisplay.model.nodeStructureChanged(node);
+    }
 
-	private void rebuildFileTree()
-	{
-		final DirectoryFsTreeNode root = new DirectoryFsTreeNode("(root)");
 
-		File f;
-		DirectoryFsTreeNode dir;
+    private void rebuildEntryList() {
+        final List<String> opts = new ArrayList<String>();
 
-		final FileFilter soundOnlyFileFilter = new FileFilter() {
+        for (final String key : soundMap.keySet()) {
+            opts.add(key);
+        }
 
-			@Override
-			public boolean accept(File file)
-			{
-				if (file.isDirectory()) return true;
+        Collections.sort(opts, AlphanumComparator.instance);
 
-				if (!EAsset.forFile(file).isSound()) return false;
+        keyList.setItems(opts);
+    }
 
-				return true;
-			}
-		};
 
-		f = new File(OsUtils.getAppDir(Paths.DIR_VANILLA), "assets/minecraft/sounds");
-		root.addChild(dir = new DirectoryFsTreeNode("Vanilla sounds", f, soundOnlyFileFilter));
-		dir.setPathRoot(true);
-		dir.setMark(1);
+    private void rebuildFileTree() {
+        final DirectoryFsTreeNode root = new DirectoryFsTreeNode("(root)");
 
-		f = Projects.getActive().getCustomSoundsDirectory();
-		root.addChild(dir = new DirectoryFsTreeNode("Custom sounds", f, soundOnlyFileFilter));
-		dir.setPathRoot(true);
-		dir.setMark(2);
+        File f;
+        DirectoryFsTreeNode dir;
 
-		treeDisplay.setRoot(root);
-	}
+        final FileFilter soundOnlyFileFilter = new FileFilter() {
 
-	private class FileListTransferHandler extends TransferHandler
-	{
+            @Override
+            public boolean accept(File file) {
+                if (file.isDirectory()) return true;
 
-		@Override
-		public boolean canImport(TransferSupport support)
-		{
-			if (!support.isDrop()) return false;
+                if (!EAsset.forFile(file).isSound()) return false;
 
-			if (!fileList.isEnabled()) return false;
+                return true;
+            }
+        };
 
-			if (!support.isDataFlavorSupported(FLAVOR_FSTREE_FILE)) return false;
+        f = new File(OsUtils.getAppDir(Paths.DIR_VANILLA), "assets/minecraft/sounds");
+        root.addChild(dir = new DirectoryFsTreeNode("Vanilla sounds", f, soundOnlyFileFilter));
+        dir.setPathRoot(true);
+        dir.setMark(1);
 
-			support.setShowDropLocation(true);
+        f = Projects.getActive().getCustomSoundsDirectory();
+        root.addChild(dir = new DirectoryFsTreeNode("Custom sounds", f, soundOnlyFileFilter));
+        dir.setPathRoot(true);
+        dir.setMark(2);
 
-			return true;
-		}
+        treeDisplay.setRoot(root);
+    }
 
+    private class FileListTransferHandler extends TransferHandler {
 
-		@Override
-		public int getSourceActions(JComponent comp)
-		{
-			return COPY;
-		}
+        @Override
+        public boolean canImport(TransferSupport support) {
+            if (!support.isDrop()) return false;
 
+            if (!fileList.isEnabled()) return false;
 
-		@Override
-		public boolean importData(TransferSupport support)
-		{
-			if (!canImport(support)) return false;
+            if (!support.isDataFlavorSupported(FLAVOR_FSTREE_FILE)) return false;
 
-			try {
-				final Transferable trans = support.getTransferable();
+            support.setShowDropLocation(true);
 
-				final List<FileFsTreeNode> nodes = (List<FileFsTreeNode>) trans.getTransferData(FLAVOR_FSTREE_FILE);
+            return true;
+        }
 
-				boolean changed = false;
-				for (final FileFsTreeNode node : nodes) {
-					String path = Utils.toLastDot(node.getPathRelativeToRoot().getPath());
 
-					// Fix Windoze backslashes
-					path = path.replace('\\', '/');
+        @Override
+        public int getSourceActions(JComponent comp) {
+            return COPY;
+        }
 
-					if (!fileList.contains(path)) {
-						fileList.addItemNoSort(path);
-						changed = true;
-					}
-				}
 
-				if (changed) {
-					fileList.sortAndUpdate();
-					markChange();
-				}
+        @Override
+        public boolean importData(TransferSupport support) {
+            if (!canImport(support)) return false;
 
-			} catch (final UnsupportedFlavorException e) {
-				e.printStackTrace();
-				return false;
-			} catch (final IOException e) {
-				e.printStackTrace();
-				return false;
-			} catch (final RuntimeException e) {
-				e.printStackTrace();
-			}
+            try {
+                final Transferable trans = support.getTransferable();
 
-			return true;
-		}
+                final List<FileFsTreeNode> nodes = (List<FileFsTreeNode>) trans.getTransferData(FLAVOR_FSTREE_FILE);
 
-	}
+                boolean changed = false;
+                for (final FileFsTreeNode node : nodes) {
+                    String path = Utils.toLastDot(node.getPathRelativeToRoot().getPath());
 
-	private class FileTreeTransferHandler extends TransferHandler
-	{
+                    // Fix Windoze backslashes
+                    path = path.replace('\\', '/');
 
-		private List<FileFsTreeNode> tmpNodeList;
+                    if (!fileList.contains(path)) {
+                        fileList.addItemNoSort(path);
+                        changed = true;
+                    }
+                }
 
+                if (changed) {
+                    fileList.sortAndUpdate();
+                    markChange();
+                }
 
-		@Override
-		public boolean canImport(TransferSupport support)
-		{
-			return !support.isDataFlavorSupported(FLAVOR_FSTREE_FILE);
-		}
+            } catch (final UnsupportedFlavorException e) {
+                e.printStackTrace();
+                return false;
+            } catch (final IOException e) {
+                e.printStackTrace();
+                return false;
+            } catch (final RuntimeException e) {
+                e.printStackTrace();
+            }
 
+            return true;
+        }
 
-		@Override
-		protected Transferable createTransferable(JComponent c)
-		{
-			final JTree tree = (JTree) c;
+    }
 
-			tmpNodeList = new ArrayList<FileFsTreeNode>();
+    private class FileTreeTransferHandler extends TransferHandler {
 
-			final TreePath[] paths = tree.getSelectionPaths();
-			for (final TreePath path : paths) {
-				final AbstractFsTreeNode fsnode = (AbstractFsTreeNode) path.getLastPathComponent();
-				if (fsnode.isDirectory()) {
-					recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsnode);
-				} else {
-					tmpNodeList.add((FileFsTreeNode) fsnode);
-				}
-			}
+        private List<FileFsTreeNode> tmpNodeList;
 
-			if (tmpNodeList.size() == 0) return null;
 
-			return new Transferable() {
+        @Override
+        public boolean canImport(TransferSupport support) {
+            return !support.isDataFlavorSupported(FLAVOR_FSTREE_FILE);
+        }
 
-				private final List<FileFsTreeNode> nodes = tmpNodeList;
 
+        @Override
+        protected Transferable createTransferable(JComponent c) {
+            final JTree tree = (JTree) c;
 
-				@Override
-				public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
-				{
-					if (!isDataFlavorSupported(flavor)) throw new UnsupportedFlavorException(flavor);
+            tmpNodeList = new ArrayList<FileFsTreeNode>();
 
-					if (flavor.equals(FLAVOR_FSTREE_FILE)) return nodes;
+            final TreePath[] paths = tree.getSelectionPaths();
+            for (final TreePath path : paths) {
+                final AbstractFsTreeNode fsnode = (AbstractFsTreeNode) path.getLastPathComponent();
+                if (fsnode.isDirectory()) {
+                    recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsnode);
+                } else {
+                    tmpNodeList.add((FileFsTreeNode) fsnode);
+                }
+            }
 
-					return null;
-				}
+            if (tmpNodeList.size() == 0) return null;
 
+            return new Transferable() {
 
-				@Override
-				public DataFlavor[] getTransferDataFlavors()
-				{
-					return new DataFlavor[] { FLAVOR_FSTREE_FILE };
-				}
+                private final List<FileFsTreeNode> nodes = tmpNodeList;
 
 
-				@Override
-				public boolean isDataFlavorSupported(DataFlavor flavor)
-				{
-					return flavor.equals(FLAVOR_FSTREE_FILE);
-				}
-			};
-		}
+                @Override
+                public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                    if (!isDataFlavorSupported(flavor)) throw new UnsupportedFlavorException(flavor);
 
+                    if (flavor.equals(FLAVOR_FSTREE_FILE)) return nodes;
 
-		@Override
-		public int getSourceActions(JComponent comp)
-		{
-			return COPY;
-		}
+                    return null;
+                }
 
 
-		@Override
-		public boolean importData(TransferSupport support)
-		{
-			try {
-				if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-					final String str = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
+                @Override
+                public DataFlavor[] getTransferDataFlavors() {
+                    return new DataFlavor[]{FLAVOR_FSTREE_FILE};
+                }
 
-					final String[] lines = str.split("\n");
 
-					final List<String> sel = fileList.getSelectedValues();
+                @Override
+                public boolean isDataFlavorSupported(DataFlavor flavor) {
+                    return flavor.equals(FLAVOR_FSTREE_FILE);
+                }
+            };
+        }
 
-					for (final String line : lines) {
-						if (line != null && sel.contains(line)) {
-							fileList.removeItemNoSort(line);
 
-							markChange();
-						}
-					}
+        @Override
+        public int getSourceActions(JComponent comp) {
+            return COPY;
+        }
 
-					fileList.sortAndUpdate();
-				}
 
-			} catch (final Exception e) {
-			}
+        @Override
+        public boolean importData(TransferSupport support) {
+            try {
+                if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    final String str = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
 
-			return true;
-		}
+                    final String[] lines = str.split("\n");
 
+                    final List<String> sel = fileList.getSelectedValues();
 
-		private void recursiveAddChildrenToTmpList(DirectoryFsTreeNode fsnode)
-		{
-			for (int i = 0; i < fsnode.getChildCount(); i++) {
-				final AbstractFsTreeNode fsn = fsnode.getChildAt(i);
-				if (fsn.isFile()) {
-					tmpNodeList.add((FileFsTreeNode) fsn);
-				} else {
-					recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsn);
-				}
-			}
-		}
-	}
+                    for (final String line : lines) {
+                        if (line != null && sel.contains(line)) {
+                            fileList.removeItemNoSort(line);
+
+                            markChange();
+                        }
+                    }
+
+                    fileList.sortAndUpdate();
+                }
+
+            } catch (final Exception e) {
+            }
+
+            return true;
+        }
+
+
+        private void recursiveAddChildrenToTmpList(DirectoryFsTreeNode fsnode) {
+            for (int i = 0; i < fsnode.getChildCount(); i++) {
+                final AbstractFsTreeNode fsn = fsnode.getChildAt(i);
+                if (fsn.isFile()) {
+                    tmpNodeList.add((FileFsTreeNode) fsn);
+                } else {
+                    recursiveAddChildrenToTmpList((DirectoryFsTreeNode) fsn);
+                }
+            }
+        }
+    }
 }

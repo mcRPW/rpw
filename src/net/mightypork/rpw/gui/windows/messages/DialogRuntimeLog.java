@@ -10,60 +10,54 @@ import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class DialogRuntimeLog extends DialogTerminalBase
-{
+public class DialogRuntimeLog extends DialogTerminalBase {
 
-	private JButton btnClose;
-
-
-	public DialogRuntimeLog() {
-		super(App.getFrame(), "Runtime log");
-
-		createDialog();
-	}
+    private JButton btnClose;
 
 
-	@Override
-	protected void addActions()
-	{
-		btnClose.addActionListener(closeListener);
-	}
+    public DialogRuntimeLog() {
+        super(App.getFrame(), "Runtime log");
+
+        createDialog();
+    }
 
 
-	@Override
-	protected String getHeadingText()
-	{
-		return "Runtime Log";
-	}
+    @Override
+    protected void addActions() {
+        btnClose.addActionListener(closeListener);
+    }
 
 
-	@Override
-	protected String getLogText()
-	{
-		String txt = "Not found.";
-
-		try {
-			txt = FileUtils.fileToString(OsUtils.getAppDir(Paths.FILE_LOG));
-		} catch (final Exception e) {
-			Log.e("Error getting log.", e);
-		}
-		return txt;
-	}
+    @Override
+    protected String getHeadingText() {
+        return "Runtime Log";
+    }
 
 
-	@Override
-	protected boolean hasButtons()
-	{
-		return true;
-	}
+    @Override
+    protected String getLogText() {
+        String txt = "Not found.";
+
+        try {
+            txt = FileUtils.fileToString(OsUtils.getAppDir(Paths.FILE_LOG));
+        } catch (final Exception e) {
+            Log.e("Error getting log.", e);
+        }
+        return txt;
+    }
 
 
-	@Override
-	protected JButton[] makeButtons()
-	{
-		btnClose = new JButton("Close", Icons.MENU_EXIT);
+    @Override
+    protected boolean hasButtons() {
+        return true;
+    }
 
-		return new JButton[] { btnClose };
-	}
+
+    @Override
+    protected JButton[] makeButtons() {
+        btnClose = new JButton("Close", Icons.MENU_EXIT);
+
+        return new JButton[]{btnClose};
+    }
 
 }

@@ -21,84 +21,81 @@ import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class CopyToProjectProcessor implements AssetTreeProcessor
-{
+public class CopyToProjectProcessor implements AssetTreeProcessor {
 
-	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
+    private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 
-	private final List<String> ignoredSources = new ArrayList<String>();
-
-
-	public CopyToProjectProcessor() {
-	}
+    private final List<String> ignoredSources = new ArrayList<String>();
 
 
-	public void addIgnoredSource(String source)
-	{
-		ignoredSources.add(source);
-	}
+    public CopyToProjectProcessor() {
+    }
 
 
-	@Override
-	public void process(AssetTreeNode node)
-	{
-		if (processed.contains(node)) return; // no double-processing
-		processed.add(node);
+    public void addIgnoredSource(String source) {
+        ignoredSources.add(source);
+    }
 
-		if (node instanceof AssetTreeGroup) {
-			return;
 
-		} else if (node instanceof AssetTreeLeaf) {
-			final File targetBase = Projects.getActive().getAssetsDirectory();
+    @Override
+    public void process(AssetTreeNode node) {
+        if (processed.contains(node)) return; // no double-processing
+        processed.add(node);
 
-			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
-			final String source = leaf.resolveAssetSource();
-			final String sourceMeta = leaf.resolveAssetMetaSource();
+        if (node instanceof AssetTreeGroup) {
+            return;
 
-			if (ignoredSources.contains(source)) return;
+        } else if (node instanceof AssetTreeLeaf) {
+            final File targetBase = Projects.getActive().getAssetsDirectory();
 
-			// prepare files
-			final String path = leaf.getAssetEntry().getPath();
-			final File target = new File(targetBase, path);
-			final File tgDir = target.getParentFile();
-			tgDir.mkdirs();
-			final File targetMeta = new File(targetBase, path + ".mcmeta");
+            final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+            final String source = leaf.resolveAssetSource();
+            final String sourceMeta = leaf.resolveAssetMetaSource();
 
-			// if source resolved to project, no work here.
-			InputStream in = null;
-			OutputStream out = null;
+            if (ignoredSources.contains(source)) return;
 
-			if (!MagicSources.isProject(sourceMeta)) {
-				try {
-					in = Sources.getAssetMetaStream(sourceMeta, leaf.getAssetKey());
+            // prepare files
+            final String path = leaf.getAssetEntry().getPath();
+            final File target = new File(targetBase, path);
+            final File tgDir = target.getParentFile();
+            tgDir.mkdirs();
+            final File targetMeta = new File(targetBase, path + ".mcmeta");
 
-					if (in != null) {
-						out = new FileOutputStream(targetMeta);
-						FileUtils.copyStream(in, out);
-					}
+            // if source resolved to project, no work here.
+            InputStream in = null;
+            OutputStream out = null;
 
-				} catch (final Exception e) {
-					Log.e("Error copying asset meta to project folder.", e);
-				} finally {
-					Utils.close(in, out);
-				}
-			}
+            if (!MagicSources.isProject(sourceMeta)) {
+                try {
+                    in = Sources.getAssetMetaStream(sourceMeta, leaf.getAssetKey());
 
-			if (!MagicSources.isProject(source)) {
-				try {
-					in = Sources.getAssetStream(source, leaf.getAssetKey());
-					if (in != null) {
-						out = new FileOutputStream(target);
-						FileUtils.copyStream(in, out);
-					}
+                    if (in != null) {
+                        out = new FileOutputStream(targetMeta);
+                        FileUtils.copyStream(in, out);
+                    }
 
-				} catch (final Exception e) {
-					Log.e("Error copying asset to project folder.", e);
-				} finally {
-					Utils.close(in, out);
-				}
-			}
-		}
-	}
+                } catch (final Exception e) {
+                    Log.e("Error copying asset meta to project folder.", e);
+                } finally {
+                    Utils.close(in, out);
+                }
+            }
+
+            if (!MagicSources.isProject(source)) {
+                try {
+                    in = Sources.getAssetStream(source, leaf.getAssetKey());
+                    if (in != null) {
+                        out = new FileOutputStream(target);
+                        FileUtils.copyStream(in, out);
+                    }
+
+                } catch (final Exception e) {
+                    Log.e("Error copying asset to project folder.", e);
+                } finally {
+                    Utils.close(in, out);
+                }
+            }
+        }
+    }
 
 }

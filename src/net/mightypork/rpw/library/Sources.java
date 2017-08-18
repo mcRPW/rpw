@@ -21,201 +21,188 @@ import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class Sources
-{
+public class Sources {
 
-	public static VanillaPack vanilla;
-	public static SilenceSource silence;
+    public static VanillaPack vanilla;
+    public static SilenceSource silence;
 
-	public static Map<String, ISource> sourceMap = new LinkedHashMap<String, ISource>();
-
-
-	public static void init()
-	{
-		Log.f1("Initializing Sources");
-
-		silence = new SilenceSource();
-
-		initVanilla();
-
-		initLibrary();
-
-		Log.f1("Initializing Sources - done.");
-	}
+    public static Map<String, ISource> sourceMap = new LinkedHashMap<String, ISource>();
 
 
-	/**
-	 * Init non-vanilla sources. Should be followed by taskRedrawTree.
-	 */
-	public static void initLibrary()
-	{
-		Log.f2("Erasing library cache");
+    public static void init() {
+        Log.f1("Initializing Sources");
 
-		sourceMap.clear();
+        silence = new SilenceSource();
 
-		Log.f2("Loading resourcepacks...");
-		final File library = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS);
+        initVanilla();
 
-		for (final File f : FileUtils.listDirectory(library)) {
-			if (!f.isDirectory()) continue;
-			final String dirName = f.getName();
+        initLibrary();
 
-			Log.f3("Adding Source: " + dirName + " -> " + f);
-			sourceMap.put(dirName, new FolderSource(f));
-		}
-
-	}
+        Log.f1("Initializing Sources - done.");
+    }
 
 
-	public static void initVanilla()
-	{
-		vanilla = new VanillaPack();
+    /**
+     * Init non-vanilla sources. Should be followed by taskRedrawTree.
+     */
+    public static void initLibrary() {
+        Log.f2("Erasing library cache");
 
-		final int i = Tasks.taskLoadVanillaStructure();
-		while (Tasks.isRunning(i)) {
-			Utils.sleep(100);
-		}
+        sourceMap.clear();
 
-		if (Flags.MUST_EXTRACT || !Flags.VANILLA_STRUCTURE_LOAD_OK) {
-			Flags.MUST_EXTRACT = false;
+        Log.f2("Loading resourcepacks...");
+        final File library = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS);
 
-			final int task = Tasks.taskExtractAssetsOrDie();
-			while (Tasks.isRunning(task)) {
-				Utils.sleep(10);
-			}
-		}
-	}
+        for (final File f : FileUtils.listDirectory(library)) {
+            if (!f.isDirectory()) continue;
+            final String dirName = f.getName();
 
+            Log.f3("Adding Source: " + dirName + " -> " + f);
+            sourceMap.put(dirName, new FolderSource(f));
+        }
 
-	public static boolean doesSourceExist(String source)
-	{
-		if (MagicSources.isMagic(source)) return true;
-
-		return sourceMap.containsKey(source);
-	}
+    }
 
 
-	public static boolean doesSourceProvideAsset(String source, AssetEntry asset)
-	{
-		if (asset == null || source == null) return false;
+    public static void initVanilla() {
+        vanilla = new VanillaPack();
 
-		if (MagicSources.isMagic(source)) {
-			if (MagicSources.isVanilla(source)) {
-				return Sources.vanilla.doesProvideAsset(asset.getKey());
-			}
+        final int i = Tasks.taskLoadVanillaStructure();
+        while (Tasks.isRunning(i)) {
+            Utils.sleep(100);
+        }
 
-			if (MagicSources.isSilence(source)) {
-				return asset.getType() == EAsset.SOUND;
-			}
+        if (Flags.MUST_EXTRACT || !Flags.VANILLA_STRUCTURE_LOAD_OK) {
+            Flags.MUST_EXTRACT = false;
 
-			if (MagicSources.isProject(source)) {
-				return Projects.isOpen() && Projects.getActive().doesProvideAsset(asset.getKey());
-			}
-		}
-
-		if (!sourceMap.containsKey(source)) return false;
-
-		return sourceMap.get(source).doesProvideAsset(asset.getKey());
-	}
+            final int task = Tasks.taskExtractAssetsOrDie();
+            while (Tasks.isRunning(task)) {
+                Utils.sleep(10);
+            }
+        }
+    }
 
 
-	public static boolean doesSourceProvideAssetMeta(String source, AssetEntry asset)
-	{
-		if (asset == null || source == null) return false;
+    public static boolean doesSourceExist(String source) {
+        if (MagicSources.isMagic(source)) return true;
 
-		if (MagicSources.isMagic(source)) {
-			if (MagicSources.isVanilla(source)) {
-				return Sources.vanilla.doesProvideAssetMeta(asset.getKey());
-			}
-
-			if (MagicSources.isSilence(source)) {
-				return false;
-			}
-
-			if (MagicSources.isProject(source)) {
-				return Projects.isOpen() && Projects.getActive().doesProvideAssetMeta(asset.getKey());
-			}
-		}
-
-		if (!sourceMap.containsKey(source)) return false;
-
-		return sourceMap.get(source).doesProvideAssetMeta(asset.getKey());
-	}
+        return sourceMap.containsKey(source);
+    }
 
 
-	public static ISource getSource(String source)
-	{
-		if (MagicSources.isVanilla(source)) return Sources.vanilla;
-		if (MagicSources.isProject(source)) return Projects.getActive();
-		if (MagicSources.isSilence(source)) return Sources.silence;
+    public static boolean doesSourceProvideAsset(String source, AssetEntry asset) {
+        if (asset == null || source == null) return false;
 
-		final ISource src = sourceMap.get(source);
-		if (src == null) Log.w("No source named " + source);
-		return src;
-	}
+        if (MagicSources.isMagic(source)) {
+            if (MagicSources.isVanilla(source)) {
+                return Sources.vanilla.doesProvideAsset(asset.getKey());
+            }
 
+            if (MagicSources.isSilence(source)) {
+                return asset.getType() == EAsset.SOUND;
+            }
 
-	public static InputStream getAssetStream(String source, String assetKey) throws IOException
-	{
-		return getSource(source).getAssetStream(assetKey);
-	}
+            if (MagicSources.isProject(source)) {
+                return Projects.isOpen() && Projects.getActive().doesProvideAsset(asset.getKey());
+            }
+        }
 
+        if (!sourceMap.containsKey(source)) return false;
 
-	public static InputStream getAssetMetaStream(String source, String assetKey) throws IOException
-	{
-		return getSource(source).getAssetMetaStream(assetKey);
-	}
-
-
-	/**
-	 * Translate source name for display (handles MAGIC sources)
-	 * 
-	 * @param source
-	 * @return displayed string
-	 */
-	public static String processForDisplay(String source)
-	{
-		if (MagicSources.isMagic(source)) {
-			if (MagicSources.isInherit(source)) return "(+)";
-			if (MagicSources.isProject(source)) return "PROJECT";
-			if (MagicSources.isSilence(source)) return "SILENCE";
-			if (MagicSources.isVanilla(source)) return "Vanilla";
-		}
-
-		return source;
-	}
+        return sourceMap.get(source).doesProvideAsset(asset.getKey());
+    }
 
 
-	/**
-	 * Get all NON-MAGIC source names applicable for context menu
-	 * 
-	 * @return source names
-	 */
-	public static List<String> getSourceNames()
-	{
-		final List<String> list = new ArrayList<String>();
+    public static boolean doesSourceProvideAssetMeta(String source, AssetEntry asset) {
+        if (asset == null || source == null) return false;
 
-		for (final String s : sourceMap.keySet()) {
-			list.add(s);
-		}
+        if (MagicSources.isMagic(source)) {
+            if (MagicSources.isVanilla(source)) {
+                return Sources.vanilla.doesProvideAssetMeta(asset.getKey());
+            }
 
-		Collections.sort(list);
+            if (MagicSources.isSilence(source)) {
+                return false;
+            }
 
-		return list;
-	}
+            if (MagicSources.isProject(source)) {
+                return Projects.isOpen() && Projects.getActive().doesProvideAssetMeta(asset.getKey());
+            }
+        }
+
+        if (!sourceMap.containsKey(source)) return false;
+
+        return sourceMap.get(source).doesProvideAssetMeta(asset.getKey());
+    }
 
 
-	public static List<String> getResourcepackNames()
-	{
-		final File library = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS);
-		final List<String> names = new ArrayList<String>();
+    public static ISource getSource(String source) {
+        if (MagicSources.isVanilla(source)) return Sources.vanilla;
+        if (MagicSources.isProject(source)) return Projects.getActive();
+        if (MagicSources.isSilence(source)) return Sources.silence;
 
-		for (final File f : FileUtils.listDirectory(library)) {
-			if (f.isDirectory()) {
-				names.add(f.getName());
-			}
-		}
+        final ISource src = sourceMap.get(source);
+        if (src == null) Log.w("No source named " + source);
+        return src;
+    }
 
-		return names;
-	}
+
+    public static InputStream getAssetStream(String source, String assetKey) throws IOException {
+        return getSource(source).getAssetStream(assetKey);
+    }
+
+
+    public static InputStream getAssetMetaStream(String source, String assetKey) throws IOException {
+        return getSource(source).getAssetMetaStream(assetKey);
+    }
+
+
+    /**
+     * Translate source name for display (handles MAGIC sources)
+     *
+     * @param source
+     * @return displayed string
+     */
+    public static String processForDisplay(String source) {
+        if (MagicSources.isMagic(source)) {
+            if (MagicSources.isInherit(source)) return "(+)";
+            if (MagicSources.isProject(source)) return "PROJECT";
+            if (MagicSources.isSilence(source)) return "SILENCE";
+            if (MagicSources.isVanilla(source)) return "Vanilla";
+        }
+
+        return source;
+    }
+
+
+    /**
+     * Get all NON-MAGIC source names applicable for context menu
+     *
+     * @return source names
+     */
+    public static List<String> getSourceNames() {
+        final List<String> list = new ArrayList<String>();
+
+        for (final String s : sourceMap.keySet()) {
+            list.add(s);
+        }
+
+        Collections.sort(list);
+
+        return list;
+    }
+
+
+    public static List<String> getResourcepackNames() {
+        final File library = OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS);
+        final List<String> names = new ArrayList<String>();
+
+        for (final File f : FileUtils.listDirectory(library)) {
+            if (f.isDirectory()) {
+                names.add(f.getName());
+            }
+        }
+
+        return names;
+    }
 }

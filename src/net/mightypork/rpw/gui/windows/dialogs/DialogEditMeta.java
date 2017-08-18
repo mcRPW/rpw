@@ -27,254 +27,242 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import com.google.gson.JsonParser;
 
 
-public class DialogEditMeta extends DialogEditorBase
-{
+public class DialogEditMeta extends DialogEditorBase {
 
-	private JButton btnCancel;
-	private JButton btnSave;
-	private JButton btnPresets;
-	private JButton btnCheck;
-	private JPopupMenu presetsPopup;
-	protected AssetTreeLeaf editedNode;
-	private String dlgHeading;
-
-
-	public DialogEditMeta(AssetTreeLeaf node) {
-		this.editedNode = node;
-
-		createDialog();
-	}
-
-
-	@Override
-	protected String getTitleText()
-	{
-		final String path = Utils.fromLastChar(editedNode.getAssetEntry().getPath(), '/');
+    private JButton btnCancel;
+    private JButton btnSave;
+    private JButton btnPresets;
+    private JButton btnCheck;
+    private JPopupMenu presetsPopup;
+    protected AssetTreeLeaf editedNode;
+    private String dlgHeading;
 
-		dlgHeading = path + ".mcmeta";
 
-		return path + " - RPW McMeta editor";
-	}
+    public DialogEditMeta(AssetTreeLeaf node) {
+        this.editedNode = node;
 
-
-	@Override
-	protected String getInitialText()
-	{
-		try {
-			final InputStream in = Projects.getActive().getAssetMetaStream(editedNode.getAssetKey());
-			return FileUtils.streamToString(in);
-		} catch (final IOException e) {
-			Log.e(e);
-			return "";
-		}
-	}
-
-
-	@Override
-	protected void buildButtons(HBox buttons)
-	{
-		btnPresets = new JButton("Templates", Icons.MENU_GENERATE);
-		btnCheck = new JButton("Check JSON", Icons.MENU_INFO);
-		btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
-		btnSave = new JButton("Save", Icons.MENU_YES);
-
-		buttons.add(btnPresets);
-		buttons.gap();
-		buttons.add(btnCheck);
-		buttons.glue();
-		buttons.add(btnSave);
-		buttons.gap();
-		buttons.add(btnCancel);
+        createDialog();
+    }
 
-		presetsPopup = buildPresetsPopup();
-		buttons.add(presetsPopup);
-	}
 
+    @Override
+    protected String getTitleText() {
+        final String path = Utils.fromLastChar(editedNode.getAssetEntry().getPath(), '/');
 
-	private JPopupMenu buildPresetsPopup()
-	{
-		final JPopupMenu popup = new JPopupMenu();
+        dlgHeading = path + ".mcmeta";
 
-		JMenu menu2, menu3;
+        return path + " - RPW McMeta editor";
+    }
 
-		JMenuItem item;
 
-		popup.add(menu2 = new JMenu("Animation"));
+    @Override
+    protected String getInitialText() {
+        try {
+            final InputStream in = Projects.getActive().getAssetMetaStream(editedNode.getAssetKey());
+            return FileUtils.streamToString(in);
+        } catch (final IOException e) {
+            Log.e(e);
+            return "";
+        }
+    }
 
-		final int[] frames = { 8, 16, 20, 32, 64 };
 
-		for (final int i : frames) {
-			menu2.add(menu3 = new JMenu(i + " frames"));
+    @Override
+    protected void buildButtons(HBox buttons) {
+        btnPresets = new JButton("Templates", Icons.MENU_GENERATE);
+        btnCheck = new JButton("Check JSON", Icons.MENU_INFO);
+        btnCancel = new JButton("Discard", Icons.MENU_CANCEL);
+        btnSave = new JButton("Save", Icons.MENU_YES);
 
-			menu3.add(item = new JMenuItem("Linear"));
-			item.setActionCommand("animation/" + i + "linear.txt");
-			item.addActionListener(loadTemplateListener);
+        buttons.add(btnPresets);
+        buttons.gap();
+        buttons.add(btnCheck);
+        buttons.glue();
+        buttons.add(btnSave);
+        buttons.gap();
+        buttons.add(btnCancel);
 
-			menu3.add(item = new JMenuItem("Reverse"));
-			item.setActionCommand("animation/" + i + "reverse.txt");
-			item.addActionListener(loadTemplateListener);
+        presetsPopup = buildPresetsPopup();
+        buttons.add(presetsPopup);
+    }
 
-			menu3.add(item = new JMenuItem("ZigZag"));
-			item.setActionCommand("animation/" + i + "zigzag.txt");
-			item.addActionListener(loadTemplateListener);
-		}
 
-		menu2.add(menu3 = new JMenu("Vanilla"));
+    private JPopupMenu buildPresetsPopup() {
+        final JPopupMenu popup = new JPopupMenu();
 
-		//@formatter:off
-		final String[] anims = { 
-				"clock",
-				"compass",
-				"fire_layer_0",
-				"fire_layer_1",
-				"lava_flow",
-				"lava_still",
-				"portal",
-				"water_flow",
-				"water_still"
-		};
-		//@formatter:on
+        JMenu menu2, menu3;
 
-		for (final String a : anims) {
-			menu3.add(item = new JMenuItem(a));
-			item.setActionCommand("animation/" + a + ".txt");
-			item.addActionListener(loadTemplateListener);
-		}
+        JMenuItem item;
 
-		menu2.addSeparator();
+        popup.add(menu2 = new JMenu("Animation"));
 
-		menu2.add(item = new JMenuItem("Default"));
-		item.setActionCommand("animation/default_animation.txt");
-		item.addActionListener(loadTemplateListener);
+        final int[] frames = {8, 16, 20, 32, 64};
 
-		popup.add(menu2 = new JMenu("Texture"));
+        for (final int i : frames) {
+            menu2.add(menu3 = new JMenu(i + " frames"));
 
-		menu2.add(menu3 = new JMenu("Vanilla"));
+            menu3.add(item = new JMenuItem("Linear"));
+            item.setActionCommand("animation/" + i + "linear.txt");
+            item.addActionListener(loadTemplateListener);
 
-		//@formatter:off
-		final String[] textures = {
-				"enchanted_item_glint",
-				"pumpkinblur",
-				"shadow",
-				"vignette"
-		};
-		//@formatter:on
+            menu3.add(item = new JMenuItem("Reverse"));
+            item.setActionCommand("animation/" + i + "reverse.txt");
+            item.addActionListener(loadTemplateListener);
 
-		for (final String t : textures) {
-			menu3.add(item = new JMenuItem(t));
-			item.setActionCommand("texture/" + t + ".txt");
-			item.addActionListener(loadTemplateListener);
-		}
+            menu3.add(item = new JMenuItem("ZigZag"));
+            item.setActionCommand("animation/" + i + "zigzag.txt");
+            item.addActionListener(loadTemplateListener);
+        }
 
-		menu2.addSeparator();
+        menu2.add(menu3 = new JMenu("Vanilla"));
 
-		menu2.add(item = new JMenuItem("Default"));
-		item.setActionCommand("texture/default_texture.txt");
-		item.addActionListener(loadTemplateListener);
+        //@formatter:off
+        final String[] anims = {
+                "clock",
+                "compass",
+                "fire_layer_0",
+                "fire_layer_1",
+                "lava_flow",
+                "lava_still",
+                "portal",
+                "water_flow",
+                "water_still"
+        };
+        //@formatter:on
 
-		menu2.addSeparator();
+        for (final String a : anims) {
+            menu3.add(item = new JMenuItem(a));
+            item.setActionCommand("animation/" + a + ".txt");
+            item.addActionListener(loadTemplateListener);
+        }
 
-		menu2.add(item = new JMenuItem("Blur"));
-		item.setActionCommand("texture/blur.txt");
-		item.addActionListener(loadTemplateListener);
+        menu2.addSeparator();
 
-		menu2.add(item = new JMenuItem("Clamp"));
-		item.setActionCommand("texture/clamp.txt");
-		item.addActionListener(loadTemplateListener);
+        menu2.add(item = new JMenuItem("Default"));
+        item.setActionCommand("animation/default_animation.txt");
+        item.addActionListener(loadTemplateListener);
 
-		return popup;
-	}
+        popup.add(menu2 = new JMenu("Texture"));
 
+        menu2.add(menu3 = new JMenu("Vanilla"));
 
-	@Override
-	protected void addActions()
-	{
-		btnCancel.addActionListener(closeListener);
+        //@formatter:off
+        final String[] textures = {
+                "enchanted_item_glint",
+                "pumpkinblur",
+                "shadow",
+                "vignette"
+        };
+        //@formatter:on
 
-		btnCheck.addActionListener(new ActionListener() {
+        for (final String t : textures) {
+            menu3.add(item = new JMenuItem(t));
+            item.setActionCommand("texture/" + t + ".txt");
+            item.addActionListener(loadTemplateListener);
+        }
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				final String text = getTextArea().getText();
+        menu2.addSeparator();
 
-				final JsonParser jp = new JsonParser();
+        menu2.add(item = new JMenuItem("Default"));
+        item.setActionCommand("texture/default_texture.txt");
+        item.addActionListener(loadTemplateListener);
 
-				try {
-					jp.parse(text);
-					Alerts.info(DialogEditMeta.this, "Check JSON", "Entered code is (probably) valid.");
-				} catch (final Exception er) {
-					Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");
-				}
+        menu2.addSeparator();
 
-			}
-		});
+        menu2.add(item = new JMenuItem("Blur"));
+        item.setActionCommand("texture/blur.txt");
+        item.addActionListener(loadTemplateListener);
 
-		btnSave.addActionListener(new ActionListener() {
+        menu2.add(item = new JMenuItem("Clamp"));
+        item.setActionCommand("texture/clamp.txt");
+        item.addActionListener(loadTemplateListener);
 
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				final String text = getTextArea().getText();
+        return popup;
+    }
 
-				final File file = Projects.getActive().getAssetMetaFile(editedNode.getAssetKey());
 
-				try {
-					FileUtils.stringToFile(file, text);
-					closeDialog();
-				} catch (final IOException e1) {
-					Log.e(e1);
+    @Override
+    protected void addActions() {
+        btnCancel.addActionListener(closeListener);
 
-					Alerts.error(self(), "Could not save file.");
+        btnCheck.addActionListener(new ActionListener() {
 
-				}
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final String text = getTextArea().getText();
 
-		btnPresets.addMouseListener(new ClickListener() {
+                final JsonParser jp = new JsonParser();
 
-			boolean first = true;
+                try {
+                    jp.parse(text);
+                    Alerts.info(DialogEditMeta.this, "Check JSON", "Entered code is (probably) valid.");
+                } catch (final Exception er) {
+                    Alerts.warning(DialogEditMeta.this, "Check JSON", "Entered code contains\n a SYNTAX ERROR!");
+                }
 
+            }
+        });
 
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (first) {
-					presetsPopup.show(getButtonsBox(), 0, 0);
-					presetsPopup.setVisible(false);
-					first = false;
-				}
+        btnSave.addActionListener(new ActionListener() {
 
-				presetsPopup.show(getButtonsBox(), btnPresets.getBounds().x, btnPresets.getBounds().y - presetsPopup.getHeight());
-			}
-		});
-	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final String text = getTextArea().getText();
 
-	private final ActionListener loadTemplateListener = new ActionListener() {
+                final File file = Projects.getActive().getAssetMetaFile(editedNode.getAssetKey());
 
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			final String res = e.getActionCommand();
+                try {
+                    FileUtils.stringToFile(file, text);
+                    closeDialog();
+                } catch (final IOException e1) {
+                    Log.e(e1);
 
-			final String text = FileUtils.resourceToString("/data/mcmeta/" + res);
+                    Alerts.error(self(), "Could not save file.");
 
-			setTextareaText(text);
-		}
-	};
+                }
+            }
+        });
 
+        btnPresets.addMouseListener(new ClickListener() {
 
-	@Override
-	protected void configureTextarea(RSyntaxTextArea ta)
-	{
-		configureTextareaJSON(ta);
-	}
+            boolean first = true;
 
 
-	@Override
-	protected String getFileName()
-	{
-		return dlgHeading;
-	}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (first) {
+                    presetsPopup.show(getButtonsBox(), 0, 0);
+                    presetsPopup.setVisible(false);
+                    first = false;
+                }
+
+                presetsPopup.show(getButtonsBox(), btnPresets.getBounds().x, btnPresets.getBounds().y - presetsPopup.getHeight());
+            }
+        });
+    }
+
+    private final ActionListener loadTemplateListener = new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final String res = e.getActionCommand();
+
+            final String text = FileUtils.resourceToString("/data/mcmeta/" + res);
+
+            setTextareaText(text);
+        }
+    };
+
+
+    @Override
+    protected void configureTextarea(RSyntaxTextArea ta) {
+        configureTextareaJSON(ta);
+    }
+
+
+    @Override
+    protected String getFileName() {
+        return dlgHeading;
+    }
 
 }

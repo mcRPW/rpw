@@ -15,122 +15,107 @@ import net.mightypork.rpw.utils.logging.Log;
 
 /**
  * Class for building a zip file
- * 
+ *
  * @author Ondřej Hruška (MightyPork)
  */
-public class ZipBuilder
-{
+public class ZipBuilder {
 
-	private final ZipOutputStream out;
-	private final HashSet<String> included = new HashSet<String>();
-
-
-	/**
-	 * @param target
-	 *            target zip file
-	 * @throws FileNotFoundException
-	 *             if the file is directory or cannot be created
-	 */
-	public ZipBuilder(File target) throws FileNotFoundException {
-		target.getParentFile().mkdirs();
-
-		final FileOutputStream dest = new FileOutputStream(target);
-		out = new ZipOutputStream(new BufferedOutputStream(dest));
-	}
+    private final ZipOutputStream out;
+    private final HashSet<String> included = new HashSet<String>();
 
 
-	/**
-	 * Add stream to a path
-	 * 
-	 * @param path
-	 *            path
-	 * @param in
-	 *            stream
-	 * @throws IOException
-	 */
-	public void addStream(String path, InputStream in) throws IOException
-	{
-		path = preparePath(path);
-		if (included.contains(path)) {
-			Log.f3("Zip already contains file " + path + ", skipping.");
-			return; // ignore
-		}
-		included.add(path);
+    /**
+     * @param target target zip file
+     * @throws FileNotFoundException if the file is directory or cannot be created
+     */
+    public ZipBuilder(File target) throws FileNotFoundException {
+        target.getParentFile().mkdirs();
 
-		out.putNextEntry(new ZipEntry(path));
-
-		FileUtils.copyStream(in, out);
-	}
+        final FileOutputStream dest = new FileOutputStream(target);
+        out = new ZipOutputStream(new BufferedOutputStream(dest));
+    }
 
 
-	/**
-	 * Add string as a file
-	 * 
-	 * @param path
-	 *            path
-	 * @param text
-	 *            text to write
-	 * @throws IOException
-	 */
-	public void addString(String path, String text) throws IOException
-	{
-		path = preparePath(path);
-		if (included.contains(path)) return; // ignore
-		included.add(path);
+    /**
+     * Add stream to a path
+     *
+     * @param path path
+     * @param in   stream
+     * @throws IOException
+     */
+    public void addStream(String path, InputStream in) throws IOException {
+        path = preparePath(path);
+        if (included.contains(path)) {
+            Log.f3("Zip already contains file " + path + ", skipping.");
+            return; // ignore
+        }
+        included.add(path);
 
-		out.putNextEntry(new ZipEntry(path));
+        out.putNextEntry(new ZipEntry(path));
 
-		final InputStream in = FileUtils.stringToStream(text);
-		FileUtils.copyStream(in, out);
-	}
-
-
-	/**
-	 * Add resource obtained via FileUtils.getResource()
-	 * 
-	 * @param path
-	 *            path
-	 * @param resPath
-	 *            resource path
-	 * @throws IOException
-	 */
-	public void addResource(String path, String resPath) throws IOException
-	{
-		path = preparePath(path);
-		if (included.contains(path)) return; // ignore
-		included.add(path);
-
-		out.putNextEntry(new ZipEntry(path));
-
-		final InputStream in = FileUtils.getResource(resPath);
-		FileUtils.copyStream(in, out);
-	}
+        FileUtils.copyStream(in, out);
+    }
 
 
-	/**
-	 * Normalize path
-	 * 
-	 * @param path
-	 *            original path
-	 * @return normalized path
-	 */
-	private String preparePath(String path)
-	{
-		path = path.replace("\\", "/");
+    /**
+     * Add string as a file
+     *
+     * @param path path
+     * @param text text to write
+     * @throws IOException
+     */
+    public void addString(String path, String text) throws IOException {
+        path = preparePath(path);
+        if (included.contains(path)) return; // ignore
+        included.add(path);
 
-		if (path.charAt(0) == '/') path = path.substring(1);
+        out.putNextEntry(new ZipEntry(path));
 
-		return path;
-	}
+        final InputStream in = FileUtils.stringToStream(text);
+        FileUtils.copyStream(in, out);
+    }
 
 
-	/**
-	 * Close the zip stream
-	 * 
-	 * @throws IOException
-	 */
-	public void close() throws IOException
-	{
-		out.close();
-	}
+    /**
+     * Add resource obtained via FileUtils.getResource()
+     *
+     * @param path    path
+     * @param resPath resource path
+     * @throws IOException
+     */
+    public void addResource(String path, String resPath) throws IOException {
+        path = preparePath(path);
+        if (included.contains(path)) return; // ignore
+        included.add(path);
+
+        out.putNextEntry(new ZipEntry(path));
+
+        final InputStream in = FileUtils.getResource(resPath);
+        FileUtils.copyStream(in, out);
+    }
+
+
+    /**
+     * Normalize path
+     *
+     * @param path original path
+     * @return normalized path
+     */
+    private String preparePath(String path) {
+        path = path.replace("\\", "/");
+
+        if (path.charAt(0) == '/') path = path.substring(1);
+
+        return path;
+    }
+
+
+    /**
+     * Close the zip stream
+     *
+     * @throws IOException
+     */
+    public void close() throws IOException {
+        out.close();
+    }
 }

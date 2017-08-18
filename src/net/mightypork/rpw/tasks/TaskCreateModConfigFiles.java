@@ -9,30 +9,28 @@ import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class TaskCreateModConfigFiles
-{
+public class TaskCreateModConfigFiles {
 
-	public static void run()
-	{
-		final File groups = OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS);
-		final File filters = OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS);
+    public static void run() {
+        final File groups = OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS);
+        final File filters = OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS);
 
-		if (!groups.exists()) {
-			try {
-				FileUtils.resourceToFile("/data/tree/groupsMod.ini", groups);
-			} catch (final IOException e) {
-				Log.e(e);
-			}
-		}
+        if (!groups.exists()) {
+            try {
+                FileUtils.resourceToFile("/data/tree/groupsMod.ini", groups);
+            } catch (final IOException e) {
+                Log.e(e);
+            }
+        }
 
-		if (!filters.exists()) {
-			try {
-				FileUtils.resourceToFile("/data/tree/filtersMod.ini", filters);
-			} catch (final IOException e) {
-				Log.e(e);
-			}
-		}
+        if (!filters.exists()) {
+            try {
+                FileUtils.resourceToFile("/data/tree/filtersMod.ini", filters);
+            } catch (final IOException e) {
+                Log.e(e);
+            }
+        }
 
-	}
+    }
 
 }

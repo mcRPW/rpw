@@ -7,52 +7,46 @@ import javax.swing.JSeparator;
 import net.mightypork.rpw.gui.Gui;
 
 
-public abstract class RpwBox extends Box
-{
+public abstract class RpwBox extends Box {
 
-	public RpwBox(int axis) {
-		super(axis);
-	}
-
-
-	public void gap()
-	{
-		gap_small();
-	}
+    public RpwBox(int axis) {
+        super(axis);
+    }
 
 
-	public void gapl()
-	{
-		gap_large();
-	}
+    public void gap() {
+        gap_small();
+    }
 
 
-	public abstract void gap_small();
+    public void gapl() {
+        gap_large();
+    }
 
 
-	public abstract void gap_large();
+    public abstract void gap_small();
 
 
-	public abstract void glue();
+    public abstract void gap_large();
 
 
-	public void windowPadding()
-	{
-		setBorder(Gui.winbdr());
-	}
+    public abstract void glue();
 
 
-	public void etchbdr()
-	{
-		setBorder(Gui.etchbdr());
-	}
+    public void windowPadding() {
+        setBorder(Gui.winbdr());
+    }
 
 
-	public void padding(int top, int left, int bottom, int right)
-	{
-		setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
-	}
+    public void etchbdr() {
+        setBorder(Gui.etchbdr());
+    }
 
 
-	public abstract JSeparator sep();
+    public void padding(int top, int left, int bottom, int right) {
+        setBorder(BorderFactory.createEmptyBorder(top, left, bottom, right));
+    }
+
+
+    public abstract JSeparator sep();
 }
