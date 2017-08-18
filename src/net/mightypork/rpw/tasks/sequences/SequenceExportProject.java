@@ -33,353 +33,346 @@ import net.mightypork.rpw.utils.logging.Log;
 import javax.swing.*;
 
 
-public class SequenceExportProject extends AbstractMonitoredSequence
-{
+public class SequenceExportProject extends AbstractMonitoredSequence {
 
-	private final File target;
-	private ZipBuilder zb;
-	private final Project project;
-	private final Runnable successRunnable;
+    private final File target;
+    private ZipBuilder zb;
+    private final Project project;
+    private final Runnable successRunnable;
 
-	public SequenceExportProject(File target, Runnable onSuccess)
-	{
-		this.target = target;
-		this.successRunnable = onSuccess;
+    public SequenceExportProject(File target, Runnable onSuccess) {
+        this.target = target;
+        this.successRunnable = onSuccess;
 
-		this.project = Projects.getActive();
-	}
+        this.project = Projects.getActive();
+    }
 
 
-	@Override
-	protected String getMonitorHeading()
-	{
-		return "Exporting project";
-	}
+    @Override
+    protected String getMonitorHeading() {
+        return "Exporting project";
+    }
 
 
-	@Override
-	public int getStepCount()
-	{
-		return 6;
-	}
+    @Override
+    public int getStepCount() {
+        return 6;
+    }
 
 
-	@Override
-	public String getStepName(int step)
-	{
-		//@formatter:off
-		switch (step) {
-			case 0: return "Preparing zip builder.";
-			case 1: return "Exporting included extra files.";
-			case 2: return "Exporting custom sounds.";
-			case 3: return "Exporting custom languages.";
-			case 4: return "Exporting configuration files.";
-			case 5: return "Exporting project assets.";
-		}
-		//@formatter:on
+    @Override
+    public String getStepName(int step) {
+        //@formatter:off
+        switch (step) {
+            case 0:
+                return "Preparing zip builder.";
+            case 1:
+                return "Exporting included extra files.";
+            case 2:
+                return "Exporting custom sounds.";
+            case 3:
+                return "Exporting custom languages.";
+            case 4:
+                return "Exporting configuration files.";
+            case 5:
+                return "Exporting project assets.";
+        }
+        //@formatter:on
 
-		return null;
-	}
-
-
-	@Override
-	protected boolean step(int step)
-	{
-		try {
-			//@formatter:off
-			switch (step) {
-				case 0: return stepPrepareOutput();
-				case 1: return stepAddIncludedExtras();
-				case 2: return stepAddCustomSounds();
-				case 3: return stepAddCustomLanguages();
-				case 4: return stepAddConfigFiles();
-				case 5: return stepExportProjectAssets();
-			}
-			//@formatter:on
-
-		} catch (final IOException e) {
-			Log.e(e);
-			return false;
-		}
-
-		return false;
-	}
+        return null;
+    }
 
 
-	private boolean stepPrepareOutput() throws FileNotFoundException
-	{
-		zb = new ZipBuilder(target);
+    @Override
+    protected boolean step(int step) {
+        try {
+            //@formatter:off
+            switch (step) {
+                case 0:
+                    return stepPrepareOutput();
+                case 1:
+                    return stepAddIncludedExtras();
+                case 2:
+                    return stepAddCustomSounds();
+                case 3:
+                    return stepAddCustomLanguages();
+                case 4:
+                    return stepAddConfigFiles();
+                case 5:
+                    return stepExportProjectAssets();
+            }
+            //@formatter:on
 
-		return true;
-	}
+        } catch (final IOException e) {
+            Log.e(e);
+            return false;
+        }
 
-
-	private boolean stepAddIncludedExtras()
-	{
-		try {
-			final File dir = project.getExtrasDirectory();
-			addDirectoryToZip(dir, "");
-		} catch (final Throwable t) {
-			Log.e("Error when including extras.", t);
-			return false;
-		}
-
-		return true;
-	}
-
-
-	private boolean stepAddCustomSounds() throws IOException
-	{
-		final File dir = project.getCustomSoundsDirectory();
-		addDirectoryToZip(dir, "assets/minecraft/sounds");
-
-		return true;
-	}
+        return false;
+    }
 
 
-	private boolean stepAddCustomLanguages() throws IOException
-	{
-		final File dir = project.getCustomLangDirectory();
-		addDirectoryToZip(dir, "assets/minecraft/lang");
+    private boolean stepPrepareOutput() throws FileNotFoundException {
+        zb = new ZipBuilder(target);
 
-		return true;
-	}
+        return true;
+    }
 
 
-	private boolean stepAddConfigFiles() throws IOException
-	{
-		// pack.png
-		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.png");
-		InputStream in = null;
-		try {
-			final File f = new File(project.getProjectDirectory(), "pack.png");
-			if (f.exists()) {
-				in = new FileInputStream(f);
-			} else {
-				in = FileUtils.getResource("/data/export/pack.png");
-			}
-			zb.addStream("pack.png", in);
-		} finally {
-			Utils.close(in);
-		}
+    private boolean stepAddIncludedExtras() {
+        try {
+            final File dir = project.getExtrasDirectory();
+            addDirectoryToZip(dir, "");
+        } catch (final Throwable t) {
+            Log.e("Error when including extras.", t);
+            return false;
+        }
 
-		if (Config.LOG_EXPORT_FILES) Log.f3("+ readme.txt");
-		zb.addResource("readme.txt", "/data/export/pack-readme.txt");
+        return true;
+    }
 
-		zb.addString("rpw-version.txt", Const.getGeneratorStamp());
 
-		if (Config.LOG_EXPORT_FILES) Log.f3("+ assets/minecraft/sounds.json");
-		if (project.getSoundsMap() != null) {
-			zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
-		}
+    private boolean stepAddCustomSounds() throws IOException {
+        final File dir = project.getCustomSoundsDirectory();
+        addDirectoryToZip(dir, "assets/minecraft/sounds");
 
-		// json mcmeta
-		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");
-		final String title = project.getTitle();
+        return true;
+    }
+
+
+    private boolean stepAddCustomLanguages() throws IOException {
+        final File dir = project.getCustomLangDirectory();
+        addDirectoryToZip(dir, "assets/minecraft/lang");
+
+        return true;
+    }
+
+
+    private boolean stepAddConfigFiles() throws IOException {
+        // pack.png
+        if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.png");
+        InputStream in = null;
+        try {
+            final File f = new File(project.getProjectDirectory(), "pack.png");
+            if (f.exists()) {
+                in = new FileInputStream(f);
+            } else {
+                in = FileUtils.getResource("/data/export/pack.png");
+            }
+            zb.addStream("pack.png", in);
+        } finally {
+            Utils.close(in);
+        }
+
+        if (Config.LOG_EXPORT_FILES) Log.f3("+ readme.txt");
+        zb.addResource("readme.txt", "/data/export/pack-readme.txt");
+
+        zb.addString("rpw-version.txt", Const.getGeneratorStamp());
+
+        if (Config.LOG_EXPORT_FILES) Log.f3("+ assets/minecraft/sounds.json");
+        if (project.getSoundsMap() != null) {
+            zb.addString("assets/minecraft/sounds.json", project.getSoundsMap().toJson());
+        }
+
+        // json mcmeta
+        if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");
+        final String title = project.getTitle();
         final String desc = project.getDescription();
+        final PackMcmeta packMeta = new PackMcmeta();
 
-		final PackMcmeta packMeta = new PackMcmeta();
+        int format = Projects.getActive().getExportPackVersion();
 
-		int format = Projects.getActive().getExportPackVersion();
+        Log.i("Using resource pack format: " + format);
 
-		Log.i("Using resource pack format: " + format);
+        packMeta.setPackInfo(new PackInfo(format, desc));
 
-            packMeta.setPackInfo(new PackInfo(format, title, desc));
+        zb.addString("pack.mcmeta", packMeta.toJson());
 
-		zb.addString("pack.mcmeta", packMeta.toJson());
-
-		return true;
-	}
-
-
-	private boolean stepExportProjectAssets()
-	{
-		Log.f2("Adding project asset files.");
-
-		final AssetTreeProcessor processor = new ExportProcessor();
-
-		final AssetTreeNode root = new TreeBuilder().buildTreeForExport(Projects.getActive());
-
-		root.processThisAndChildren(processor);
-
-		return true;
-	}
+        return true;
+    }
 
 
-	@Override
-	protected void doBefore()
-	{
-		Alerts.loading(true);
+    private boolean stepExportProjectAssets() {
+        Log.f2("Adding project asset files.");
 
-		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target);
-	}
+        final AssetTreeProcessor processor = new ExportProcessor();
 
+        final AssetTreeNode root = new TreeBuilder().buildTreeForExport(Projects.getActive());
 
-	@Override
-	protected void doAfter(boolean success)
-	{
-		Alerts.loading(false);
+        root.processThisAndChildren(processor);
 
-		try {
-			zb.close();
-		} catch (final IOException e) {
-			Log.e(e);
-		}
-
-		if (!success) {
-			Log.w("Exporting project \"" + project.getTitle() + "\" - FAILED.");
-			// cleanup
-			target.delete();
-
-			//@formatter:off
-			Alerts.error(
-					App.activeDialog,
-					"An error occured while exporting.\n" +
-					"Check log file for details."
-			);
-			//@formatter:on	
-
-			return;
-		}
-
-		if (successRunnable != null) successRunnable.run();
-
-		Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target + " - done.");
-
-		Alerts.info(App.activeDialog, "Export successful.");
-	}
+        return true;
+    }
 
 
-	private void addDirectoryToZip(File dir, String pathPrefix) throws IOException
-	{
-		final List<File> filesToAdd = new ArrayList<File>();
+    @Override
+    protected void doBefore() {
+        Alerts.loading(true);
 
-		FileUtils.listDirectoryRecursive(dir, null, filesToAdd);
+        Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target);
+    }
 
-		for (final File file : filesToAdd) {
-			if (!file.isFile()) return;
 
-			String path = file.getAbsolutePath();
-			path = pathPrefix + path.replace(dir.getAbsolutePath(), "");
+    @Override
+    protected void doAfter(boolean success) {
+        Alerts.loading(false);
 
-			path = path.replace('\\', '/'); // Windoze shit
+        try {
+            zb.close();
+        } catch (final IOException e) {
+            Log.e(e);
+        }
 
-			FileInputStream in = null;
+        if (!success) {
+            Log.w("Exporting project \"" + project.getTitle() + "\" - FAILED.");
+            // cleanup
+            target.delete();
 
-			try {
-				in = new FileInputStream(file);
-				zb.addStream(path, in);
-			} finally {
-				Utils.close(in);
-			}
+            //@formatter:off
+            Alerts.error(
+                    App.activeDialog,
+                    "An error occured while exporting.\n" +
+                            "Check log file for details."
+            );
+            //@formatter:on
 
-			if (Config.LOG_EXPORT_FILES) Log.f3("+ " + path);
-		}
-	}
+            return;
+        }
 
-	private class ExportProcessor implements AssetTreeProcessor
-	{
+        if (successRunnable != null) successRunnable.run();
 
-		@Override
-		public void process(AssetTreeNode node)
-		{
-			if (node instanceof AssetTreeLeaf) {
-				final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+        Log.f1("Exporting project \"" + project.getTitle() + "\" to " + target + " - done.");
 
-				String logEntry = "";
+        Alerts.info(App.activeDialog, "Export successful.");
+    }
 
-				// file
-				boolean fileSaved = false;
-				do {
-					final String srcName = leaf.resolveAssetSource();
-					if (srcName == null) break;
-					if (MagicSources.isVanilla(srcName)) break;
-					if (MagicSources.isInherit(srcName)) break;
 
-					InputStream data = null;
+    private void addDirectoryToZip(File dir, String pathPrefix) throws IOException {
+        final List<File> filesToAdd = new ArrayList<File>();
 
-					try {
-						data = Sources.getAssetStream(srcName, leaf.getAssetKey());
-						if (data == null) break;
+        FileUtils.listDirectoryRecursive(dir, null, filesToAdd);
 
-						final String path = leaf.getAssetEntry().getPath();
+        for (final File file : filesToAdd) {
+            if (!file.isFile()) return;
 
-						logEntry += "+ " + path;
-						zb.addStream(path, data);
+            String path = file.getAbsolutePath();
+            path = pathPrefix + path.replace(dir.getAbsolutePath(), "");
 
-						logEntry += " <- \"" + srcName + "\"";
+            path = path.replace('\\', '/'); // Windoze shit
 
-						fileSaved = true;
-					} catch (final IOException e) {
-						Log.e("Error getting asset stream.", e);
-					} finally {
-						Utils.close(data);
-					}
-				} while (false);
+            FileInputStream in = null;
 
-				if (!fileSaved) return;
+            try {
+                in = new FileInputStream(file);
+                zb.addStream(path, in);
+            } finally {
+                Utils.close(in);
+            }
 
-				// meta
-				do {
-					final String srcName = node.resolveAssetMetaSource();
-					if (srcName == null) break;
-					if (MagicSources.isVanilla(srcName)) break;
-					if (MagicSources.isInherit(srcName)) break;
+            if (Config.LOG_EXPORT_FILES) Log.f3("+ " + path);
+        }
+    }
 
-					InputStream data = null;
+    private class ExportProcessor implements AssetTreeProcessor {
 
-					try {
-						data = Sources.getAssetMetaStream(srcName, leaf.getAssetKey());
-						if (data == null) {
-							Log.e("null meta stream");
-							break;
-						}
+        @Override
+        public void process(AssetTreeNode node) {
+            if (node instanceof AssetTreeLeaf) {
+                final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
-						final String path = leaf.getAssetEntry().getPath() + ".mcmeta";
-						zb.addStream(path, data);
+                String logEntry = "";
 
-						logEntry += ", m: \"" + srcName + "\"";
-					} catch (final IOException e) {
-						Log.e("Error getting asset meta stream.", e);
-					} finally {
-						Utils.close(data);
-					}
-				} while (false);
+                // file
+                boolean fileSaved = false;
+                do {
+                    final String srcName = leaf.resolveAssetSource();
+                    if (srcName == null) break;
+                    if (MagicSources.isVanilla(srcName)) break;
+                    if (MagicSources.isInherit(srcName)) break;
 
-				if (Config.LOG_EXPORT_FILES) {
-					Log.f3(logEntry);
-				}
-			}
-		}
-	}
+                    InputStream data = null;
 
-	public static int getPackMetaNumber(){
-		String vers = Config.LIBRARY_VERSION.split("\\+")[0];
+                    try {
+                        data = Sources.getAssetStream(srcName, leaf.getAssetKey());
+                        if (data == null) break;
 
-		Matcher matcher_mnp = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*").matcher(vers);
-		Matcher matcher_mn = Pattern.compile("^(\\d+)\\.(\\d+).*").matcher(vers);
-		Matcher matcher_snapshot = Pattern.compile("^(\\d{2}w\\d{2}).*").matcher(vers);
+                        final String path = leaf.getAssetEntry().getPath();
 
-		Matcher m;
+                        logEntry += "+ " + path;
+                        zb.addStream(path, data);
 
-			m = matcher_mn;
-			if (m.find()) {
-				// Regular release
-				int major = Integer.valueOf(m.group(1));
-				int minor = Integer.valueOf(m.group(2));
+                        logEntry += " <- \"" + srcName + "\"";
 
-                if(major == 1 && minor < 9){
-                    return 1;
-                }else if(major > 1 || (major == 1 && minor > 10)){
-					return 3;
-				}
-				else if (major == 1 && (minor == 9 || minor == 10)) {
-					return 2;
-				}else{
-                    return 3;
+                        fileSaved = true;
+                    } catch (final IOException e) {
+                        Log.e("Error getting asset stream.", e);
+                    } finally {
+                        Utils.close(data);
+                    }
+                } while (false);
+
+                if (!fileSaved) return;
+
+                // meta
+                do {
+                    final String srcName = node.resolveAssetMetaSource();
+                    if (srcName == null) break;
+                    if (MagicSources.isVanilla(srcName)) break;
+                    if (MagicSources.isInherit(srcName)) break;
+
+                    InputStream data = null;
+
+                    try {
+                        data = Sources.getAssetMetaStream(srcName, leaf.getAssetKey());
+                        if (data == null) {
+                            Log.e("null meta stream");
+                            break;
+                        }
+
+                        final String path = leaf.getAssetEntry().getPath() + ".mcmeta";
+                        zb.addStream(path, data);
+
+                        logEntry += ", m: \"" + srcName + "\"";
+                    } catch (final IOException e) {
+                        Log.e("Error getting asset meta stream.", e);
+                    } finally {
+                        Utils.close(data);
+                    }
+                } while (false);
+
+                if (Config.LOG_EXPORT_FILES) {
+                    Log.f3(logEntry);
                 }
-			}
-			return 3;
-	}
+            }
+        }
+    }
+
+    public static int getPackMetaNumber() {
+        String vers = Config.LIBRARY_VERSION.split("\\+")[0];
+
+        Matcher matcher_mnp = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+).*").matcher(vers);
+        Matcher matcher_mn = Pattern.compile("^(\\d+)\\.(\\d+).*").matcher(vers);
+        Matcher matcher_snapshot = Pattern.compile("^(\\d{2}w\\d{2}).*").matcher(vers);
+
+        Matcher m;
+
+        m = matcher_mn;
+        if (m.find()) {
+            // Regular release
+            int major = Integer.valueOf(m.group(1));
+            int minor = Integer.valueOf(m.group(2));
+
+            if (major == 1 && minor < 9) {
+                return 1;
+            } else if (major > 1 || (major == 1 && minor > 10)) {
+                return 3;
+            } else if (major == 1 && (minor == 9 || minor == 10)) {
+                return 2;
+            } else {
+                return 3;
+            }
+        }
+        return 3;
+    }
 
 }
