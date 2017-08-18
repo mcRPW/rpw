@@ -9,8 +9,8 @@
         <module name="ResourcePackWorkbench" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="ResourcePackWorkbench" target="1.7" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="ResourcePackWorkbench" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
