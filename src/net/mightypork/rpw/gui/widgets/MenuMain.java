@@ -446,6 +446,12 @@ public class MenuMain {
         item.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
         menu.add(item);
 
+        item = new JMenuItem("Changelog");
+        if (ICNS) item.setIcon(Icons.TREE_FILE_TEXT);
+        item.addActionListener(Gui.openUrlListener);
+        item.setActionCommand(Paths.URL_CHANGELOG);
+        menu.add(item);
+
         menu.addSeparator();
 
         item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
