@@ -164,7 +164,8 @@ public class DialogProjectProperties extends RpwDialog
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-            	Projects.getActive().setDescription(descriptionField.getText());
+		Projects.getActive().setTitle(titleField.getText());
+		Projects.getActive().setDescription(descriptionField.getText());
 	   	closeDialog();
 		}
 	};

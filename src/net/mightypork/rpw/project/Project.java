@@ -360,7 +360,8 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
     public void setDescription(String description){
-        projectDescription = description;
+		projectDescription = description;
+		Projects.markChange();
     }
 
     public String getDescription(){
