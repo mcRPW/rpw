@@ -336,7 +336,7 @@ public class FileUtils
 		try {
 			name = Utils.toLastDot(filename);
 		} catch (final StringIndexOutOfBoundsException e) {
-			name = "";
+            name = "";
 			Log.w("Error extracting extension from file " + filename);
 			Utils.printStackTrace();
 		}

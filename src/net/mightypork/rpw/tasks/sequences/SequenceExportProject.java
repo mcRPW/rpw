@@ -60,7 +60,7 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 	@Override
 	public int getStepCount()
 	{
-		return 7;
+		return 6;
 	}
 
 
@@ -175,8 +175,8 @@ public class SequenceExportProject extends AbstractMonitoredSequence
 
 		// json mcmeta
 		if (Config.LOG_EXPORT_FILES) Log.f3("+ pack.mcmeta");
-		final String desc = project.getDescription();
 		final String title = project.getTitle();
+        final String desc = project.getDescription();
 
 		final PackMcmeta packMeta = new PackMcmeta();
 
