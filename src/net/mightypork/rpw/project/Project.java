@@ -59,6 +59,7 @@ public class Project extends Source implements NodeSourceProvider
 	public Project(String identifier) {
 		projectName = identifier;
 		projectTitle = identifier; // by default
+        projectDescription = " ";
 
 		backupBase = Paths.getProjectBackupFolder(identifier);
 		projectBase = Paths.getProjectFolder(identifier);
