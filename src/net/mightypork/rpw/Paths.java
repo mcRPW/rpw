@@ -60,7 +60,7 @@ public class Paths {
     public static final String URL_GITHUB_BUGS = "https://github.com/MightyPork/rpw/issues/new";
 
     public static final String URL_LATEST_DOWNLOAD = "https://github.com/MightyPork/rpw/releases";
-    public static final String URL_CHANGELOG = "https://github.com/MightyPork/rpw/blob/master/changelog.txt";
+    public static final String URL_CHANGELOG = "https://github.com/MightyPork/rpw/blob/development/changelog.txt";
 
     public static File getProjectBackupFolder(String identifier) {
         return OsUtils.getAppDir(Paths.DIR_PROJECT_BACKUP_TMP + "-" + identifier, true);
