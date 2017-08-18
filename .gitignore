@@ -1,7 +1,3 @@
-# Local Idea project stuff (?)
-*.iml
-*.eml
-
 # Folders for binaries
 /target
 /out
