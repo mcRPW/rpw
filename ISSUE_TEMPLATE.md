@@ -1,17 +1,13 @@
-Please follow those steps and check all the boxes `[x]` before submitting:
+*******************************************
 
-- [ ] I can reproduce the issue. *If you can't, then we likely can't either.*
-- [ ] My RPW is up to date.
-- [ ] I have checked that this issue isn't reported already.
-- [ ] My issue is not a question. Please post your questions to Gitter, or tweet at @MightyPork.
-- [ ] I have included all relevant information (crash log, Java/RPW/Minecraft/Windows version...)
+IF YOU ARE REPORTING A BROKEN DOWNLOAD LINK:
 
-Thank you!
+There is nothing we can do with Dropbox breaking the links.
 
-*You can delete this "questionaire" if all boxes are checked - it's here 
-to make sure people give some thought to their bug reports.*
+Go download it from the releases page here on GitHub, or rpw.ondrovo.com
 
----
+*******************************************
+<- Delete this notice before sending!
 
 **What happened?**
 
@@ -27,6 +23,3 @@ to make sure people give some thought to their bug reports.*
 
 
 
-
-
-  
