@@ -83,7 +83,7 @@ public class DialogProjectProperties extends RpwDialog
         titleField = Gui.textField("", "Project title", "Title of project");
         descriptionField = Gui.textField("", "Project description", "Description of project");
 
-		vbox.springForm(new String[] {"Name:" , "Title:","Description:"}, new JComponent[] {nameField,titleField,descriptionField });
+		vbox.springForm(new String[] {"Name:" , "Title:", "Description:"}, new JComponent[] {nameField,titleField,descriptionField });
 
 		vbox.gap();
 		vbox.add(Gui.commentLine("Use \"My Projects\" dialog to rename project."));

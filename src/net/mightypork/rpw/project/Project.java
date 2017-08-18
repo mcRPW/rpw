@@ -50,16 +50,15 @@ public class Project extends Source implements NodeSourceProvider
 
 	private final String projectName;
 	private String projectTitle;
-    	private String projectDescription;
+    private String projectDescription;
 
 	private Integer lastRpwVersion;
 
-    	private int exportPackVersion;
+    private int exportPackVersion;
 
 	public Project(String identifier) {
 		projectName = identifier;
 		projectTitle = identifier; // by default
-        projectDescription = "";
 
 		backupBase = Paths.getProjectBackupFolder(identifier);
 		projectBase = Paths.getProjectFolder(identifier);
