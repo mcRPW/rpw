@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
@@ -215,9 +217,11 @@ public class DesktopApi {
         parts.add(command);
 
         if (args != null) {
-            for (String s : args.split(" ")) {
-                s = String.format(s, file); // put in the filename thing
+            Matcher matcher = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(args);
 
+            while(matcher.find()){
+                String s = matcher.group(1).replace("\"", "").replace("\\", "");
+                s = String.format(s, file);
                 parts.add(s.trim());
             }
         }
