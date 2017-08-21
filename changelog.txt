@@ -1,3 +1,4 @@
+4.4.0
 440
 - You can now create custom languages with rpw
 - You can now change the pack description in the project properties and export project windows
