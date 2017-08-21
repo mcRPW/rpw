@@ -2,6 +2,6 @@
 - You can now create custom languages with rpw
 - You can now change the pack description in the project properties and export project windows
 - You can now change the resourcepack format in the export project window
-- Download latest version now links to github instead of the website
+- Download latest version button now links to github instead of the website
 - There is now a link in the help menu to the changelog
 - Fixed #86 Editor commands don't work right with spaces
