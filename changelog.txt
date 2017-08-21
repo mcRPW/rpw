@@ -1,4 +1,5 @@
-433
+440
+- You can now create custom languages with rpw
 - You can now change the pack description in the project properties and export project windows
 - You can now change the resourcepack format in the export project window
 - Download latest version now links to github instead of the website

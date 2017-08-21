@@ -167,6 +167,21 @@ public class Gui {
         return field;
     }
 
+    public static JCheckBox checkbox(boolean selected) {
+        final JCheckBox checkbox = new JCheckBox();
+        checkbox.setSelected(selected);
+        checkbox.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
+
+        return checkbox;
+    }
+
+    public static JXLabel label(String text){
+        final JXLabel label = new JXLabel();
+        label.setText(text);
+        label.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+
+        return label;
+    }
 
     public static Component hgap_small() {
         return Box.createHorizontalStrut(GAP);

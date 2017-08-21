@@ -16,6 +16,7 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Source;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.struct.LangEntry;
 import net.mightypork.rpw.struct.LangEntryMap;
 import net.mightypork.rpw.struct.SoundEntryMap;
 import net.mightypork.rpw.tree.assets.AssetEntry;
@@ -232,7 +233,7 @@ public class Project extends Source implements NodeSourceProvider
 			SimpleConfig.mapToFile(fileSourcesFiles, files, false);
 			SimpleConfig.mapToFile(fileSourcesGroups, groups, false);
 			FileUtils.stringToFile(fileSounds, sounds.toJson()); // NPE here. Why, how??? #45
-			FileUtils.stringToFile(fileLangs, langs.toJson());
+            FileUtils.stringToFile(fileLangs, langs.toJson());
 		} catch (NullPointerException e) {
 			Log.e("NPE from issue #45 happened again", e);
 		}
@@ -375,6 +376,16 @@ public class Project extends Source implements NodeSourceProvider
 	public int getExportPackVersion(){
 		return exportPackVersion;
 	}
+
+	public LangEntryMap getCustomLanguages() { return langs; }
+
+    public void addToCustomLanguages(LangEntry language) {
+	    if(langs == null){
+	        langs = new LangEntryMap();
+        }
+
+	    langs.put(language.name, language);
+    }
 
 	public void installDefaultIcon(boolean force)
 	{

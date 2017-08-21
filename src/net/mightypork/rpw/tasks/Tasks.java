@@ -16,20 +16,7 @@ import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.windows.WindowSplash;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.WindowMain;
-import net.mightypork.rpw.gui.windows.dialogs.DialogAbout;
-import net.mightypork.rpw.gui.windows.dialogs.DialogConfigureEditors;
-import net.mightypork.rpw.gui.windows.dialogs.DialogEditText;
-import net.mightypork.rpw.gui.windows.dialogs.DialogExportToMc;
-import net.mightypork.rpw.gui.windows.dialogs.DialogHelp;
-import net.mightypork.rpw.gui.windows.dialogs.DialogImportPack;
-import net.mightypork.rpw.gui.windows.dialogs.DialogManageLibrary;
-import net.mightypork.rpw.gui.windows.dialogs.DialogManageMcPacks;
-import net.mightypork.rpw.gui.windows.dialogs.DialogNewProject;
-import net.mightypork.rpw.gui.windows.dialogs.DialogManageProjects;
-import net.mightypork.rpw.gui.windows.dialogs.DialogProjectProperties;
-import net.mightypork.rpw.gui.windows.dialogs.DialogProjectSummary;
-import net.mightypork.rpw.gui.windows.dialogs.DialogSaveAs;
-import net.mightypork.rpw.gui.windows.dialogs.DialogSoundWizard;
+import net.mightypork.rpw.gui.windows.dialogs.*;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogChangelog;
 import net.mightypork.rpw.gui.windows.messages.DialogRuntimeLog;
@@ -883,6 +870,20 @@ public class Tasks {
         final DialogSoundWizard dlg = new DialogSoundWizard();
         Alerts.loading(false);
         dlg.setVisible(true);
+    }
+
+
+    public static void taskManageLanguages() {
+        if (!Projects.isOpen()) return;
+
+        Gui.open(new DialogManageLanguages());
+    }
+
+
+    public static void taskCreateLanguage() {
+        if (!Projects.isOpen()) return;
+
+        Gui.open(new DialogNewLanguage());
     }
 
 

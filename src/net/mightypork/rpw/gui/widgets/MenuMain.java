@@ -44,6 +44,7 @@ public class MenuMain {
     private JMenuItem itemProjectClose;
     private JMenuItem itemProjectOpenFolder;
     private JMenuItem itemCustomSounds;
+    private JMenuItem itemManageLanguages;
 
     private JMenuItem itemLibraryManage;
     private JMenuItem itemLibraryRefreshVanilla;
@@ -202,6 +203,10 @@ public class MenuMain {
         item = itemCustomSounds = new JMenuItem("Manage custom sounds", KeyEvent.VK_S);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, CTRL));
         if (ICNS) item.setIcon(Icons.MENU_SOUND_WIZARD);
+        menu.add(item);
+
+        item = itemManageLanguages = new JMenuItem("Manage languages", KeyEvent.VK_L);
+        if (ICNS) item.setIcon(Icons.TREE_FILE_TEXT);
         menu.add(item);
 
         item = itemProjectOpenFolder = new JMenuItem("Open project folder", KeyEvent.VK_I);
@@ -920,6 +925,14 @@ public class MenuMain {
             }
         });
 
+        itemManageLanguages.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Tasks.taskManageLanguages();
+            }
+        });
+
         itemDeleteVanillaCopies.addActionListener(new ActionListener() {
 
             @Override
@@ -946,6 +959,7 @@ public class MenuMain {
         menuView.setEnabled(open);
         itemProjectOpenFolder.setEnabled(open);
         itemCustomSounds.setEnabled(open);
+        itemManageLanguages.setEnabled(open);
 
         itemOptionFontFiles.setEnabled(Config.SHOW_TEXTURES);
     }

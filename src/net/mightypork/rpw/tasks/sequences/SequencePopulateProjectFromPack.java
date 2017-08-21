@@ -131,11 +131,11 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 
                 alreadyExtracted.add("pack.mcmeta");
 
-                project.setDescription(mcmeta.pack.description);
+                project.setDescription(mcmeta.pack.description.replace("\"", ""));
 
-                if (mcmeta.language != null) {
+                if (mcmeta.languages != null) {
                     // copy custom languages
-                    for (final Entry<String, LangEntry> entry : mcmeta.language.entrySet()) {
+                    for (final Entry<String, LangEntry> entry : mcmeta.languages.entrySet()) {
                         final String key = entry.getKey();
 
                         final String assetKey = "assets.minecraft.lang." + key;
@@ -143,8 +143,8 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
                         final AssetEntry ae = new AssetEntry(assetKey, EAsset.LANG);
 
                         if (Sources.vanilla.doesProvideAsset(ae.getKey())) {
-                            // vanilla language, skip (why was it there
-                            // anyway??)
+
+                            // vanilla language, skip (why was it there anyway?)
                         } else {
                             // new language
                             final String entryname = ae.getPath();
