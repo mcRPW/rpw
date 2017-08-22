@@ -45,6 +45,7 @@ public class DialogExportToMc extends RpwDialog {
 
     private JComboBox mcOptsCombo;
     private JComboBox packMeta;
+    private JCheckBox unZip;
 
     private static final int MC_ALONE = 0;
     private static final int MC_ADD = 1;
@@ -100,8 +101,9 @@ public class DialogExportToMc extends RpwDialog {
         mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
         packMeta = new JComboBox(new String[]{"1", "2", "3"});
         packMeta.setSelectedIndex(SequenceExportProject.getPackMetaNumber() - 1);
+        unZip = Gui.checkbox(false);
 
-        vbox.springForm(new String[]{"Resourcepack Name:", "Resourcepack Description:", "Resourcepack Format:", "In Minecraft:"}, new JComponent[]{nameField, descriptionField, packMeta, mcOptsCombo});
+        vbox.springForm(new String[]{"Resourcepack Name:", "Resourcepack Description:", "Resourcepack Format:", "In Minecraft:", "Unzip:"}, new JComponent[]{nameField, descriptionField, packMeta, mcOptsCombo, unZip});
 
         vbox.gapl();
 
@@ -153,6 +155,7 @@ public class DialogExportToMc extends RpwDialog {
         @Override
         public void actionPerformed(ActionEvent evt) {
             Projects.getActive().setExportPackVersion(packMeta.getSelectedIndex() + 1);
+            Projects.getActive().setUnZip(unZip.isSelected());
             Projects.getActive().setTitle(nameField.getText());
             Projects.getActive().setDescription(descriptionField.getText());
             final String name = nameField.getText().trim();

@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,7 +15,6 @@ import java.util.regex.Pattern;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
-import net.mightypork.rpw.gui.windows.dialogs.DialogExportToMc;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.MagicSources;
 import net.mightypork.rpw.library.Sources;
@@ -27,7 +28,9 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
 import net.mightypork.rpw.utils.files.ZipBuilder;
+import net.mightypork.rpw.utils.files.ZipUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 import javax.swing.*;
@@ -221,6 +224,17 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
             zb.close();
         } catch (final IOException e) {
             Log.e(e);
+        }
+
+        // Unzip
+        if(Projects.getActive().getUnzip() == true){
+            try {
+                Log.i("Unziping " + Projects.getActive().getName());
+                ZipUtils.extractZip(target, OsUtils.getMcDir("resourcepacks/" + Projects.getActive().getName()), null);
+                Files.delete(Paths.get(target.getPath()));
+            } catch(IOException exception) {
+                exception.printStackTrace();
+            }
         }
 
         if (!success) {

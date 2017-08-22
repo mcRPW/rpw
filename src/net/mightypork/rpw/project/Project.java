@@ -56,6 +56,7 @@ public class Project extends Source implements NodeSourceProvider
 	private Integer lastRpwVersion;
 
 	private int exportPackVersion;
+	private boolean unZip;
 
 	public Project(String identifier) {
 		projectName = identifier;
@@ -376,6 +377,12 @@ public class Project extends Source implements NodeSourceProvider
 	public int getExportPackVersion(){
 		return exportPackVersion;
 	}
+
+	public void setUnZip(boolean unzip){
+	    unZip = unzip;
+	}
+
+	public boolean getUnzip(){return unZip;}
 
 	public LangEntryMap getCustomLanguages() { return langs; }
 
