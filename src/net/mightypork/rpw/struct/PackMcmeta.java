@@ -49,8 +49,8 @@ public class PackMcmeta {
 
         while(matcher.find()){
             matchResult = matcher.toMatchResult();
-            names.add(json.substring(matchResult.start() + 7, json.indexOf("\"", matchResult.start() + 7)));
-            codes.add(json.substring(matchResult.start() - 5, json.indexOf("\"", matchResult.start() - 5)));
+            names.add(json.substring(matchResult.start() + 8, json.indexOf("\"", matchResult.start() + 8)));
+            codes.add(json.substring(json.lastIndexOf("\"", matchResult.start() - 6) + 1, json.indexOf("\"", json.lastIndexOf("\"", matchResult.start() - 6) + 1)));
             languages += 1;
         }
 
@@ -58,14 +58,14 @@ public class PackMcmeta {
         matcher = pattern.matcher(json);
         while(matcher.find()){
             matchResult = matcher.toMatchResult();
-            regions.add(json.substring(matchResult.start() + 9, json.indexOf("\"", matchResult.start() + 9)));
+            regions.add(json.substring(matchResult.start() + 10, json.indexOf("\"", matchResult.start() + 10)));
         }
 
         pattern = Pattern.compile("bidirectional");
         matcher = pattern.matcher(json);
         while(matcher.find()){
             matchResult = matcher.toMatchResult();
-            biDirectional.add(Boolean.parseBoolean(json.substring(matchResult.start() + 18, json.indexOf("}", matchResult.start() + 18))));
+            biDirectional.add(Boolean.parseBoolean(json.substring(matchResult.start() + 19, json.indexOf("}", matchResult.start() + 19))));
         }
 
         for(int i = 0; i < languages; i++){
@@ -84,7 +84,7 @@ public class PackMcmeta {
         String json = "{" + pack.toString();
 
         if(languages.size() > 0){
-            json += ", \"language\":{";
+            json += ", \"language\": {";
         }
 
         for (int i = 0; i < languages.size(); i++){
@@ -92,7 +92,7 @@ public class PackMcmeta {
             if(i > 0){
                 json += ",";
             }
-            json += "\"" + language.code + "\":{\"name\":\"" + language.name + "\", \"region\":\"" + language.region + "\", \"bidirectional\":" + language.bidirectional + "}";
+            json += "\"" + language.code + "\": {\"name\": \"" + language.name + "\", \"region\": \"" + language.region + "\", \"bidirectional\": " + language.bidirectional + "}";
         }
 
         if(languages.size() > 0){
