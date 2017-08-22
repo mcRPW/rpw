@@ -1,6 +1,7 @@
 package net.mightypork.rpw.tasks.sequences;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -166,6 +167,11 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
                                 if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ LANG " + entryname);
                             }
                         }
+                    }
+                    try {
+                        Projects.getActive().saveConfigFiles();
+                    }catch (IOException exception){
+                        exception.printStackTrace();
                     }
                 }
             }

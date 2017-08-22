@@ -39,32 +39,32 @@ public class PackMcmeta {
         packMcmeta.setPackInfo(new PackInfo(packFormat, description));
 
         int languages = 0;
-        Pattern patternName = Pattern.compile("name");
-        Matcher matcherName = patternName.matcher(json);
+        Pattern pattern = Pattern.compile("name");
+        Matcher matcher = pattern.matcher(json);
         MatchResult matchResult;
-        Pattern patternRegion = Pattern.compile("region");
-        Matcher matcherRegion = patternRegion.matcher(json);
-        Pattern patternBidirectional = Pattern.compile("bidirectional");
-        Matcher matcherBidirectional = patternBidirectional.matcher(json);
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<String> codes = new ArrayList<String>();
         ArrayList<String> regions = new ArrayList<String>();
         ArrayList<Boolean> biDirectional = new ArrayList<Boolean>();
 
-        while(matcherName.find()){
-            matchResult = matcherName.toMatchResult();
+        while(matcher.find()){
+            matchResult = matcher.toMatchResult();
             names.add(json.substring(matchResult.start() + 7, json.indexOf("\"", matchResult.start() + 7)));
             codes.add(json.substring(matchResult.start() - 5, json.indexOf("\"", matchResult.start() - 5)));
             languages += 1;
         }
 
-        while(matcherRegion.find()){
-            matchResult = matcherRegion.toMatchResult();
+        pattern = Pattern.compile("region");
+        matcher = pattern.matcher(json);
+        while(matcher.find()){
+            matchResult = matcher.toMatchResult();
             regions.add(json.substring(matchResult.start() + 9, json.indexOf("\"", matchResult.start() + 9)));
         }
 
-        while(matcherBidirectional.find()){
-            matchResult = matcherBidirectional.toMatchResult();
+        pattern = Pattern.compile("bidirectional");
+        matcher = pattern.matcher(json);
+        while(matcher.find()){
+            matchResult = matcher.toMatchResult();
             biDirectional.add(Boolean.parseBoolean(json.substring(matchResult.start() + 18, json.indexOf("}", matchResult.start() + 18))));
         }
 
@@ -73,14 +73,8 @@ public class PackMcmeta {
             String name = names.get(i);
             String region = regions.get(i);
             boolean bidirectional = biDirectional.get(i);
-            LangEntry language = new LangEntry(name, code, description, bidirectional);
+            LangEntry language = new LangEntry(name, region, code, bidirectional);
             packMcmeta.languages.put(name, language);
-        }
-
-        try {
-            Projects.getActive().saveConfigFiles();
-        }catch (IOException exception){
-            exception.printStackTrace();
         }
         return packMcmeta;
     }
