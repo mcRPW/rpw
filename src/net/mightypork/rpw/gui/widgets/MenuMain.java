@@ -428,7 +428,7 @@ public class MenuMain {
         item = new JMenuItem("GitHub");
         if (ICNS) item.setIcon(Icons.MENU_GITHUB);
         item.addActionListener(Gui.openUrlListener);
-        item.setActionCommand(Paths.URL_GITHUB_WEB);
+        item.setActionCommand(Paths.URL_GITHUB_REPO);
         menu.add(item);
 
         menu.addSeparator();

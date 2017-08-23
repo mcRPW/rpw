@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
+import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.widgets.VBox;
@@ -21,7 +22,8 @@ import net.mightypork.rpw.utils.logging.Log;
 public class DialogAbout extends RpwDialog {
 
     private JButton buttonOK;
-    private JButton buttonTwitter;
+    private JButton buttonWebsite;
+    private JButton buttonGitHub;
     private JButton buttonTwitterRpw;
 
 
@@ -45,10 +47,11 @@ public class DialogAbout extends RpwDialog {
         vb.gapl();
 
         buttonTwitterRpw = new JButton("@RPWapp", Icons.MENU_TWITTER);
-        buttonTwitter = new JButton("@MightyPork", Icons.MENU_TWITTER);
+        buttonWebsite = new JButton("Website", Icons.MENU_WEBSITE);
+        buttonGitHub = new JButton("GitHub", Icons.MENU_GITHUB);
         buttonOK = new JButton("Close", Icons.MENU_YES);
 
-        vb.buttonRow(Gui.CENTER, buttonTwitterRpw, buttonTwitter, buttonOK);
+        vb.buttonRow(Gui.CENTER, buttonTwitterRpw, buttonGitHub, buttonWebsite, buttonOK);
         buttonOK.requestFocusInWindow();
 
         return vb;
@@ -59,12 +62,24 @@ public class DialogAbout extends RpwDialog {
     protected void addActions() {
         buttonOK.addActionListener(closeListener);
 
-        buttonTwitter.addActionListener(new ActionListener() {
+        buttonWebsite.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    DesktopApi.browse(new URL("https://twitter.com/MightyPork").toURI());
+                    DesktopApi.browse(new URL(Paths.URL_RPW_WEB).toURI());
+                } catch (final Exception err) {
+                    Log.e(err);
+                }
+            }
+        });
+
+        buttonGitHub.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    DesktopApi.browse(new URL(Paths.URL_GITHUB_REPO).toURI());
                 } catch (final Exception err) {
                     Log.e(err);
                 }
