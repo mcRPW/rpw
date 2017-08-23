@@ -21,6 +21,9 @@ import net.mightypork.rpw.tasks.Tasks;
 
 import net.mightypork.rpw.utils.logging.Log;
 import org.jdesktop.swingx.JXFrame;
+import org.jdesktop.swingx.JXLabel;
+import org.jdesktop.swingx.JXStatusBar;
+import org.jdesktop.swingx.plaf.basic.BasicStatusBarUI;
 
 
 public class WindowMain {
@@ -28,11 +31,18 @@ public class WindowMain {
     public MenuMain menu;
     public TreeDisplay treeDisplay;
     public SidePanel sidePanel;
-
+    private JXStatusBar statusbar;
+    private JXLabel sblabel;
 
     public WindowMain() {
         frame = new JXFrame(App.getWindowTitle());
         frame.setIconImage(Icons.WINDOW.getImage());
+
+        statusbar  = new JXStatusBar();
+        frame.setStatusBar(statusbar);
+        statusbar.putClientProperty(BasicStatusBarUI.AUTO_ADD_SEPARATOR, true);
+        statusbar.add(sblabel = new JXLabel(""));
+        setStatus(null);
 
         menu = new MenuMain();
 
@@ -59,6 +69,15 @@ public class WindowMain {
         App.inst.mainFrame = frame;
     }
 
+
+    /**
+     * Set stayusbar text
+     * @param s - text to show
+     */
+    public void setStatus(String s) {
+        if (s == null || s.length()==0) s = " ";
+        sblabel.setText(s);
+    }
 
     private Component buildMainPanel() {
         if (Config.USE_NIMBUS) Gui.useMetal();

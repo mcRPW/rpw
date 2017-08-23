@@ -24,10 +24,7 @@ import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.TreeIconProvider;
 import net.mightypork.rpw.tree.assets.TreeBuilder;
-import net.mightypork.rpw.tree.assets.tree.AssetTreeGroup;
-import net.mightypork.rpw.tree.assets.tree.AssetTreeModel;
-import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
-import net.mightypork.rpw.tree.assets.tree.SourceName;
+import net.mightypork.rpw.tree.assets.tree.*;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.renderer.DefaultTreeRenderer;
@@ -58,6 +55,9 @@ public class TreeDisplay {
         return root;
     }
 
+    private void showLeafInStatusBar(AssetTreeNode node) {
+        App.setStatus((node != null && node.isLeaf()) ? ((AssetTreeLeaf)node).getAssetEntry().getPath() : null);
+    }
 
     public TreeDisplay() {
         treeModel = new AssetTreeModel(buildProjectRoot()); // filler empty node
@@ -93,6 +93,7 @@ public class TreeDisplay {
                     final AssetTreeNode node = (AssetTreeNode) path.getLastPathComponent();
 
                     App.getSidePanel().updatePreview(node);
+                    showLeafInStatusBar(node);
                 }
             }
         };
@@ -105,6 +106,7 @@ public class TreeDisplay {
             public void mouseExited(MouseEvent e) {
                 // this fix is useful only when mouse-preview is enabled
                 if (Config.PREVIEW_HOVER) tsl.valueChanged(null);
+                showLeafInStatusBar(null);
             }
 
         });
@@ -120,16 +122,19 @@ public class TreeDisplay {
                     return;
                 }
 
-                if (!Config.PREVIEW_HOVER) return;
-
                 lastEvent = System.currentTimeMillis();
 
                 final int row = treeTable.rowAtPoint(e.getPoint());
                 final TreePath path = treeTable.getPathForRow(row);
-                if (path == null) return;
+                if (path == null) {
+                    App.setStatus(null);
+                    return;
+                }
 
                 final AssetTreeNode node = (AssetTreeNode) path.getLastPathComponent();
-                App.getSidePanel().updatePreview(node);
+
+                if (Config.PREVIEW_HOVER) App.getSidePanel().updatePreview(node);
+                showLeafInStatusBar(node);
             }
 
 

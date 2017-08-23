@@ -239,4 +239,12 @@ public class App {
 
         inst.window.frame.setTitle(windowTitle);
     }
+
+
+    /** Set status text */
+    public static void setStatus(String s) {
+        if (inst == null || inst.window == null) return;
+
+        inst.window.setStatus(s);
+    }
 }
