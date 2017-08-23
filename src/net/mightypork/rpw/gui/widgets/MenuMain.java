@@ -419,23 +419,11 @@ public class MenuMain {
 
         menu.addSeparator();
 
-        item = new JMenuItem("Official website");
+        item = new JMenuItem("RPW website");
         if (ICNS) item.setIcon(Icons.MENU_WEBSITE);
         item.addActionListener(Gui.openUrlListener);
         item.setActionCommand(Paths.URL_RPW_WEB);
         menu.add(item);
-
-        item = new JMenuItem("PMC post");
-        if (ICNS) item.setIcon(Icons.MENU_PMC);
-        item.addActionListener(Gui.openUrlListener);
-        item.setActionCommand(Paths.URL_PLANETMINECRAFT_WEB);
-        menu.add(item);
-
-//			item = new JMenuItem("RPW on Minecraft Forum");
-//			if(USE_ICONS) item.setIcon(Icons.MENU_MCF);
-//			item.addActionListener(Gui.openUrlListener);
-//			item.setActionCommand(Paths.URL_MINECRAFTFORUM_WEB);
-//			menu.add(item);
 
         item = new JMenuItem("GitHub");
         if (ICNS) item.setIcon(Icons.MENU_GITHUB);
@@ -448,24 +436,24 @@ public class MenuMain {
         item = new JMenuItem("Download latest version");
         if (ICNS) item.setIcon(Icons.MENU_DOWNLOAD);
         item.addActionListener(Gui.openUrlListener);
-        item.setActionCommand(Paths.URL_LATEST_DOWNLOAD);
+        item.setActionCommand(Paths.URL_GITHUB_RELEASES);
         menu.add(item);
 
         item = new JMenuItem("Changelog");
         if (ICNS) item.setIcon(Icons.TREE_FILE_TEXT);
         item.addActionListener(Gui.openUrlListener);
-        item.setActionCommand(Paths.URL_CHANGELOG);
+        item.setActionCommand(Paths.URL_UPDATE_FILE);
         menu.add(item);
 
         menu.addSeparator();
 
-        item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
-        if (ICNS) item.setIcon(Icons.MENU_DONATE);
-        item.addActionListener(Gui.openUrlListener);
-        item.setActionCommand(Paths.URL_DONATE);
-        menu.add(item);
-
-        menu.addSeparator();
+//        item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
+//        if (ICNS) item.setIcon(Icons.MENU_DONATE);
+//        item.addActionListener(Gui.openUrlListener);
+//        item.setActionCommand(Paths.URL_DONATE);
+//        menu.add(item);
+//
+//        menu.addSeparator();
 
         item = itemAbout = new JMenuItem("About", KeyEvent.VK_A);
         if (ICNS) item.setIcon(Icons.MENU_ABOUT);
