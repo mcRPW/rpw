@@ -9,7 +9,7 @@ Please read the help before asking questions, and go through the RPW menus.
 
 ## Links
 
-- [**Official RPW website**](http://rpw.ondrovo.com)
+- [**Official RPW website**](https://mcrpw.github.io/)
 - [MightyPork on Twitter](https://twitter.com/MightyPork)
 - [RPW on Twitter](https://twitter.com/RPWapp)
 - [Planet Minecraft post](http://www.planetminecraft.com/mod/tool-resourcepack-workbench---the-ultimate-pack-creator/)
@@ -18,7 +18,7 @@ Please read the help before asking questions, and go through the RPW menus.
 
 **Q: RPW opens images in Paint instead of Gimp. How to fix?**
 
-Please see issues [#53](https://github.com/MightyPork/rpw/issues/53) and [#58](https://github.com/MightyPork/rpw/issues/58).
+Please see issues [#53](https://github.com/mcRPW/rpw/issues/53) and [#58](https://github.com/mcRPW/rpw/issues/58).
 
 **Q: How to import an existing pack?**
 

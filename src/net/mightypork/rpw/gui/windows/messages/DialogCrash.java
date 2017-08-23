@@ -124,7 +124,7 @@ public class DialogCrash extends DialogTerminalBase {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    DesktopApi.browse(new URL("https://github.com/MightyPork/rpw/issues/new").toURI());
+                    DesktopApi.browse(new URL("https://github.com/mcRPW/rpw/issues/new").toURI());
                 } catch (final Exception exc) {
                     Alerts.error(self(), "Sorry, something went wrong.");
                 }

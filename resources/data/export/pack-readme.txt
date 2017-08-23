@@ -17,11 +17,11 @@
 
  [Get RPW] 
  
-   * Official website  -> rpw.ondrovo.com
+   * Official website  -> https://mcrpw.github.io/
 
  [Contribute] 
  
-   * RPW on GitHub     -> github.com/MightyPork/rpw
+   * RPW on GitHub     -> github.com/mcRPW/rpw
 
  [Twitter] 
  

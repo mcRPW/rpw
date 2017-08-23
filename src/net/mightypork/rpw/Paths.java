@@ -53,11 +53,11 @@ public class Paths {
 
 //    public static final String URL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B9X6Q5QU7FKPC";
     public static final String URL_UPDATE_FILE = "https://raw.githubusercontent.com/MightyPork/rpw/master/changelog.txt";
-    public static final String URL_RPW_WEB = "http://rpw.ondrovo.com";
-    public static final String URL_GITHUB_REPO = "https://github.com/MightyPork/rpw/";
-    public static final String URL_GITHUB_BUGS = "https://github.com/MightyPork/rpw/issues/new";
+    public static final String URL_RPW_WEB = "https://mcrpw.github.io/";
+    public static final String URL_GITHUB_REPO = "https://github.com/mcRPW/rpw/";
+    public static final String URL_GITHUB_BUGS = "https://github.com/mcRPW/rpw/issues/new";
 
-    public static final String URL_GITHUB_RELEASES = "https://github.com/MightyPork/rpw/releases";
+    public static final String URL_GITHUB_RELEASES = "https://github.com/mcRPW/rpw/releases";
 
     public static File getProjectBackupFolder(String identifier) {
         return OsUtils.getAppDir(Paths.DIR_PROJECT_BACKUP_TMP + "-" + identifier, true);
