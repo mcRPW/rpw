@@ -51,16 +51,13 @@ public class Paths {
     public static final String DATA_DIR_HTML = DATA_DIR + "/html/";
     public static final String DATA_DIR_IMAGES = "/images/";
 
-    public static final String URL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B9X6Q5QU7FKPC";
-    public static final String URL_UPDATE_FILE = "https://raw.githubusercontent.com/MightyPork/rpw/development/changelog.txt";
+//    public static final String URL_DONATE = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B9X6Q5QU7FKPC";
+    public static final String URL_UPDATE_FILE = "https://raw.githubusercontent.com/MightyPork/rpw/master/changelog.txt";
     public static final String URL_RPW_WEB = "http://rpw.ondrovo.com";
-    public static final String URL_PLANETMINECRAFT_WEB = "http://www.planetminecraft.com/mod/tool-resourcepack-workbench---the-ultimate-pack-creator/";
-    //	public static final String URL_MINECRAFTFORUM_WEB = "http://www.minecraftforum.net/topic/1897669-tool-resourcepack-workbench-v1-the-ultimate-composition-tool/";
     public static final String URL_GITHUB_WEB = "https://github.com/MightyPork/rpw/";
     public static final String URL_GITHUB_BUGS = "https://github.com/MightyPork/rpw/issues/new";
 
-    public static final String URL_LATEST_DOWNLOAD = "https://github.com/MightyPork/rpw/releases";
-    public static final String URL_CHANGELOG = "https://github.com/MightyPork/rpw/blob/development/changelog.txt";
+    public static final String URL_GITHUB_RELEASES = "https://github.com/MightyPork/rpw/releases";
 
     public static File getProjectBackupFolder(String identifier) {
         return OsUtils.getAppDir(Paths.DIR_PROJECT_BACKUP_TMP + "-" + identifier, true);

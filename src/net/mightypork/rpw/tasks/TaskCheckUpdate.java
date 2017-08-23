@@ -1,5 +1,6 @@
 package net.mightypork.rpw.tasks;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -53,6 +54,8 @@ public class TaskCheckUpdate {
 
                     Gui.open(new DialogUpdateNotify(v, msg));
 
+                } catch (final FileNotFoundException e) {
+                    Log.e("Changelog file not found at: " + Paths.URL_UPDATE_FILE);
                 } catch (final Throwable t) {
                     Log.e("Could not download update info file.", t);
                 } finally {
