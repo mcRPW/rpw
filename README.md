@@ -5,14 +5,13 @@ RPW is a tool for editing Minecraft resource packs.
 
 **Pull Requests are welcome!**
 
-Please read the help before asking questions, and go through the RPW menus.
+Please read the built-in help before asking questions, and go through the RPW menus.
+Many options are in the context menu when clicking assets!
 
 ## Links
 
 - [**Official RPW website**](https://mcrpw.github.io/)
-- [MightyPork on Twitter](https://twitter.com/MightyPork)
-- [RPW on Twitter](https://twitter.com/RPWapp)
-- [Planet Minecraft post](http://www.planetminecraft.com/mod/tool-resourcepack-workbench---the-ultimate-pack-creator/)
+- [RPW on Twitter (announcements)](https://twitter.com/RPWapp)
 
 ## FAQ
 
@@ -28,7 +27,7 @@ Either add it to library so you can remix it (library menu), or create a new pro
 
 For help with using RPW, please use our Gitter channel:
 
-[![Join the chat at https://gitter.im/MightyPork/rpw](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MightyPork/rpw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/MightyPork/rpw](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/MightyPork/rpw)
 
 ## Setting up RPW for development
 
