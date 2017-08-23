@@ -4,7 +4,7 @@ IF YOU ARE REPORTING A BROKEN DOWNLOAD LINK:
 
 There is nothing we can do with Dropbox breaking the links.
 
-Go download it from the releases page here on GitHub, or rpw.ondrovo.com
+Go download it from the releases page here on GitHub, or https://mcrpw.github.io/
 
 *******************************************
 <- Delete this notice before sending!
