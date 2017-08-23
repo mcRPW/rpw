@@ -24,6 +24,7 @@ Copyright (c) 2014-2015
 Contributors
 - Jacopo Santoni   github.com/Jakz
 - Joaquin Lainson  github.com/Jiggy-12321
+- Marcus           github.com/MCrafterzz
 
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 

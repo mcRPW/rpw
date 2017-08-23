@@ -7,22 +7,19 @@ import java.awt.event.KeyListener;
 /**
  * @author Ondřej Hruška (MightyPork)
  */
-public abstract class KeyPressListener implements KeyListener
-{
+public abstract class KeyPressListener implements KeyListener {
 
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-	}
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 
 
-	@Override
-	public abstract void keyPressed(KeyEvent e);
+    @Override
+    public abstract void keyPressed(KeyEvent e);
 
 
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-	}
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
 
 }

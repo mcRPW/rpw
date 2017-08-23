@@ -19,103 +19,97 @@ import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 
 
-public class DialogSaveAs extends RpwDialog
-{
+public class DialogSaveAs extends RpwDialog {
 
-	private final List<String> projectNames;
+    private final List<String> projectNames;
 
-	private JTextField nameField;
-	private JButton buttonOK;
-	private JButton buttonCancel;
-	private JTextField titleField;
-
-
-	public DialogSaveAs() {
-		super(App.getFrame(), "Save As...");
-
-		projectNames = Projects.getProjectNames();
-
-		createDialog();
-	}
+    private JTextField nameField;
+    private JButton buttonOK;
+    private JButton buttonCancel;
+    private JTextField titleField;
 
 
-	@Override
-	protected JComponent buildGui()
-	{
-		final VBox vb = new VBox();
-		vb.windowPadding();
+    public DialogSaveAs() {
+        super(App.getFrame(), "Save As...");
 
-		vb.heading("Save Project As...");
+        projectNames = Projects.getProjectNames();
 
-		vb.titsep("New project settings");
-		vb.gap();
-
-		nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
-		nameField.addKeyListener(TextInputValidator.filenames());
-
-		titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
-
-		vb.springForm(new String[] { "Name:", "Title:" }, new JComponent[] { nameField, titleField });
-
-		vb.gapl();
-
-		buttonOK = new JButton("Save", Icons.MENU_SAVE_AS);
-		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-		vb.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
-
-		return vb;
-	}
+        createDialog();
+    }
 
 
-	@Override
-	public void onClose()
-	{
-		// do nothing
-	}
+    @Override
+    protected JComponent buildGui() {
+        final VBox vb = new VBox();
+        vb.windowPadding();
+
+        vb.heading("Save Project As...");
+
+        vb.titsep("New project settings");
+        vb.gap();
+
+        nameField = Gui.textField("", "Project folder name", "Project folder name - avoid special characters");
+        nameField.addKeyListener(TextInputValidator.filenames());
+
+        titleField = Gui.textField("", "Resource pack title", "Pack title, shown in Minecraft");
+
+        vb.springForm(new String[]{"Name:", "Title:"}, new JComponent[]{nameField, titleField});
+
+        vb.gapl();
+
+        buttonOK = new JButton("Save", Icons.MENU_SAVE_AS);
+        buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+        vb.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
+
+        return vb;
+    }
 
 
-	@Override
-	protected void onShown()
-	{
-		nameField.setText(Projects.getActive().getName());
-		titleField.setText(Projects.getActive().getTitle());
-	}
+    @Override
+    public void onClose() {
+        // do nothing
+    }
 
 
-	@Override
-	protected void addActions()
-	{
-		setEnterButton(buttonOK);
+    @Override
+    protected void onShown() {
+        nameField.setText(Projects.getActive().getName());
+        titleField.setText(Projects.getActive().getTitle());
+    }
 
-		buttonOK.addActionListener(saveListener);
-		buttonCancel.addActionListener(closeListener);
-	}
 
-	private final ActionListener saveListener = new ActionListener() {
+    @Override
+    protected void addActions() {
+        setEnterButton(buttonOK);
 
-		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			final String name = nameField.getText().trim();
-			if (name.length() == 0) {
-				Alerts.error(self(), "Invalid name", "Missing project name!");
-				return;
-			}
+        buttonOK.addActionListener(saveListener);
+        buttonCancel.addActionListener(closeListener);
+    }
 
-			final String title = titleField.getText().trim();
-			if (name.length() == 0) {
-				Alerts.error(self(), "Invalid title", "Missing project title!");
-				return;
-			}
+    private final ActionListener saveListener = new ActionListener() {
 
-			if (projectNames.contains(name)) {
-				Alerts.error(self(), "Invalid name", "Project named \"" + name + "\" already exists!");
-				return;
-			} else {
-				// OK name
-				Tasks.taskSaveProjectAs(name, title);
-				closeDialog();
-			}
-		}
-	};
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final String name = nameField.getText().trim();
+            if (name.length() == 0) {
+                Alerts.error(self(), "Invalid name", "Missing project name!");
+                return;
+            }
+
+            final String title = titleField.getText().trim();
+            if (name.length() == 0) {
+                Alerts.error(self(), "Invalid title", "Missing project title!");
+                return;
+            }
+
+            if (projectNames.contains(name)) {
+                Alerts.error(self(), "Invalid name", "Project named \"" + name + "\" already exists!");
+                return;
+            } else {
+                // OK name
+                Tasks.taskSaveProjectAs(name, title);
+                closeDialog();
+            }
+        }
+    };
 }

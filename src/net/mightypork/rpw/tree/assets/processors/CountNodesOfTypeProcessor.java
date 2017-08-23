@@ -10,41 +10,38 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 
 
-public class CountNodesOfTypeProcessor implements AssetTreeProcessor
-{
+public class CountNodesOfTypeProcessor implements AssetTreeProcessor {
 
-	private final EAsset type;
+    private final EAsset type;
 
-	private int count = 0;
+    private int count = 0;
 
-	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
-
-
-	public CountNodesOfTypeProcessor(EAsset type) {
-		this.type = type;
-	}
+    private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 
 
-	@Override
-	public void process(AssetTreeNode node)
-	{
-		if (processed.contains(node)) return; // no double-processing
-		processed.add(node);
-
-		if (node instanceof AssetTreeGroup) {
-			return; // we want leafs
-
-		} else if (node instanceof AssetTreeLeaf) {
-			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
-
-			if (leaf.getAssetType() == type) count++;
-		}
-	}
+    public CountNodesOfTypeProcessor(EAsset type) {
+        this.type = type;
+    }
 
 
-	public int getCount()
-	{
-		return count;
-	}
+    @Override
+    public void process(AssetTreeNode node) {
+        if (processed.contains(node)) return; // no double-processing
+        processed.add(node);
+
+        if (node instanceof AssetTreeGroup) {
+            return; // we want leafs
+
+        } else if (node instanceof AssetTreeLeaf) {
+            final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+
+            if (leaf.getAssetType() == type) count++;
+        }
+    }
+
+
+    public int getCount() {
+        return count;
+    }
 
 }

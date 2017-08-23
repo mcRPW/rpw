@@ -7,82 +7,76 @@ import net.mightypork.rpw.gui.windows.messages.DialogProgressTerminal;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public abstract class AbstractMonitoredSequence extends AbstractSequence
-{
+public abstract class AbstractMonitoredSequence extends AbstractSequence {
 
-	protected DialogProgressTerminal monitorDialog = null;
-
-
-	@Override
-	protected abstract boolean step(int step);
+    protected DialogProgressTerminal monitorDialog = null;
 
 
-	@Override
-	public abstract int getStepCount();
+    @Override
+    protected abstract boolean step(int step);
 
 
-	@Override
-	protected final void before()
-	{
-		Alerts.loading(true);
-
-		monitorDialog = new DialogProgressTerminal(getMonitorTitle(), getMonitorHeading());
-		monitorDialog.openDialog();
-
-		doBefore();
-	}
+    @Override
+    public abstract int getStepCount();
 
 
-	protected abstract String getMonitorHeading();
+    @Override
+    protected final void before() {
+        Alerts.loading(true);
+
+        monitorDialog = new DialogProgressTerminal(getMonitorTitle(), getMonitorHeading());
+        monitorDialog.openDialog();
+
+        doBefore();
+    }
 
 
-	protected String getMonitorTitle()
-	{
-		return getMonitorHeading();
-	}
+    protected abstract String getMonitorHeading();
 
 
-	@Override
-	protected void beforeStep(int index)
-	{
-		if (monitorDialog != null) {
-			Log.f2(getStepName(index));
-			monitorDialog.onStepStarted(index, getStepCount(), getStepName(index));
-		}
-	}
+    protected String getMonitorTitle() {
+        return getMonitorHeading();
+    }
 
 
-	protected abstract void doBefore();
+    @Override
+    protected void beforeStep(int index) {
+        if (monitorDialog != null) {
+            Log.f2(getStepName(index));
+            monitorDialog.onStepStarted(index, getStepCount(), getStepName(index));
+        }
+    }
 
 
-	@Override
-	protected final void after(boolean success)
-	{
-		Alerts.loading(false);
-
-		if (monitorDialog != null) {
-			monitorDialog.allowClose(true, success);
-		}
-
-		doAfter(success);
-		
-		monitorDialog.stopMonitoring();
-		
-		monitorDialog.setModalityType(ModalityType.APPLICATION_MODAL);
-		monitorDialog.forceGetFocus();
-	}
+    protected abstract void doBefore();
 
 
-	protected void closeMonitor()
-	{
-		if (monitorDialog != null) monitorDialog.closeDialog();
-	}
+    @Override
+    protected final void after(boolean success) {
+        Alerts.loading(false);
+
+        if (monitorDialog != null) {
+            monitorDialog.allowClose(true, success);
+        }
+
+        doAfter(success);
+
+        monitorDialog.stopMonitoring();
+
+        monitorDialog.setModalityType(ModalityType.APPLICATION_MODAL);
+        monitorDialog.forceGetFocus();
+    }
 
 
-	protected abstract void doAfter(boolean success);
+    protected void closeMonitor() {
+        if (monitorDialog != null) monitorDialog.closeDialog();
+    }
 
 
-	@Override
-	public abstract String getStepName(int step);
+    protected abstract void doAfter(boolean success);
+
+
+    @Override
+    public abstract String getStepName(int step);
 
 }

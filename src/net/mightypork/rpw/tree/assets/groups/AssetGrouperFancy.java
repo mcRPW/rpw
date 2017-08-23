@@ -16,100 +16,98 @@ import net.mightypork.rpw.utils.files.SimpleConfig;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class AssetGrouperFancy extends AssetGrouper
-{
+public class AssetGrouperFancy extends AssetGrouper {
 
-	public AssetGrouperFancy()
-	{
-		groups.clear();
-		filters.clear();
+    public AssetGrouperFancy() {
+        groups.clear();
+        filters.clear();
 
-		String text;
-		Map<String, String> pairs;
+        String text;
+        Map<String, String> pairs;
 
-		// order MATTERS!
+        // order MATTERS!
 
-		// load groups
-		final List<String> createdGroups = new ArrayList<String>();
+        // load groups
+        final List<String> createdGroups = new ArrayList<String>();
 
-		// mod groups
-		try {
-			pairs = SimpleConfig.mapFromFile(OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS));
+        // mod groups
+        try {
+            pairs = SimpleConfig.mapFromFile(OsUtils.getAppDir(Paths.FILE_CFG_MODGROUPS));
 
-			for (final Entry<String, String> pair : pairs.entrySet()) {
-				createdGroups.add(pair.getKey());
-				addGroup(pair.getKey(), pair.getValue());
-			}
-		} catch (final IOException e) {
-			Log.e("Failed to load mod group list.");
-		}
+            for (final Entry<String, String> pair : pairs.entrySet()) {
+                createdGroups.add(pair.getKey());
+                addGroup(pair.getKey(), pair.getValue());
+            }
+        } catch (final IOException e) {
+            Log.e("Failed to load mod group list.");
+        }
 
-		// vanilla groups
+        // vanilla groups
 
-		text = FileUtils.resourceToString("/data/tree/groupsVanilla.ini");
-		if (text.length() == 0) throw new RuntimeException("Failed to load group list.");
+        text = FileUtils.resourceToString("/data/tree/groupsVanilla.ini");
+        if (text.length() == 0) throw new RuntimeException("Failed to load group list.");
 
-		pairs = SimpleConfig.mapFromString(text);
+        pairs = SimpleConfig.mapFromString(text);
 
-		for (final Entry<String, String> pair : pairs.entrySet()) {
-			createdGroups.add(pair.getKey());
-			addGroup(pair.getKey(), pair.getValue());
-		}
+        for (final Entry<String, String> pair : pairs.entrySet()) {
+            createdGroups.add(pair.getKey());
+            addGroup(pair.getKey(), pair.getValue());
+        }
 
-		// check orphaned groups
-		final ArrayList<GroupInfo> toAdd = new ArrayList<GroupInfo>();
+        // check orphaned groups
+        final ArrayList<GroupInfo> toAdd = new ArrayList<GroupInfo>();
 
-		do {
-			for (final GroupInfo g : groups) {
-				final String parent = g.getParent();
-				if (parent == null) continue;
-				if (!createdGroups.contains(parent)) {
-					final GroupInfo parentGroup = new GroupInfo(parent, Utils.fromLastDot(parent));
-					toAdd.add(parentGroup);
-					if (Config.LOG_GROUPS) Log.f3("Group: " + parentGroup);
+        do {
+            for (final GroupInfo g : groups) {
+                final String parent = g.getParent();
+                if (parent == null) continue;
+                if (!createdGroups.contains(parent)) {
+                    final GroupInfo parentGroup = new GroupInfo(parent, Utils.fromLastDot(parent));
+                    toAdd.add(parentGroup);
+                    if (Config.LOG_GROUPS) Log.f3("Group: " + parentGroup);
 
-					createdGroups.add(parent);
-				}
-			}
-			groups.addAll(toAdd);
-		} while (toAdd.size() > 0);
+                    createdGroups.add(parent);
+                }
+            }
+            groups.addAll(toAdd);
+        } while (toAdd.size() > 0);
 
-		Collections.sort(groups, new DotComparator<GroupInfo>());
+        Collections.sort(groups, new DotComparator<GroupInfo>());
 
-		// load filters
+        // load filters
 
-		// mod filters
-		try {
-			pairs = SimpleConfig.mapFromFile(OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS));
+        // mod filters
+        try {
+            pairs = SimpleConfig.mapFromFile(OsUtils.getAppDir(Paths.FILE_CFG_MODFILTERS));
 
-			for (final Entry<String, String> pair : pairs.entrySet()) {
-				addFilter(pair.getKey(), pair.getValue());
-			}
-		} catch (final IOException e) {
-			Log.e("Failed to load group list.");
-		}
+            for (final Entry<String, String> pair : pairs.entrySet()) {
+                addFilter(pair.getKey(), pair.getValue());
+            }
+        } catch (final IOException e) {
+            Log.e("Failed to load group list.");
+        }
 
-		// vanilla filters
-		text = FileUtils.resourceToString("/data/tree/filtersVanilla.ini");
-		if (text.length() == 0) throw new RuntimeException("Failed to load filter list.");
+        // vanilla filters
+        text = FileUtils.resourceToString("/data/tree/filtersVanilla.ini");
+        if (text.length() == 0) throw new RuntimeException("Failed to load filter list.");
 
-		pairs = SimpleConfig.mapFromString(text);
+        pairs = SimpleConfig.mapFromString(text);
 
-		for (final Entry<String, String> pair : pairs.entrySet()) {
+        for (final Entry<String, String> pair : pairs.entrySet()) {
 
-			String v = pair.getValue();
+            String v = pair.getValue();
 
-			if (v != null) {
-				// handle abbreviations
-				v = v.replace("^tb", "assets.minecraft.textures.blocks");
-				v = v.replace("^ti", "assets.minecraft.textures.items");
-				v = v.replace("^te", "assets.minecraft.textures.entity");
-				v = v.replace("^t", "assets.minecraft.textures");
-				v = v.replace("^s", "assets.minecraft.sounds");
-				v = v.replace("^", "assets.minecraft");
-			}
+            if (v != null) {
+                // handle abbreviations
+                v = v.replace("^tb", "assets.minecraft.textures.blocks");
+                v = v.replace("^ti", "assets.minecraft.textures.items");
+                v = v.replace("^te", "assets.minecraft.textures.entity");
+                v = v.replace("^t", "assets.minecraft.textures");
+                v = v.replace("^s", "assets.minecraft.sounds");
+                v = v.replace("^", "assets.minecraft");
+            }
 
-			addFilter(pair.getKey(), v);
-		}
-	}
+            addFilter(pair.getKey(), v);
+        }
+    }
 }

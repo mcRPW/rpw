@@ -1,32 +1,31 @@
 package net.mightypork.rpw.tree;
 
-public interface IFileTreeNode
-{
+public interface IFileTreeNode {
 
-	/**
-	 * Get if this node is a directory node.
-	 * 
-	 * @return is directory
-	 */
-	public boolean isDirectory();
-
-
-	/**
-	 * Get if this node is a file node.
-	 * 
-	 * @return is file
-	 */
-	public boolean isFile();
+    /**
+     * Get if this node is a directory node.
+     *
+     * @return is directory
+     */
+    public boolean isDirectory();
 
 
-	public boolean isSound();
+    /**
+     * Get if this node is a file node.
+     *
+     * @return is file
+     */
+    public boolean isFile();
 
 
-	public boolean isImage();
+    public boolean isSound();
 
 
-	public boolean isText();
+    public boolean isImage();
 
 
-	public boolean isJson();
+    public boolean isText();
+
+
+    public boolean isJson();
 }

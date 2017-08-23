@@ -12,53 +12,51 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 
 
-public class DeleteFromProjectProcessor implements AssetTreeProcessor
-{
+public class DeleteFromProjectProcessor implements AssetTreeProcessor {
 
-	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
+    private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 
-	private boolean assets = true, meta = true;
-
-
-	public DeleteFromProjectProcessor() {
-	}
+    private boolean assets = true, meta = true;
 
 
-	public DeleteFromProjectProcessor(boolean assets, boolean meta) {
-		this.assets = assets;
-		this.meta = meta;
-	}
+    public DeleteFromProjectProcessor() {
+    }
 
 
-	@Override
-	public void process(AssetTreeNode node)
-	{
-		if (processed.contains(node)) return;
-		processed.add(node);
+    public DeleteFromProjectProcessor(boolean assets, boolean meta) {
+        this.assets = assets;
+        this.meta = meta;
+    }
 
-		if (assets && MagicSources.isProject(node.getLibrarySource())) {
-			node.setLibrarySource(MagicSources.INHERIT);
-		}
 
-		if (node instanceof AssetTreeGroup) {
-			return;
+    @Override
+    public void process(AssetTreeNode node) {
+        if (processed.contains(node)) return;
+        processed.add(node);
 
-		} else {
-			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+        if (assets && MagicSources.isProject(node.getLibrarySource())) {
+            node.setLibrarySource(MagicSources.INHERIT);
+        }
 
-			if (!Projects.getActive().doesProvideAsset(leaf.getAssetKey())) {
-				return; // not in project
-			}
+        if (node instanceof AssetTreeGroup) {
+            return;
 
-			final String path = leaf.getAssetEntry().getPath();
+        } else {
+            final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
 
-			final File base = Projects.getActive().getAssetsDirectory();
-			final File target = new File(base, path);
-			final File targetMeta = new File(base, path + ".mcmeta");
+            if (!Projects.getActive().doesProvideAsset(leaf.getAssetKey())) {
+                return; // not in project
+            }
 
-			if (assets) target.delete();
-			if (meta) targetMeta.delete();
-		}
-	}
+            final String path = leaf.getAssetEntry().getPath();
+
+            final File base = Projects.getActive().getAssetsDirectory();
+            final File target = new File(base, path);
+            final File targetMeta = new File(base, path + ".mcmeta");
+
+            if (assets) target.delete();
+            if (meta) targetMeta.delete();
+        }
+    }
 
 }

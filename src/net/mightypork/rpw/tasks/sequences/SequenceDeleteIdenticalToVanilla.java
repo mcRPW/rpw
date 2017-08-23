@@ -16,98 +16,94 @@ import net.mightypork.rpw.utils.files.DirectoryTreeDifferenceFinder;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class SequenceDeleteIdenticalToVanilla extends AbstractMonitoredSequence
-{
-	private final Project project;
+public class SequenceDeleteIdenticalToVanilla extends AbstractMonitoredSequence {
+    private final Project project;
 
-	private int count = 0;
-
-
-	public SequenceDeleteIdenticalToVanilla() {
-		this.project = Projects.getActive();
-	}
+    private int count = 0;
 
 
-	@Override
-	protected String getMonitorHeading()
-	{
-		return "Deleting unchanged copies of vanilla assets";
-	}
+    public SequenceDeleteIdenticalToVanilla() {
+        this.project = Projects.getActive();
+    }
 
 
-	@Override
-	public int getStepCount()
-	{
-		return 2;
-	}
+    @Override
+    protected String getMonitorHeading() {
+        return "Deleting unchanged copies of vanilla assets";
+    }
 
 
-	@Override
-	public String getStepName(int step)
-	{
-		//@formatter:off
-		switch (step) {
-			case 0: return "Finding and deleting vanilla copies";
-			case 1: return "Done";
-		}
-		//@formatter:on
-
-		return null;
-	}
+    @Override
+    public int getStepCount() {
+        return 2;
+    }
 
 
-	@Override
-	protected boolean step(int step)
-	{
-		//@formatter:off
-		switch (step) {
-			case 0: return stepDeleteCrap();
-			case 1: return true;
-		}
-		//@formatter:on
+    @Override
+    public String getStepName(int step) {
+        //@formatter:off
+        switch (step) {
+            case 0:
+                return "Finding and deleting vanilla copies";
+            case 1:
+                return "Done";
+        }
+        //@formatter:on
 
-		return false;
-	}
-
-
-	private boolean stepDeleteCrap()
-	{
-		Collection<AssetEntry> entries = Sources.vanilla.getAssetEntries();
-
-		for (AssetEntry e : entries) {
-			String key = e.getKey();
-
-			File pro = project.getAssetFile(key);
-			File van = Sources.vanilla.getAssetFile(key);
-
-			try {
-				if (DirectoryTreeDifferenceFinder.areFilesEqual(pro, van)) {
-					Log.f3("Deleting: " + key);
-					pro.delete();
-					project.setSourceForFile(key, MagicSources.INHERIT);
-					count++;
-				}
-			} catch (IOException e1) {
-				Log.e(e1);
-			}
-		}
-
-		Tasks.taskTreeRedraw();
-		Projects.markChange();
-
-		return true;
-	}
+        return null;
+    }
 
 
-	@Override
-	protected void doBefore()
-	{
-	}
+    @Override
+    protected boolean step(int step) {
+        //@formatter:off
+        switch (step) {
+            case 0:
+                return stepDeleteCrap();
+            case 1:
+                return true;
+        }
+        //@formatter:on
+
+        return false;
+    }
 
 
-	@Override
-	protected void doAfter(boolean success)
-	{
-		if (success) Alerts.info(App.getFrame(), "Successfully removed " + count + " Vanilla duplicates from project.");
-	}
+    private boolean stepDeleteCrap() {
+        Collection<AssetEntry> entries = Sources.vanilla.getAssetEntries();
+
+        for (AssetEntry e : entries) {
+            String key = e.getKey();
+
+            File pro = project.getAssetFile(key);
+            File van = Sources.vanilla.getAssetFile(key);
+
+            try {
+                if (DirectoryTreeDifferenceFinder.areFilesEqual(pro, van)) {
+                    Log.f3("Deleting: " + key);
+                    pro.delete();
+                    project.setSourceForFile(key, MagicSources.INHERIT);
+                    count++;
+                }
+            } catch (IOException e1) {
+                Log.e(e1);
+            }
+        }
+
+        Tasks.taskTreeRedraw();
+        Projects.markChange();
+
+        return true;
+    }
+
+
+    @Override
+    protected void doBefore() {
+    }
+
+
+    @Override
+    protected void doAfter(boolean success) {
+        if (success) Alerts.info(App.getFrame(), "Successfully removed " + count + " Vanilla duplicates from project.");
+    }
 }

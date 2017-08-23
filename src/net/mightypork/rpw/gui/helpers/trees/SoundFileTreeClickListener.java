@@ -14,60 +14,58 @@ import net.mightypork.rpw.tree.filesystem.AbstractFsTreeNode;
 import net.mightypork.rpw.utils.logging.Log;
 
 
-public class SoundFileTreeClickListener extends PopupTriggerListener
-{
+public class SoundFileTreeClickListener extends PopupTriggerListener {
 
-	private final DialogSoundWizard wizard;
-
-
-	public SoundFileTreeClickListener(JTree tree, DialogSoundWizard wizard) {
-		this.tree = tree;
-		this.wizard = wizard;
-	}
-
-	private final JTree tree;
+    private final DialogSoundWizard wizard;
 
 
-	@Override
-	public void onPopupTrigger(MouseEvent e)
-	{
-		final TreePath pathUnderMouse = tree.getPathForLocation(e.getX(), e.getY());
-		if (pathUnderMouse == null) return;
+    public SoundFileTreeClickListener(JTree tree, DialogSoundWizard wizard) {
+        this.tree = tree;
+        this.wizard = wizard;
+    }
 
-		TreePath[] paths = tree.getSelectionPaths();
+    private final JTree tree;
 
-		boolean clickedOnSelected = false;
 
-		if (paths != null) {
-			for (final TreePath p : paths) {
-				if (p == pathUnderMouse) {
-					clickedOnSelected = true;
-					break;
-				}
-			}
-		}
+    @Override
+    public void onPopupTrigger(MouseEvent e) {
+        final TreePath pathUnderMouse = tree.getPathForLocation(e.getX(), e.getY());
+        if (pathUnderMouse == null) return;
 
-		if (!clickedOnSelected) {
-			tree.getSelectionModel().setSelectionPath(pathUnderMouse);
-			paths = new TreePath[] { pathUnderMouse };
-		}
+        TreePath[] paths = tree.getSelectionPaths();
 
-		if (paths == null) {
-			Log.w("Null selection for popup, cancelling.");
-			return;
-		}
+        boolean clickedOnSelected = false;
 
-		final List<AbstractFsTreeNode> tmpNodeList = new ArrayList<AbstractFsTreeNode>();
+        if (paths != null) {
+            for (final TreePath p : paths) {
+                if (p == pathUnderMouse) {
+                    clickedOnSelected = true;
+                    break;
+                }
+            }
+        }
 
-		for (final TreePath path : paths) {
-			final AbstractFsTreeNode fsnode = (AbstractFsTreeNode) path.getLastPathComponent();
-			tmpNodeList.add(fsnode);
-		}
+        if (!clickedOnSelected) {
+            tree.getSelectionModel().setSelectionPath(pathUnderMouse);
+            paths = new TreePath[]{pathUnderMouse};
+        }
 
-		if (tmpNodeList.size() == 0) return;
+        if (paths == null) {
+            Log.w("Null selection for popup, cancelling.");
+            return;
+        }
 
-		PopupSoundFsTreeNode.open(tree, e.getX(), e.getY(), tmpNodeList, wizard);
+        final List<AbstractFsTreeNode> tmpNodeList = new ArrayList<AbstractFsTreeNode>();
 
-	}
+        for (final TreePath path : paths) {
+            final AbstractFsTreeNode fsnode = (AbstractFsTreeNode) path.getLastPathComponent();
+            tmpNodeList.add(fsnode);
+        }
+
+        if (tmpNodeList.size() == 0) return;
+
+        PopupSoundFsTreeNode.open(tree, e.getX(), e.getY(), tmpNodeList, wizard);
+
+    }
 
 }

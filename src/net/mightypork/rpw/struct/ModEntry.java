@@ -18,18 +18,17 @@ import java.util.List;
  }
  */
 
-public class ModEntry
-{
+public class ModEntry {
 
-	public String modid;
-	public String name;
-	public String description;
-	public String version;
-	public String mcversion;
-	public List<String> authors;
-	public String url;
-	public String parent;
-	public List<String> screenshots;
-	public List<String> dependencies;
+    public String modid;
+    public String name;
+    public String description;
+    public String version;
+    public String mcversion;
+    public List<String> authors;
+    public String url;
+    public String parent;
+    public List<String> screenshots;
+    public List<String> dependencies;
 
 }

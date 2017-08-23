@@ -9,41 +9,38 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 
 
-public class CountNodesWithSourceProcessor implements AssetTreeProcessor
-{
+public class CountNodesWithSourceProcessor implements AssetTreeProcessor {
 
-	private int count = 0;
+    private int count = 0;
 
-	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
+    private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 
-	private final String source;
-
-
-	public CountNodesWithSourceProcessor(String source) {
-		this.source = source;
-	}
+    private final String source;
 
 
-	@Override
-	public void process(AssetTreeNode node)
-	{
-		if (processed.contains(node)) return; // no double-processing
-		processed.add(node);
-
-		if (node instanceof AssetTreeGroup) {
-			return; // we want leafs
-
-		} else if (node instanceof AssetTreeLeaf) {
-			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
-
-			if (leaf.getLibrarySource().equals(source)) count++;
-		}
-	}
+    public CountNodesWithSourceProcessor(String source) {
+        this.source = source;
+    }
 
 
-	public int getCount()
-	{
-		return count;
-	}
+    @Override
+    public void process(AssetTreeNode node) {
+        if (processed.contains(node)) return; // no double-processing
+        processed.add(node);
+
+        if (node instanceof AssetTreeGroup) {
+            return; // we want leafs
+
+        } else if (node instanceof AssetTreeLeaf) {
+            final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+
+            if (leaf.getLibrarySource().equals(source)) count++;
+        }
+    }
+
+
+    public int getCount() {
+        return count;
+    }
 
 }

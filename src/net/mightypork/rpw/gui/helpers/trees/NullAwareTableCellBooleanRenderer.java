@@ -15,44 +15,42 @@ import javax.swing.table.TableCellRenderer;
 
 /**
  * Checkbox renderer for boolean cells, rendering null as empty cell.
- * 
+ *
  * @author Ondřej Hruška (MightyPork)
  */
-public class NullAwareTableCellBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource
-{
+public class NullAwareTableCellBooleanRenderer extends JCheckBox implements TableCellRenderer, UIResource {
 
-	private final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
+    private final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
 
-	private final DefaultTableCellRenderer cdr = new DefaultTableCellRenderer();
-
-
-	public NullAwareTableCellBooleanRenderer() {
-		super();
-		setHorizontalAlignment(SwingConstants.CENTER);
-		setBorderPainted(true);
-	}
+    private final DefaultTableCellRenderer cdr = new DefaultTableCellRenderer();
 
 
-	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-	{
-		if (value == null) return cdr.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
+    public NullAwareTableCellBooleanRenderer() {
+        super();
+        setHorizontalAlignment(SwingConstants.CENTER);
+        setBorderPainted(true);
+    }
 
-		if (isSelected) {
-			setForeground(table.getSelectionForeground());
-			setBackground(table.getSelectionBackground());
-		} else {
-			setForeground(table.getForeground());
-			setBackground(table.getBackground());
-		}
-		setSelected((((Boolean) value).booleanValue()));
 
-		if (hasFocus) {
-			setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-		} else {
-			setBorder(noFocusBorder);
-		}
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        if (value == null) return cdr.getTableCellRendererComponent(table, "", isSelected, hasFocus, row, column);
 
-		return this;
-	}
+        if (isSelected) {
+            setForeground(table.getSelectionForeground());
+            setBackground(table.getSelectionBackground());
+        } else {
+            setForeground(table.getForeground());
+            setBackground(table.getBackground());
+        }
+        setSelected((((Boolean) value).booleanValue()));
+
+        if (hasFocus) {
+            setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+        } else {
+            setBorder(noFocusBorder);
+        }
+
+        return this;
+    }
 }

@@ -11,91 +11,83 @@ import net.mightypork.rpw.tree.assets.tree.AssetTreeNode;
 import net.mightypork.rpw.tree.assets.tree.AssetTreeProcessor;
 
 
-public class CountNodesInProjectProcessor implements AssetTreeProcessor
-{
+public class CountNodesInProjectProcessor implements AssetTreeProcessor {
 
-	private int groups = 0;
-	private int count = 0;
-	private int countMeta = 0;
-	private int leaves = 0;
-	private int vanillaLeaves = 0;
-	private int metaLeaves = 0;
+    private int groups = 0;
+    private int count = 0;
+    private int countMeta = 0;
+    private int leaves = 0;
+    private int vanillaLeaves = 0;
+    private int metaLeaves = 0;
 
-	private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
-
-
-	public CountNodesInProjectProcessor() {
-	}
+    private final Set<AssetTreeNode> processed = new HashSet<AssetTreeNode>();
 
 
-	@Override
-	public void process(AssetTreeNode node)
-	{
-		if (processed.contains(node)) return; // no double-processing
-		processed.add(node);
-
-		if (node instanceof AssetTreeGroup) {
-			groups++;
-			return; // we want leafs
-
-		} else if (node instanceof AssetTreeLeaf) {
-			final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
-
-			leaves++;
-
-			if (Projects.getActive().doesProvideAsset(leaf.getAssetKey())) {
-				count++;
-			}
-
-			if (Projects.getActive().doesProvideAssetMeta(leaf.getAssetKey())) {
-				countMeta++;
-			}
-
-			if (MagicSources.isVanilla(leaf.resolveAssetSource())) {
-				vanillaLeaves++;
-			}
-
-			if (leaf.canHaveMeta()) {
-				metaLeaves++;
-			}
-
-		}
-	}
+    public CountNodesInProjectProcessor() {
+    }
 
 
-	public int getInProject()
-	{
-		return count;
-	}
+    @Override
+    public void process(AssetTreeNode node) {
+        if (processed.contains(node)) return; // no double-processing
+        processed.add(node);
+
+        if (node instanceof AssetTreeGroup) {
+            groups++;
+            return; // we want leafs
+
+        } else if (node instanceof AssetTreeLeaf) {
+            final AssetTreeLeaf leaf = (AssetTreeLeaf) node;
+
+            leaves++;
+
+            if (Projects.getActive().doesProvideAsset(leaf.getAssetKey())) {
+                count++;
+            }
+
+            if (Projects.getActive().doesProvideAssetMeta(leaf.getAssetKey())) {
+                countMeta++;
+            }
+
+            if (MagicSources.isVanilla(leaf.resolveAssetSource())) {
+                vanillaLeaves++;
+            }
+
+            if (leaf.canHaveMeta()) {
+                metaLeaves++;
+            }
+
+        }
+    }
 
 
-	public int getInProjectMeta()
-	{
-		return countMeta;
-	}
+    public int getInProject() {
+        return count;
+    }
 
 
-	public int getGroups()
-	{
-		return groups;
-	}
+    public int getInProjectMeta() {
+        return countMeta;
+    }
 
 
-	public int getLeaves()
-	{
-		return leaves;
-	}
+    public int getGroups() {
+        return groups;
+    }
 
 
-	public int getVanillaLeaves()
-	{
-		return vanillaLeaves;
-	}
+    public int getLeaves() {
+        return leaves;
+    }
 
 
-	public int getMetaLeaves()
-	{
-		return metaLeaves;
-	}
+    public int getVanillaLeaves() {
+        return vanillaLeaves;
+    }
+
+
+    public int getMetaLeaves() {
+        return metaLeaves;
+    }
 
 }

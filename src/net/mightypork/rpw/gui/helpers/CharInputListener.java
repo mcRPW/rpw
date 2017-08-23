@@ -1,7 +1,6 @@
 package net.mightypork.rpw.gui.helpers;
 
-public interface CharInputListener
-{
+public interface CharInputListener {
 
-	public void onCharTyped(char c);
+    public void onCharTyped(char c);
 }
