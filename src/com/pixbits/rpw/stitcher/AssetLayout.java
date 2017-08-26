@@ -1,5 +1,7 @@
 package com.pixbits.rpw.stitcher;
 
+import net.mightypork.rpw.tree.assets.AssetEntry;
+
 import java.awt.Rectangle;
 import java.awt.Point;
 import java.util.*;
@@ -38,7 +40,7 @@ public class AssetLayout implements Iterable<AssetImage>
 
 	Point computeLayout()
 	{
-		int gw = 64, gh = 64;
+		int gw = 16, gh = 16;
 
 		while (!computeLayout(gw, gh)) {
 			if (gw > gh) gh *= 2;
@@ -125,4 +127,8 @@ public class AssetLayout implements Iterable<AssetImage>
 			}
 		}
 	}
+
+	public Set<AssetImage> getEntries() {
+	    return entries;
+    }
 }
