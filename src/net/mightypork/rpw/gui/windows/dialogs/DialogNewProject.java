@@ -28,6 +28,7 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class DialogNewProject extends RpwDialog {
@@ -104,7 +105,7 @@ public class DialogNewProject extends RpwDialog {
                         "Select resoucepack file...",
                         FilePath.IMPORT_PACK,
                         "Select resourcepack to import as project",
-                        FileChooser.ZIP,
+                        FileChooser.FOLDERS_ZIP,
                         true
                 )
         );
@@ -243,6 +244,7 @@ public class DialogNewProject extends RpwDialog {
                             nameField.setText(parts[0]);
                         }
                     } catch (final Throwable t) {
+                        Log.e(t);
                     }
                 }
 

@@ -1,17 +1,15 @@
 package net.mightypork.rpw.utils.files;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
 
 import net.mightypork.rpw.utils.Utils;
+import net.mightypork.rpw.utils.logging.Log;
 import net.mightypork.rpw.utils.validation.StringFilter;
 
 
@@ -189,5 +187,68 @@ public class ZipUtils {
             Utils.close(zf);
         }
 
+    }
+
+    static public void zipFolder(String srcFolder, String destZipFile) throws Exception {
+        ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(destZipFile)));
+
+        addFolderToZip("", srcFolder, zip);
+
+        zip.flush();
+        zip.close();
+    }
+
+    static private void addFolderToZip(String path, String srcFolder, ZipOutputStream zip) throws Exception {
+        File folder = new File(srcFolder);
+        for (int i = 0; i < folder.list().length; i++){
+            try {
+                String fileInList = folder.list()[i];
+                if (new File(srcFolder + File.separator + fileInList).isDirectory() == true) {
+                    // Folder
+                    if (srcFolder.startsWith("\\")) {
+                        zip.putNextEntry(new ZipEntry(path + fileInList + "/"));
+                        zip.closeEntry();
+                    } else {
+                        zip.putNextEntry(new ZipEntry(path + File.separator + fileInList + "/"));
+                        zip.closeEntry();
+                    }
+
+                    if (srcFolder.startsWith("\\")) {
+                        addFolderToZip(path + fileInList, srcFolder + fileInList, zip);
+                    } else {
+                        addFolderToZip(path + File.separator + fileInList, srcFolder + File.separator + fileInList, zip);
+                    }
+                } else {
+                    // File
+                    String path2;
+
+                    if (srcFolder.endsWith(File.separator)) {
+                        path2 = fileInList;
+                    } else {
+                        path2 = File.separator + fileInList;
+                    }
+
+                    if (path.length() > 0) {
+                        addFileToZip(path.substring(1) + path2, srcFolder + path2, zip);
+                    } else {
+                        addFileToZip(path2.substring(1), srcFolder + path2, zip);
+                    }
+                }
+            }catch (Exception e){
+                Log.e(e);
+            }
+        }
+    }
+
+    static private void addFileToZip(String path, String srcFile, ZipOutputStream zip) throws Exception {
+        byte[] buf = new byte[2048];
+        int len;
+        FileInputStream in = new FileInputStream(srcFile);
+        zip.putNextEntry(new ZipEntry(path));
+        while ((len = in.read(buf)) > 0) {
+            zip.write(buf, 0, len);
+        }
+        zip.closeEntry();
+        in.close();
     }
 }

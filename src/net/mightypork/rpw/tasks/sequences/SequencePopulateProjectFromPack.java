@@ -1,6 +1,7 @@
 package net.mightypork.rpw.tasks.sequences;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.Utils;
 import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.ZipBuilder;
 import net.mightypork.rpw.utils.files.ZipUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
@@ -35,7 +37,7 @@ import net.mightypork.rpw.utils.logging.Log;
  */
 public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 
-    private final File packFile;
+    private File packFile;
     private final Runnable after;
     private List<String> zipEntries;
     private ZipFile zip;
@@ -99,6 +101,16 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
 
 
     private boolean stepListFile() {
+        if (!packFile.getPath().endsWith(".zip")){
+            try {
+                ZipUtils.zipFolder(packFile.getPath(), packFile.getPath() + ".zip");
+            } catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            packFile = new File(packFile.getPath() + ".zip");
+        }
+
         try {
             zip = new ZipFile(packFile);
             zipEntries = ZipUtils.listZip(zip);
