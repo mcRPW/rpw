@@ -168,19 +168,9 @@ public class Gui {
     }
 
     public static JCheckBox checkbox(boolean selected) {
-        return checkbox(selected, "");
-    }
-
-    public static JCheckBox checkbox(boolean selected, String text) {
-        return checkbox(selected, text, true);
-    }
-
-    public static JCheckBox checkbox(boolean selected, String text, boolean enabled) {
         final JCheckBox checkbox = new JCheckBox();
         checkbox.setSelected(selected);
-        checkbox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-        checkbox.setText(text);
-        checkbox.setEnabled(enabled);
+        checkbox.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 
         return checkbox;
     }
@@ -188,6 +178,7 @@ public class Gui {
     public static JXLabel label(String text){
         final JXLabel label = new JXLabel();
         label.setText(text);
+        label.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 
         return label;
     }

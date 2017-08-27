@@ -86,19 +86,27 @@ public class AssetImage implements Comparable<AssetImage>
 	}
 
 
-	public void cacheImage(float w, float h) throws IOException
+	public void cacheImage(int w, int h) throws IOException
 	{
 		BufferedImage tmpImage = ImageIO.read(file);
 
 		if (tmpImage.getWidth() == w && tmpImage.getHeight() == h) image = tmpImage;
 		else {
-			image = new BufferedImage((int)(tmpImage.getWidth() * w), (int)(tmpImage.getHeight() * h), tmpImage.getType());
+			image = new BufferedImage(w, h, tmpImage.getType());
 			((Graphics2D) image.getGraphics()).setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-			((Graphics2D) image.getGraphics()).drawImage(tmpImage, 0, 0, (int)(tmpImage.getWidth() * w), (int)(tmpImage.getHeight() * h), null);
+			((Graphics2D) image.getGraphics()).drawImage(tmpImage, 0, 0, w, h, null);
 		}
 
 		element.w = image.getWidth();
 		element.h = image.getHeight();
 	}
 
+
+	public void cacheImage() throws IOException
+	{
+		image = ImageIO.read(file);
+
+		element.w = image.getWidth();
+		element.h = image.getHeight();
+	}
 }

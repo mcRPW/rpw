@@ -21,6 +21,7 @@ public class StitchJson
 
 	public static class Category
 	{
+		AssetCategory category;
 		ArrayList<Element> elements;
 	}
 }

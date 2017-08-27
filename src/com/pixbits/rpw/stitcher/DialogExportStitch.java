@@ -1,12 +1,15 @@
 package com.pixbits.rpw.stitcher;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.*;
+import java.util.Set;
+import java.util.HashSet;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JComboBox;
 
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config.FilePath;
@@ -17,27 +20,23 @@ import net.mightypork.rpw.gui.widgets.FileInput;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
-import net.mightypork.rpw.library.Sources;
-import net.mightypork.rpw.library.VanillaPack;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.project.Project;
-import net.mightypork.rpw.tree.assets.AssetEntry;
 
 
 public class DialogExportStitch extends RpwDialog
 {
-    private ArrayList<JCheckBox> selection;
-    private JScrollPane scrollPane;
-    private JPanel checkboxPanel;
-    private JCheckBox selectAll, selectAllBlocks, selectAllItems, selectAllEntities, selectAllGuis, selectAllFonts;
+	private JCheckBox[] selection;
 
 	private FileInput filepicker;
 
 	private JButton buttonOK;
 	private JButton buttonCancel;
 
-	private JComboBox textureSource;
-	private JComboBox scale;
+	private JCheckBox exportMissing;
+	private JCheckBox exportExisting;
+
+	private JComboBox forceBlockSize;
 
 
 	public DialogExportStitch() {
@@ -50,104 +49,69 @@ public class DialogExportStitch extends RpwDialog
 	@Override
 	protected JComponent buildGui()
 	{
-        scale = new JComboBox(Scale.values());
-        scale.setSelectedItem(Scale.ONE);
-        textureSource = new JComboBox(new String[]{"Vanilla", "Project"});
-        textureSource.setSelectedIndex(1);
-        checkboxPanel = new JPanel();
-        checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.Y_AXIS));
-        scrollPane = new JScrollPane(checkboxPanel);
-        scrollPane.setPreferredSize(new Dimension(200, 300));
+		forceBlockSize = new JComboBox(BlockSize.values());
+		forceBlockSize.setSelectedItem(BlockSize.NO_CHANGE);
 
-        VanillaPack vanilla = Sources.vanilla;
-        Collection<AssetEntry> totalEntries = vanilla.getAssetEntries();
+		selection = new JCheckBox[AssetCategory.values().length + 1];
+		for (int i = 0; i < AssetCategory.values().length; ++i)
+			selection[i] = new JCheckBox(AssetCategory.values()[i].name);
 
-        selection = new ArrayList<JCheckBox>();
+		selection[selection.length - 1] = new JCheckBox("Select All");
+		selection[selection.length - 1].addActionListener(checkboxListener);
 
-        final VBox vbox = new VBox();
-        vbox.windowPadding();
+		for (JCheckBox cb : selection) {
+			cb.setSelected(true);
+			cb.addActionListener(checkboxListener);
+		}
 
-        vbox.heading("Export Stitched PNGs");
+		final VBox vbox = new VBox();
+		vbox.windowPadding();
 
-        vbox.titsep("Resources to export");
-        vbox.gap_small();
+		vbox.heading("Export Stitched PNGs");
 
-        vbox.add(scrollPane);
+		vbox.titsep("Resources to export");
+		vbox.gap_small();
 
-        for (AssetEntry e : totalEntries) {
-            if (e.getPath().startsWith("assets/minecraft/textures")) {
-                JCheckBox checkBox = new JCheckBox(e.getPath().substring(26));
-                selection.add(checkBox);
-                checkBox.setSelected(true);
-                checkBox.addActionListener(checkboxListener);
-                checkboxPanel.add(checkBox, BorderLayout.NORTH);
-            }
-        }
+		for (JCheckBox cb : selection)
+			vbox.add(cb);
 
-        vbox.gap();
+		vbox.gap();
 
-        selectAll = Gui.checkbox(true, "Select All");
-        selectAll.addActionListener(checkboxListener);
-        vbox.add(selectAll);
+		vbox.add(exportMissing = new JCheckBox("Export missing"));
+		vbox.add(exportExisting = new JCheckBox("Export existing"));
+		exportMissing.setSelected(true);
 
-        selectAllBlocks = Gui.checkbox(true, "Select All Blocks");
-        selectAllBlocks.addActionListener(checkboxListener);
-        vbox.add(selectAllBlocks);
+		vbox.gapl();
 
-        selectAllItems = Gui.checkbox(true, "Select All Items");
-        selectAllItems.addActionListener(checkboxListener);
-        vbox.add(selectAllItems);
+		vbox.titsep("Force size of blocks");
+		vbox.add(forceBlockSize);
 
-        selectAllEntities = Gui.checkbox(true, "Select All Entities");
-        selectAllEntities.addActionListener(checkboxListener);
-        vbox.add(selectAllEntities);
+		vbox.titsep("Folder to export to");
+		vbox.gap();
 
-        selectAllGuis = Gui.checkbox(true, "Select All Guis");
-        selectAllGuis.addActionListener(checkboxListener);
-        vbox.add(selectAllGuis);
+		//@formatter:off
+    filepicker = new FileInput(
+        this,
+        "Select folder to export to...",
+        FilePath.EXPORT,
+        "Export stitched pack",
+        FileChooser.FOLDERS,
+        true        
+    );
+    //@formatter:on
 
-        selectAllFonts = Gui.checkbox(true, "Select All Fonts");
-        selectAllFonts.addActionListener(checkboxListener);
-        vbox.add(selectAllFonts);
+		vbox.add(filepicker);
 
-        vbox.gapl();
+		vbox.gapl();
 
-        vbox.titsep("Texture source");
-        vbox.add(textureSource);
+		vbox.titsep("Export");
+		vbox.gap();
 
-        vbox.gap();
+		buttonOK = new JButton("Export", Icons.MENU_EXPORT);
+		buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
+		vbox.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
 
-        vbox.titsep("Scale");
-        vbox.add(scale);
-
-        vbox.gap();
-
-        vbox.titsep("Folder to export to");
-        vbox.gap();
-
-        //@formatter:off
-        filepicker = new FileInput(
-                this,
-                "Select folder to export to...",
-                FilePath.EXPORT,
-                "Export stitched pack",
-                FileChooser.FOLDERS,
-                true
-        );
-        //@formatter:on
-
-        vbox.add(filepicker);
-
-        vbox.gapl();
-
-        vbox.titsep("Export");
-        vbox.gap();
-
-        buttonOK = new JButton("Export", Icons.MENU_IMPORT_BOX);
-        buttonCancel = new JButton("Cancel", Icons.MENU_CANCEL);
-        vbox.buttonRow(Gui.RIGHT, buttonOK, buttonCancel);
-
-        return vbox;
+		return vbox;
 	}
 
 
@@ -168,135 +132,54 @@ public class DialogExportStitch extends RpwDialog
 
 	}
 
-    private final ActionListener checkboxListener = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent evt)
-        {
-            JCheckBox checkBox = (JCheckBox) evt.getSource();
+	private final ActionListener checkboxListener = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent evt)
+		{
+			JCheckBox src = (JCheckBox) evt.getSource();
 
-            if (checkBox == selectAll) {
-                for (int i = 0; i < selection.size(); ++i) {
-                    selection.get(i).setSelected(checkBox.isSelected());
-                }
-                selectAllBlocks.setSelected(checkBox.isSelected());
-                selectAllItems.setSelected(checkBox.isSelected());
-                selectAllEntities.setSelected(checkBox.isSelected());
-                selectAllGuis.setSelected(checkBox.isSelected());
-                selectAllFonts.setSelected(checkBox.isSelected());
-            } else if (checkBox == selectAllBlocks) {
-                for (int i = 0; i < selection.size(); ++i) {
-                    if(selection.get(i).getText().startsWith("blocks/")) {
-                        selection.get(i).setSelected(checkBox.isSelected());
-                    }
-                }
+			if (src == selection[selection.length - 1]) {
+				for (int i = 0; i < selection.length - 1; ++i)
+					selection[i].setSelected(src.isSelected());
+			} else {
+				boolean allSelected = true;
 
-                selectAllBlocks.setSelected(checkBox.isSelected());
-            } else if (checkBox == selectAllItems) {
-                for (int i = 0; i < selection.size(); ++i) {
-                    if(selection.get(i).getText().startsWith("items/")) {
-                        selection.get(i).setSelected(checkBox.isSelected());
-                    }
-                }
+				for (int i = 0; i < selection.length - 1; ++i)
+					allSelected &= selection[i].isSelected();
 
-                selectAllItems.setSelected(checkBox.isSelected());
-            } else if (checkBox == selectAllEntities) {
-                for (int i = 0; i < selection.size(); ++i) {
-                    if(selection.get(i).getText().startsWith("entity/")) {
-                        selection.get(i).setSelected(checkBox.isSelected());
-                    }
-                }
+				selection[selection.length - 1].setSelected(allSelected);
 
-                selectAllEntities.setSelected(checkBox.isSelected());
-            } else if (checkBox == selectAllGuis) {
-                for (int i = 0; i < selection.size(); ++i) {
-                    if(selection.get(i).getText().startsWith("gui/")) {
-                        selection.get(i).setSelected(checkBox.isSelected());
-                    }
-                }
-
-                selectAllGuis.setSelected(checkBox.isSelected());
-            } else if (checkBox == selectAllFonts) {
-                for (int i = 0; i < selection.size(); ++i) {
-                    if(selection.get(i).getText().startsWith("font/")) {
-                        selection.get(i).setSelected(checkBox.isSelected());
-                    }
-                }
-
-                selectAllFonts.setSelected(checkBox.isSelected());
-            } else {
-                boolean allSelected = true;
-                boolean allBlocksSelected = true;
-                boolean allItemsSelected = true;
-                boolean allEntitiesSelected = true;
-                boolean allGuisSelected = true;
-                boolean allFontsSelected = true;
-
-                for (int i = 0; i < selection.size(); ++i) {
-                    allSelected &= selection.get(i).isSelected();
-
-                    if(selection.get(i).getText().startsWith("blocks/")){
-                        allBlocksSelected &= selection.get(i).isSelected();
-                    }
-
-                    if(selection.get(i).getText().startsWith("items/")){
-                        allItemsSelected &= selection.get(i).isSelected();
-                    }
-
-                    if(selection.get(i).getText().startsWith("entity/")){
-                        allEntitiesSelected &= selection.get(i).isSelected();
-                    }
-
-                    if(selection.get(i).getText().startsWith("gui/")){
-                        allGuisSelected &= selection.get(i).isSelected();
-                    }
-
-                    if(selection.get(i).getText().startsWith("font/")){
-                        allFontsSelected &= selection.get(i).isSelected();
-                    }
-                }
-
-                selectAll.setSelected(allSelected);
-                selectAllBlocks.setSelected(allBlocksSelected);
-                selectAllItems.setSelected(allItemsSelected);
-                selectAllEntities.setSelected(allEntitiesSelected);
-                selectAllGuis.setSelected(allGuisSelected);
-                selectAllFonts.setSelected(allFontsSelected);
-            }
-        }
-    };
+				if (src.getText().equals(AssetCategory.BLOCKS.name)) {
+					forceBlockSize.setEnabled(src.isSelected());
+				}
+			}
+		}
+	};
 
 	private final ActionListener exportListener = new ActionListener() {
 
 		@Override
-		public void actionPerformed(ActionEvent evt) {
-            if (!filepicker.hasFile()) {
-                Alerts.error(self(), "Missing folder", "The selected folder does not exist.");
-                return;
-            }
+		public void actionPerformed(ActionEvent evt)
+		{
+			if (!filepicker.hasFile()) {
+				Alerts.error(self(), "Missing folder", "The selected folder does not exist.");
+				return;
+			}
 
-            VanillaPack vanilla = Sources.vanilla;
-            ArrayList<AssetEntry> totalEntries = new ArrayList<AssetEntry>(vanilla.getAssetEntries());
-            ArrayList<AssetEntry> entries = new ArrayList<AssetEntry>();
+			Set<AssetCategory> categories = new HashSet<AssetCategory>();
 
-            for (int i = 0; i < selection.size(); ++i){
-                if (selection.get(i).isSelected()){
-                    for (int j = 0; j < totalEntries.size(); j++) {
-                        if (totalEntries.get(j).getPath().substring(26).matches(selection.get(i).getText())) {
-                            entries.add(totalEntries.get(j));
-                        }
-                    }
-                }
-            }
+			for (int i = 0; i < AssetCategory.values().length; ++i)
+				if (selection[i].isSelected()) categories.add(AssetCategory.values()[i]);
 
-			if (entries.isEmpty()) {
-				Alerts.error(self(), "Texture Required", "At least one texture is required");
+			if (categories.isEmpty()) {
+				Alerts.error(self(), "Category Required", "At least one category is required");
 				return;
 			}
 
 			final File file = filepicker.getFile();
 			final Project project = Projects.getActive();
 
-			Tasks.exportPackToStitchedPng(file, project, entries, (String)textureSource.getSelectedItem(), (Scale) scale.getSelectedItem());
+			Tasks.exportPackToStitchedPng(file, project, categories, exportMissing.isSelected(), exportExisting.isSelected(), (BlockSize) forceBlockSize.getSelectedItem());
 
 			closeDialog();
 		}
