@@ -38,7 +38,7 @@ public class AssetLayout implements Iterable<AssetImage>
 
 	Point computeLayout()
 	{
-		int gw = 64, gh = 64;
+		int gw = 16, gh = 16;
 
 		while (!computeLayout(gw, gh)) {
 			if (gw > gh) gh *= 2;
@@ -124,5 +124,9 @@ public class AssetLayout implements Iterable<AssetImage>
 				return child[0].insert(asset);
 			}
 		}
+	}
+
+	public Set<AssetImage> getEntries() {
+		return entries;
 	}
 }

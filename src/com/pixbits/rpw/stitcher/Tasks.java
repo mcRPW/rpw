@@ -19,26 +19,28 @@ import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.library.*;
 import net.mightypork.rpw.tree.assets.*;
-import net.mightypork.rpw.tree.assets.groups.*;
 import net.mightypork.rpw.utils.files.FileUtils;
 import net.mightypork.rpw.utils.logging.Log;
 
 
 public class Tasks
 {
-	public static void importPackFromStitchedPng(File inputFolder, Project project, Set<AssetCategory> categories)
+	public static void importPackFromStitchedPng(File inputFolder, Project project, Set<AssetEntry> entries)
 	{
 		boolean keep = true;
 
-		for (AssetCategory c : categories)
-			if (keep) keep = importPackFromStitchedPng(inputFolder, project, c);
+		for (AssetEntry e : entries) {
+			if (keep) {
+				keep = importPackFromStitchedPng(inputFolder, project, e);
+			}
+		}
 	}
 
 
-	private static boolean importPackFromStitchedPng(File inputFolder, Project project, AssetCategory category)
+	private static boolean importPackFromStitchedPng(File inputFolder, Project project, AssetEntry entry)
 	{
-		File input = new File(inputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".png");
-		File jsonInput = new File(inputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".json");
+		File input = new File(inputFolder.getAbsolutePath() + File.separator + "textures.png");
+		File jsonInput = new File(inputFolder.getAbsolutePath() + File.separator + "textures.json");
 
 		if (!input.exists()) {
 			Alerts.error(null, "Image not found", "File " + input.getName() + " not found in specified folder.");
@@ -77,7 +79,6 @@ public class Tasks
 					outputAsset.mkdirs();
 					ImageIO.write(sprite, "PNG", outputAsset);
 					Log.i("Stitcher import, updating " + element.key + " to " + outputAsset.getAbsolutePath());
-
 				}
 
 			}
@@ -93,57 +94,36 @@ public class Tasks
 	}
 
 
-	public static void exportPackToStitchedPng(File outputFolder, Project project, Set<AssetCategory> categories, boolean exportMissing, boolean exportExisting, BlockSize blockSize)
-	{
-		for (AssetCategory c : categories)
-			exportPackToStitchedPng(outputFolder, project, c, exportMissing, exportExisting, blockSize);
-	}
-
-
-	private static void exportPackToStitchedPng(File outputFolder, Project project, AssetCategory category, boolean exportMissing, boolean exportExisting, BlockSize blockSize)
+	public static void exportPackToStitchedPng(File outputFolder, Project project, List<AssetEntry> entries, String textureSource, Scale scale)
 	{
 		VanillaPack vanilla = Sources.vanilla;
 
-		File output = new File(outputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".png");
-
-		Collection<AssetEntry> totalEntries = vanilla.getAssetEntries();
-		List<AssetEntry> entries = new ArrayList<AssetEntry>();
-
-		GroupFilter filter = new GroupFilter(null, category.prefix);
-		// GroupFilter fontFilter = new GroupFilter(null,
-		// "assets.minecraft.textures.font.*");
-
-		for (AssetEntry e : totalEntries) {
-			if (filter.matches(e) /* && !fontFilter.matches(e) */) entries.add(e);
-		}
+		File output = new File(outputFolder.getAbsolutePath() + File.separator + "textures.png");
 
 		try {
 			StitchJson.Category json = new StitchJson.Category();
-			json.category = category;
 			json.elements = new ArrayList<StitchJson.Element>();
-
-			// final int w = dimension.width, h = dimension.height;
-			// final int tw = imageSize.width, th = imageSize.height;
-			// int x = 0, y = 0;
 
 			MessageDigest digest = MessageDigest.getInstance("MD5");
 
 			AssetLayout layout = new AssetLayout();
 
-			for (AssetEntry e : entries) {
-				boolean hasCustom = project.getAssetFile(e.getKey()) != null;
+			for (AssetEntry entry : entries) {
+				boolean hasCustom = project.getAssetFile(entry.getKey()) != null;
 				File file = null;
 
-				if (exportExisting && hasCustom) file = project.getAssetFile(e.getKey());
-				else if (hasCustom) continue;
-
-				if (file == null && exportMissing) file = vanilla.getAssetFile(e.getKey());
+				if (textureSource == "Project" && hasCustom) {
+					file = project.getAssetFile(entry.getKey());
+				} else if (hasCustom == false) {
+					continue;
+				} else {
+					file = vanilla.getAssetFile(entry.getKey());
+				}
 
 				if (file != null) {
-					AssetImage iasset = new AssetImage(file, e);
+					AssetImage iasset = new AssetImage(file, entry);
 
-					if (category == AssetCategory.BLOCKS && blockSize != BlockSize.NO_CHANGE) iasset.cacheImage(blockSize.size, blockSize.size);
-					else iasset.cacheImage();
+					iasset.cacheImage(scale.scale, scale.scale);
 					layout.add(iasset);
 				}
 			}
@@ -168,11 +148,11 @@ public class Tasks
 			}
 
 			ImageIO.write(image, "png", output);
+			Log.i("Stiched " + layout.getEntries().size() + " textures into " + output.getPath());
 
-			File gsonOutput = new File(outputFolder.getAbsolutePath() + File.separator + category.name.toLowerCase() + ".json");
+			File gsonOutput = new File(outputFolder.getAbsolutePath() + File.separator + "textures.json");
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			FileUtils.stringToFile(gsonOutput, gson.toJson(json, StitchJson.Category.class));
-
 		} catch (Exception exception) {
 			Log.e(exception);
 		}
