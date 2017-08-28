@@ -25,31 +25,20 @@ import net.mightypork.rpw.utils.logging.Log;
 
 public class Tasks
 {
+
 	public static void importPackFromStitchedPng(File inputFolder, Project project, Set<AssetEntry> entries)
-	{
-		boolean keep = true;
-
-		for (AssetEntry e : entries) {
-			if (keep) {
-				keep = importPackFromStitchedPng(inputFolder, project, e);
-			}
-		}
-	}
-
-
-	private static boolean importPackFromStitchedPng(File inputFolder, Project project, AssetEntry entry)
 	{
 		File input = new File(inputFolder.getAbsolutePath() + File.separator + "textures.png");
 		File jsonInput = new File(inputFolder.getAbsolutePath() + File.separator + "textures.json");
 
 		if (!input.exists()) {
 			Alerts.error(null, "Image not found", "File " + input.getName() + " not found in specified folder.");
-			return false;
+			return;
 		}
 
 		if (!jsonInput.exists()) {
 			Alerts.error(null, "Json not found", "File " + input.getName() + " not found in specified folder.");
-			return false;
+            return;
 		}
 
 		try {
@@ -59,7 +48,7 @@ public class Tasks
 			MessageDigest digest = MessageDigest.getInstance("MD5");
 
 			for (StitchJson.Element element : json.elements) {
-				digest.reset();
+			    digest.reset();
 
 				BigInteger savedHash = new BigInteger(element.hashCode, 16);
 				BigInteger computedHash = new BigInteger(1, computeHashcodeForSprite(image, element.x, element.y, element.w, element.h, digest));
@@ -67,7 +56,6 @@ public class Tasks
 				if (!savedHash.equals(computedHash)) {
 					// overwrite existing asset to new one
 					File outputAsset = project.getAssetFile(element.key);
-
 					if (outputAsset != null) FileUtils.delete(outputAsset, false);
 					else outputAsset = new File(project.getAssetsDirectory() + File.separator + element.key.replaceAll("\\.", File.separator) + ".png");
 
@@ -85,10 +73,10 @@ public class Tasks
 
 			project.saveConfigFiles();
 			net.mightypork.rpw.tasks.Tasks.taskTreeRebuild();
-			return true;
+			return;
 		} catch (Exception e) {
 			Log.e(e);
-			return false;
+			return;
 		}
 
 	}
