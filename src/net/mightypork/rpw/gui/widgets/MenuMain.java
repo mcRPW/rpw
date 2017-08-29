@@ -34,6 +34,7 @@ public class MenuMain {
     private JMenuItem itemProjectSaveAs;
     private JMenuItem itemManageMcPacks;
     private JMenuItem itemProjectSetup;
+    private JMenuItem itemProjectSearch;
     private JMenuItem itemProjectSummary;
     private JMenuItem itemProjectExportMc;
     private JMenuItem itemProjectExport;
@@ -178,6 +179,11 @@ public class MenuMain {
         item = itemProjectSetup = new JMenuItem("Project properties", KeyEvent.VK_P);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
         if (ICNS) item.setIcon(Icons.MENU_SETUP);
+        menu.add(item);
+
+        item = itemProjectSearch = new JMenuItem("Search for assets", KeyEvent.VK_K);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+        if (ICNS) item.setIcon(Icons.MENU_SEARCH);
         menu.add(item);
 
         menu.addSeparator();
@@ -610,6 +616,14 @@ public class MenuMain {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Tasks.taskDialogProjectProperties();
+            }
+        });
+
+        itemProjectSearch.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Tasks.taskDialogProjectSearch();
             }
         });
 

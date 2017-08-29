@@ -156,7 +156,6 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
                         final AssetEntry ae = new AssetEntry(assetKey, EAsset.LANG);
 
                         if (Sources.vanilla.doesProvideAsset(ae.getKey())) {
-
                             // vanilla language, skip (why was it there anyway?)
                         } else {
                             // new language
@@ -294,7 +293,7 @@ public class SequencePopulateProjectFromPack extends AbstractMonitoredSequence {
                     ZipUtils.extractZipEntry(zip, ze, target);
                     if (!mcmeta) project.setSourceForFile(key, MagicSources.PROJECT);
 
-                    if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ PROJ " + (mcmeta ? "M " : "") + s);
+                    if (Config.LOG_EXTRACTED_ASSETS) Log.f3("+ PROJECT " + (mcmeta ? "M " : "") + s);
 
                 } else {
                     // extra included file

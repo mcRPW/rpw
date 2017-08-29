@@ -76,6 +76,7 @@ public class Icons {
     public static ImageIcon MENU_PMC;
     public static ImageIcon MENU_DOWNLOAD;
     public static ImageIcon MENU_WEBSITE;
+    public static ImageIcon MENU_SEARCH;
 
     public static ImageIcon TREE_CLOSE;
     public static ImageIcon TREE_OPEN;
@@ -180,7 +181,7 @@ public class Icons {
         MENU_PMC = loadImage(imgPath + "menu/pmc.png");
         MENU_MCF = loadImage(imgPath + "menu/mcf.png");
         MENU_DOWNLOAD = loadImage(imgPath + "menu/download.png");
-
+        MENU_SEARCH = loadImage(imgPath + "menu/search.png");
         MENU_WEBSITE = loadImage(imgPath + "menu/website.png");
 
         TREE_CLOSE = loadImage(imgPath + "tree/close.png");
