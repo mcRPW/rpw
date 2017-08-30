@@ -962,6 +962,7 @@ public class MenuMain {
         itemProjectOpenFolder.setEnabled(open);
         itemCustomSounds.setEnabled(open);
         itemManageLanguages.setEnabled(open);
+        itemProjectSearch.setEnabled(open);
 
         itemOptionFontFiles.setEnabled(Config.SHOW_TEXTURES);
     }
