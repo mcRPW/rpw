@@ -747,11 +747,6 @@ public class Tasks {
     }
 
 
-    public static void taskDialogProjectSearch() {
-        Gui.open(new DialogSearchAssets());
-    }
-
-
     public static void taskDialogProjectSummary() {
         if (!Projects.isOpen()) {
             Alerts.error(null, "No project is open!");
