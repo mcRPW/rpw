@@ -19,6 +19,7 @@ import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.struct.LangEntry;
 import net.mightypork.rpw.struct.LangEntryMap;
 import net.mightypork.rpw.struct.SoundEntryMap;
+import net.mightypork.rpw.tasks.sequences.SequenceExportProject;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.Fixins;
 import net.mightypork.rpw.utils.files.DirectoryTreeDifferenceFinder;
@@ -375,6 +376,10 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 	public int getExportPackVersion(){
+		if (exportPackVersion == 0) {
+			exportPackVersion = SequenceExportProject.getPackMetaNumber();
+		}
+
 		return exportPackVersion;
 	}
 
