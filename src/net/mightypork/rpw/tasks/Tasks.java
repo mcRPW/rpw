@@ -189,8 +189,8 @@ public class Tasks {
     }
 
 
-    public static void taskDialogExportToMc() {
-        Gui.open(new DialogExportToMc());
+    public static void taskDialogExport() {
+        Gui.open(new DialogExport());
     }
 
 
@@ -251,13 +251,6 @@ public class Tasks {
         }
 
         Projects.clearChangeFlag();
-    }
-
-
-    public static void taskDialogExportProject() {
-        if (!Projects.isOpen()) return;
-
-        TaskExportProject.showDialog();
     }
 
 

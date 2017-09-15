@@ -35,7 +35,6 @@ public class MenuMain {
     private JMenuItem itemManageMcPacks;
     private JMenuItem itemProjectSetup;
     private JMenuItem itemProjectSummary;
-    private JMenuItem itemProjectExportMc;
     private JMenuItem itemProjectExport;
     private JMenuItem itemProjectExportStitch;
     private JMenuItem itemProjectImportStitch;
@@ -151,12 +150,7 @@ public class MenuMain {
 
         menu.addSeparator();
 
-        item = itemProjectExport = new JMenuItem("Export resourcepack to...", KeyEvent.VK_E);
-        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL | SHIFT));
-        if (ICNS) item.setIcon(Icons.MENU_EXPORT_BOX);
-        menu.add(item);
-
-        item = itemProjectExportMc = new JMenuItem("Export resourcepack to Minecraft", KeyEvent.VK_M);
+        item = itemProjectExport = new JMenuItem("Export resourcepack", KeyEvent.VK_M);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, CTRL));
         if (ICNS) item.setIcon(Icons.MENU_EXPORT_BOX);
         menu.add(item);
@@ -206,6 +200,7 @@ public class MenuMain {
         menu.add(item);
 
         item = itemManageLanguages = new JMenuItem("Manage languages", KeyEvent.VK_L);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, CTRL | SHIFT));
         if (ICNS) item.setIcon(Icons.TREE_FILE_TEXT);
         menu.add(item);
 
@@ -553,15 +548,7 @@ public class MenuMain {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Tasks.taskDialogExportProject();
-            }
-        });
-
-        itemProjectExportMc.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Tasks.taskDialogExportToMc();
+                Tasks.taskDialogExport();
             }
         });
 
@@ -934,11 +921,10 @@ public class MenuMain {
     public void updateEnabledItems() {
         final boolean open = Projects.isOpen();
 
-        itemProjectExport.setEnabled(open);
         itemProjectSave.setEnabled(open);
         itemProjectSaveAs.setEnabled(open);
         itemProjectRevert.setEnabled(open);
-        itemProjectExportMc.setEnabled(open);
+        itemProjectExport.setEnabled(open);
         itemProjectExportStitch.setEnabled(open);
         itemProjectImportStitch.setEnabled(open);
         itemProjectSetup.setEnabled(open);

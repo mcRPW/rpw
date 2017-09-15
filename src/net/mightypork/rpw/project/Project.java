@@ -376,10 +376,6 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 	public int getExportPackVersion(){
-		if (exportPackVersion == 0) {
-			exportPackVersion = SequenceExportProject.getPackMetaNumber();
-		}
-
 		return exportPackVersion;
 	}
 

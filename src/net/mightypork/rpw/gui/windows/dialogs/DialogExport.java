@@ -2,6 +2,8 @@ package net.mightypork.rpw.gui.windows.dialogs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +19,9 @@ import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
+import net.mightypork.rpw.gui.helpers.FileChooser;
 import net.mightypork.rpw.gui.helpers.TextInputValidator;
+import net.mightypork.rpw.gui.widgets.FileInput;
 import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
@@ -33,7 +37,7 @@ import net.mightypork.rpw.utils.logging.Log;
 import com.google.gson.reflect.TypeToken;
 
 
-public class DialogExportToMc extends RpwDialog {
+public class DialogExport extends RpwDialog {
 
     private final List<String> installedPackNames;
 
@@ -42,6 +46,8 @@ public class DialogExportToMc extends RpwDialog {
     private JButton buttonOK;
     private SimpleStringList list;
     private JButton buttonCancel;
+    private JCheckBox exportToMc;
+    private FileInput filepicker;
 
     private JComboBox mcOptsCombo;
     private JComboBox packMeta;
@@ -52,7 +58,7 @@ public class DialogExportToMc extends RpwDialog {
     private static final int MC_NO_CHANGE = 2;
 
 
-    public DialogExportToMc() {
+    public DialogExport() {
         super(App.getFrame(), "Export");
 
         installedPackNames = getOptions();
@@ -66,7 +72,7 @@ public class DialogExportToMc extends RpwDialog {
         final VBox vbox = new VBox();
         vbox.windowPadding();
 
-        vbox.heading("Export to Minecraft");
+        vbox.heading("Export");
 
         vbox.titsep("Installed Resourcepacks");
         vbox.gap();
@@ -90,6 +96,8 @@ public class DialogExportToMc extends RpwDialog {
         nameField.addKeyListener(TextInputValidator.filenames());
         descriptionField = Gui.textField("", "Output file description", "Output file description");
 
+        exportToMc = Gui.checkbox(true);
+
         final String[] choices = new String[3];
         choices[MC_ALONE] = "Use this pack alone";
         choices[MC_ADD] = "Add pack to selected (on top)";
@@ -103,7 +111,13 @@ public class DialogExportToMc extends RpwDialog {
         packMeta.setSelectedIndex(SequenceExportProject.getPackMetaNumber() - 1);
         unZip = Gui.checkbox(false);
 
-        vbox.springForm(new String[]{"Resourcepack Name:", "Resourcepack Description:", "Resourcepack Format:", "In Minecraft:", "Unzip:"}, new JComponent[]{nameField, descriptionField, packMeta, mcOptsCombo, unZip});
+        vbox.springForm(new String[]{"Resourcepack Name:", "Resourcepack Description:", "Export To Minecraft:"}, new JComponent[]{nameField, descriptionField, exportToMc});
+
+        filepicker = new FileInput(this, "Select folder to export to...", Config.FilePath.EXPORT, "Select folder to export to", FileChooser.FOLDERS, true);
+        filepicker.setEnabled(false);
+        vbox.add(filepicker);
+
+        vbox.springForm(new String[]{"Resourcepack Format:", "In Minecraft:", "Unzip:"}, new JComponent[]{packMeta, mcOptsCombo, unZip});
 
         vbox.gapl();
 
@@ -122,6 +136,8 @@ public class DialogExportToMc extends RpwDialog {
         buttonCancel.addActionListener(closeListener);
 
         buttonOK.addActionListener(exportListener);
+
+        exportToMc.addItemListener(exportToMcListener);
     }
 
 
@@ -158,6 +174,7 @@ public class DialogExportToMc extends RpwDialog {
             Projects.getActive().setUnZip(unZip.isSelected());
             Projects.getActive().setTitle(nameField.getText());
             Projects.getActive().setDescription(descriptionField.getText());
+
             final String name = nameField.getText().trim();
             if (name.length() == 0) {
                 Alerts.error(self(), "Invalid name", "Missing file name!");
@@ -177,14 +194,17 @@ public class DialogExportToMc extends RpwDialog {
                 if (!overwrite) return;
 
             }
-
-            // OK name
-
-            final File file = OsUtils.getMcDir("resourcepacks/" + name + ".zip");
+            File file = null;
+            if (exportToMc.isSelected()) {
+                file = OsUtils.getMcDir("resourcepacks/" + name + ".zip");
+            } else if (filepicker.getFile() != null){
+                file = new File(filepicker.getFile().getPath() + "/" + name + ".zip");
+            }
 
             try {
                 closeDialog();
 
+                if(file != null){
                 Tasks.taskExportProject(file, new Runnable() {
 
                     @Override
@@ -272,11 +292,24 @@ public class DialogExportToMc extends RpwDialog {
                     }
                 });
 
-            } catch (final Exception e) {
+            }} catch (final Exception e) {
                 Alerts.error(self(), "An error occured while exporting.");
                 Log.e(e);
             }
         }
+    };
+
+    private final ItemListener exportToMcListener = new ItemListener() {
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                mcOptsCombo.setEnabled(true);
+                filepicker.setEnabled(false);
+            } else {
+                mcOptsCombo.setEnabled(false);
+                filepicker.setEnabled(true);
+            }
+        }
+
     };
 
 }
