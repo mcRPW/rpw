@@ -30,6 +30,7 @@ import net.mightypork.rpw.gui.widgets.HBox;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.struct.ModEntryList;
 import net.mightypork.rpw.struct.VersionInfo;
 import net.mightypork.rpw.tasks.Tasks;
@@ -207,10 +208,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
      * @return success
      */
     private boolean stepPrepareOutput() {
-        Log.f2("Cleaning output directory");
-
-        outDir = OsUtils.getAppDir(Paths.DIR_VANILLA, true);
-        FileUtils.delete(outDir, true);
+        outDir = new File(OsUtils.getAppDir(Paths.DIR_VANILLA, true).getPath() + "/" + version);
         outDir.mkdirs();
         return true;
     }
@@ -528,7 +526,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
         }
 
         // write to file
-        final File datafile = OsUtils.getAppDir(Paths.FILE_VANILLA_STRUCTURE);
+        final File datafile = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + version + "/structure.dat");
         try {
             SimpleConfig.mapToFile(datafile, saveMap, false);
         } catch (final IOException e) {
@@ -598,5 +596,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
         // The dialog likes to jump to background - this brings it to front.
 
         Alerts.info(monitorDialog, "Minecraft assets reloaded.");
+
+        Projects.currentMcVersion = version;
     }
 }

@@ -58,6 +58,7 @@ public class Project extends Source implements NodeSourceProvider
 
 	private int exportPackVersion;
 	private boolean unZip;
+	private String currentMcVersion;
 
 	public Project(String identifier) {
 		projectName = identifier;
@@ -154,6 +155,12 @@ public class Project extends Source implements NodeSourceProvider
 
 		props.putString("title", projectTitle);
 		props.putString("description", projectDescription);
+
+		if (currentMcVersion != null) {
+            props.putString("currentMcVersion", currentMcVersion);
+        } else {
+		    props.putString("currentMcVersion", Projects.currentMcVersion);
+        }
 		props.putInteger("version", Const.VERSION_SERIAL);
 
 		props.renameKey("name", "title"); // change 3.8.3 -> 3.8.4
@@ -162,6 +169,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		projectTitle = props.getString("title");
 		projectDescription = props.getString("description");
+		currentMcVersion = props.getString("currentMcVersion");
 		lastRpwVersion = props.getInteger("version");
 	}
 
@@ -245,6 +253,12 @@ public class Project extends Source implements NodeSourceProvider
 		props.setValue("version", Const.VERSION_SERIAL);
 		props.setValue("title", projectTitle);
 		props.setValue("description", projectDescription);
+
+        if (currentMcVersion != null) {
+            props.putString("currentMcVersion", currentMcVersion);
+        } else {
+            props.putString("currentMcVersion", Projects.currentMcVersion);
+        }
 		props.apply();
 	}
 
@@ -384,6 +398,12 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 	public boolean getUnzip(){return unZip;}
+
+	public String getCurrentMcVersion(){
+	    return currentMcVersion;
+	}
+
+	public void setCurrentMcVersion(String currentMcVersion){this.currentMcVersion = currentMcVersion;}
 
 	public LangEntryMap getCustomLanguages() { return langs; }
 

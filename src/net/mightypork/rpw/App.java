@@ -18,6 +18,7 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogCrash;
 import net.mightypork.rpw.help.VersionUtils;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.HtmlBuilder;
@@ -75,6 +76,7 @@ public class App {
         Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
         Log.f1("Init started...");
+        Projects.currentMcVersion = new Project(Projects.getRecentProjects().get(0)).getCurrentMcVersion();
         OsUtils.initDirs();
         Config.init();
 

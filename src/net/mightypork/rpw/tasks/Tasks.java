@@ -586,6 +586,13 @@ public class Tasks {
     }
 
 
+    public static void taskConfigureMinecraftAssets() {
+        if (!Projects.isOpen()) return;
+
+        Gui.open(new DialogConfigureMinecraftAssets());
+    }
+
+
     public static int taskExtractAssets() {
         final String version = TaskExtractAssets.getUserChoice(false);
 

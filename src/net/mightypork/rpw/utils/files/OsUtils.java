@@ -6,6 +6,8 @@ import java.util.List;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.project.Project;
+import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -295,9 +297,9 @@ public class OsUtils {
         OsUtils.getAppDir(Paths.DIR_CONFIG, true);
         OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS, true);
 
-        final File vanilla = OsUtils.getAppDir(Paths.DIR_VANILLA, true);
-        final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA + "/assets", false);
-
+        final File vanilla = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Projects.currentMcVersion, true);
+        final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Projects.currentMcVersion + "/assets", false);
+        Log.w(vanillaAssets.getPath() + ", " + vanilla.getPath());
         if (vanilla.list().length == 0 || !vanillaAssets.exists()) {
             Flags.MUST_EXTRACT = true;
         }

@@ -141,7 +141,7 @@ public class DialogManageLanguages extends RpwDialog {
 
 
     protected void onLanguageSelection() {
-        if(languages.getSelectedValue() != null) {
+        if (languages.getSelectedValue() != null) {
             editLanguage.setEnabled(true);
             deleteLanguage.setEnabled(true);
         }else{
