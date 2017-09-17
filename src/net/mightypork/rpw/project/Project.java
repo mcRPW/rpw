@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
@@ -155,12 +156,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		props.putString("title", projectTitle);
 		props.putString("description", projectDescription);
-
-		if (currentMcVersion != null) {
-            props.putString("currentMcVersion", currentMcVersion);
-        } else {
-		    props.putString("currentMcVersion", Projects.currentMcVersion);
-        }
+        props.putString("currentMcVersion", currentMcVersion);
 		props.putInteger("version", Const.VERSION_SERIAL);
 
 		props.renameKey("name", "title"); // change 3.8.3 -> 3.8.4
@@ -253,12 +249,8 @@ public class Project extends Source implements NodeSourceProvider
 		props.setValue("version", Const.VERSION_SERIAL);
 		props.setValue("title", projectTitle);
 		props.setValue("description", projectDescription);
+        props.setValue("currentMcVersion", currentMcVersion);
 
-        if (currentMcVersion != null) {
-            props.putString("currentMcVersion", currentMcVersion);
-        } else {
-            props.putString("currentMcVersion", Projects.currentMcVersion);
-        }
 		props.apply();
 	}
 

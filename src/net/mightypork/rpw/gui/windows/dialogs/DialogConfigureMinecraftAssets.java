@@ -1,6 +1,7 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
@@ -83,9 +84,11 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Tasks.taskTreeSaveAndRebuild();
+                Tasks.taskLoadVanillaStructure();
+                Tasks.taskTreeRebuild();
                 Projects.getActive().setCurrentMcVersion(installedAssets.getSelectedValue());
-                Projects.currentMcVersion = installedAssets.getSelectedValue();
+                Config.LIBRARY_VERSION = installedAssets.getSelectedValue();
+                Tasks.taskUpdateTitlebar();
                 closeDialog();
             }
         });

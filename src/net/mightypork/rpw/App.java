@@ -76,7 +76,7 @@ public class App {
         Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
         Log.f1("Init started...");
-        Projects.currentMcVersion = new Project(Projects.getRecentProjects().get(0)).getCurrentMcVersion();
+        Config.LIBRARY_VERSION = new Project(Projects.getRecentProjects().get(0)).getCurrentMcVersion();
         OsUtils.initDirs();
         Config.init();
 

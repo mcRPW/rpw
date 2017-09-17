@@ -34,7 +34,7 @@ public class TaskLoadVanillaStructure {
 
         Map<String, AssetEntry> assets = new LinkedHashMap<String, AssetEntry>();
 
-        final File structureFile = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Projects.currentMcVersion + "/structure.dat");
+        final File structureFile = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION + "/structure.dat");
 
         if (!structureFile.exists()) {
             return; // success == false

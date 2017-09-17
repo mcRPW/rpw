@@ -597,6 +597,6 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
 
         Alerts.info(monitorDialog, "Minecraft assets reloaded.");
 
-        Projects.currentMcVersion = version;
+        Config.LIBRARY_VERSION = version;
     }
 }

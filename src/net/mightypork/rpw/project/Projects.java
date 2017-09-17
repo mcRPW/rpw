@@ -19,7 +19,6 @@ import net.mightypork.rpw.utils.logging.Log;
 public class Projects {
 
     private static Project active = null;
-    public static String currentMcVersion = "";
 
     public static Project getActive() {
         return active;
