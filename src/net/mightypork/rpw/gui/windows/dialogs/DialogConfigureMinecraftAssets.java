@@ -9,6 +9,7 @@ import net.mightypork.rpw.gui.widgets.SimpleStringList;
 import net.mightypork.rpw.gui.widgets.VBox;
 import net.mightypork.rpw.gui.windows.RpwDialog;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
+import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.struct.LangEntry;
 import net.mightypork.rpw.tasks.Tasks;
@@ -84,10 +85,11 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Tasks.taskLoadVanillaStructure();
-                Tasks.taskTreeRebuild();
                 Projects.getActive().setCurrentMcVersion(installedAssets.getSelectedValue());
                 Config.LIBRARY_VERSION = installedAssets.getSelectedValue();
+                Sources.initVanilla();
+                Tasks.taskLoadVanillaStructure();
+                Tasks.taskTreeRebuild();
                 Tasks.taskUpdateTitlebar();
                 closeDialog();
             }
@@ -161,8 +163,7 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
         if (assets == null) return;
 
         if (assets.equals(Projects.getActive().getCurrentMcVersion())){
-            Log.i("You can't delete the asset directory that you are using. Change it or inport another one before trying again");
-            closeDialog();
+            Alerts.error(self(), "You can't delete the asset directory that you are using.\nChange it or inport another one before trying again");
             return;
         }
 

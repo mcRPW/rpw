@@ -65,6 +65,7 @@ public class Project extends Source implements NodeSourceProvider
 		projectName = identifier;
 		projectTitle = identifier; // by default
 		projectDescription = " ";
+		currentMcVersion = " ";
 
 		backupBase = Paths.getProjectBackupFolder(identifier);
 		projectBase = Paths.getProjectFolder(identifier);

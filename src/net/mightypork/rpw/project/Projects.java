@@ -75,6 +75,7 @@ public class Projects {
         Tasks.taskCloseProjectNoRebuild();
 
         final Project p = new Project(name);
+        Config.LIBRARY_VERSION = p.getCurrentMcVersion();
         setActive(p);
     }
 

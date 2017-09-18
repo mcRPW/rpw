@@ -212,7 +212,6 @@ public class FileUtils {
      */
     public static String fileToString(File file) throws IOException {
         final FileInputStream fin = new FileInputStream(file);
-
         return streamToString(fin);
     }
 
@@ -518,7 +517,6 @@ public class FileUtils {
 
                     ok |= path.startsWith("assets");
                     ok &= type.isAssetOrMeta();
-
                     return ok;
                 }
             };

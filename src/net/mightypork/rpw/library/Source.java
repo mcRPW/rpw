@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 
 
@@ -57,7 +58,7 @@ public abstract class Source implements ISource {
 
         final String path = asset.getPath();
 
-        final File file = new File(getAssetsDirectory(), path);
+        final File file = new File(getAssetsDirectory(), Config.LIBRARY_VERSION + "/" + path);
 
         if (!file.exists()) return null;
 

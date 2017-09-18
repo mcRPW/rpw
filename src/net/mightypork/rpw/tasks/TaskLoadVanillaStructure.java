@@ -67,7 +67,6 @@ public class TaskLoadVanillaStructure {
                     final EAsset type = EAsset.valueOf(v);
                     final AssetEntry ae = new AssetEntry(k, type);
                     assets.put(e.getKey(), ae);
-
                     if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("+ " + ae);
 
                 } catch (final IllegalArgumentException iae) {

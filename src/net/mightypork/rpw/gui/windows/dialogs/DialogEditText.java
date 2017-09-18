@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
 import net.mightypork.rpw.gui.helpers.TextEditListener;
@@ -51,14 +52,14 @@ public class DialogEditText extends DialogEditorBase {
 
         dlgHeading = Utils.fromLastChar(node.getAssetEntry().getPath(), '/');
 
-        final InputStream in = Projects.getActive().getAssetStream(node.getAssetKey());
+        final InputStream in = Projects.getActive().getAssetStream(Config.LIBRARY_VERSION + "." + node.getAssetKey());
         final String text = FileUtils.streamToString(in);
 
         create(dlgHeading, text, node.getAssetType(), true, new TextEditListener() {
 
             @Override
             public void onDialogClosed(String text) {
-                final File file = Projects.getActive().getAssetFile(node.getAssetKey());
+                final File file = Projects.getActive().getAssetFile(Config.LIBRARY_VERSION + "." + node.getAssetKey());
 
                 try {
                     FileUtils.stringToFile(file, text);
