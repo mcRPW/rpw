@@ -32,6 +32,7 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
     private JButton selectAssets;
     private JButton newAssets;
     private JButton deleteAssets;
+    private JButton cancel;
 
     public DialogConfigureMinecraftAssets() {
         super(App.getFrame(), "Configure Minecraft Assets");
@@ -60,9 +61,10 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
         newAssets = new JButton("New", Icons.MENU_NEW);
         deleteAssets = new JButton("Delete", Icons.MENU_DELETE);
         deleteAssets.setEnabled(false);
+        cancel = new JButton("Cancel", Icons.MENU_CANCEL);
 
         vb.gap();
-        vb.buttonRow(Gui.CENTER, selectAssets, newAssets, deleteAssets);
+        vb.buttonRow(Gui.CENTER, selectAssets, newAssets, deleteAssets, cancel);
         vb.gap();
 
         return vb;
@@ -85,13 +87,15 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                Projects.getActive().setCurrentMcVersion(installedAssets.getSelectedValue());
-                Config.LIBRARY_VERSION = installedAssets.getSelectedValue();
-                Sources.initVanilla();
-                Tasks.taskLoadVanillaStructure();
-                Tasks.taskTreeRebuild();
-                Tasks.taskUpdateTitlebar();
-                closeDialog();
+                if (!Config.LIBRARY_VERSION.equals(installedAssets.getSelectedValue())){
+                    Projects.getActive().setCurrentMcVersion(installedAssets.getSelectedValue());
+                    Config.LIBRARY_VERSION = installedAssets.getSelectedValue();
+                    Sources.initVanilla();
+                    Tasks.taskLoadVanillaStructure();
+                    Tasks.taskTreeRebuild();
+                    Tasks.taskUpdateTitlebar();
+                    closeDialog();
+                }
             }
         });
 
@@ -113,6 +117,14 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
             public void actionPerformed(ActionEvent e) {
                 deleteAssets();
                 onAssetsSelection();
+            }
+        });
+
+        cancel.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                closeDialog();
             }
         });
 
