@@ -103,7 +103,6 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                installedAssets.list.setSelectedIndices(new int[]{});
                 Tasks.taskExtractAssets();
                 updateAssets();
                 onAssetsSelection();

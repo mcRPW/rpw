@@ -598,6 +598,9 @@ public class Tasks {
 
         if (version == null) return -1;
 
+        Projects.getActive().setCurrentMcVersion(version);
+        Config.LIBRARY_VERSION = version;
+
         final int task = Tasks.startTask();
 
         new Thread(new Runnable() {
@@ -610,6 +613,9 @@ public class Tasks {
                 Tasks.taskTreeSaveAndRebuild();
 
                 Tasks.stopTask(task);
+                Sources.initVanilla();
+                Tasks.taskLoadVanillaStructure();
+                Tasks.taskUpdateTitlebar();
 
                 // -- task end --
             }
