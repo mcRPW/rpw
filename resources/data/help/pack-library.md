@@ -11,6 +11,7 @@ a pack by right-clicking on a group or file in the main asset tree.
 
 All commands to work with library are located in the `Library` menu.
 
-Apart from working with library packs, there is also a command to re-extract MC 
-assets, which you can use after you install some mods into your mods folder, or 
-update the game, and want to see those changes in RPW.
+Apart from working with library packs, there is also a Configure Minecraft Assets dialog located at
+`Library > Configure Minecraft Assets` where you can choose which Minecraft version to use. To inport a new Minecraft
+version click the new button and select the correct version. You will also have the option to include mod files. After
+changing or inporting a new Minecraft version the tree will rebuild so that you will see the assets from that version.
