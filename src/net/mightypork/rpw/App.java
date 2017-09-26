@@ -76,7 +76,10 @@ public class App {
         Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
         Log.f1("Init started...");
-        Config.LIBRARY_VERSION = new Project(Projects.getRecentProjects().get(0)).getCurrentMcVersion();
+        if (Projects.getRecentProjects().size() > 0) {
+            Config.LIBRARY_VERSION = new Project(Projects.getRecentProjects().get(0)).getCurrentMcVersion();
+        }
+
         OsUtils.initDirs();
         Config.init();
 
@@ -231,7 +234,7 @@ public class App {
     public static String getWindowTitle() {
         String wt = "";
         if (Projects.isOpen()) wt += Projects.getActive().getName() + "  \u2022  ";
-        wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  App by @MightyPork";
+        wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  App by @MightyPork and @MCrafterzz";
         return wt;
     }
 
