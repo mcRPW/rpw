@@ -37,10 +37,17 @@ public class TaskModifyAsset {
 
         if (!editMeta && Config.USE_INTERNAL_TEXT_EDITOR && node.getAssetType().isText()) {
             try {
-                Alerts.loading(true);
-                final Dialog d = new DialogEditText(node);
-                Alerts.loading(false);
-                d.setVisible(true);
+                File file = Projects.getActive().getAssetFile(node.getAssetKey());
+                if (Config.def_USE_MODEL_EDITOR && node.getAssetKey().contains("models") && file.getPath().endsWith(".json")) {
+                    if (!DesktopApi.editModel(file)) {
+                        alertCouldNotEdit();
+                    }
+                } else {
+                    Alerts.loading(true);
+                    final Dialog d = new DialogEditText(node);
+                    Alerts.loading(false);
+                    d.setVisible(true);
+                }
             } catch (final IOException e) {
                 Log.e("Error openning text file for edit.", e);
                 Alerts.error(App.getFrame(), "Error openning text file for edit.");

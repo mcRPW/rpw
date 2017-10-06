@@ -80,7 +80,25 @@ public class DesktopApi {
         if (Config.USE_AUDIO_EDITOR) {
             if (runCommand(Config.AUDIO_EDITOR, Config.AUDIO_EDITOR_ARGS, file.getPath())) return true;
             Alerts.warning(App.getFrame(),
-                    "Your configured audio editor \"" + Config.IMAGE_EDITOR + "\" could not be launched.\n" +
+                    "Your configured audio editor \"" + Config.AUDIO_EDITOR + "\" could not be launched.\n" +
+                            "Please review your settings in [Options > Configure editors].\n\n" +
+                            "RPW will now try to use your system default editor."
+            );
+        }
+
+        if (openSystemSpecific(file.getPath())) return true;
+
+        if (editDESKTOP(file)) return true;
+
+        return false;
+    }
+
+
+    public static boolean editModel(File file) {
+        if (Config.USE_MODEL_EDITOR) {
+            if (runCommand(Config.MODEL_EDITOR, Config.MODEL_EDITOR_ARGS, file.getPath())) return true;
+            Alerts.warning(App.getFrame(),
+                    "Your configured model editor \"" + Config.MODEL_EDITOR + "\" could not be launched.\n" +
                             "Please review your settings in [Options > Configure editors].\n\n" +
                             "RPW will now try to use your system default editor."
             );
