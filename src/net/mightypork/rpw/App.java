@@ -82,6 +82,7 @@ public class App {
 
         OsUtils.initDirs();
         Config.init();
+        OsUtils.initWorkdir();
 
         // attempt to enable anti-aliasing
         try {

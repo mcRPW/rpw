@@ -285,13 +285,12 @@ public class OsUtils {
     public static void initDirs() {
         Log.f2("Checking Minecraft installation.");
         OsUtils.checkMinecraft();
-
-        Log.f2("Checking working directory.");
-        OsUtils.initWorkdir();
     }
 
 
-    static void initWorkdir() {
+    public static void initWorkdir() {
+        Log.f2("Checking working directory.");
+
         OsUtils.getAppDir(); // init app dir
         OsUtils.getAppDir(Paths.DIR_LIBRARY, true);
         OsUtils.getAppDir(Paths.DIR_LOGS, true);
@@ -300,6 +299,7 @@ public class OsUtils {
 
         final File vanilla = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION, false);
         final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION + "/assets", false);
+
         if (!vanilla.exists() || vanilla.list().length == 0 || !vanillaAssets.exists()) {
             Flags.MUST_EXTRACT = true;
         }
