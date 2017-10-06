@@ -298,9 +298,9 @@ public class OsUtils {
         OsUtils.getAppDir(Paths.DIR_CONFIG, true);
         OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS, true);
 
-        final File vanilla = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION, true);
+        final File vanilla = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION, false);
         final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION + "/assets", false);
-        if (vanilla.list().length == 0 || !vanillaAssets.exists()) {
+        if (!vanilla.exists() || vanilla.list().length == 0 || !vanillaAssets.exists()) {
             Flags.MUST_EXTRACT = true;
         }
 
