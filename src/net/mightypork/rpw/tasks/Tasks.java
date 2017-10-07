@@ -808,6 +808,11 @@ public class Tasks {
     }
 
 
+    public static void taskEditModel(AssetTreeLeaf node) {
+        TaskModifyAsset.editModel(node);
+    }
+
+
     public static void taskEditMeta(AssetTreeLeaf node) {
         TaskModifyAsset.edit(node, true);
     }
