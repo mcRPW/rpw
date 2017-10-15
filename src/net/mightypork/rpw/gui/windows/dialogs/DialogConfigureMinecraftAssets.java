@@ -35,7 +35,7 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
     private JButton cancel;
 
     public DialogConfigureMinecraftAssets() {
-        super(App.getFrame(), "Configure Minecraft Assets");
+        super(App.getFrame(), "Select target Minecraft version");
 
         createDialog();
     }
@@ -45,7 +45,7 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
     protected JComponent buildGui() {
         final VBox vb = new VBox();
         vb.windowPadding();
-        vb.heading("Configure Minecraft Assets");
+        vb.heading("Select target Minecraft version");
 
         // box for the list of keys
         installedAssets = new SimpleStringList();
