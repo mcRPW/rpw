@@ -212,7 +212,6 @@ public class FileUtils {
      */
     public static String fileToString(File file) throws IOException {
         final FileInputStream fin = new FileInputStream(file);
-
         return streamToString(fin);
     }
 
@@ -295,9 +294,7 @@ public class FileUtils {
         try {
             name = Utils.toLastDot(filename);
         } catch (final StringIndexOutOfBoundsException e) {
-            name = "";
-            Log.w("Error extracting extension from file " + filename);
-            Utils.printStackTrace();
+            name = filename;
         }
 
         return new String[]{name, ext};
@@ -520,7 +517,6 @@ public class FileUtils {
 
                     ok |= path.startsWith("assets");
                     ok &= type.isAssetOrMeta();
-
                     return ok;
                 }
             };

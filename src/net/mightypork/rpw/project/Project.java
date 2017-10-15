@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.gui.windows.messages.Alerts;
@@ -19,6 +20,7 @@ import net.mightypork.rpw.library.Sources;
 import net.mightypork.rpw.struct.LangEntry;
 import net.mightypork.rpw.struct.LangEntryMap;
 import net.mightypork.rpw.struct.SoundEntryMap;
+import net.mightypork.rpw.tasks.sequences.SequenceExportProject;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.utils.Fixins;
 import net.mightypork.rpw.utils.files.DirectoryTreeDifferenceFinder;
@@ -57,11 +59,13 @@ public class Project extends Source implements NodeSourceProvider
 
 	private int exportPackVersion;
 	private boolean unZip;
+	private String currentMcVersion;
 
 	public Project(String identifier) {
 		projectName = identifier;
 		projectTitle = identifier; // by default
 		projectDescription = " ";
+		currentMcVersion = " ";
 
 		backupBase = Paths.getProjectBackupFolder(identifier);
 		projectBase = Paths.getProjectFolder(identifier);
@@ -153,6 +157,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		props.putString("title", projectTitle);
 		props.putString("description", projectDescription);
+        props.putString("currentMcVersion", currentMcVersion);
 		props.putInteger("version", Const.VERSION_SERIAL);
 
 		props.renameKey("name", "title"); // change 3.8.3 -> 3.8.4
@@ -161,6 +166,7 @@ public class Project extends Source implements NodeSourceProvider
 
 		projectTitle = props.getString("title");
 		projectDescription = props.getString("description");
+		currentMcVersion = props.getString("currentMcVersion");
 		lastRpwVersion = props.getInteger("version");
 	}
 
@@ -244,6 +250,8 @@ public class Project extends Source implements NodeSourceProvider
 		props.setValue("version", Const.VERSION_SERIAL);
 		props.setValue("title", projectTitle);
 		props.setValue("description", projectDescription);
+        props.setValue("currentMcVersion", currentMcVersion);
+
 		props.apply();
 	}
 
@@ -383,6 +391,12 @@ public class Project extends Source implements NodeSourceProvider
 	}
 
 	public boolean getUnzip(){return unZip;}
+
+	public String getCurrentMcVersion(){
+	    return currentMcVersion;
+	}
+
+	public void setCurrentMcVersion(String currentMcVersion){this.currentMcVersion = currentMcVersion;}
 
 	public LangEntryMap getCustomLanguages() { return langs; }
 

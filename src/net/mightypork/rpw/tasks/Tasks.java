@@ -189,8 +189,8 @@ public class Tasks {
     }
 
 
-    public static void taskDialogExportToMc() {
-        Gui.open(new DialogExportToMc());
+    public static void taskDialogExport() {
+        Gui.open(new DialogExport());
     }
 
 
@@ -251,13 +251,6 @@ public class Tasks {
         }
 
         Projects.clearChangeFlag();
-    }
-
-
-    public static void taskDialogExportProject() {
-        if (!Projects.isOpen()) return;
-
-        TaskExportProject.showDialog();
     }
 
 
@@ -593,10 +586,20 @@ public class Tasks {
     }
 
 
+    public static void taskConfigureMinecraftAssets() {
+        if (!Projects.isOpen()) return;
+
+        Gui.open(new DialogConfigureMinecraftAssets());
+    }
+
+
     public static int taskExtractAssets() {
         final String version = TaskExtractAssets.getUserChoice(false);
 
         if (version == null) return -1;
+
+        Projects.getActive().setCurrentMcVersion(version);
+        Config.LIBRARY_VERSION = version;
 
         final int task = Tasks.startTask();
 
@@ -610,6 +613,9 @@ public class Tasks {
                 Tasks.taskTreeSaveAndRebuild();
 
                 Tasks.stopTask(task);
+                Sources.initVanilla();
+                Tasks.taskLoadVanillaStructure();
+                Tasks.taskUpdateTitlebar();
 
                 // -- task end --
             }
@@ -799,6 +805,11 @@ public class Tasks {
 
     public static void taskEditAsset(AssetTreeLeaf node) {
         TaskModifyAsset.edit(node, false);
+    }
+
+
+    public static void taskEditModel(AssetTreeLeaf node) {
+        TaskModifyAsset.editModel(node);
     }
 
 

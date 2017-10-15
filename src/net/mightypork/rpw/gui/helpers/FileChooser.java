@@ -36,6 +36,7 @@ public class FileChooser {
     public static final FileChooserFilter VSH = new FileChooserFilter("Vertex shaders", "vsh");
     public static final FileChooserFilter FSH = new FileChooserFilter("Fragment shaders", "fsh");
     public static final FileChooserFilter FOLDERS = new FolderChooserFilter();
+    public static final FileChooserFilter FOLDERS_ZIP = new FolderZipChooserFilter();
 
 
     /**
@@ -183,11 +184,22 @@ public class FileChooser {
         }
     }
 
+    public static class FolderZipChooserFilter extends FileChooserFilter {
+        public FolderZipChooserFilter() {
+            super("Folders & Zip files", "");
+        }
+
+
+        @Override
+        public String getDescription() {
+            return "Folders & Zip files";
+        }
+    }
+
     public static class FileChooserFilter extends FileFilter {
 
         private final FileSuffixFilter fsf;
         private final String name;
-
 
         public FileChooserFilter(String name, String suffixes) {
             this.name = name;

@@ -135,6 +135,13 @@ public class Config {
     public static String AUDIO_EDITOR;
     public static String AUDIO_EDITOR_ARGS;
 
+    public static final boolean def_USE_MODEL_EDITOR = true;
+    public static final String def_MODEL_EDITOR = "/usr/bin/blockbench";
+    public static final String def_MODEL_EDITOR_ARGS = "%s";
+    public static boolean USE_MODEL_EDITOR = true;
+    public static String MODEL_EDITOR;
+    public static String MODEL_EDITOR_ARGS;
+
     private static PropertyManager mgr;
 
     private static final String PK_FANCY_GROUPS = "display.fancyTree";
@@ -166,6 +173,10 @@ public class Config {
     private static final String PK_AUDIO_EDITOR = "system.editor.audio.command";
     private static final String PK_AUDIO_EDITOR_ARGS = "system.editor.audio.command.args";
     private static final String PK_USE_AUDIO_EDITOR = "system.editor.audio.enabled";
+
+    private static final String PK_MODEL_EDITOR = "system.editor.model.command";
+    private static final String PK_MODEL_EDITOR_ARGS = "system.editor.model.command.args";
+    private static final String PK_USE_MODEL_EDITOR = "system.editor.model.enabled";
 
     public static final String PK_FILECHOOSER_PATH_IMPORT_FILE = "status.path.importFile";
     public static final String PK_FILECHOOSER_PATH_IMPORT_SOUND = "status.path.importCustomSound";
@@ -220,6 +231,10 @@ public class Config {
         mgr.putString(PK_AUDIO_EDITOR_ARGS, def_AUDIO_EDITOR_ARGS);
         mgr.putBoolean(PK_USE_AUDIO_EDITOR, def_USE_AUDIO_EDITOR, "Use command instead of system default.");
 
+        mgr.putString(PK_MODEL_EDITOR, def_MODEL_EDITOR);
+        mgr.putString(PK_MODEL_EDITOR_ARGS, def_MODEL_EDITOR_ARGS);
+        mgr.putBoolean(PK_USE_MODEL_EDITOR, def_USE_MODEL_EDITOR, "Use command instead of system default.");
+
         mgr.putString(PK_TEXT_EDITOR, def_TEXT_EDITOR);
         mgr.putString(PK_TEXT_EDITOR_ARGS, def_TEXT_EDITOR_ARGS);
         mgr.putBoolean(PK_USE_TEXT_EDITOR, def_USE_TEXT_EDITOR, "Use command instead of system default.");
@@ -273,6 +288,10 @@ public class Config {
         mgr.setValue(PK_TEXT_EDITOR, TEXT_EDITOR);
         mgr.setValue(PK_TEXT_EDITOR_ARGS, TEXT_EDITOR_ARGS);
         mgr.setValue(PK_USE_TEXT_EDITOR, USE_TEXT_EDITOR);
+
+        mgr.setValue(PK_MODEL_EDITOR, MODEL_EDITOR);
+        mgr.setValue(PK_MODEL_EDITOR_ARGS, MODEL_EDITOR_ARGS);
+        mgr.setValue(PK_USE_MODEL_EDITOR, USE_MODEL_EDITOR);
 
         mgr.setValue(PK_USE_NIMBUS, USE_NIMBUS);
         mgr.setValue(PK_USE_NATIVE_THEME, USE_NATIVE_THEME);
@@ -329,6 +348,10 @@ public class Config {
         TEXT_EDITOR = mgr.getString(PK_TEXT_EDITOR);
         TEXT_EDITOR_ARGS = mgr.getString(PK_TEXT_EDITOR_ARGS);
         USE_TEXT_EDITOR = mgr.getBoolean(PK_USE_TEXT_EDITOR);
+
+        MODEL_EDITOR = mgr.getString(PK_MODEL_EDITOR);
+        MODEL_EDITOR_ARGS = mgr.getString(PK_MODEL_EDITOR_ARGS);
+        USE_MODEL_EDITOR = mgr.getBoolean(PK_USE_MODEL_EDITOR);
 
         USE_NIMBUS = mgr.getBoolean(PK_USE_NIMBUS);
         USE_NATIVE_THEME = mgr.getBoolean(PK_USE_NATIVE_THEME);

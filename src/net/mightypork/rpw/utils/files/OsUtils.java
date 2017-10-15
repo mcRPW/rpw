@@ -4,8 +4,11 @@ import java.io.File;
 import java.util.List;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
+import net.mightypork.rpw.project.Project;
+import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.utils.logging.Log;
 
 
@@ -282,23 +285,22 @@ public class OsUtils {
     public static void initDirs() {
         Log.f2("Checking Minecraft installation.");
         OsUtils.checkMinecraft();
-
-        Log.f2("Checking working directory.");
-        OsUtils.initWorkdir();
     }
 
 
-    static void initWorkdir() {
+    public static void initWorkdir() {
+        Log.f2("Checking working directory.");
+
         OsUtils.getAppDir(); // init app dir
         OsUtils.getAppDir(Paths.DIR_LIBRARY, true);
         OsUtils.getAppDir(Paths.DIR_LOGS, true);
         OsUtils.getAppDir(Paths.DIR_CONFIG, true);
         OsUtils.getAppDir(Paths.DIR_RESOURCEPACKS, true);
 
-        final File vanilla = OsUtils.getAppDir(Paths.DIR_VANILLA, true);
-        final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA + "/assets", false);
+        final File vanilla = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION, false);
+        final File vanillaAssets = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION + "/assets", false);
 
-        if (vanilla.list().length == 0 || !vanillaAssets.exists()) {
+        if (!vanilla.exists() || vanilla.list().length == 0 || !vanillaAssets.exists()) {
             Flags.MUST_EXTRACT = true;
         }
 

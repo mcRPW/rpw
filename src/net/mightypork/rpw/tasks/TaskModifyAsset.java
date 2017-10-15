@@ -98,6 +98,15 @@ public class TaskModifyAsset {
     }
 
 
+    public static void editModel(AssetTreeLeaf node) {
+        File file = Projects.getActive().getAssetFile(node.getAssetKey());
+        if (Config.def_USE_MODEL_EDITOR && node.getAssetKey().contains("models") && file.getPath().endsWith(".json")) {
+            if (!DesktopApi.editModel(file)) {
+                alertCouldNotEdit();
+            }
+        }
+    }
+
     /**
      * Check if open project contains this asset or meta<br>
      * If not, ask user to copy it, and do so if agreed.

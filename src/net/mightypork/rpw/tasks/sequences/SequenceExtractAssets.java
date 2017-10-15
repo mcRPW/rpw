@@ -207,10 +207,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
      * @return success
      */
     private boolean stepPrepareOutput() {
-        Log.f2("Cleaning output directory");
-
-        outDir = OsUtils.getAppDir(Paths.DIR_VANILLA, true);
-        FileUtils.delete(outDir, true);
+        outDir = new File(OsUtils.getAppDir(Paths.DIR_VANILLA, true).getPath() + "/" + version);
         outDir.mkdirs();
         return true;
     }
@@ -528,7 +525,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
         }
 
         // write to file
-        final File datafile = OsUtils.getAppDir(Paths.FILE_VANILLA_STRUCTURE);
+        final File datafile = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + version + "/structure.dat");
         try {
             SimpleConfig.mapToFile(datafile, saveMap, false);
         } catch (final IOException e) {
@@ -598,5 +595,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
         // The dialog likes to jump to background - this brings it to front.
 
         Alerts.info(monitorDialog, "Minecraft assets reloaded.");
+
+        Config.LIBRARY_VERSION = version;
     }
 }

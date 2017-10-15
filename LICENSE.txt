@@ -1,8 +1,7 @@
 RPW LICENSE
 ===========
 
-* You're NOT ALLOWED to make money on RPW in any way (eg. adf.ly links), unless
-  you have contributed to the code in a significant way.
+* You're NOT ALLOWED to make money on RPW in any way (eg. adf.ly links)
   
 * In any case, you are NOT ALLOWED to sell RPW or it's parts.
 

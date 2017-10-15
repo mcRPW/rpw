@@ -5,14 +5,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import net.mightypork.rpw.App;
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Config.FilePath;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
@@ -28,6 +24,8 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.files.FileUtils;
+import net.mightypork.rpw.utils.files.OsUtils;
+import net.mightypork.rpw.utils.logging.Log;
 
 
 public class DialogNewProject extends RpwDialog {
@@ -39,6 +37,7 @@ public class DialogNewProject extends RpwDialog {
     private JButton buttonCancel;
     private JRadioButton radioBlank;
     private JRadioButton radioResourcePack;
+    private JComboBox assetVersion;
 
     private final List<JComponent> nameFieldGroup = new ArrayList<JComponent>();
 
@@ -104,7 +103,7 @@ public class DialogNewProject extends RpwDialog {
                         "Select resoucepack file...",
                         FilePath.IMPORT_PACK,
                         "Select resourcepack to import as project",
-                        FileChooser.ZIP,
+                        FileChooser.FOLDERS_ZIP,
                         true
                 )
         );
@@ -162,8 +161,17 @@ public class DialogNewProject extends RpwDialog {
 
         vbox.springForm(new String[]{"Name:"}, new JComponent[]{nameField});
 
-        vbox.gap();
         vbox.add(Gui.commentLine("Name - folder name."));
+        vbox.gap();
+
+        assetVersion = new JComboBox();
+        File file = new File(OsUtils.getAppDir().getPath() + "/library/vanilla/");
+        for (int i = 0; i < file.list().length; i++) {
+            assetVersion.addItem(file.list()[i]);
+        }
+        vbox.add(assetVersion);
+        vbox.gap();
+        vbox.add(Gui.commentLine("Asset version"));
         vbox.gapl();
 
         buttonOK = new JButton("Create", Icons.MENU_NEW);
@@ -243,6 +251,7 @@ public class DialogNewProject extends RpwDialog {
                             nameField.setText(parts[0]);
                         }
                     } catch (final Throwable t) {
+                        Log.e(t);
                     }
                 }
 
@@ -291,6 +300,8 @@ public class DialogNewProject extends RpwDialog {
 
                     Alerts.loading(true);
                     Projects.openNewProject(projname);
+                    Projects.getActive().setCurrentMcVersion(assetVersion.getSelectedItem().toString());
+                    Config.LIBRARY_VERSION = assetVersion.getSelectedItem().toString();
 
                     Tasks.taskStoreProjectChanges();
 

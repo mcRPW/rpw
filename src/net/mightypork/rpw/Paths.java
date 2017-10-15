@@ -32,7 +32,6 @@ public class Paths {
     public static final String DIR_LIBRARY = "library";
     public static final String DIR_VANILLA = DIR_LIBRARY + "/" + DIRNAME_VANILLA;
     public static final String DIR_RESOURCEPACKS = DIR_LIBRARY + "/" + "resourcepacks";
-    public static final String FILE_VANILLA_STRUCTURE = DIR_VANILLA + "/structure.dat";
 
     public static final String DIR_PROJECTS = "projects";
 

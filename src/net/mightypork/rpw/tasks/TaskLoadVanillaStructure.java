@@ -11,6 +11,8 @@ import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.project.Project;
+import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tree.assets.AssetEntry;
 import net.mightypork.rpw.tree.assets.EAsset;
 import net.mightypork.rpw.utils.Fixins;
@@ -32,7 +34,8 @@ public class TaskLoadVanillaStructure {
 
         Map<String, AssetEntry> assets = new LinkedHashMap<String, AssetEntry>();
 
-        final File structureFile = OsUtils.getAppDir(Paths.FILE_VANILLA_STRUCTURE);
+        final File structureFile = OsUtils.getAppDir(Paths.DIR_VANILLA + "/" + Config.LIBRARY_VERSION + "/structure.dat");
+
         if (!structureFile.exists()) {
             return; // success == false
         }
@@ -64,7 +67,6 @@ public class TaskLoadVanillaStructure {
                     final EAsset type = EAsset.valueOf(v);
                     final AssetEntry ae = new AssetEntry(k, type);
                     assets.put(e.getKey(), ae);
-
                     if (Config.LOG_VANILLA_LOAD_STRUCTURE) Log.f3("+ " + ae);
 
                 } catch (final IllegalArgumentException iae) {
@@ -83,7 +85,6 @@ public class TaskLoadVanillaStructure {
         }
 
         assets = Utils.sortByKeys(assets);
-
         Sources.vanilla.setAssets(assets);
 
         Log.f2("Loading vanilla structure - done.");

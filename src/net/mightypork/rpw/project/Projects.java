@@ -20,7 +20,6 @@ public class Projects {
 
     private static Project active = null;
 
-
     public static Project getActive() {
         return active;
     }
@@ -76,6 +75,7 @@ public class Projects {
         Tasks.taskCloseProjectNoRebuild();
 
         final Project p = new Project(name);
+        Config.LIBRARY_VERSION = p.getCurrentMcVersion();
         setActive(p);
     }
 
@@ -181,7 +181,9 @@ public class Projects {
 
 
     public static void openLastProject() {
-        if (!Config.CLOSED_WITH_PROJECT_OPEN) return;
+        if (!Config.CLOSED_WITH_PROJECT_OPEN) {
+            return;
+        }
 
         final List<String> recentProjects = Projects.getRecentProjects();
         if (recentProjects.size() == 0) return;

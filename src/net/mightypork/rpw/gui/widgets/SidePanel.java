@@ -66,6 +66,9 @@ public class SidePanel {
     private JTextArea previewText;
     private TitledBorder previewTextBorder;
 
+    private JTextArea previewModel;
+    private TitledBorder previewModelBorder;
+
     private JLabel previewImage;
     private TitledBorder previewImageBorder;
     private JPanelWithBackground previewImageBg;
@@ -80,9 +83,12 @@ public class SidePanel {
     private JButton btnEditA;
     private JButton btnReplaceA;
 
+    private JButton btnEditM;
+
     private static final String IMAGE = "IMAGE";
     private static final String TEXT = "TEXT";
     private static final String AUDIO = "AUDIO";
+    private static final String MODEL = "MODEL";
 
     private AssetTreeLeaf displayedLeaf;
 
@@ -252,7 +258,7 @@ public class SidePanel {
         hb.setAlignmentX(0);
         hb.glue();
 
-        final JScrollPane sp = new JScrollPane();
+        JScrollPane sp = new JScrollPane();
 
         previewText = new JTextArea();
         previewText.setEditable(false);
@@ -282,6 +288,66 @@ public class SidePanel {
 
         vb2.glue();
         previewPanel.add(vb2, TEXT);
+
+
+        vb2 = new VBox();
+        vb2.setAlignmentX(0);
+
+        vb2.gap();
+
+        hb = new HBox();
+        hb.setAlignmentX(0);
+
+        btnEditM = new JButton ("Edit model", Icons.MENU_EDIT);
+        btnEditT = new JButton("Edit text", Icons.MENU_EDIT);
+        btnReplaceT = new JButton("Replace", Icons.MENU_IMPORT_BOX);
+
+        hb.glue();
+        hb.add(btnEditM);
+        hb.gap();
+        hb.add(btnEditT);
+        hb.gap();
+        hb.add(btnReplaceT);
+        hb.glue();
+
+        vb2.add(hb);
+        vb2.gap();
+
+
+        hb = new HBox();
+        hb.setAlignmentX(0);
+        hb.glue();
+
+        JScrollPane sp2 = new JScrollPane();
+
+        previewModel = new JTextArea();
+        previewModel.setEditable(false);
+        previewModel.setFont(new Font(Font.MONOSPACED, 0, 10));
+        previewModel.setMargin(new Insets(5, 5, 5, 5));
+        previewModel.setEditable(false);
+        previewModel.setLineWrap(false);
+
+        sp2.setViewportView(previewModel);
+
+        Gui.forceSize(sp2, 290, 300);
+
+        sp2.setBorder(
+                previewModelBorder = BorderFactory.createTitledBorder(
+                        previewBorder,
+                        "%Model%"
+                )
+        );
+
+        sp2.setAlignmentX(0);
+
+        hb.add(sp2);
+
+        hb.glue();
+
+        vb2.add(hb);
+
+        vb2.glue();
+        previewPanel.add(vb2, MODEL);
 
 
         vb2 = new VBox();
@@ -513,17 +579,32 @@ public class SidePanel {
                 try {
                     in = Sources.getAssetStream(leaf.resolveAssetSource(), leaf.getAssetKey());
                     text = FileUtils.streamToString(in, 100);
-                    if (in == null) {
-                        previewText.setText("");
+
+                    if (path.contains("models") && path.endsWith(".json")){
+                        if (in == null) {
+                            previewModel.setText("");
+                        } else {
+                            previewModel.setText(text);
+
+                            previewModelBorder.setTitle(fname);
+                        }
+
+                        previewModel.setCaretPosition(0); // scroll to top
+
+                        previewCardLayout.show(previewPanel, MODEL);
                     } else {
-                        previewText.setText(text);
+                        if (in == null) {
+                            previewText.setText("");
+                        } else {
+                            previewText.setText(text);
 
-                        previewTextBorder.setTitle(fname);
+                            previewTextBorder.setTitle(fname);
+                        }
+
+                        previewText.setCaretPosition(0); // scroll to top
+
+                        previewCardLayout.show(previewPanel, TEXT);
                     }
-
-                    previewText.setCaretPosition(0); // scroll to top
-
-                    previewCardLayout.show(previewPanel, TEXT);
                 } catch (final IOException e) {
                     Log.e(e);
                     return;
@@ -617,6 +698,14 @@ public class SidePanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Tasks.taskEditAsset(displayedLeaf);
+            }
+        });
+
+        btnEditM.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Tasks.taskEditModel(displayedLeaf);
             }
         });
     }

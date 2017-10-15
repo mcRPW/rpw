@@ -18,6 +18,7 @@ import net.mightypork.rpw.gui.windows.messages.Alerts;
 import net.mightypork.rpw.gui.windows.messages.DialogCrash;
 import net.mightypork.rpw.help.VersionUtils;
 import net.mightypork.rpw.library.Sources;
+import net.mightypork.rpw.project.Project;
 import net.mightypork.rpw.project.Projects;
 import net.mightypork.rpw.tasks.Tasks;
 import net.mightypork.rpw.utils.HtmlBuilder;
@@ -75,8 +76,13 @@ public class App {
         Log.i("ResourcePack Workbench v." + Const.VERSION + " (#" + Const.VERSION_SERIAL + ")");
 
         Log.f1("Init started...");
+        if (Projects.getRecentProjects().size() > 0) {
+            Config.LIBRARY_VERSION = new Project(Projects.getRecentProjects().get(0)).getCurrentMcVersion();
+        }
+
         OsUtils.initDirs();
         Config.init();
+        OsUtils.initWorkdir();
 
         // attempt to enable anti-aliasing
         try {
@@ -229,7 +235,7 @@ public class App {
     public static String getWindowTitle() {
         String wt = "";
         if (Projects.isOpen()) wt += Projects.getActive().getName() + "  \u2022  ";
-        wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  App by @MightyPork";
+        wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  App by @MightyPork and @MCrafterzz";
         return wt;
     }
 
