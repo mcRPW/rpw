@@ -73,6 +73,14 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
         File file = new File(OsUtils.getAppDir().getPath() + "/library/vanilla/");
         String currentVersion = "";
         for (int i = 0; i < file.list().length; i++) {
+            if (file.list()[i].equals("assets")){
+                try {
+                    FileUtils.delete(file.listFiles()[i], true);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
             if (new File(file.listFiles()[i].getPath() + "/structure.dat").exists()) {
                 installedAssets.addItem(file.list()[i]);
 
