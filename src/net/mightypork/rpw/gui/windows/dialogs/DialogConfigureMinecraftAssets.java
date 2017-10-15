@@ -57,10 +57,8 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
 
         // box with buttons under the list
         selectAssets = new JButton("Select", Icons.MENU_YES);
-        selectAssets.setEnabled(false);
         newAssets = new JButton("New", Icons.MENU_NEW);
         deleteAssets = new JButton("Delete", Icons.MENU_DELETE);
-        deleteAssets.setEnabled(false);
         cancel = new JButton("Cancel", Icons.MENU_CANCEL);
 
         vb.gap();
@@ -73,9 +71,15 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
 
     private void updateAssets(){
         File file = new File(OsUtils.getAppDir().getPath() + "/library/vanilla/");
+        String currentVersion = "";
         for (int i = 0; i < file.list().length; i++) {
             installedAssets.addItem(file.list()[i]);
+
+            if (file.list()[i].toString().equals(Config.LIBRARY_VERSION)){
+                currentVersion = file.list()[i].toString();
+            }
         }
+        installedAssets.list.setSelectedValue(currentVersion, true);
     }
 
 
