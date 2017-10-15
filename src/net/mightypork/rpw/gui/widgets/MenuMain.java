@@ -247,7 +247,7 @@ public class MenuMain {
 
         menu.addSeparator();
 
-        item = itemLibraryConfigureVanilla = new JMenuItem("Configue Minecraft assets", KeyEvent.VK_R);
+        item = itemLibraryConfigureVanilla = new JMenuItem("Select target Minecraft version", KeyEvent.VK_R);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, CTRL | SHIFT));
         if (ICNS) item.setIcon(Icons.MENU_RELOAD2);
         menu.add(item);

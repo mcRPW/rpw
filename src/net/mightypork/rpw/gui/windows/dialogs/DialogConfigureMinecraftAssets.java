@@ -35,7 +35,7 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
     private JButton cancel;
 
     public DialogConfigureMinecraftAssets() {
-        super(App.getFrame(), "Configure Minecraft Assets");
+        super(App.getFrame(), "Select target Minecraft version");
 
         createDialog();
     }
@@ -45,7 +45,7 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
     protected JComponent buildGui() {
         final VBox vb = new VBox();
         vb.windowPadding();
-        vb.heading("Configure Minecraft Assets");
+        vb.heading("Select target Minecraft version");
 
         // box for the list of keys
         installedAssets = new SimpleStringList();
@@ -57,10 +57,8 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
 
         // box with buttons under the list
         selectAssets = new JButton("Select", Icons.MENU_YES);
-        selectAssets.setEnabled(false);
         newAssets = new JButton("New", Icons.MENU_NEW);
         deleteAssets = new JButton("Delete", Icons.MENU_DELETE);
-        deleteAssets.setEnabled(false);
         cancel = new JButton("Cancel", Icons.MENU_CANCEL);
 
         vb.gap();
@@ -73,9 +71,25 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
 
     private void updateAssets(){
         File file = new File(OsUtils.getAppDir().getPath() + "/library/vanilla/");
+        String currentVersion = "";
         for (int i = 0; i < file.list().length; i++) {
-            installedAssets.addItem(file.list()[i]);
+            if (file.list()[i].equals("assets")){
+                try {
+                    FileUtils.delete(file.listFiles()[i], true);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            if (new File(file.listFiles()[i].getPath() + "/structure.dat").exists()) {
+                installedAssets.addItem(file.list()[i]);
+
+                if (file.list()[i].toString().equals(Config.LIBRARY_VERSION)) {
+                    currentVersion = file.list()[i].toString();
+                }
+            }
         }
+        installedAssets.list.setSelectedValue(currentVersion, true);
     }
 
 

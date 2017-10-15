@@ -28,6 +28,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
+import net.mightypork.rpw.Config;
 import net.mightypork.rpw.gui.Gui;
 import net.mightypork.rpw.gui.Icons;
 import net.mightypork.rpw.gui.helpers.ClickListener;
@@ -409,6 +410,10 @@ public class SidePanel {
         vb.add(f);
 
         vb.titsep("Project Info").setAlignmentX(0);
+
+        vb.gap();
+
+        vb.add(Gui.label("Minecraft version: " + Config.LIBRARY_VERSION));
 
         HBox hb;
 
