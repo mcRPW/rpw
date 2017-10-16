@@ -56,6 +56,7 @@ public class SidePanel {
     private Box infoBox;
     private JXLabel projectName;
     private JXLabel projectBase;
+    public JXLabel mcVersion;
     private JButton buttonOpenBase;
     private JButton buttonEditProps;
     private JLabel projectIconLabel;
@@ -413,7 +414,7 @@ public class SidePanel {
 
         vb.gap();
 
-        vb.add(Gui.label("Minecraft version: " + Config.LIBRARY_VERSION));
+        vb.add(mcVersion = Gui.label("Minecraft version: " + Config.LIBRARY_VERSION));
 
         HBox hb;
 
