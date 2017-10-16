@@ -48,10 +48,10 @@ public class DialogAbout extends RpwDialog {
         vb.add(image);
 
         vb.add(Gui.label("Credits", 15, Font.BOLD));
-        vb.add(Gui.label("MightyPork, creator of app", 13, Font.PLAIN));
+        vb.add(Gui.label("MightyPork, creator of the app", 13, Font.PLAIN));
         vb.add(Gui.label("MCrafterzz, developer", 13, Font.PLAIN));
-        vb.add(Gui.label("AkTheKnight, contributer", 13, Font.PLAIN));
-        vb.add(Gui.label("Jakz, creator of texture (un)stitcher", 13, Font.PLAIN));
+        vb.add(Gui.label("AkTheKnight, contributor", 13, Font.PLAIN));
+        vb.add(Gui.label("Jakz, creator of the texture (un)stitcher", 13, Font.PLAIN));
         vb.gapl();
 
         buttonTwitterRpw = new JButton("@RPWapp", Icons.MENU_TWITTER);
