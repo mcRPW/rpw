@@ -1,5 +1,6 @@
 package net.mightypork.rpw.gui.windows.dialogs;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -8,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import com.sun.prism.paint.Color;
 import net.mightypork.rpw.App;
 import net.mightypork.rpw.Const;
 import net.mightypork.rpw.Paths;
@@ -44,6 +46,12 @@ public class DialogAbout extends RpwDialog {
         final JLabel image = new JLabel(Icons.ABOUT);
         image.setAlignmentX(0.5f);
         vb.add(image);
+
+        vb.add(Gui.label("Credits", 15, Font.BOLD));
+        vb.add(Gui.label("MightyPork, creator of the app", 13, Font.PLAIN));
+        vb.add(Gui.label("MCrafterzz, developer", 13, Font.PLAIN));
+        vb.add(Gui.label("AkTheKnight, contributor", 13, Font.PLAIN));
+        vb.add(Gui.label("Jakz, creator of the texture (un)stitcher", 13, Font.PLAIN));
         vb.gapl();
 
         buttonTwitterRpw = new JButton("@RPWapp", Icons.MENU_TWITTER);

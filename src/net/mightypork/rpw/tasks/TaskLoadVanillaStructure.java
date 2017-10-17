@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.mightypork.rpw.App;
 import net.mightypork.rpw.Config;
 import net.mightypork.rpw.Flags;
 import net.mightypork.rpw.Paths;

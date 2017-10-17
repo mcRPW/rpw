@@ -75,6 +75,7 @@ public class MenuMain {
     private JMenuItem itemHelp;
     private JMenuItem itemRuntimeLog;
     private JMenuItem itemAbout;
+    private JMenuItem itemChangelog;
 
     private JMenu menuProject;
     private JMenu menuLibrary;
@@ -434,21 +435,11 @@ public class MenuMain {
         item.setActionCommand(Paths.URL_GITHUB_RELEASES);
         menu.add(item);
 
-        item = new JMenuItem("Changelog");
+        item = itemChangelog = new JMenuItem("Changelog");
         if (ICNS) item.setIcon(Icons.TREE_FILE_TEXT);
-        item.addActionListener(Gui.openUrlListener);
-        item.setActionCommand(Paths.URL_UPDATE_FILE);
         menu.add(item);
 
         menu.addSeparator();
-
-//        item = new JMenuItem("Donate (PayPal)", KeyEvent.VK_D);
-//        if (ICNS) item.setIcon(Icons.MENU_DONATE);
-//        item.addActionListener(Gui.openUrlListener);
-//        item.setActionCommand(Paths.URL_DONATE);
-//        menu.add(item);
-//
-//        menu.addSeparator();
 
         item = itemAbout = new JMenuItem("About", KeyEvent.VK_A);
         if (ICNS) item.setIcon(Icons.MENU_ABOUT);
@@ -613,6 +604,14 @@ public class MenuMain {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Tasks.taskDialogAbout();
+            }
+        });
+
+        itemChangelog.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Tasks.taskShowChangelogForced();
             }
         });
 
