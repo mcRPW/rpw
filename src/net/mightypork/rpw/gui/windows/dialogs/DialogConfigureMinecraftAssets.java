@@ -107,7 +107,7 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
                     Sources.initVanilla();
                     Tasks.taskLoadVanillaStructure();
                     Tasks.taskTreeRebuild();
-                    App.getSidePanel().mcVersion.setText("Minecraft version: " + Config.LIBRARY_VERSION);
+                    App.getSidePanel().setMcVersion();
                 }
                 closeDialog();
             }

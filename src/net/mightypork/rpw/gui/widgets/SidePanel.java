@@ -56,7 +56,7 @@ public class SidePanel {
     private Box infoBox;
     private JXLabel projectName;
     private JXLabel projectBase;
-    public JXLabel mcVersion;
+    private JXLabel mcVersion;
     private JButton buttonOpenBase;
     private JButton buttonEditProps;
     private JLabel projectIconLabel;
@@ -515,6 +515,11 @@ public class SidePanel {
 
     public void redrawPreview() {
         updatePreview(displayedLeaf);
+    }
+
+
+    public void setMcVersion () {
+        mcVersion.setText("Minecraft version: " + Config.LIBRARY_VERSION);
     }
 
 

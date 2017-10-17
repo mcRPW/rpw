@@ -906,6 +906,11 @@ public class Tasks {
     }
 
 
+    public static void taskShowChangelogForced() {
+        Gui.open(new DialogChangelog());
+    }
+
+
     public static int taskPopulateProjectFromPack(final File pack, final Runnable after) {
         final int task = Tasks.startTask();
 
