@@ -191,6 +191,15 @@ public class Gui {
         return label;
     }
 
+    public static JXLabel label(String text, int size, int style){
+        final JXLabel label = new JXLabel();
+        label.setText(text);
+        label.setFont(new Font(label.getFont().getName(), style, size));
+        label.setAlignmentX(0.5f);
+
+        return label;
+    }
+
     public static Component hgap_small() {
         return Box.createHorizontalStrut(GAP);
     }

@@ -568,7 +568,7 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
         Log.f1("Extracting Minecraft assets - done.");
         Flags.VANILLA_STRUCTURE_LOAD_OK = true;
 
-        Config.LIBRARY_VERSION = version + "+" + assetsVersion + (modsLoaded ? "m" : "");
+        Config.LIBRARY_VERSION = version;
         Config.save();
 
         Tasks.taskUpdateTitlebar(); // update titlebar
@@ -595,7 +595,5 @@ public class SequenceExtractAssets extends AbstractMonitoredSequence {
         // The dialog likes to jump to background - this brings it to front.
 
         Alerts.info(monitorDialog, "Minecraft assets reloaded.");
-
-        Config.LIBRARY_VERSION = version;
     }
 }

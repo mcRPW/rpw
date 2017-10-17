@@ -107,9 +107,9 @@ public class DialogConfigureMinecraftAssets extends RpwDialog {
                     Sources.initVanilla();
                     Tasks.taskLoadVanillaStructure();
                     Tasks.taskTreeRebuild();
-                    Tasks.taskUpdateTitlebar();
-                    closeDialog();
+                    App.getSidePanel().setMcVersion();
                 }
+                closeDialog();
             }
         });
 

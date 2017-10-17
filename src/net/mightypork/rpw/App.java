@@ -235,7 +235,7 @@ public class App {
     public static String getWindowTitle() {
         String wt = "";
         if (Projects.isOpen()) wt += Projects.getActive().getName() + "  \u2022  ";
-        wt += Const.APP_NAME + " v" + Const.VERSION + "  \u2022  mc [ " + Config.LIBRARY_VERSION + " ]  \u2022  App by @MightyPork and @MCrafterzz";
+        wt += Const.APP_NAME + " v" + Const.VERSION;
         return wt;
     }
 

@@ -600,6 +600,7 @@ public class Tasks {
 
         Projects.getActive().setCurrentMcVersion(version);
         Config.LIBRARY_VERSION = version;
+        App.getSidePanel().setMcVersion();
 
         final int task = Tasks.startTask();
 
@@ -902,6 +903,11 @@ public class Tasks {
         if (VersionUtils.shouldShowChangelog()) {
             Gui.open(new DialogChangelog());
         }
+    }
+
+
+    public static void taskShowChangelogForced() {
+        Gui.open(new DialogChangelog());
     }
 
 
