@@ -375,17 +375,21 @@ public class SequenceExportProject extends AbstractMonitoredSequence {
             int major = Integer.valueOf(m.group(1));
             int minor = Integer.valueOf(m.group(2));
 
-            if (major == 1 && minor < 9) {
-                return 1;
-            } else if (major > 1 || (major == 1 && minor > 10)) {
-                return 3;
-            } else if (major == 1 && (minor == 9 || minor == 10)) {
-                return 2;
-            } else {
-                return 3;
+            if (major == 1) {
+                if (minor < 9) {
+                    return 1;
+                } else if (minor > 10) {
+                    return 3;
+                } else if (minor == 9 || minor == 10) {
+                    return 2;
+                } else if (minor == 11 || minor == 12) {
+                    return 3;
+                } else {
+                    return 4;
+                }
             }
         }
-        return 3;
+        return 4;
     }
 
 }
