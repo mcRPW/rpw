@@ -100,7 +100,7 @@ public class TaskModifyAsset {
 
     public static void editModel(AssetTreeLeaf node) {
         File file = Projects.getActive().getAssetFile(node.getAssetKey());
-        if (Config.def_USE_MODEL_EDITOR && node.getAssetKey().contains("models") && file.getPath().endsWith(".json")) {
+        if (Config.def_USE_MODEL_EDITOR && node != null && node.getAssetKey().contains("models") && file.getPath().endsWith(".json")) {
             if (!DesktopApi.editModel(file)) {
                 alertCouldNotEdit();
             }
