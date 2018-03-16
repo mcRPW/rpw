@@ -34,8 +34,10 @@ public class PackMcmeta {
     public static PackMcmeta fromJson(String json) {
         PackMcmeta packMcmeta = new PackMcmeta();
         packMcmeta.languages = new LangEntryMap();
-        int packFormat = Integer.parseInt(json.substring(json.indexOf("pack_format\": ") + 14, json.indexOf(",", json.indexOf("pack_format\": ") + 14)));
-        String description = json.substring(json.indexOf("description\": ") + 14, json.indexOf("},", json.indexOf("description\": ") + 14));
+        //{"pack":{"pack_format":3,"description":"§e§u§lPack Desc"}}
+        String jsonNoSpace = json.replaceAll("\\s+(?=([^\"]*\"[^\"]*\")*[^\"]*$)", "");
+        int packFormat = Integer.parseInt(jsonNoSpace.substring(23, 24));
+        String description = jsonNoSpace.substring(40, jsonNoSpace.indexOf("\"", 40));
         packMcmeta.setPackInfo(new PackInfo(packFormat, description));
 
         int languages = 0;
