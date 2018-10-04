@@ -107,7 +107,7 @@ public class DialogExport extends RpwDialog {
 
         mcOptsCombo = new JComboBox(choices);
         mcOptsCombo.setSelectedIndex(Config.CHOICE_EXPORT_TO_MC);
-        packMeta = new JComboBox(new String[]{"1", "2", "3"});
+        packMeta = new JComboBox(new String[]{"1", "2", "3", "4"});
         packMeta.setSelectedIndex(SequenceExportProject.getPackMetaNumber() - 1);
         unZip = Gui.checkbox(false);
 
